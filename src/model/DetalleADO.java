@@ -6,13 +6,13 @@ import java.sql.SQLException;
 public class DetalleADO {
 
     public static String CrudEntity(DetalleTB detalleTB){
-        String selectStmt = "{call Sp_Crud_Mantenimiento(?,?,?,?,?)}";
+        String selectStmt = "{call Sp_Crud_Detalle(?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
             DBUtil.dbConnect();
             callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
             callableStatement.setInt("IdDetalle",detalleTB.getIdDetalle().get());
-            callableStatement.setString("IdMatenimiento",detalleTB.getIdMantenimiento().get());
+            callableStatement.setString("IdMantenimiento",detalleTB.getIdMantenimiento().get());
             callableStatement.setString("Nombre",detalleTB.getNombre().get());
             callableStatement.setString("Descripcion",detalleTB.getDescripcion().get());
             callableStatement.setString("Estado",detalleTB.getEstado().get());

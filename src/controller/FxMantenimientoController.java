@@ -61,7 +61,7 @@ public class FxMantenimientoController implements Initializable {
                 if (confirmation == 1) {
                     MantenimientoTB mantenimientoTB = new MantenimientoTB();
                     mantenimientoTB.setIdMantenimiento(txtCode.getText());
-                    mantenimientoTB.setNombre(txtName.getText());
+                    mantenimientoTB.setNombre(txtName.getText().trim());
                     mantenimientoTB.setEstado('1');
                     mantenimientoTB.setUsuarioRegistro("76423388");
                     String result = MantenimientoADO.CrudEntity(mantenimientoTB);
@@ -74,6 +74,7 @@ public class FxMantenimientoController implements Initializable {
                             break;
                         case "duplicate":
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mantenimiento", "No se puede haber 2 items con el mismo nombre.", false);
+                            txtName.requestFocus();
                             break;
                         case "error":
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mantenimiento", "No se puedo completar la ejecución.", false);

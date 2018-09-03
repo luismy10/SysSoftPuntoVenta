@@ -248,7 +248,8 @@ public class FxDetalleMantenimientoController implements Initializable {
             controller.setValueUpdate(lvMaintenance.getSelectionModel().getSelectedItem().getNombre(),
                     lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(),
                     tvDetail.getSelectionModel().getSelectedItem().getIdDetalle().getValue().toString(),
-                    tvDetail.getSelectionModel().getSelectedItem().getNombre().get());
+                    tvDetail.getSelectionModel().getSelectedItem().getNombre().get(),
+                    tvDetail.getSelectionModel().getSelectedItem().getDescripcion().get());
 
         }
     }

@@ -55,7 +55,6 @@ public class FxDetalleController implements Initializable {
             }
         });
         cbEstado.setValue(new Estado("1", "Habilitado"));
-        System.out.println(cbEstado.getItems().get(1).getNombre());
 
     }
 
@@ -72,7 +71,8 @@ public class FxDetalleController implements Initializable {
         idDetalle = Integer.parseInt(values[2]);
         btnToAction.setText("Actualizar");
         btnToAction.getStyleClass().add("buttonFourth");
-
+        txtName.setText(values[3]);
+        txtDescripcion.setText(values[4]);
     }
 
     private void aValidityProcess() {
@@ -90,17 +90,20 @@ public class FxDetalleController implements Initializable {
                     DetalleTB detalleTB = new DetalleTB();
                     detalleTB.setIdDetalle(idDetalle);
                     detalleTB.setIdMantenimiento(txtCode.getText());
-                    detalleTB.setNombre(txtName.getText());
-                    detalleTB.setDescripcion(txtDescripcion.getText());
+                    detalleTB.setNombre(txtName.getText().trim());
+                    detalleTB.setDescripcion(txtDescripcion.getText().trim());
                     detalleTB.setEstado(cbEstado.getValue().getId());
                     detalleTB.setUsuarioRegistro("76423388");
                     String result = DetalleADO.CrudEntity(detalleTB);
                     if (result.equalsIgnoreCase("registered")) {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Registrado correctamente.", false);
+                        
+                    } else if (result.equalsIgnoreCase("updated")) {
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Actualizado correctamente.", false);
 
                     } else if (result.equalsIgnoreCase("duplicate")) {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "No se puede haber 2 detalles con el mismo nombre.", false);
-
+                        txtName.requestFocus();
                     } else if (result.equalsIgnoreCase("error")) {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "No se puedo completar la ejecución.", false);
                     } else {
@@ -116,13 +119,13 @@ public class FxDetalleController implements Initializable {
     @FXML
     private void onKeyPressedToRegister(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            aValidityProcess();
         }
     }
 
     @FXML
     private void onActionToRegister(ActionEvent event) {
-        System.out.println(cbEstado.getValue().getId());
+        aValidityProcess();
     }
 
     @FXML
