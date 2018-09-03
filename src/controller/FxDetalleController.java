@@ -101,7 +101,7 @@ public class FxDetalleController implements Initializable {
 
                     } else if (result.equalsIgnoreCase("updated")) {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Actualizado correctamente.", false);
-
+                        Tools.Dispose(window);
                     } else if (result.equalsIgnoreCase("duplicate")) {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "No se puede haber 2 detalles con el mismo nombre.", false);
                         txtName.requestFocus();
