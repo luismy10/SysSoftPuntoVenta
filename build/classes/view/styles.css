@@ -1,0 +1,428 @@
+/*----#0c4065------*/
+@font-face {
+    font-family: 'Roboto Medium'; 
+    src: url('Roboto-Medium.ttf'); 
+} 
+@font-face { 
+    font-family: 'Roboto Bold'; 
+    src: url('Roboto-Bold.ttf'); 
+} 
+@font-face { 
+    font-family: 'Roboto'; 
+    src: url('Roboto-Regular.ttf'); 
+} 
+
+
+
+
+*{       
+    -color-primary:#3F51B5; 
+    -color-accent:#F44336; 
+    -color-secondary:#1E88E5; 
+    -color-dark-primary:#303F9F; 
+    -color-body:#F5F5F5; 
+} 
+
+.labelTitle{
+    -fx-font-size:18; 
+    -fx-font-family:"Roboto";  
+}
+
+.labelForm{ 
+    -fx-font-size:14; 
+    -fx-font-family:"Roboto";  
+} 
+/*------------*/
+.text-field{ 
+    -fx-font-size:14; 
+    -fx-font-family:"Roboto"; 
+    -fx-background-color:white;
+    -fx-border-color:#cccccc;
+} 
+.text-field:hover{
+    -fx-border-color:#00aff0;
+}
+.text-field:focused{
+    -fx-border-color:#00aff0;
+}
+.text-field:disabled{
+    -fx-background-color:#E0E0E2;    
+    -fx-border-color:#94BBDA;
+    -fx-opacity:1.0;
+}
+
+/*---------------*/
+.text-area{
+    -fx-font-size:14;
+    -fx-font-family:"Roboto";
+    -fx-background-color:white;
+    -fx-border-color:#cccccc;
+}
+.text-area .content{
+    -fx-background-color:white;
+}
+.text-area:hover{
+    -fx-border-color:#00aff0;
+}
+.text-area:focused{
+    -fx-border-color:#00aff0;
+}
+.text-area:disabled{
+    -fx-background-color:#E0E0E2;
+    -fx-border-color:#94BBDA;
+    -fx-opacity:1.0;
+}
+
+.panelOption{
+    -fx-background-color: rgb(241,241,241);
+    -fx-border-color: transparent transparent rgb(210,210,210) transparent;
+}
+
+.hboxBackground{
+    -fx-background-color: rgb(241,241,241);
+    -fx-border-color: rgb(210,210,210) transparent transparent transparent;
+}
+
+.labelBorder{
+    -fx-padding: 4 30 4 30;  
+    -fx-border-color: #FE104C;
+    -fx-font-family:"Roboto";  
+    -fx-font-size:12; 
+}
+
+.buttonTransparent{
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-padding: 0 15 0 15;
+    -fx-font-family:"Roboto";  
+    -fx-font-size:14; 
+}
+.buttonTransparent:hover{
+    -fx-background-color: #999999;
+    -fx-cursor: hand;
+    -fx-padding: 0 15 0 15;
+}
+.buttonTransparent:focused{
+    -fx-background-color: #0288d1;
+    -fx-cursor: hand;
+    -fx-padding: 0 15 0 15;
+    -fx-text-fill: #FFFFFF;
+}
+.buttonTransparent:pressed{
+    -fx-background-color: #666666;
+    -fx-padding: 0 15 0 15;
+}
+/*--------------*/
+.buttonIcon{
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-font-family:"Roboto";  
+    -fx-font-size:14; 
+}
+.buttonIcon:hover{
+    
+}
+/*-----------------*/
+.buttonMenu{
+    
+}
+.buttonMenu:hover{
+    -fx-background-color: #999999;
+    -fx-cursor: hand;
+}
+.buttonMenu:focused{
+    -fx-background-color: #0288d1;
+    -fx-cursor: hand;
+    -fx-text-fill: #FFFFFF;
+}
+.buttonMenu:pressed{
+    -fx-background-color: #666666;
+}
+
+
+.table-view{
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+}
+
+.table-view .column-header{
+    -fx-background-color: #23283A;
+}
+.table-view .filler{
+    -fx-background-color: #23283A;
+}
+.table-view .column-header .label,.table-view .column-drag-header .label{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family:"Roboto"; 
+    -fx-font-size: 14px;
+}
+.table-view .column-header-background{
+    -fx-background-color: #23283A;
+}
+
+/*--------------------*/
+.tableView{
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+}
+
+.tableView .column-header{
+    -fx-background-color:  #e7e6e6;
+    -fx-border-width:0 1px 1px 0;
+    -fx-border-color:#ccc;
+}
+.tableView .filler{
+    -fx-background-color:  #e7e6e6;
+    -fx-border-width:0 0 1px 0;
+    -fx-border-color:#ccc;
+}
+.tableView .column-header .label,.tableView .column-drag-header .label{
+    -fx-text-fill: #757575;
+    -fx-font-family:"Roboto"; 
+    -fx-font-size: 14px;
+}
+.tableView .column-header-background{
+    -fx-background-color: white;
+}
+
+/*--------------------*/
+.tableMyView{
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+}
+
+.tableMyView .column-header{
+    /*-fx-background-color:#e7e6e6;*/
+    -fx-background-color:#00a876;
+    -fx-border-width:0 1px 1px 0;
+    -fx-border-color:#00a876;
+}
+.tableMyView .filler{
+    -fx-background-color:#00a876;
+    -fx-border-width:0 0 1px 0;
+    -fx-border-color:#00a876;
+}
+.tableMyView .column-header .label,.tableView .column-drag-header .label{
+    /*-fx-text-fill: #757575;*/
+    -fx-text-fill:#212F3D;
+    -fx-font-family:"Roboto"; 
+    -fx-font-size: 14px;
+}
+.tableMyView .column-header-background{
+    -fx-background-color: white;
+}
+
+
+.buttonPrimary {
+    -fx-padding: 4 12 4 12;   
+    -fx-border-color: #FE104C;
+    -fx-border-width: 2;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-background-color: #FE104C;
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 14px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.buttonPrimary:hover {
+    -fx-background-color: #FE104C;
+    -fx-cursor: hand;
+}
+
+.buttonPrimary:pressed, .buttonPrimary:default:hover:pressed {
+    -fx-background-color: #FE104C;
+    -fx-text-fill:black;
+}
+
+.buttonPrimary:focused {
+    -fx-border-color:  #0288d1,  #0288d1;
+    -fx-border-width: 2, 2;
+    -fx-border-radius: 3, 3;
+    -fx-border-insets: 0 0 0 0, 0;
+}
+
+.buttonPrimary:disabled, .buttonPrimary:default:disabled {
+    -fx-opacity: 0.4;
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: white;
+}
+
+.buttonPrimary:default {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: #ffffff;
+}
+
+.buttonPrimary:default:hover {
+    -fx-background-color: derive(-fx-focus-color,100%);
+}
+
+/*----------------*/
+.buttonSecondary {
+    -fx-padding: 4 12 4 12;    
+    -fx-border-color:  #23283A;
+    -fx-border-width: 2;
+    -fx-border-radius: 3;
+    -fx-background-radius:3;
+    -fx-background-color:  #23283A;
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 14px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.buttonSecondary:hover {
+    -fx-background-color:  #23283A;
+    -fx-cursor: hand;
+}
+
+.buttonSecondary:pressed, .buttonSecondary:default:hover:pressed {
+    -fx-background-color:  #23283A;
+    -fx-text-fill: #0288d1;
+}
+
+.buttonSecondary:focused {
+    -fx-border-color:   #0288d1, #0288d1;
+    -fx-border-width: 2, 2;
+    -fx-border-radius: 3, 3;
+    -fx-border-insets: 0 0 0 0, 0;
+}
+
+.buttonSecondary:disabled, .buttonSecondary:default:disabled {
+    -fx-opacity: 0.4;
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: white;
+}
+
+.buttonSecondary:default {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: #ffffff;
+}
+
+.buttonSecondary:default:hover {
+    -fx-background-color: derive(-fx-focus-color,100%);
+}
+
+/*------------------------*/
+.buttonTertiary {
+    -fx-padding: 4 12 4 12;    
+    -fx-border-color:  #00a876;
+    -fx-border-width: 2;
+    -fx-border-radius: 3;
+    -fx-background-radius:3;
+    -fx-background-color:  #00a876;
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 14px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.buttonTertiary:hover {
+    -fx-background-color:  #00a876;
+    -fx-cursor: hand;
+}
+
+.buttonTertiary:pressed, .buttonTertiary:default:hover:pressed {
+    -fx-background-color:  #00a876;
+    -fx-text-fill: #0288d1;
+}
+
+.buttonTertiary:focused {
+    -fx-border-color:   #0288d1, #0288d1;
+    -fx-border-width: 2, 2;
+    -fx-border-radius: 3, 3;
+    -fx-border-insets: 0 0 0 0, 0;
+}
+
+.buttonTertiary:disabled, .buttonTertiary:default:disabled {
+    -fx-opacity: 0.4;
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: white;
+}
+
+.buttonTertiary:default {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: #ffffff;
+}
+
+.buttonTertiary:default:hover {
+    -fx-background-color: derive(-fx-focus-color,100%);
+}
+
+/*------------------------*/
+.buttonFourth {
+    -fx-padding: 4 12 4 12;    
+    -fx-border-color: #FF5722;
+    -fx-border-width: 2;
+    -fx-border-radius: 3;
+    -fx-background-radius:3;
+    -fx-background-color:  #FF5722;
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 14px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.buttonFourth:hover {
+    -fx-background-color: #FF5722;
+    -fx-cursor: hand;
+}
+
+.buttonFourth:pressed, .buttonFourth:default:hover:pressed {
+    -fx-background-color: #FF5722;
+    -fx-text-fill: #0288d1;
+}
+
+.buttonFourth:focused {
+    -fx-border-color:   #0288d1, #0288d1;
+    -fx-border-width: 2, 2;
+    -fx-border-radius: 3, 3;
+    -fx-border-insets: 0 0 0 0, 0;
+}
+
+.buttonFourth:disabled, .buttonFourth:default:disabled {
+    -fx-opacity: 0.4;
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: white;
+}
+
+.buttonFourth:default {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: #ffffff;
+}
+
+.buttonFourth:default:hover {
+    -fx-background-color: derive(-fx-focus-color,100%);
+}
+
+
+.text-format{
+    -fx-fill: #FFFFFF;
+    -fx-font-size:18; 
+    -fx-font-family:"Roboto";  
+}
+
+/*----------*/
+.linkText{
+    
+}
+
+.linkText:hover{
+    -fx-cursor: hand;
+    -fx-fill: #FE104C;
+}
+
+/*----------*/
+.comboBox{
+    -fx-background-color:white;
+    -fx-border-color:#ccc;
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 14px;
+}
+.comboBox:hover{
+    -fx-border-color:#00aff0;
+}
+.comboBox:focused{
+    -fx-border-color:#00aff0;
+}
