@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import javafx.animation.ScaleTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,6 +26,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.DBUtil;
 import model.DetalleTB;
 import model.MantenimientoADO;
@@ -66,8 +69,11 @@ public class FxDetalleMantenimientoController implements Initializable {
     @FXML
     private ImageView imWarning;
 
+    private boolean onAnimationStart, onAnimationFinished;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        onAnimationFinished=false;
         tcNumero.setCellValueFactory(cellData -> cellData.getValue().getIdDetalle().asObject());
         tcNombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
         tcDescripcion.setCellValueFactory(cellData -> cellData.getValue().getDescripcion());
@@ -256,19 +262,37 @@ public class FxDetalleMantenimientoController implements Initializable {
                     tvDetail.getSelectionModel().getSelectedItem().getNombre().get(),
                     tvDetail.getSelectionModel().getSelectedItem().getDescripcion().get());
 
-        }else{
-            //#23283a
-            lblWarnings.setText("Selecciones un item del detalle para actualizar.");            
-            lblWarnings.setStyle("-fx-text-fill:#da0505");
-            imWarning.setImage(new Image("/view/warning.png"));
-            tvDetail.requestFocus();
+        } else {            
+            onAnimationStart=true;
+            if (onAnimationStart && !onAnimationFinished) {   
+                onAnimationFinished=true;
+                lblWarnings.setText("Seleccione un item del detalle para actualizar.");
+                lblWarnings.setStyle("-fx-text-fill:#da0505");
+                imWarning.setImage(new Image("/view/warning.png"));
+                tvDetail.requestFocus();
+                ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(1000), imWarning);
+                scaleTransition.setByX(0.4f);
+                scaleTransition.setByY(0.4f);
+                scaleTransition.setCycleCount(4);
+                scaleTransition.setAutoReverse(true);
+                scaleTransition.setOnFinished((ActionEvent action) -> {
+                    lblWarnings.setText("Las opciones del detalle están en el panel de los botonen.");
+                    lblWarnings.setStyle("-fx-text-fill:#23283a");
+                    imWarning.setImage(null);
+                    onAnimationFinished=false;
+                    onAnimationStart = false;
+                });
+                scaleTransition.play();               
+                
+            }
         }
     }
 
+
     @FXML
     private void onMouseClickedDetail(MouseEvent event) {
-        if(tvDetail.getSelectionModel().getSelectedIndex()>=0){
-            System.out.println("dentro");
+        if (tvDetail.getSelectionModel().getSelectedIndex() >= 0) {
+            
         }
     }
 

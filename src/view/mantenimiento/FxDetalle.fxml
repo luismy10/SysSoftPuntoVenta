@@ -46,7 +46,7 @@
                                 <Font name="Roboto" size="14.0" />
                             </font>
                         </Label>
-                        <TextArea fx:id="txtDescripcion" onKeyPressed="#OnKeyPressedDescripcion" prefHeight="88.0" prefWidth="478.0" />
+                        <TextArea fx:id="txtDescripcion" onKeyPressed="#OnKeyPressedDescripcion" prefHeight="88.0" prefWidth="478.0" wrapText="true" />
                         <Label styleClass="labelForm" text="Estado" />
                         <ComboBox fx:id="cbEstado" minHeight="-Infinity" minWidth="-Infinity" prefWidth="501.0" styleClass="comboBox" />
                         <HBox alignment="TOP_CENTER" spacing="10.0">
