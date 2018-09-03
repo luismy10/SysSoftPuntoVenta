@@ -5,6 +5,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.animation.ScaleTransition;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -62,18 +63,18 @@ public class FxDetalleMantenimientoController implements Initializable {
     private TableColumn<DetalleTB, String> tcDescripcion;
     @FXML
     private TableColumn<DetalleTB, String> tcEstado;
-
-    private boolean stateconnect;
     @FXML
     private Label lblWarnings;
     @FXML
     private ImageView imWarning;
-
+    @FXML
+    private Text lblDetail;
     private boolean onAnimationStart, onAnimationFinished;
+    private boolean stateconnect;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        onAnimationFinished=false;
+        onAnimationFinished = false;
         tcNumero.setCellValueFactory(cellData -> cellData.getValue().getIdDetalle().asObject());
         tcNombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
         tcDescripcion.setCellValueFactory(cellData -> cellData.getValue().getDescripcion());
@@ -95,7 +96,9 @@ public class FxDetalleMantenimientoController implements Initializable {
                 lblItems.setText(ListPrincipal().isEmpty() == true ? "Items (0)" : "Items (" + ListPrincipal().size() + ")");
                 if (!lvMaintenance.getItems().isEmpty()) {
                     lvMaintenance.getSelectionModel().select(0);
-                    tvDetail.setItems(ListDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento()));
+                    ObservableList<DetalleTB> listDetail = ListDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
+                    tvDetail.setItems(listDetail);
+                    lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");
                 }
             } catch (ClassNotFoundException | SQLException ex) {
                 System.out.println(ex.getLocalizedMessage());
@@ -189,7 +192,9 @@ public class FxDetalleMantenimientoController implements Initializable {
                 lblItems.setText(ListPrincipal().isEmpty() == true ? "Items (0)" : "Items (" + ListPrincipal().size() + ")");
                 if (!lvMaintenance.getItems().isEmpty()) {
                     lvMaintenance.getSelectionModel().select(0);
-                    tvDetail.setItems(ListDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento()));
+                    ObservableList<DetalleTB> listDetail = ListDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
+                    tvDetail.setItems(listDetail);
+                    lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");
                 }
             }
 
@@ -201,14 +206,18 @@ public class FxDetalleMantenimientoController implements Initializable {
     @FXML
     private void onMouseClickedList(MouseEvent event) throws ClassNotFoundException, SQLException {
         if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0) {
-            tvDetail.setItems(ListDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento()));
+            ObservableList<DetalleTB> listDetail = ListDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
+            tvDetail.setItems(listDetail);
+            lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");
         }
     }
 
     @FXML
     private void onKeyReleasedList(KeyEvent event) throws ClassNotFoundException, SQLException {
         if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0) {
-            tvDetail.setItems(ListDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento()));
+            ObservableList<DetalleTB> listDetail = ListDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
+            tvDetail.setItems(listDetail);
+            lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");
         }
     }
 
@@ -238,8 +247,7 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     }
 
-    @FXML
-    private void onMouseClickedEdit(MouseEvent event) throws IOException {
+    private void onActionEditDetail() throws IOException {
         if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0 && tvDetail.getSelectionModel().getSelectedIndex() >= 0) {
             URL url = getClass().getResource(Tools.FX_FILE_DETALLE);
             FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -260,12 +268,13 @@ public class FxDetalleMantenimientoController implements Initializable {
                     lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(),
                     tvDetail.getSelectionModel().getSelectedItem().getIdDetalle().getValue().toString(),
                     tvDetail.getSelectionModel().getSelectedItem().getNombre().get(),
-                    tvDetail.getSelectionModel().getSelectedItem().getDescripcion().get());
+                    tvDetail.getSelectionModel().getSelectedItem().getDescripcion().get(),
+                    tvDetail.getSelectionModel().getSelectedItem().getEstado().get());
 
-        } else {            
-            onAnimationStart=true;
-            if (onAnimationStart && !onAnimationFinished) {   
-                onAnimationFinished=true;
+        } else {
+            onAnimationStart = true;
+            if (onAnimationStart && !onAnimationFinished) {
+                onAnimationFinished = true;
                 lblWarnings.setText("Seleccione un item del detalle para actualizar.");
                 lblWarnings.setStyle("-fx-text-fill:#da0505");
                 imWarning.setImage(new Image("/view/warning.png"));
@@ -279,20 +288,26 @@ public class FxDetalleMantenimientoController implements Initializable {
                     lblWarnings.setText("Las opciones del detalle están en el panel de los botonen.");
                     lblWarnings.setStyle("-fx-text-fill:#23283a");
                     imWarning.setImage(null);
-                    onAnimationFinished=false;
+                    onAnimationFinished = false;
                     onAnimationStart = false;
                 });
-                scaleTransition.play();               
-                
+                scaleTransition.play();
+
             }
         }
     }
 
+    @FXML
+    private void onMouseClickedEdit(MouseEvent event) throws IOException {
+        onActionEditDetail();
+    }
 
     @FXML
-    private void onMouseClickedDetail(MouseEvent event) {
+    private void onMouseClickedDetail(MouseEvent event) throws IOException {
         if (tvDetail.getSelectionModel().getSelectedIndex() >= 0) {
-            
+            if (event.getClickCount() == 2) {
+                onActionEditDetail();
+            }
         }
     }
 

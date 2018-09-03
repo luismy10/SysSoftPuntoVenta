@@ -209,7 +209,7 @@
                                              <children>
                                                 <HBox alignment="CENTER_LEFT" spacing="20.0">
                                                    <children>
-                                                      <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingrese el nombre del detalle (0)">
+                                                      <Text fx:id="lblDetail" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingrese el nombre del detalle (0)">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>

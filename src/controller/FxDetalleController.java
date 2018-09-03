@@ -73,6 +73,7 @@ public class FxDetalleController implements Initializable {
         btnToAction.getStyleClass().add("buttonFourth");
         txtName.setText(values[3]);
         txtDescripcion.setText(values[4]);
+        cbEstado.setValue(values[5].equals("1") ? new Estado("1", "Habilitado") : new Estado("0", "Inhabilitado"));
     }
 
     private void aValidityProcess() {
@@ -97,7 +98,7 @@ public class FxDetalleController implements Initializable {
                     String result = DetalleADO.CrudEntity(detalleTB);
                     if (result.equalsIgnoreCase("registered")) {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Registrado correctamente.", false);
-                        
+
                     } else if (result.equalsIgnoreCase("updated")) {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Actualizado correctamente.", false);
 
