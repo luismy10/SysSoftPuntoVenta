@@ -28,7 +28,7 @@ public class DetalleADO {
                     callableStatement.close();
                 }
                 DBUtil.dbDisconnect();
-            }catch (Exception ex){
+            }catch (SQLException ex){
                 return ex.getLocalizedMessage();
             }
         }

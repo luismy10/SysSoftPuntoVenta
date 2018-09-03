@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -60,6 +61,10 @@ public class FxDetalleMantenimientoController implements Initializable {
     private TableColumn<DetalleTB, String> tcEstado;
 
     private boolean stateconnect;
+    @FXML
+    private Label lblWarnings;
+    @FXML
+    private ImageView imWarning;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -251,6 +256,19 @@ public class FxDetalleMantenimientoController implements Initializable {
                     tvDetail.getSelectionModel().getSelectedItem().getNombre().get(),
                     tvDetail.getSelectionModel().getSelectedItem().getDescripcion().get());
 
+        }else{
+            //#23283a
+            lblWarnings.setText("Selecciones un item del detalle para actualizar.");            
+            lblWarnings.setStyle("-fx-text-fill:#da0505");
+            imWarning.setImage(new Image("/view/warning.png"));
+            tvDetail.requestFocus();
+        }
+    }
+
+    @FXML
+    private void onMouseClickedDetail(MouseEvent event) {
+        if(tvDetail.getSelectionModel().getSelectedIndex()>=0){
+            System.out.println("dentro");
         }
     }
 

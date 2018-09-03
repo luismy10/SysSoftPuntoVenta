@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -219,7 +220,7 @@
                                                       <Insets top="10.0" />
                                                    </padding>
                                                 </HBox>
-                                                <TableView fx:id="tvDetail" prefHeight="322.0" prefWidth="452.0" styleClass="tableView" VBox.vgrow="ALWAYS">
+                                                <TableView fx:id="tvDetail" onMouseClicked="#onMouseClickedDetail" prefHeight="322.0" prefWidth="452.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                                                   <columns>
                                                     <TableColumn fx:id="tcNumero" prefWidth="75.0" text="N°" />
                                                     <TableColumn fx:id="tcNombre" prefWidth="136.0" text="Nombre" />
@@ -227,11 +228,14 @@
                                                       <TableColumn fx:id="tcEstado" prefWidth="90.0" text="Estado" />
                                                   </columns>
                                                 </TableView>
-                                                <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" text="Las opciones del detalle están en el panel de los botonen.">
+                                                <Label fx:id="lblWarnings" contentDisplay="RIGHT" text="Las opciones del detalle están en el panel de los botonen." textFill="#23283a">
+                                                   <graphic>
+                                                      <ImageView fx:id="imWarning" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" />
+                                                   </graphic>
                                                    <font>
                                                       <Font name="Roboto" size="14.0" />
                                                    </font>
-                                                </Text>
+                                                </Label>
                                              </children>
                                              <padding>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" />
