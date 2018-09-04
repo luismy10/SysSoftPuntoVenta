@@ -120,11 +120,11 @@
     -fx-font-size:14; 
 }
 .buttonIcon:hover{
-    
+
 }
 /*-----------------*/
 .buttonMenu{
-    
+
 }
 .buttonMenu:hover{
     -fx-background-color: #999999;
@@ -405,7 +405,7 @@
 
 /*----------*/
 .linkText{
-    
+
 }
 
 .linkText:hover{
@@ -425,4 +425,78 @@
 }
 .comboBox:focused{
     -fx-border-color:#00aff0;
+}
+
+/*-------------*/
+.tab-pane {
+    -fx-tab-min-height: 3em;
+    /* 24 */
+    -fx-tab-max-height: 2em;
+    /* 24 */
+}
+.tab .tab-label {
+    -fx-background-color: transparent;
+    -fx-alignment: CENTER;
+    -fx-text-fill: rgb(241,241,241);
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 14px;
+}
+.tab {
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 0.0;
+    -fx-background-color:   #23283a;
+}
+.tab:selected{
+    -fx-background-color:  #e7e6e6;
+}
+.tab:selected .tab-label{
+    -fx-text-fill:  #23283a;
+
+}
+.tab:focused {
+    -fx-focus-color: transparent;
+}
+.tab {
+    -fx-padding: 0 30 0 30;
+}
+.tab-pane *.tab-header-background {
+    -fx-background-color:   #23283a;
+}
+.tab-pane:top *.tab-header-area {
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0 0.166667em 0.0em 0.0em;
+}
+.tab:selected .focus-indicator {
+    -fx-focus-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/*--------------*/
+
+.date-picker{
+    -fx-font-size:14; 
+    -fx-font-family:"Roboto"; 
+    -fx-background-color:white;
+    -fx-border-color:#cccccc;
+    -fx-border-width:1;
+}
+.date-picker:focused{
+    -fx-border-color: #00aff0;
+}
+.date-picker:hover{
+    -fx-border-color: #00aff0;
+}
+.date-picker > .text-field {
+    -fx-border-color: #ccc;
+    -fx-border-width: 0;
+    -fx-border-style: none;
+    -fx-border-radius: 0;
+}
+.date-picker > .arrow-button{
+    -fx-background-color:white;
+}
+.date-picker:disabled{
+    -fx-border-color: #94BBDA;
+    -fx-text-fill: #000000;
+    -fx-opacity: 1.0;   
 }
