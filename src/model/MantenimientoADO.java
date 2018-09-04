@@ -9,15 +9,24 @@ import javafx.collections.ObservableList;
 
 public class MantenimientoADO {
 
-    public static ObservableList<MantenimientoTB> ListPrincipal() throws ClassNotFoundException, SQLException {
-        String selectStmt = "select IdMantenimiento,Nombre from MantenimientoTB";
+    public static ObservableList<MantenimientoTB> ListPrincipal(String value) throws ClassNotFoundException, SQLException {
+        String selectStmt = "{call Sp_List_Table_Matenimiento(?)}";
+        PreparedStatement preparedStatement = null;
         try {
-            ResultSet rsEmps = DBUtil.dbExecuteQuery(selectStmt);
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            ResultSet rsEmps = preparedStatement.executeQuery();
             ObservableList<MantenimientoTB> empList = getEntityList(rsEmps);
             return empList;
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
             throw e;
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            DBUtil.dbDisconnect();
         }
 
     }
@@ -34,8 +43,6 @@ public class MantenimientoADO {
         return empList;
     }
 
-   
-    
     public static String CrudEntity(MantenimientoTB mantenimientoTB) {
         String selectStmt = "{call Sp_Crud_Mantenimiento(?,?,?,?,?)}";
         CallableStatement callableStatement = null;

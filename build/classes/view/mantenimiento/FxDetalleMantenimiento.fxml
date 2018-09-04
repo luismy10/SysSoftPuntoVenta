@@ -174,7 +174,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Text>
-                                                      <TextField fx:id="txtSearchMaintenance" promptText="Buscar...." />
+                                                      <TextField fx:id="txtSearchMaintenance" onAction="#onActionSearchItems" onKeyReleased="#onKeyReleasedSearchItems" promptText="Buscar...." />
                                                    </children>
                                                    <padding>
                                                       <Insets top="10.0" />

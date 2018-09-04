@@ -91,20 +91,21 @@ public class FxDetalleMantenimientoController implements Initializable {
         if (stateconnect) {
             imState.setImage(new Image("/view/connected.png"));
             hbProccess.setDisable(false);
-            initMaintenance();
+            initMaintenance("");
         } else {
             imState.setImage(new Image("/view/disconnectd.png"));
             hbProccess.setDisable(true);
         }
     }
 
-    private void initMaintenance() {
+    private void initMaintenance(String... value) {
         try {
             lvMaintenance.getItems().clear();
-            ListPrincipal().forEach(e -> {
+            ObservableList<MantenimientoTB> listMaintenance = ListPrincipal(value[0]);
+            listMaintenance.forEach(e -> {
                 lvMaintenance.getItems().add(e);
             });
-            lblItems.setText(ListPrincipal().isEmpty() == true ? "Items (0)" : "Items (" + ListPrincipal().size() + ")");
+            lblItems.setText(listMaintenance.isEmpty() == true ? "Items (0)" : "Items (" + listMaintenance.size() + ")");
             if (!lvMaintenance.getItems().isEmpty()) {
                 lvMaintenance.getSelectionModel().select(0);
                 initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
@@ -195,21 +196,8 @@ public class FxDetalleMantenimientoController implements Initializable {
     }
 
     public void reloadListView() {
-        try {
-            if (DBUtil.StateConnection()) {
-                lvMaintenance.getItems().clear();
-                ListPrincipal().forEach(e -> {
-                    lvMaintenance.getItems().add(e);
-                });
-                lblItems.setText(ListPrincipal().isEmpty() == true ? "Items (0)" : "Items (" + ListPrincipal().size() + ")");
-                if (!lvMaintenance.getItems().isEmpty()) {
-                    lvMaintenance.getSelectionModel().select(0);
-                    initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
-                }
-            }
-
-        } catch (ClassNotFoundException | SQLException ex) {
-            System.out.println(ex.getLocalizedMessage());
+        if (DBUtil.StateConnection()) {
+            initMaintenance("");
         }
     }
 
@@ -349,6 +337,17 @@ public class FxDetalleMantenimientoController implements Initializable {
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle mantenimiento", "No hay conexión al servidor.", false);
             }
+        }
+    }
+
+    @FXML
+    private void onActionSearchItems(ActionEvent event) {
+    }
+
+    @FXML
+    private void onKeyReleasedSearchItems(KeyEvent event) {
+        if (DBUtil.StateConnection()) {
+            initMaintenance(txtSearchMaintenance.getText());
         }
     }
 
