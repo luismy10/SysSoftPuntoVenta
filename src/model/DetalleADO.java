@@ -10,12 +10,13 @@ import javafx.collections.ObservableList;
 public class DetalleADO {
 
     public static ObservableList<DetalleTB> ListDetail(String... value) throws ClassNotFoundException, SQLException {
-        String selectStmt = "{call Sp_List_Table_Detalle(?)}";
+        String selectStmt = "{call Sp_List_Table_Detalle(?,?)}";
         PreparedStatement preparedStatement = null;
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, value[0]);
+            preparedStatement.setString(2, value[1]); 
             ResultSet resultSet = preparedStatement.executeQuery();
             ObservableList<DetalleTB> empList = getEntityDetailList(resultSet);
             return empList;

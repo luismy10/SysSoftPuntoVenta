@@ -108,7 +108,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             lblItems.setText(listMaintenance.isEmpty() == true ? "Items (0)" : "Items (" + listMaintenance.size() + ")");
             if (!lvMaintenance.getItems().isEmpty()) {
                 lvMaintenance.getSelectionModel().select(0);
-                initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
+                initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(), "");
             }
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println(ex.getLocalizedMessage());
@@ -117,8 +117,8 @@ public class FxDetalleMantenimientoController implements Initializable {
         }
     }
 
-    public void initDetail(String idMantenimiento) throws ClassNotFoundException, SQLException {
-        ObservableList<DetalleTB> listDetail = ListDetail(idMantenimiento);
+    public void initDetail(String... value) throws ClassNotFoundException, SQLException {
+        ObservableList<DetalleTB> listDetail = ListDetail(value);
         tvDetail.setItems(listDetail);
         lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");
 
@@ -204,18 +204,14 @@ public class FxDetalleMantenimientoController implements Initializable {
     @FXML
     private void onMouseClickedList(MouseEvent event) throws ClassNotFoundException, SQLException {
         if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0) {
-            ObservableList<DetalleTB> listDetail = ListDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
-            tvDetail.setItems(listDetail);
-            lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");
+            initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(), "");
         }
     }
 
     @FXML
     private void onKeyReleasedList(KeyEvent event) throws ClassNotFoundException, SQLException {
         if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0) {
-            ObservableList<DetalleTB> listDetail = ListDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
-            tvDetail.setItems(listDetail);
-            lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");
+            initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(), "");
         }
     }
 
@@ -342,12 +338,25 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     @FXML
     private void onActionSearchItems(ActionEvent event) {
+        lvMaintenance.requestFocus();
     }
 
     @FXML
     private void onKeyReleasedSearchItems(KeyEvent event) {
         if (DBUtil.StateConnection()) {
             initMaintenance(txtSearchMaintenance.getText());
+        }
+    }
+
+    @FXML
+    private void onActionSearchDetail(ActionEvent event) {
+        tvDetail.requestFocus();
+    }
+
+    @FXML
+    private void onKeyReleasedSearchDetail(KeyEvent event) throws ClassNotFoundException, SQLException {
+        if (DBUtil.StateConnection()) {
+            initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(), txtSearchDetail.getText());
         }
     }
 
