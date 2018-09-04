@@ -34,43 +34,8 @@ public class MantenimientoADO {
         return empList;
     }
 
-    public static ObservableList<DetalleTB> ListDetail(String... value) throws ClassNotFoundException, SQLException {
-        String selectStmt = "{call Sp_List_Table_Detalle(?)}";
-        PreparedStatement preparedStatement = null;
-        try {
-            DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, value[0]);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            ObservableList<DetalleTB> empList = getEntityDetailList(resultSet);
-            return empList;
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
-            throw e;
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            DBUtil.dbDisconnect();
-
-        }
-
-    }
-
-    private static ObservableList<DetalleTB> getEntityDetailList(ResultSet rs) throws SQLException, ClassNotFoundException {
-        ObservableList<DetalleTB> empList = FXCollections.observableArrayList();
-
-        while (rs.next()) {
-            DetalleTB emp = new DetalleTB();
-            emp.setIdDetalle(rs.getInt("IdDetalle"));
-            emp.setNombre(rs.getString("Nombre"));
-            emp.setDescripcion(rs.getString("Descripcion"));
-            emp.setEstado(rs.getString("Estado"));
-            empList.add(emp);
-        }
-        return empList;
-    }
-
+   
+    
     public static String CrudEntity(MantenimientoTB mantenimientoTB) {
         String selectStmt = "{call Sp_Crud_Mantenimiento(?,?,?,?,?)}";
         CallableStatement callableStatement = null;

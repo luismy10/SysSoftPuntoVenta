@@ -29,9 +29,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.DBUtil;
+import model.DetalleADO;
 import model.DetalleTB;
-import model.MantenimientoADO;
 import static model.MantenimientoADO.*;
+import static model.DetalleADO.*;
 import model.MantenimientoTB;
 
 public class FxDetalleMantenimientoController implements Initializable {
@@ -69,7 +70,9 @@ public class FxDetalleMantenimientoController implements Initializable {
     private ImageView imWarning;
     @FXML
     private Text lblDetail;
+
     private boolean onAnimationStart, onAnimationFinished;
+
     private boolean stateconnect;
 
     @Override
@@ -88,27 +91,36 @@ public class FxDetalleMantenimientoController implements Initializable {
         if (stateconnect) {
             imState.setImage(new Image("/view/connected.png"));
             hbProccess.setDisable(false);
-            try {
-                lvMaintenance.getItems().clear();
-                ListPrincipal().forEach(e -> {
-                    lvMaintenance.getItems().add(e);
-                });
-                lblItems.setText(ListPrincipal().isEmpty() == true ? "Items (0)" : "Items (" + ListPrincipal().size() + ")");
-                if (!lvMaintenance.getItems().isEmpty()) {
-                    lvMaintenance.getSelectionModel().select(0);
-                    ObservableList<DetalleTB> listDetail = ListDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
-                    tvDetail.setItems(listDetail);
-                    lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");
-                }
-            } catch (ClassNotFoundException | SQLException ex) {
-                System.out.println(ex.getLocalizedMessage());
-            } finally {
-                stateconnect = false;
-            }
+            initMaintenance();
         } else {
             imState.setImage(new Image("/view/disconnectd.png"));
             hbProccess.setDisable(true);
         }
+    }
+
+    private void initMaintenance() {
+        try {
+            lvMaintenance.getItems().clear();
+            ListPrincipal().forEach(e -> {
+                lvMaintenance.getItems().add(e);
+            });
+            lblItems.setText(ListPrincipal().isEmpty() == true ? "Items (0)" : "Items (" + ListPrincipal().size() + ")");
+            if (!lvMaintenance.getItems().isEmpty()) {
+                lvMaintenance.getSelectionModel().select(0);
+                initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        } finally {
+            stateconnect = false;
+        }
+    }
+
+    public void initDetail(String idMantenimiento) throws ClassNotFoundException, SQLException {
+        ObservableList<DetalleTB> listDetail = ListDetail(idMantenimiento);
+        tvDetail.setItems(listDetail);
+        lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");
+
     }
 
     @FXML
@@ -148,7 +160,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             if (DBUtil.StateConnection()) {
                 short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
                 if (confirmation == 1) {
-                    String result = MantenimientoADO.DeleteMantenimiento(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
+                    String result = DeleteMantenimiento(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
                     switch (result) {
                         case "eliminado":
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle mantenimiento", "Eliminado correctamente.", false);
@@ -192,9 +204,7 @@ public class FxDetalleMantenimientoController implements Initializable {
                 lblItems.setText(ListPrincipal().isEmpty() == true ? "Items (0)" : "Items (" + ListPrincipal().size() + ")");
                 if (!lvMaintenance.getItems().isEmpty()) {
                     lvMaintenance.getSelectionModel().select(0);
-                    ObservableList<DetalleTB> listDetail = ListDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
-                    tvDetail.setItems(listDetail);
-                    lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");
+                    initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
                 }
             }
 
@@ -307,6 +317,37 @@ public class FxDetalleMantenimientoController implements Initializable {
         if (tvDetail.getSelectionModel().getSelectedIndex() >= 0) {
             if (event.getClickCount() == 2) {
                 onActionEditDetail();
+            }
+        }
+    }
+
+    @FXML
+    private void onMouseClickedDelete(MouseEvent event) {
+        if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0 && tvDetail.getSelectionModel().getSelectedIndex() >= 0) {
+            if (DBUtil.StateConnection()) {
+                short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
+                if (confirmation == 1) {
+                    DetalleTB detalleTB = new DetalleTB();
+                    detalleTB.setIdDetalle(tvDetail.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    detalleTB.setIdMantenimiento(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
+                    String result = DetalleADO.DeleteDetail(detalleTB);
+                    switch (result) {
+                        case "eliminado":
+                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle mantenimiento", "Eliminado correctamente.", false);
+
+                            break;
+                        case "error":
+                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle mantenimiento", "No se puedo completar la ejecución.", false);
+                            break;
+                        default:
+                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle mantenimiento", result, false);
+                            break;
+                    }
+                } else {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle mantenimiento", "Se cancelo la petición.", false);
+                }
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle mantenimiento", "No hay conexión al servidor.", false);
             }
         }
     }

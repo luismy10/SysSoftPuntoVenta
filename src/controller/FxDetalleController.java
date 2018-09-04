@@ -1,6 +1,5 @@
 package controller;
 
-import com.sun.javafx.css.converters.StringConverter;
 import com.sun.javafx.scene.control.skin.TextAreaSkin;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,12 +29,12 @@ public class FxDetalleController implements Initializable {
     public TextArea txtDescripcion;
     @FXML
     public ComboBox<Estado> cbEstado;
-
+    @FXML
+    private Button btnToAction;
+    
     private boolean stateconnect;
 
     private int idDetalle;
-    @FXML
-    private Button btnToAction;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -62,7 +61,6 @@ public class FxDetalleController implements Initializable {
         lblTitle.setText("Detalle del mantenimiento del " + values[0].toLowerCase());
         txtCode.setText(values[1]);
         idDetalle = Integer.parseInt(values[2]);
-
     }
 
     public void setValueUpdate(String... values) {
@@ -102,6 +100,7 @@ public class FxDetalleController implements Initializable {
                     } else if (result.equalsIgnoreCase("updated")) {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Actualizado correctamente.", false);
                         Tools.Dispose(window);
+                        
                     } else if (result.equalsIgnoreCase("duplicate")) {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "No se puede haber 2 detalles con el mismo nombre.", false);
                         txtName.requestFocus();
