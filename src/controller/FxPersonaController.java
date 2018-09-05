@@ -18,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.DBUtil;
 import model.DetalleADO;
 import model.DetalleTB;
 
@@ -50,31 +51,33 @@ public class FxPersonaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
-            DetalleADO.GetDetailIdName("0003").forEach(e -> {
-                    cbDocumentType.getItems().add(new DetalleTB(e.getIdDetalle(),e.getNombre()));
-            });
-            DetalleADO.GetDetailIdName("0004").forEach(e -> {
-                    cbSex.getItems().add(new DetalleTB(e.getIdDetalle(),e.getNombre()));
-            });
-            
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
+        if (DBUtil.StateConnection()) {
+            try {
+                Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+                DetalleADO.GetDetailIdName("0003").forEach(e -> {
+                    cbDocumentType.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+                });
+                DetalleADO.GetDetailIdName("0004").forEach(e -> {
+                    cbSex.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+                });
+
+            } catch (SQLException | ClassNotFoundException e) {
+                System.out.println("La operación de selección de SQL ha fallado: " + e);
+            }
         }
 
     }
-    
-    private void onViewPerfil() throws IOException{
+
+    private void onViewPerfil() throws IOException {
         URL url = getClass().getResource(Tools.FX_FILE_PERFIL);
-            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            //
-            Stage stage = FxWindow.StageLoaderModal(parent, "Perfil", window.getScene().getWindow());
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.setResizable(true);
-            stage.show();
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Perfil", window.getScene().getWindow());
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setResizable(true);
+        stage.show();
     }
 
     @FXML
