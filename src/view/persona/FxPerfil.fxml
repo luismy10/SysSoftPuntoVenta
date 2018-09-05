@@ -59,6 +59,9 @@
                            </padding>
                         </HBox>
                      </children>
+                     <padding>
+                        <Insets bottom="5.0" />
+                     </padding>
                   </VBox>
                </content>
             </ScrollPane>
