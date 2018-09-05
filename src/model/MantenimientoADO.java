@@ -12,11 +12,12 @@ public class MantenimientoADO {
     public static ObservableList<MantenimientoTB> ListPrincipal(String value) throws ClassNotFoundException, SQLException {
         String selectStmt = "{call Sp_List_Table_Matenimiento(?)}";
         PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, value);
-            ResultSet rsEmps = preparedStatement.executeQuery();
+            rsEmps = preparedStatement.executeQuery();
             ObservableList<MantenimientoTB> empList = getEntityList(rsEmps);
             return empList;
         } catch (SQLException e) {
@@ -26,6 +27,9 @@ public class MantenimientoADO {
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
+            if(rsEmps != null){
+                rsEmps.close();
+            }
             DBUtil.dbDisconnect();
         }
 
@@ -33,7 +37,6 @@ public class MantenimientoADO {
 
     private static ObservableList<MantenimientoTB> getEntityList(ResultSet rs) throws SQLException, ClassNotFoundException {
         ObservableList<MantenimientoTB> empList = FXCollections.observableArrayList();
-
         while (rs.next()) {
             MantenimientoTB emp = new MantenimientoTB();
             emp.setIdMantenimiento(rs.getString("IdMantenimiento"));
@@ -115,4 +118,5 @@ public class MantenimientoADO {
             }
         }
     }
+    
 }

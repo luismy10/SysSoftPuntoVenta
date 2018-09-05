@@ -31,12 +31,13 @@ public class FxDirectorioController implements Initializable {
     @FXML
     private TableColumn<DirectorioTB, Long> tcId;
     @FXML
-    private TableColumn<DirectorioTB, String> tcPersona;
-    private Executor exec;
+    private TableColumn<DirectorioTB, String> tcPersona;        
     @FXML
     private Text lblEstado;
     @FXML
     private ImageView imState;
+    
+    private Executor exec;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

@@ -22,6 +22,11 @@ public class DetalleTB implements Serializable {
 
     public DetalleTB() {
     }
+
+    public DetalleTB(SimpleIntegerProperty idDetalle, SimpleStringProperty nombre) {
+        this.idDetalle = idDetalle;
+        this.nombre = nombre;
+    }
     
     
 
@@ -79,6 +84,11 @@ public class DetalleTB implements Serializable {
 
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    @Override
+    public String toString() {
+        return nombre.get();
     }
 
 }

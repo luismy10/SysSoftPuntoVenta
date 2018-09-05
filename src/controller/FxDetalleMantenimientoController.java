@@ -132,7 +132,7 @@ public class FxDetalleMantenimientoController implements Initializable {
         //Controlller here
         FxMantenimientoController controller = fXMLLoader.getController();
         //
-        Stage stage = FxWindow.StageLoaderModel(parent, "Agregar item de mantenimiento", window.getScene().getWindow());
+        Stage stage = FxWindow.StageLoaderModal(parent, "Agregar item de mantenimiento", window.getScene().getWindow());
         stage.setResizable(false);
         stage.show();
         controller.initWindow();
@@ -147,7 +147,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             //Controlller here
             FxMantenimientoController controller = fXMLLoader.getController();
             //
-            Stage stage = FxWindow.StageLoaderModel(parent, "Editar item de mantenimiento", window.getScene().getWindow());
+            Stage stage = FxWindow.StageLoaderModal(parent, "Editar item de mantenimiento", window.getScene().getWindow());
             stage.setResizable(false);
             stage.show();
             controller.setValues(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(), lvMaintenance.getSelectionModel().getSelectedItem().getNombre());

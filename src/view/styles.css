@@ -93,24 +93,24 @@
 .buttonTransparent{
     -fx-border-color: transparent;
     -fx-background-color: transparent;
-    -fx-padding: 0 15 0 15;
+    -fx-padding: 10;
     -fx-font-family:"Roboto";  
     -fx-font-size:14; 
 }
 .buttonTransparent:hover{
     -fx-background-color: #999999;
     -fx-cursor: hand;
-    -fx-padding: 0 15 0 15;
+    -fx-padding: 10;
 }
 .buttonTransparent:focused{
     -fx-background-color: #0288d1;
     -fx-cursor: hand;
-    -fx-padding: 0 15 0 15;
+    -fx-padding: 10;
     -fx-text-fill: #FFFFFF;
 }
 .buttonTransparent:pressed{
     -fx-background-color: #666666;
-    -fx-padding: 0 15 0 15;
+    -fx-padding: 10;
 }
 /*--------------*/
 .buttonIcon{
@@ -447,7 +447,7 @@
     -fx-background-color:   #23283a;
 }
 .tab:selected{
-    -fx-background-color:  #e7e6e6;
+    -fx-background-color:   #e7e6e6;
 }
 .tab:selected .tab-label{
     -fx-text-fill:  #23283a;

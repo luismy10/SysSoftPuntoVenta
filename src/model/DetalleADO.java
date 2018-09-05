@@ -12,12 +12,13 @@ public class DetalleADO {
     public static ObservableList<DetalleTB> ListDetail(String... value) throws ClassNotFoundException, SQLException {
         String selectStmt = "{call Sp_List_Table_Detalle(?,?)}";
         PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, value[0]);
-            preparedStatement.setString(2, value[1]); 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.setString(2, value[1]);
+            resultSet = preparedStatement.executeQuery();
             ObservableList<DetalleTB> empList = getEntityDetailList(resultSet);
             return empList;
         } catch (SQLException e) {
@@ -26,6 +27,9 @@ public class DetalleADO {
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
+            }
+            if(resultSet != null){
+                resultSet.close();
             }
             DBUtil.dbDisconnect();
 
@@ -98,4 +102,36 @@ public class DetalleADO {
             }
         }
     }
+
+    public static ObservableList<DetalleTB> GetDetailIdName(String value) throws ClassNotFoundException, SQLException {
+        String selectStmt = "{call Sp_Get_Detalle_IdNombre(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            resultSet = preparedStatement.executeQuery();
+            ObservableList<DetalleTB> empList = FXCollections.observableArrayList();
+            while (resultSet.next()) {
+                DetalleTB detalleTB = new DetalleTB();
+                detalleTB.setIdDetalle(resultSet.getInt("IdDetalle"));
+                detalleTB.setNombre(resultSet.getString("Nombre"));
+                empList.add(detalleTB);
+            }
+            return empList;
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+            throw e;
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            DBUtil.dbDisconnect();
+        }
+    }
+
 }

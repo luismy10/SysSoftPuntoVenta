@@ -25,7 +25,8 @@ public class Tools {
     static final String FX_FILE_MANTENIMIENTO = "/view/mantenimiento/FxMantenimiento.fxml";
     static final String FX_FILE_LOGIN = "/view/login/FxLogin.fxml";
     static final String FX_LOGO = "/view/icon.png";
-    static final String FX_PERSONA = "/view/FxPersona.fxml";
+    static final String FX_FILE_PERSONA = "/view/persona/FxPersona.fxml";
+    static final String FX_FILE_PERFIL = "/view/persona/FxPerfil.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         Alert alert = new Alert(type);
@@ -93,5 +94,6 @@ public class Tools {
             return null;
         }
     }
+    
 
 }

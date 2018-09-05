@@ -20,7 +20,7 @@ public class FxWindow {
         return fXMLLoader;
     }
 
-    public static Stage StageLoaderModel(Parent parent, String title, Window window) {
+    public static Stage StageLoaderModal(Parent parent, String title, Window window) {
         Stage stage = new Stage();
         Scene scene = new Scene(parent);
         stage.getIcons().add(new Image(Tools.FX_LOGO));

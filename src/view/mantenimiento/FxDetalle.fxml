@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="window" prefWidth="540.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxDetalleController">
+<AnchorPane id="AnchorPane" fx:id="window" prefWidth="540.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxDetalleController">
     <children>
         <AnchorPane style="-fx-background-color: #23283A;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -46,7 +46,7 @@
                                 <Font name="Roboto" size="14.0" />
                             </font>
                         </Label>
-                        <TextArea fx:id="txtDescripcion" onKeyPressed="#OnKeyPressedDescripcion" prefHeight="88.0" prefWidth="478.0" wrapText="true" />
+                        <TextArea fx:id="txtDescripcion" onKeyPressed="#OnKeyPressedDescripcion" prefHeight="88.0" wrapText="true" />
                         <Label styleClass="labelForm" text="Estado" />
                         <ComboBox fx:id="cbEstado" minHeight="-Infinity" minWidth="-Infinity" prefWidth="501.0" styleClass="comboBox" />
                         <HBox alignment="TOP_CENTER" spacing="10.0">

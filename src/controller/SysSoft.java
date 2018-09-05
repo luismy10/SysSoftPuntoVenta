@@ -15,7 +15,7 @@ public class SysSoft extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        URL url = getClass().getResource(Tools.FX_FILE_DETALLE_MATENIMIENTO);
+        URL url = getClass().getResource(Tools.FX_FILE_PERSONA);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
         //FxDirectorioController controller = fXMLLoader.getController();
