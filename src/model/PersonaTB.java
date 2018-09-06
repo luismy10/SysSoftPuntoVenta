@@ -93,8 +93,8 @@ public class PersonaTB implements Serializable {
         return apellidoPaterno;
     }
 
-    public void setApellidoPaterno(SimpleStringProperty apellidoPaterno) {
-        this.apellidoPaterno = apellidoPaterno;
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = new SimpleStringProperty(apellidoPaterno);
     }
 
     public String getApellidoMaterno() {

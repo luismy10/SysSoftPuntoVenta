@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -21,6 +22,8 @@ import javafx.stage.StageStyle;
 import model.DBUtil;
 import model.DetalleADO;
 import model.DetalleTB;
+import model.PersonaADO;
+import model.PersonaTB;
 
 public class FxPersonaController implements Initializable {
 
@@ -49,8 +52,11 @@ public class FxPersonaController implements Initializable {
     @FXML
     private Button btnCancel;
 
+    private long idPersona;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        idPersona = 0;
         if (DBUtil.StateConnection()) {
             try {
                 Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
@@ -92,28 +98,91 @@ public class FxPersonaController implements Initializable {
         onViewPerfil();
     }
 
+    void aValidityProcess() {
+        if (cbDocumentType.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Seleccione el tipo de documento, por favor.", false);
+
+            cbDocumentType.requestFocus();
+        } else if (txtDocumentNumber.getText().equalsIgnoreCase("")) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese el documento de identificación, por favor.", false);
+
+            txtDocumentNumber.requestFocus();
+        } else if (txtLastName.getText().equalsIgnoreCase("")) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese el apellido paterno, por favor.", false);
+
+            txtLastName.requestFocus();
+        } else if (txtMotherLastName.getText().equalsIgnoreCase("")) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese el apellido materno, por favor.", false);
+
+            txtMotherLastName.requestFocus();
+        } else if (txtFirstName.getText().equalsIgnoreCase("")) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese el primero nombre, por favor.", false);
+
+            txtFirstName.requestFocus();
+        } else {
+            if (DBUtil.StateConnection()) {
+                short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
+                if (confirmation == 1) {
+                    PersonaTB personaTB = new PersonaTB();
+                    personaTB.setIdPersona(idPersona);
+                    personaTB.setTipoDocumento(cbDocumentType.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    personaTB.setNumeroDocumento(txtDocumentNumber.getText().trim());
+                    personaTB.setApellidoPaterno(txtLastName.getText().trim());
+                    personaTB.setApellidoMaterno(txtMotherLastName.getText().trim());
+                    personaTB.setPrimerNombre(txtFirstName.getText().trim());
+                    personaTB.setSegundoNombre(txtSecondName.getText().trim());
+                    String result = PersonaADO.CrudEntity(personaTB);
+                    switch (result) {
+                        case "registered":
+                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Registrado correctamente.", false);
+                            break;
+                        case "updated":
+                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Actualizado correctamente.", false);
+
+                            break;
+                        case "duplicate":
+                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "No se puede haber 2 personas con el mismo documento de identidad.", false);
+                            txtDocumentNumber.requestFocus();
+                            break;
+                        case "error":
+                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "No se puedo completar la ejecución.", false);
+
+                            break;
+                        default:
+                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Persona", result, false);
+
+                            break;
+                    }
+                }
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Persona", "No hay conexión al servidor.", false);
+
+            }
+        }
+    }
+
     @FXML
     private void onKeyPressedToRegister(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            aValidityProcess();
         }
     }
 
     @FXML
     private void onActionToRegister(ActionEvent event) {
-
+        aValidityProcess();
     }
 
     @FXML
     private void onKeyPressedToCancel(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            Tools.Dispose(window);
         }
     }
 
     @FXML
     private void onActionToCancel(ActionEvent event) {
-
+        Tools.Dispose(window);
     }
 
 }

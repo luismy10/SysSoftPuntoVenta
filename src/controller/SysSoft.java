@@ -15,7 +15,7 @@ public class SysSoft extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        URL url = getClass().getResource(Tools.FX_FILE_PERSONA);
+        URL url = getClass().getResource(Tools.FX_FILE_DIRECTORIO);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
         //FxDirectorioController controller = fXMLLoader.getController();
@@ -26,6 +26,7 @@ public class SysSoft extends Application{
         primaryStage.setTitle("Sys Soft");
         primaryStage.centerOnScreen();
         primaryStage.setResizable(true);
+        primaryStage.setMaximized(true);
         primaryStage.show();
         primaryStage.requestFocus();
         //controller.fillEmployeeTable();
