@@ -27,6 +27,9 @@ public class Tools {
     static final String FX_LOGO = "/view/icon.png";
     static final String FX_FILE_PERSONA = "/view/persona/FxPersona.fxml";
     static final String FX_FILE_PERFIL = "/view/persona/FxPerfil.fxml";
+    static final String FX_FILE_INICIO = "/view/inicio/FxInicio.fxml";
+    static final String FX_FILE_OPERACIONES = "/view/inicio/FxOperaciones.fxml";
+    static final String FX_FILE_PRINCIPAL = "/view/inicio/FxPrincipal.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         Alert alert = new Alert(type);
