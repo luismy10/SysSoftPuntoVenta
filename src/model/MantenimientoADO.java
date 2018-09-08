@@ -9,7 +9,7 @@ import javafx.collections.ObservableList;
 
 public class MantenimientoADO {
 
-    public static ObservableList<MantenimientoTB> ListPrincipal(String value) throws ClassNotFoundException, SQLException {
+    public static ObservableList<MantenimientoTB> ListPrincipal(String value) throws SQLException {
         String selectStmt = "{call Sp_List_Table_Matenimiento(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -35,7 +35,7 @@ public class MantenimientoADO {
 
     }
 
-    private static ObservableList<MantenimientoTB> getEntityList(ResultSet rs) throws SQLException, ClassNotFoundException {
+    private static ObservableList<MantenimientoTB> getEntityList(ResultSet rs) throws SQLException {
         ObservableList<MantenimientoTB> empList = FXCollections.observableArrayList();
         while (rs.next()) {
             MantenimientoTB emp = new MantenimientoTB();
@@ -59,7 +59,7 @@ public class MantenimientoADO {
             callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
             callableStatement.execute();
             return callableStatement.getString("Message");
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException ex) {
             return ex.getLocalizedMessage();
         } finally {
             try {
@@ -82,7 +82,7 @@ public class MantenimientoADO {
             callableStatement.registerOutParameter(1, java.sql.Types.VARCHAR);
             callableStatement.execute();
             return callableStatement.getString(1);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e.getLocalizedMessage());
             return "Error al generar";
         } finally {
@@ -105,7 +105,7 @@ public class MantenimientoADO {
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, idMantenimiento);
             return preparedStatement.executeUpdate() == 1 ? "eliminado" : "error";
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             return "La operación de selección de SQL ha fallado: " + e.getLocalizedMessage();
         } finally {
             try {

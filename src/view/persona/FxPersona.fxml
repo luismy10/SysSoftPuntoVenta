@@ -17,161 +17,157 @@
 
 <AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxPersonaController">
    <children>
-      <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox HBox.hgrow="ALWAYS">
-               <children>
-                  <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-                    <tabs>
-                      <Tab text="Datos básicos">
-                        <content>
-                          <AnchorPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6;">
+            <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+              <tabs>
+                <Tab text="Datos básicos">
+                  <content>
+                    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6;">
+                           <children>
+                              <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                             <VBox.margin>
-                                                <Insets />
-                                             </VBox.margin>
-                                             <children>
-                                                <Label text="Tipo documento:" textFill="#23283a">
-                                                   <font>
-                                                      <Font name="Roboto" size="14.0" />
-                                                   </font>
-                                                </Label>
-                                                <ComboBox fx:id="cbDocumentType" prefHeight="30.0" prefWidth="210.0" styleClass="comboBox" />
-                                                <Label text="N° Documento:" textFill="#23283a">
-                                                   <font>
-                                                      <Font name="Roboto" size="14.0" />
-                                                   </font>
-                                                   <HBox.margin>
-                                                      <Insets left="10.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <TextField fx:id="txtDocumentNumber" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="211.0" />
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                             <children>
-                                                <Label text="Apellido paterno:" textFill="#23283a">
-                                                   <font>
-                                                      <Font name="Roboto" size="14.0" />
-                                                   </font>
-                                                </Label>
-                                                <TextField fx:id="txtLastName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="209.0" />
-                                                <Label text="Apellido materno:" textFill="#23283a">
-                                                   <font>
-                                                      <Font name="Roboto" size="14.0" />
-                                                   </font>
-                                                   <HBox.margin>
-                                                      <Insets left="10.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <TextField fx:id="txtMotherLastName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="196.0" />
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                             <children>
-                                                <Label text="Primer nombre:" textFill="#23283a">
-                                                   <font>
-                                                      <Font name="Roboto" size="14.0" />
-                                                   </font>
-                                                </Label>
-                                                <TextField fx:id="txtFirstName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="219.0" />
-                                                <Label text="Segundo nombre:" textFill="#23283a">
-                                                   <font>
-                                                      <Font name="Roboto" size="14.0" />
-                                                   </font>
-                                                   <HBox.margin>
-                                                      <Insets left="10.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <TextField fx:id="txtSecondName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="196.0" />
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                             <children>
-                                                <Label text="Sexo:" textFill="#23283a">
-                                                   <font>
-                                                      <Font name="Roboto" size="14.0" />
-                                                   </font>
-                                                </Label>
-                                                <ComboBox fx:id="cbSex" prefHeight="30.0" prefWidth="182.0" styleClass="comboBox" />
-                                                <Label text="Fecha nacimiento:" textFill="#23283a">
-                                                   <font>
-                                                      <Font name="Roboto" size="14.0" />
-                                                   </font>
-                                                   <HBox.margin>
-                                                      <Insets left="10.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <DatePicker fx:id="dpBirthdate" />
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                             <children>
-                                                <Label text="Directorio:" textFill="#23283a">
-                                                   <font>
-                                                      <Font name="Roboto" size="14.0" />
-                                                   </font>
-                                                </Label>
-                                                <Button fx:id="btnDirectory" mnemonicParsing="false" onAction="#onActionToDirectory" onKeyPressed="#onKeyPressedToDirectory" styleClass="buttonTertiary" text="Agregar...">
-                                                   <graphic>
-                                                      <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../directory.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                          </HBox>
+                                          <Label text="Tipo documento:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="cbDocumentType" prefHeight="30.0" prefWidth="210.0" styleClass="comboBox" />
+                                          <Label text="N° Documento:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtDocumentNumber" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="211.0" />
                                        </children>
                                        <padding>
-                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </padding>
-                                    </VBox>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <Label text="Apellido paterno:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="txtLastName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="209.0" />
+                                          <Label text="Apellido materno:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtMotherLastName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="196.0" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <Label text="Primer nombre:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="txtFirstName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="219.0" />
+                                          <Label text="Segundo nombre:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtSecondName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="196.0" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <Label text="Sexo:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="cbSex" prefHeight="30.0" prefWidth="182.0" styleClass="comboBox" />
+                                          <Label text="Fecha nacimiento:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <DatePicker fx:id="dpBirthdate" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <Label text="Directorio:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Button fx:id="btnDirectory" mnemonicParsing="false" onAction="#onActionToDirectory" onKeyPressed="#onKeyPressedToDirectory" styleClass="buttonTertiary" text="Agregar...">
+                                             <graphic>
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../directory.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
                                  </children>
                                  <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                  </padding>
-                              </AnchorPane>
-                        </content>
-                      </Tab>
-                      <Tab text="Datos de facturación">
-                        <content>
-                          <AnchorPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6;" />
-                        </content>
-                      </Tab>
-                    </tabs>
-                  </TabPane>
-                  <HBox alignment="CENTER" spacing="10.0" style="-fx-border-width: 1 0 0 0; -fx-border-color: #CCCCCC; -fx-background-color: white;">
-                     <children>
-                        <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonPrimary" text="Registrar" />
-                        <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#onActionToCancel" onKeyPressed="#onKeyPressedToCancel" styleClass="buttonSecondary" text="Cancelar" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Datos de facturación">
+                  <content>
+                    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6;" />
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+            <HBox alignment="CENTER" spacing="10.0" style="-fx-border-width: 1 0 0 0; -fx-border-color: #CCCCCC; -fx-background-color: white;">
+               <children>
+                  <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonPrimary" text="Registrar" />
+                  <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#onActionToCancel" onKeyPressed="#onKeyPressedToCancel" styleClass="buttonSecondary" text="Cancelar" />
                </children>
-            </VBox>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
    </children>
 </AnchorPane>

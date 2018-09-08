@@ -3,7 +3,12 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,6 +79,38 @@ public class FxPersonaController implements Initializable {
 
     }
 
+    public void setValueAdd() {
+
+    }
+
+    public void setValueUpdate(String... value) {
+        btnRegister.setText("Actualizar");
+        btnRegister.getStyleClass().add("buttonFourth");
+        PersonaTB list = PersonaADO.GetIdPersona(value[0]);
+        idPersona = list.getIdPersona();
+        ObservableList<DetalleTB> lstype = cbDocumentType.getItems();
+        for (int i = 0; i < lstype.size(); i++) {
+            if (list.getTipoDocumento() == lstype.get(i).getIdDetalle().get()) {
+                cbDocumentType.getSelectionModel().select(i);
+                break;
+            }
+        }
+        txtDocumentNumber.setText(list.getNumeroDocumento().get());
+        txtLastName.setText(list.getApellidoPaterno().get());
+        txtMotherLastName.setText(list.getApellidoMaterno());
+        txtFirstName.setText(list.getPrimerNombre());
+        txtSecondName.setText(list.getSegundoNombre());
+
+        ObservableList<DetalleTB> lssex = cbSex.getItems();
+        for (int i = 0; i < lssex.size(); i++) {
+            if (list.getSexo() == lssex.get(i).getIdDetalle().get()) {
+                cbSex.getSelectionModel().select(i);
+                break;
+            }
+        }
+
+    }
+
     private void onViewPerfil() throws IOException {
         URL url = getClass().getResource(Tools.FX_FILE_PERFIL);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -98,7 +135,7 @@ public class FxPersonaController implements Initializable {
         onViewPerfil();
     }
 
-    void aValidityProcess() {
+    void aValidityProcess() throws ParseException {
         if (cbDocumentType.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Seleccione el tipo de documento, por favor.", false);
 
@@ -131,7 +168,16 @@ public class FxPersonaController implements Initializable {
                     personaTB.setApellidoMaterno(txtMotherLastName.getText().trim());
                     personaTB.setPrimerNombre(txtFirstName.getText().trim());
                     personaTB.setSegundoNombre(txtSecondName.getText().trim());
+                    personaTB.setSexo(cbSex.getSelectionModel().getSelectedIndex() >= 0
+                            ? cbSex.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                            : 0);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    
+                    Date date = dateFormat.parse(Tools.getDateDataPcker(dpBirthdate));
+                    personaTB.setFechaNacimiento(new java.sql.Date(date.getTime()));
+                    personaTB.setUsuarioRegistro("76423388");
                     String result = PersonaADO.CrudEntity(personaTB);
+                    
                     switch (result) {
                         case "registered":
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Registrado correctamente.", false);
@@ -162,14 +208,14 @@ public class FxPersonaController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedToRegister(KeyEvent event) {
+    private void onKeyPressedToRegister(KeyEvent event) throws ParseException {
         if (event.getCode() == KeyCode.ENTER) {
             aValidityProcess();
         }
     }
 
     @FXML
-    private void onActionToRegister(ActionEvent event) {
+    private void onActionToRegister(ActionEvent event) throws ParseException {
         aValidityProcess();
     }
 

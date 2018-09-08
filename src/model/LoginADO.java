@@ -17,7 +17,7 @@ public class LoginADO {
             preparedStatement.setString(2,loginTB.getClave());
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSet.next();
-        }catch (SQLException | ClassNotFoundException e){
+        }catch (SQLException e){
             System.out.println(e.getLocalizedMessage());
         }finally {
             try{

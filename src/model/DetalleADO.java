@@ -9,7 +9,7 @@ import javafx.collections.ObservableList;
 
 public class DetalleADO {
 
-    public static ObservableList<DetalleTB> ListDetail(String... value) throws ClassNotFoundException, SQLException {
+    public static ObservableList<DetalleTB> ListDetail(String... value) throws  SQLException {
         String selectStmt = "{call Sp_List_Table_Detalle(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -37,7 +37,7 @@ public class DetalleADO {
 
     }
 
-    private static ObservableList<DetalleTB> getEntityDetailList(ResultSet rs) throws SQLException, ClassNotFoundException {
+    private static ObservableList<DetalleTB> getEntityDetailList(ResultSet rs) throws SQLException {
         ObservableList<DetalleTB> empList = FXCollections.observableArrayList();
 
         while (rs.next()) {
@@ -66,7 +66,7 @@ public class DetalleADO {
             callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
             callableStatement.execute();
             return callableStatement.getString("Message");
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             return e.getLocalizedMessage();
         } finally {
             try {
@@ -89,7 +89,7 @@ public class DetalleADO {
             preparedStatement.setInt(1, detalleTB.getIdDetalle().get());
             preparedStatement.setString(2, detalleTB.getIdMantenimiento().get());
             return preparedStatement.executeUpdate() == 1 ? "eliminado" : "error";
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             return "La operación de selección de SQL ha fallado: " + e.getLocalizedMessage();
         } finally {
             try {

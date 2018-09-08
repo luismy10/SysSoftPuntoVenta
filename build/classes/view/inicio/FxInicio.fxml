@@ -19,171 +19,191 @@
                <children>
                   <VBox style="-fx-background-color: #23283a;">
                      <children>
-                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" spacing="10.0">
+                        <VBox VBox.vgrow="ALWAYS">
                            <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Punto Venta Soluciones">
-                                 <font>
-                                    <Font name="Roboto" size="16.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="30.0" top="10.0" />
-                           </padding>
-                        </HBox>
-                        <HBox minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" style="-fx-background-color: #3a3e4d;">
-                           <children>
-                              <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../perfil-rediues.png" />
-                                 </image>
-                              </ImageView>
-                              <VBox spacing="5.0">
+                              <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" spacing="10.0">
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                       <children>
-                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Administrador">
-                                             <font>
-                                                <Font name="Roboto" size="16.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                       <children>
-                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../connected_1.png" />
-                                             </image>
-                                          </ImageView>
-                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Conectado">
-                                             <font>
-                                                <Font name="Roboto" size="14.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </HBox>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Punto Venta Soluciones">
+                                       <font>
+                                          <Font name="Roboto" size="16.0" />
+                                       </font>
+                                    </Text>
                                  </children>
-                              </VBox>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="30.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" style="-fx-background-color: #3a3e4d;">
+                                 <children>
+                                    <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../perfil-rediues.png" />
+                                       </image>
+                                    </ImageView>
+                                    <VBox spacing="5.0">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                             <children>
+                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Administrador">
+                                                   <font>
+                                                      <Font name="Roboto" size="16.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                             <children>
+                                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../connected_1.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Conectado">
+                                                   <font>
+                                                      <Font name="Roboto" size="14.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="30.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox spacing="10.0">
+                                 <children>
+                                    <Text fill="#b2b1b1" strokeType="OUTSIDE" strokeWidth="0.0" text="Menú principal">
+                                       <font>
+                                          <Font name="Roboto" size="16.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" onMouseClicked="#onMouseClickedInicio" spacing="10.0" styleClass="buttonMenu">
+                                 <children>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../home.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label text="Inicio" textFill="WHITE">
+                                       <font>
+                                          <Font name="Roboto" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" onMouseClicked="#onMouseClickedOperation" spacing="10.0" styleClass="buttonMenu">
+                                 <children>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../bag.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label text="Operaciones" textFill="WHITE">
+                                       <font>
+                                          <Font name="Roboto" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../consultas.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label text="Consultas" textFill="WHITE">
+                                       <font>
+                                          <Font name="Roboto" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../reports.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label text="Reporte" textFill="WHITE">
+                                       <font>
+                                          <Font name="Roboto" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../charts.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label text="Gráficos" textFill="WHITE">
+                                       <font>
+                                          <Font name="Roboto" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../configuration.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label text="Configuración" textFill="WHITE">
+                                       <font>
+                                          <Font name="Roboto" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="30.0" top="10.0" />
-                           </padding>
-                        </HBox>
-                        <HBox spacing="10.0">
+                        </VBox>
+                        <VBox style="-fx-background-color: #3a3e4d;" VBox.vgrow="SOMETIMES">
                            <children>
-                              <Text fill="#b2b1b1" strokeType="OUTSIDE" strokeWidth="0.0" text="Menú principal">
-                                 <font>
-                                    <Font name="Roboto" size="16.0" />
-                                 </font>
-                              </Text>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../close_1.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" onMouseClicked="#onMouseClickedInicio" spacing="10.0" styleClass="buttonMenu">
-                           <children>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../home.png" />
-                                 </image>
-                              </ImageView>
-                              <Label text="Inicio" textFill="WHITE">
-                                 <font>
-                                    <Font name="Roboto" size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" onMouseClicked="#onMouseClickedOperation" spacing="10.0" styleClass="buttonMenu">
-                           <children>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../bag.png" />
-                                 </image>
-                              </ImageView>
-                              <Label text="Operaciones" textFill="WHITE">
-                                 <font>
-                                    <Font name="Roboto" size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <children>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../consultas.png" />
-                                 </image>
-                              </ImageView>
-                              <Label text="Consultas" textFill="WHITE">
-                                 <font>
-                                    <Font name="Roboto" size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <children>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../reports.png" />
-                                 </image>
-                              </ImageView>
-                              <Label text="Reporte" textFill="WHITE">
-                                 <font>
-                                    <Font name="Roboto" size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <children>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../charts.png" />
-                                 </image>
-                              </ImageView>
-                              <Label text="Gráficos" textFill="WHITE">
-                                 <font>
-                                    <Font name="Roboto" size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <children>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../configuration.png" />
-                                 </image>
-                              </ImageView>
-                              <Label text="Configuración" textFill="WHITE">
-                                 <font>
-                                    <Font name="Roboto" size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
-                           </padding>
-                        </HBox>
+                        </VBox>
                      </children>
                   </VBox>
                   <HBox HBox.hgrow="ALWAYS">
@@ -213,21 +233,6 @@
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Text>
-                                          <Label text="Salir" textFill="WHITE">
-                                             <graphic>
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../close_1.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                             <font>
-                                                <Font name="Roboto" size="14.0" />
-                                             </font>
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
                                        </children>
                                     </HBox>
                                  </children>
@@ -235,7 +240,7 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </HBox>
-                              <ScrollPane fx:id="vbContent" fitToWidth="true" pannable="true" prefHeight="200.0" VBox.vgrow="ALWAYS" />
+                              <ScrollPane fx:id="vbContent" fitToWidth="true" prefHeight="200.0" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                      </children>

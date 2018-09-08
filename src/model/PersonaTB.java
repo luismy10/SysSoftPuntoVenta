@@ -1,21 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.io.Serializable;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 public class PersonaTB implements Serializable {
 
-    private long id;
+    private SimpleLongProperty id;
     private Long idPersona;
     private int tipoDocumento;
-    private String numeroDocumento;
+    private SimpleStringProperty numeroDocumento;
     private SimpleStringProperty apellidoPaterno;
     private String apellidoMaterno;
     private String primerNombre;
@@ -23,11 +22,8 @@ public class PersonaTB implements Serializable {
     private int sexo;
     private Date fechaNacimiento;
     private Integer idFacturacion;
-    private String foto1;
-    private String foto2;
-    private String foto3;
     private String usuarioRegistro;
-    private Date fechaRegistro;
+    private ObjectProperty<LocalDate> fechaRegistro;
     private String usuarioActualizo;
     private String fechaActualizo;
     private Collection<DirectorioTB> directorioTBCollection;
@@ -43,7 +39,7 @@ public class PersonaTB implements Serializable {
         this.apellidoPaterno = new SimpleStringProperty(apellidoPaterno);
     }
 
-    public PersonaTB(Long idPersona, long id, int tipoDocumento, String numeroDocumento, SimpleStringProperty apellidoPaterno, String apellidoMaterno, String primerNombre, String segundoNombre, int sexo, String usuarioRegistro, Date fechaRegistro) {
+    public PersonaTB(Long idPersona, SimpleLongProperty id, int tipoDocumento, SimpleStringProperty numeroDocumento, SimpleStringProperty apellidoPaterno, String apellidoMaterno, String primerNombre, String segundoNombre, int sexo, String usuarioRegistro, ObjectProperty<LocalDate> fechaRegistro) {
         this.idPersona = idPersona;
         this.id = id;
         this.tipoDocumento = tipoDocumento;
@@ -57,12 +53,12 @@ public class PersonaTB implements Serializable {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public long getId() {
+    public SimpleLongProperty getId() {
         return id;
     }
 
     public void setId(long id) {
-        this.id = id;
+        this.id = new SimpleLongProperty(id);
     }
 
     public Long getIdPersona() {
@@ -81,12 +77,12 @@ public class PersonaTB implements Serializable {
         this.tipoDocumento = tipoDocumento;
     }
 
-    public String getNumeroDocumento() {
+    public SimpleStringProperty getNumeroDocumento() {
         return numeroDocumento;
     }
 
     public void setNumeroDocumento(String numeroDocumento) {
-        this.numeroDocumento = numeroDocumento;
+        this.numeroDocumento = new SimpleStringProperty(numeroDocumento);
     }
 
     public SimpleStringProperty getApellidoPaterno() {
@@ -145,30 +141,6 @@ public class PersonaTB implements Serializable {
         this.idFacturacion = idFacturacion;
     }
 
-    public String getFoto1() {
-        return foto1;
-    }
-
-    public void setFoto1(String foto1) {
-        this.foto1 = foto1;
-    }
-
-    public String getFoto2() {
-        return foto2;
-    }
-
-    public void setFoto2(String foto2) {
-        this.foto2 = foto2;
-    }
-
-    public String getFoto3() {
-        return foto3;
-    }
-
-    public void setFoto3(String foto3) {
-        this.foto3 = foto3;
-    }
-
     public String getUsuarioRegistro() {
         return usuarioRegistro;
     }
@@ -177,12 +149,12 @@ public class PersonaTB implements Serializable {
         this.usuarioRegistro = usuarioRegistro;
     }
 
-    public Date getFechaRegistro() {
-        return fechaRegistro;
+    public LocalDate getFechaRegistro() {
+        return fechaRegistro.get();
     }
 
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
+    public void setFechaRegistro(LocalDate fechaRegistro) {
+        this.fechaRegistro = new SimpleObjectProperty<>(fechaRegistro);
     }
 
     public String getUsuarioActualizo() {
@@ -209,29 +181,7 @@ public class PersonaTB implements Serializable {
         this.directorioTBCollection = directorioTBCollection;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idPersona != null ? idPersona.hashCode() : 0);
-        return hash;
+    public ObjectProperty<LocalDate> fechaRegistroProperty() {
+        return fechaRegistro;
     }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PersonaTB)) {
-            return false;
-        }
-        PersonaTB other = (PersonaTB) object;
-        if ((this.idPersona == null && other.idPersona != null) || (this.idPersona != null && !this.idPersona.equals(other.idPersona))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "main.PersonaTB[ idPersona=" + idPersona + " ]";
-    }
-
 }

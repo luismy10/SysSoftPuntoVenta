@@ -8,6 +8,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DBUtil {
 
@@ -20,13 +22,12 @@ public class DBUtil {
     private static final String PASSWORD = "123456";
     private static final String URL = "jdbc:sqlserver://" + DIRECTION + ":" + PORT + ";databaseName=" + DBNAME + "";
 
-    public static void dbConnect() throws SQLException, ClassNotFoundException {
+    public static void dbConnect()  {
         try {
             Class.forName(JDBC_DRIVER);
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             System.out.println("Connection Failed! Check output console" + e);
-            throw e;
         }
     }
 

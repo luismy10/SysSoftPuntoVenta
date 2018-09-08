@@ -97,7 +97,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             hbProccess.setDisable(true);
         }
     }
-
+ 
     private void initMaintenance(String... value) {
         try {
             lvMaintenance.getItems().clear();
@@ -110,14 +110,14 @@ public class FxDetalleMantenimientoController implements Initializable {
                 lvMaintenance.getSelectionModel().select(0);
                 initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(), "");
             }
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch ( SQLException ex) {
             System.out.println(ex.getLocalizedMessage());
         } finally {
             stateconnect = false;
         }
     }
 
-    public void initDetail(String... value) throws ClassNotFoundException, SQLException {
+    public void initDetail(String... value) throws SQLException {
         ObservableList<DetalleTB> listDetail = ListDetail(value);
         tvDetail.setItems(listDetail);
         lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");

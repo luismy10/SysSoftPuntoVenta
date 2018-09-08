@@ -164,20 +164,26 @@
 .tableView{
     -fx-border-radius: 3;
     -fx-background-radius: 3;
+    -fx-font-family:"Roboto"; 
+    -fx-font-size: 14px;
+    
+}
+.tableView .table-row-cell .text{
+    -fx-fill: #23283a;
 }
 
 .tableView .column-header{
-    -fx-background-color:  #e7e6e6;
+    -fx-background-color:  #23283a;
     -fx-border-width:0 1px 1px 0;
     -fx-border-color:#ccc;
 }
 .tableView .filler{
-    -fx-background-color:  #e7e6e6;
+    -fx-background-color:  #23283a;
     -fx-border-width:0 0 1px 0;
     -fx-border-color:#ccc;
 }
 .tableView .column-header .label,.tableView .column-drag-header .label{
-    -fx-text-fill: #757575;
+    -fx-text-fill: white;
     -fx-font-family:"Roboto"; 
     -fx-font-size: 14px;
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import javafx.event.EventType;
 import javafx.scene.control.Alert;
@@ -7,6 +8,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
@@ -30,6 +32,7 @@ public class Tools {
     static final String FX_FILE_INICIO = "/view/inicio/FxInicio.fxml";
     static final String FX_FILE_OPERACIONES = "/view/inicio/FxOperaciones.fxml";
     static final String FX_FILE_PRINCIPAL = "/view/inicio/FxPrincipal.fxml";
+    static final String FX_FILE_CLIENTE = "/view/persona/FxCliente.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         Alert alert = new Alert(type);
@@ -97,6 +100,10 @@ public class Tools {
             return null;
         }
     }
-    
+
+    public static String getDateDataPcker(DatePicker datePicker) {
+        LocalDate localDate = datePicker.getValue();
+        return localDate.toString();
+    }
 
 }
