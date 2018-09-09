@@ -142,7 +142,7 @@
                                           <Image url="@../reports.png" />
                                        </image>
                                     </ImageView>
-                                    <Label text="Reporte" textFill="WHITE">
+                                    <Label text="Reportes" textFill="WHITE">
                                        <font>
                                           <Font name="Roboto" size="16.0" />
                                        </font>

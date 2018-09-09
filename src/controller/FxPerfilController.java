@@ -2,18 +2,24 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import model.DBUtil;
+import model.DirectorioADO;
+import model.DirectorioTB;
 
 public class FxPerfilController implements Initializable {
 
@@ -21,35 +27,83 @@ public class FxPerfilController implements Initializable {
     private AnchorPane window;
     @FXML
     private VBox vbList;
+    @FXML
+    private Button btnToAction;
+
+    private long idPersona;
+    @FXML
+    private Text lblInformation;
+   
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
-            FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource("/view/persona/FxCard.fxml"));
-            HBox node = fXMLLoader.load();
-            FxCardController controller = fXMLLoader.getController();
-            controller.getLblSubTitle().setText("CELULAR");
-            controller.getLblTitle().setText("+51 966750883");
+        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+    }
 
-            FXMLLoader fXMLLoader1 = new FXMLLoader(getClass().getResource("/view/persona/FxCard.fxml"));
-            HBox node1 = fXMLLoader1.load();
-            FxCardController controller1 = fXMLLoader1.getController();
-            controller1.getLblSubTitle().setText("TELÉFONO");
-            controller1.getLblTitle().setText("+(064) 7891234");
+    private void onViewAsignacion() throws IOException {
+        URL url = getClass().getResource(Tools.FX_FILE_ASIGNACION);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxAsignacionController controller = fXMLLoader.getController();
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Asignar información", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.show();
+        controller.setViewAdd(idPersona);
+    }
 
-            Node node2 = FXMLLoader.load(getClass().getResource("/view/persona/FxCard.fxml"));
-
-            vbList.getChildren().addAll(node, node1, node2);
-
-        } catch (IOException ex) {
-            Logger.getLogger(FxPerfilController.class.getName()).log(Level.SEVERE, null, ex);
+    @FXML
+    private void onKeyPressedToRegister(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            onViewAsignacion();
         }
     }
 
     @FXML
-    private void onMouseClickedClose(MouseEvent event) {
-        Tools.Dispose(window);
+    private void onActionToRegister(ActionEvent event) throws IOException {
+        onViewAsignacion();
+    }
+
+    void setLoadView(long idPersona, String information) {
+        this.idPersona = idPersona;
+        lblInformation.setText(information);
+        loadViewUpdate(idPersona);
+    }
+
+    public void loadViewUpdate(long idPersona) {
+        if (DBUtil.StateConnection()) {
+            try {
+                ArrayList<DirectorioTB> arrayList = DirectorioADO.GetIdDirectorio(idPersona);                
+                for (int i = 0; i < arrayList.size(); i++) {
+                    FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource("/view/persona/FxCard.fxml"));
+                    HBox node = fXMLLoader.load();
+                    FxCardController controller = fXMLLoader.getController();
+                    controller.setIdDirectorio(arrayList.get(i).getIdDirectorio());
+                    controller.setIdAtributo(arrayList.get(i).getAtributo());
+                    controller.getLblSubTitle().setText(arrayList.get(i).getNombre());
+                    controller.getLblTitle().setText(arrayList.get(i).getValor());
+                    vbList.getChildren().addAll(node);
+                }
+
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyPressedToReload(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            vbList.getChildren().clear();
+            loadViewUpdate(idPersona);
+        }
+    }
+
+    @FXML
+    private void onActionToReload(ActionEvent event) {
+        vbList.getChildren().clear();
+        loadViewUpdate(idPersona);
     }
 
 }

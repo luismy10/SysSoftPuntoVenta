@@ -4,13 +4,14 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class PersonaADO {
 
     public static String CrudEntity(PersonaTB personaTB) {
-        String selectStmt = "{call Sp_Crud_Persona(?,?,?,?,?,?,?,?,?,?,?)}";
+        String selectStmt = "{call Sp_Crud_Persona(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
             DBUtil.dbConnect();
@@ -25,6 +26,12 @@ public class PersonaADO {
             callableStatement.setInt("Sexo", personaTB.getSexo());
             callableStatement.setDate("FechaNacimiento", personaTB.getFechaNacimiento());
             callableStatement.setString("UsuarioRegistro", personaTB.getUsuarioRegistro());
+            //facturación
+            callableStatement.setInt("TipoDocumentoFactura", personaTB.getTipoDocumentoFacturacion());
+            callableStatement.setString("NumeroDocumentoFactura", personaTB.getNumeroDocumentoFacturacion());
+            callableStatement.setString("RazonSocial", personaTB.getRazonSocial());
+            callableStatement.setString("NombreComercial", personaTB.getNombreComercial());
+            //
             callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
             callableStatement.execute();
             return callableStatement.getString("Message");
@@ -80,19 +87,18 @@ public class PersonaADO {
         return empList;
     }
 
-    public static PersonaTB GetIdPersona(String documento) {
-        String selectStmt = "SELECT IdPersona,TipoDocumento,NumeroDocumento,ApellidoPaterno,ApellidoMaterno\n"
-                + ",PrimerNombre,SegundoNombre,Sexo\n"
-                + " FROM PersonaTB where NumeroDocumento = ?";
+    public static ArrayList<PersonaTB> GetIdPersona(String documento) {
+        String selectStmt = "{call Sp_Get_Persona_By_Id(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
-        PersonaTB personaTB = new PersonaTB();
+        ArrayList<PersonaTB> arrayList = new ArrayList<>();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, documento);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
+                PersonaTB personaTB = new PersonaTB();
                 personaTB.setIdPersona(rsEmps.getLong("IdPersona"));
                 personaTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
                 personaTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
@@ -101,7 +107,13 @@ public class PersonaADO {
                 personaTB.setPrimerNombre(rsEmps.getString("PrimerNombre"));
                 personaTB.setSegundoNombre(rsEmps.getString("SegundoNombre"));
                 personaTB.setSexo(rsEmps.getInt("Sexo"));
-
+                //facturación
+                personaTB.setTipoDocumentoFacturacion(rsEmps.getInt("TipoFactura"));
+                personaTB.setNumeroDocumentoFacturacion(rsEmps.getString("NumeroFactura"));
+                personaTB.setRazonSocial(rsEmps.getString("RazonSocial"));
+                personaTB.setNombreComercial(rsEmps.getString("NombreComercial"));
+                //
+                arrayList.add(personaTB);
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
@@ -118,7 +130,7 @@ public class PersonaADO {
 
             }
         }
-        return personaTB;
+        return arrayList;
     }
 
 }

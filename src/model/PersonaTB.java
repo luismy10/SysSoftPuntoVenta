@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-public class PersonaTB implements Serializable {
+public class PersonaTB extends FacturacionTB implements Serializable {
 
     private SimpleLongProperty id;
     private Long idPersona;
@@ -21,7 +21,6 @@ public class PersonaTB implements Serializable {
     private String segundoNombre;
     private int sexo;
     private Date fechaNacimiento;
-    private Integer idFacturacion;
     private String usuarioRegistro;
     private ObjectProperty<LocalDate> fechaRegistro;
     private String usuarioActualizo;
@@ -131,14 +130,6 @@ public class PersonaTB implements Serializable {
 
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public Integer getIdFacturacion() {
-        return idFacturacion;
-    }
-
-    public void setIdFacturacion(Integer idFacturacion) {
-        this.idFacturacion = idFacturacion;
     }
 
     public String getUsuarioRegistro() {

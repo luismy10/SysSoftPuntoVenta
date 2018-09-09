@@ -34,6 +34,7 @@ public class Tools {
     static final String FX_FILE_PRINCIPAL = "/view/inicio/FxPrincipal.fxml";
     static final String FX_FILE_CLIENTE = "/view/persona/FxCliente.fxml";
     static final String FX_FILE_CONFIGURACION = "/view/inicio/FxConfiguracion.fxml";
+    static final String FX_FILE_ASIGNACION = "/view/persona/FxAsignacion.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         Alert alert = new Alert(type);

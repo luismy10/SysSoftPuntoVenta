@@ -107,35 +107,78 @@ public class DetalleADO {
         }
     }
 
-    public static ObservableList<DetalleTB> GetDetailIdName(String value) throws ClassNotFoundException, SQLException {
-        String selectStmt = "{call Sp_Get_Detalle_IdNombre(?)}";
+    public static ObservableList<DetalleTB> GetDetailId(String value) {
+        String selectStmt = "{call Sp_Get_Detalle_Id(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        ObservableList<DetalleTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, value);
             resultSet = preparedStatement.executeQuery();
-            ObservableList<DetalleTB> empList = FXCollections.observableArrayList();
+
             while (resultSet.next()) {
                 DetalleTB detalleTB = new DetalleTB();
                 detalleTB.setIdDetalle(resultSet.getInt("IdDetalle"));
                 detalleTB.setNombre(resultSet.getString("Nombre"));
                 empList.add(detalleTB);
             }
-            return empList;
+
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
-            throw e;
         } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
             }
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            DBUtil.dbDisconnect();
         }
+        return empList;
+    }
+
+    public static ObservableList<DetalleTB> GetDetailIdName(String... value) {
+        String selectStmt = "{call Sp_Get_Detalle_IdNombre(?,?,?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ObservableList<DetalleTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value[0]);
+            preparedStatement.setString(2, value[1]);
+            preparedStatement.setString(3, value[2]);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                DetalleTB detalleTB = new DetalleTB();
+                detalleTB.setIdDetalle(resultSet.getInt("IdDetalle"));
+                detalleTB.setNombre(resultSet.getString("Nombre"));
+                empList.add(detalleTB);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
     }
 
 }

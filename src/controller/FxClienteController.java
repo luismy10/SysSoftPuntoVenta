@@ -115,10 +115,12 @@ public class FxClienteController implements Initializable {
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
+         FxPersonaController controller = fXMLLoader.getController();
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Cliente", window.getScene().getWindow());
         stage.setResizable(false);
         stage.show();
+        controller.setValueAdd();
     }
 
     @FXML

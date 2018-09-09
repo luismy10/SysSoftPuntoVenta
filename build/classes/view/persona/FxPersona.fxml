@@ -120,7 +120,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label text="Directorio:" textFill="#23283a">
+                                          <Label fx:id="lblDirectory" text="Directorio:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
@@ -134,7 +134,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Button>
-                                          <Button mnemonicParsing="false" onAction="#onActionAddName" styleClass="buttonFifth" text="Desglosar Datos">
+                                          <Button fx:id="btnDesglosar" mnemonicParsing="false" onAction="#onActionAddName" styleClass="buttonFifth" text="Desglosar Datos">
                                              <graphic>
                                                 <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -161,9 +161,69 @@
                   </content>
                 </Tab>
                 <Tab text="Datos de facturación">
-                  <content>
-                    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6;" />
-                  </content>
+                     <content>
+                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6;">
+                           <children>
+                              <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label text="Tipo documento:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="cbDocumentTypeFactura" prefHeight="30.0" prefWidth="210.0" styleClass="comboBox" />
+                                          <Label text="N° Documento:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtDocumentNumberFactura" prefHeight="30.0" prefWidth="211.0" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <Label text="Razón social:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="txtBusinessName" prefHeight="30.0" prefWidth="209.0" />
+                                          <Label text="Nombre comercial:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtTradename" prefHeight="30.0" prefWidth="196.0" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </AnchorPane>
+                     </content>
                 </Tab>
               </tabs>
             </TabPane>

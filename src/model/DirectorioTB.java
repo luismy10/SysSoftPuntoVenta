@@ -1,8 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleLongProperty;
 
 public class DirectorioTB implements Serializable {
@@ -10,34 +8,28 @@ public class DirectorioTB implements Serializable {
     private SimpleLongProperty id;
     private Long idDirectorio;
     private int atributo;
-    private String valor1;
-    private String valor2;
-    private String valor3;
-    private String usuarioRegistro;
-    private Date fechaRegistro;
-    private String usuarioActualizo;
-    private SimpleStringProperty fechaActualizo;
-    private PersonaTB idPersona;
+    private String nombre;
+    private String valor;
+    private Long idPersona;
+    private PersonaTB persona;
 
     public DirectorioTB() {
     }
 
-    public DirectorioTB(long id, PersonaTB idPersona) {
+    public DirectorioTB(long id, PersonaTB persona) {
         this.id = new SimpleLongProperty(id);
-        this.idPersona = idPersona;
+        this.persona = persona;
     }
 
     public DirectorioTB(Long idDirectorio) {
         this.idDirectorio = idDirectorio;
     }
 
-    public DirectorioTB(Long idDirectorio, SimpleLongProperty id, int atributo, String valor1, String usuarioRegistro, Date fechaRegistro) {
+    public DirectorioTB(Long idDirectorio, SimpleLongProperty id, int atributo, String valor) {
         this.idDirectorio = idDirectorio;
         this.id = id;
         this.atributo = atributo;
-        this.valor1 = valor1;
-        this.usuarioRegistro = usuarioRegistro;
-        this.fechaRegistro = fechaRegistro;
+        this.valor = valor;
     }
 
     public SimpleLongProperty getId() {
@@ -64,73 +56,38 @@ public class DirectorioTB implements Serializable {
         this.atributo = atributo;
     }
 
-    public String getValor1() {
-        return valor1;
+    public String getValor() {
+        return valor;
     }
 
-    public void setValor1(String valor1) {
-        this.valor1 = valor1;
+    public void setValor(String valor) {
+        this.valor = valor;
     }
 
-    public String getValor2() {
-        return valor2;
+    public PersonaTB getPersona() {
+        return persona;
     }
 
-    public void setValor2(String valor2) {
-        this.valor2 = valor2;
+    public void setPersona(PersonaTB persona) {
+        this.persona = persona;
     }
 
-    public String getValor3() {
-        return valor3;
-    }
-
-    public void setValor3(String valor3) {
-        this.valor3 = valor3;
-    }
-
-    public String getUsuarioRegistro() {
-        return usuarioRegistro;
-    }
-
-    public void setUsuarioRegistro(String usuarioRegistro) {
-        this.usuarioRegistro = usuarioRegistro;
-    }
-
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public String getUsuarioActualizo() {
-        return usuarioActualizo;
-    }
-
-    public void setUsuarioActualizo(String usuarioActualizo) {
-        this.usuarioActualizo = usuarioActualizo;
-    }
-
-    public SimpleStringProperty getFechaActualizo() {
-        return fechaActualizo;
-    }
-
-    public void setFechaActualizo(SimpleStringProperty fechaActualizo) {
-        this.fechaActualizo = fechaActualizo;
-    }
-
-    public PersonaTB getIdPersona() {
+    public Long getIdPersona() {
         return idPersona;
     }
 
-    public void setIdPersona(PersonaTB idPersona) {
+    public void setIdPersona(Long idPersona) {
         this.idPersona = idPersona;
     }
 
-    @Override
-    public String toString() {
-        return "main.DirectorioTB[ idDirectorio=" + idDirectorio + " ]";
+    public String getNombre() {
+        return nombre;
     }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    
 
 }

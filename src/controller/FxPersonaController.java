@@ -2,9 +2,9 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
@@ -19,6 +19,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
@@ -27,7 +29,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.DBUtil;
 import model.DetalleADO;
 import model.DetalleTB;
@@ -63,54 +64,84 @@ public class FxPersonaController implements Initializable {
 
     private long idPersona;
 
+    private String information;
+    @FXML
+    private Label lblDirectory;
+    @FXML
+    private Button btnDesglosar;
+    @FXML
+    private ComboBox<DetalleTB> cbDocumentTypeFactura;
+    @FXML
+    private TextField txtDocumentNumberFactura;
+    @FXML
+    private TextField txtBusinessName;
+    @FXML
+    private TextField txtTradename;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
         idPersona = 0;
         if (DBUtil.StateConnection()) {
-            try {
-                Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
-                DetalleADO.GetDetailIdName("0003").forEach(e -> {
-                    cbDocumentType.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-                });
-                DetalleADO.GetDetailIdName("0004").forEach(e -> {
-                    cbSex.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-                });
-
-            } catch (SQLException | ClassNotFoundException e) {
-                System.out.println("La operación de selección de SQL ha fallado: " + e);
-            }
+            DetalleADO.GetDetailIdName("1", "0003", "RUC").forEach(e -> {
+                cbDocumentType.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+            });
+            DetalleADO.GetDetailId("0004").forEach(e -> {
+                cbSex.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+            });
+            DetalleADO.GetDetailIdName("0", "0003", "RUC").forEach(e -> {
+                cbDocumentTypeFactura.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+            });
         }
 
     }
 
     public void setValueAdd() {
-
+        lblDirectory.setVisible(false);
+        btnDirectory.setVisible(false);
     }
 
     public void setValueUpdate(String... value) {
+        btnDesglosar.setVisible(false);
         btnRegister.setText("Actualizar");
         btnRegister.getStyleClass().add("buttonFourth");
-        PersonaTB list = PersonaADO.GetIdPersona(value[0]);
-        idPersona = list.getIdPersona();
-        ObservableList<DetalleTB> lstype = cbDocumentType.getItems();
-        for (int i = 0; i < lstype.size(); i++) {
-            if (list.getTipoDocumento() == lstype.get(i).getIdDetalle().get()) {
-                cbDocumentType.getSelectionModel().select(i);
-                break;
-            }
-        }
-        txtDocumentNumber.setText(list.getNumeroDocumento().get());
-        txtLastName.setText(list.getApellidoPaterno().get());
-        txtMotherLastName.setText(list.getApellidoMaterno());
-        txtFirstName.setText(list.getPrimerNombre());
-        txtSecondName.setText(list.getSegundoNombre());
+        ArrayList<PersonaTB> arrayList = PersonaADO.GetIdPersona(value[0]);
 
-        ObservableList<DetalleTB> lssex = cbSex.getItems();
-        for (int i = 0; i < lssex.size(); i++) {
-            if (list.getSexo() == lssex.get(i).getIdDetalle().get()) {
-                cbSex.getSelectionModel().select(i);
-                break;
+        if (!arrayList.isEmpty()) {
+            PersonaTB list = arrayList.get(0);
+            idPersona = list.getIdPersona();
+            ObservableList<DetalleTB> lstype = cbDocumentType.getItems();
+            for (int i = 0; i < lstype.size(); i++) {
+                if (list.getTipoDocumento() == lstype.get(i).getIdDetalle().get()) {
+                    cbDocumentType.getSelectionModel().select(i);
+                    break;
+                }
             }
+            txtDocumentNumber.setText(list.getNumeroDocumento().get());
+            txtLastName.setText(list.getApellidoPaterno().get());
+            txtMotherLastName.setText(list.getApellidoMaterno());
+            txtFirstName.setText(list.getPrimerNombre());
+            txtSecondName.setText(list.getSegundoNombre());
+            information = list.getApellidoPaterno().get() + " " + list.getApellidoMaterno() + " " + list.getPrimerNombre() + " " + list.getSegundoNombre();
+
+            ObservableList<DetalleTB> lssex = cbSex.getItems();
+            for (int i = 0; i < lssex.size(); i++) {
+                if (list.getSexo() == lssex.get(i).getIdDetalle().get()) {
+                    cbSex.getSelectionModel().select(i);
+                    break;
+                }
+            }
+
+            ObservableList<DetalleTB> lstypefacturacion = cbDocumentTypeFactura.getItems();
+            for (int i = 0; i < lstypefacturacion.size(); i++) {
+                if (list.getTipoDocumentoFacturacion() == lstypefacturacion.get(i).getIdDetalle().get()) {
+                    cbDocumentTypeFactura.getSelectionModel().select(i);
+                    break;
+                }
+            }
+            txtDocumentNumberFactura.setText(list.getNumeroDocumentoFacturacion());
+            txtBusinessName.setText(list.getRazonSocial());
+            txtTradename.setText(list.getNombreComercial());
         }
 
     }
@@ -120,17 +151,18 @@ public class FxPersonaController implements Initializable {
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
+        FxPerfilController controller = fXMLLoader.getController();
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Perfil", window.getScene().getWindow());
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.setResizable(true);
+        stage.setResizable(false);
         stage.show();
+        controller.setLoadView(idPersona, information);
     }
 
     @FXML
-    private void onKeyPressedToDirectory(KeyEvent event) {
+    private void onKeyPressedToDirectory(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-
+            onViewPerfil();
         }
     }
 
@@ -184,6 +216,11 @@ public class FxPersonaController implements Initializable {
                     }
 
                     personaTB.setUsuarioRegistro("76423388");
+                    personaTB.setTipoDocumentoFacturacion(cbDocumentTypeFactura.getSelectionModel().getSelectedIndex() >= 0 ? cbDocumentTypeFactura.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                            : 0);
+                    personaTB.setNumeroDocumentoFacturacion(txtDocumentNumberFactura.getText());
+                    personaTB.setRazonSocial(txtBusinessName.getText().trim());
+                    personaTB.setNombreComercial(txtTradename.getText().trim());
                     String result = PersonaADO.CrudEntity(personaTB);
 
                     switch (result) {
@@ -260,9 +297,8 @@ public class FxPersonaController implements Initializable {
                     txtMotherLastName.setText(app[1]);
                     txtFirstName.setText(app[2]);
                     txtSecondName.setText(app[3] != null ? app[3] : "");
-                    System.out.println(app[3]);
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Error :"+e);
+                    System.out.println("Error :" + e);
                 }
 
             }
