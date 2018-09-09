@@ -1,6 +1,5 @@
 package model;
 
-import com.sun.rowset.CachedRowSetImpl;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.Connection;
@@ -8,8 +7,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DBUtil {
 
@@ -44,7 +41,6 @@ public class DBUtil {
     public static ResultSet dbExecuteQuery(String queryStmt) throws SQLException, ClassNotFoundException {
         Statement stmt = null;
         ResultSet resultSet = null;
-        CachedRowSetImpl crs = new CachedRowSetImpl();
         try {
             dbConnect();
 
@@ -52,7 +48,7 @@ public class DBUtil {
 
             resultSet = stmt.executeQuery(queryStmt);
 
-            crs.populate(resultSet);
+         
         } catch (SQLException e) {
             System.out.println("Problem occurred at executeQuery operation : " + e);
             throw e;
@@ -65,7 +61,7 @@ public class DBUtil {
             }
             dbDisconnect();
         }
-        return crs;
+       return resultSet;
     }
 
     public static void dbExecuteUpdate(String sqlStmt) throws SQLException, ClassNotFoundException {

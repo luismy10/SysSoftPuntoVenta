@@ -35,6 +35,8 @@ public class FxDetalleController implements Initializable {
     private boolean stateconnect;
 
     private int idDetalle;
+    
+     private FxDetalleMantenimientoController detalleMantenimientoController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -96,11 +98,11 @@ public class FxDetalleController implements Initializable {
                     String result = DetalleADO.CrudEntity(detalleTB);
                     if (result.equalsIgnoreCase("registered")) {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Registrado correctamente.", false);
-
+ 
                     } else if (result.equalsIgnoreCase("updated")) {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Actualizado correctamente.", false);
                         Tools.Dispose(window);
-                        
+                        detalleMantenimientoController.initDetail(txtCode.getText(),"");
                     } else if (result.equalsIgnoreCase("duplicate")) {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "No se puede haber 2 detalles con el mismo nombre.", false);
                         txtName.requestFocus();
@@ -154,6 +156,10 @@ public class FxDetalleController implements Initializable {
             }
             keyEvent.consume();
         }
+    }
+    
+    void initConfiguracion(FxDetalleMantenimientoController detalleMantenimientoController) {
+        this.detalleMantenimientoController = detalleMantenimientoController;
     }
 
     public class Estado {

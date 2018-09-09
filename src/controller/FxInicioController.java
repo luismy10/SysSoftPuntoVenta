@@ -39,7 +39,6 @@ public class FxInicioController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //Load all fxmls in a cache
         try {
             stateconnect = DBUtil.StateConnection();
             lblEstado.setText(stateconnect == true ? "Conectado" : "Desconectado");

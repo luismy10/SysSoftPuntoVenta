@@ -75,6 +75,8 @@ public class FxDetalleMantenimientoController implements Initializable {
     @FXML
     private Text lblEstado;
 
+   
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         onAnimationFinished = false;
@@ -82,10 +84,10 @@ public class FxDetalleMantenimientoController implements Initializable {
         tcNombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
         tcDescripcion.setCellValueFactory(cellData -> cellData.getValue().getDescripcion());
         tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstado());
-        initWindow();
+
     }
 
-    private void initWindow() {
+    public void initWindow() {
         stateconnect = DBUtil.StateConnection();
         lblEstado.setText(stateconnect == true ? "Conectado" : "Desconectado");
         if (stateconnect) {
@@ -97,7 +99,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             hbProccess.setDisable(true);
         }
     }
- 
+
     private void initMaintenance(String... value) {
         try {
             lvMaintenance.getItems().clear();
@@ -110,14 +112,14 @@ public class FxDetalleMantenimientoController implements Initializable {
                 lvMaintenance.getSelectionModel().select(0);
                 initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(), "");
             }
-        } catch ( SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println(ex.getLocalizedMessage());
         } finally {
             stateconnect = false;
         }
     }
 
-    public void initDetail(String... value) throws SQLException {
+    public void initDetail(String... value)  {
         ObservableList<DetalleTB> listDetail = ListDetail(value);
         tvDetail.setItems(listDetail);
         lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");
@@ -247,6 +249,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxDetalleController controller = fXMLLoader.getController();
+            controller.initConfiguracion(this);
             //
             Stage stage = new Stage();
             Scene scene = new Scene(parent);
@@ -358,5 +361,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(), txtSearchDetail.getText());
         }
     }
+
+    
 
 }

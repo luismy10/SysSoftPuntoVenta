@@ -9,32 +9,36 @@ import javafx.collections.ObservableList;
 
 public class DetalleADO {
 
-    public static ObservableList<DetalleTB> ListDetail(String... value) throws  SQLException {
+    public static ObservableList<DetalleTB> ListDetail(String... value) {
         String selectStmt = "{call Sp_List_Table_Detalle(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        ObservableList<DetalleTB> empList = null;
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, value[0]);
             preparedStatement.setString(2, value[1]);
             resultSet = preparedStatement.executeQuery();
-            ObservableList<DetalleTB> empList = getEntityDetailList(resultSet);
-            return empList;
+            empList = getEntityDetailList(resultSet);
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
-            throw e;
         } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+
+            } catch (SQLException ex) {
+
             }
-            if(resultSet != null){
-                resultSet.close();
-            }
-            DBUtil.dbDisconnect();
 
         }
-
+        return empList;
     }
 
     private static ObservableList<DetalleTB> getEntityDetailList(ResultSet rs) throws SQLException {

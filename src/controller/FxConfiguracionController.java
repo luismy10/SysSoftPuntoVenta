@@ -29,11 +29,12 @@ public class FxConfiguracionController implements Initializable {
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
         FxDetalleMantenimientoController controller = fXMLLoader.getController();
+        
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Mantenimiento de tablas básicas", window.getScene().getWindow());
         stage.setMaximized(true);
         stage.show();
-//        controller.fillCustomersTable("");
+        controller.initWindow();
     }
 
     @FXML

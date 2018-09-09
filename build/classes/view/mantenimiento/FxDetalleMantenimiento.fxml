@@ -140,7 +140,7 @@
                                        <children>
                                           <ImageView fx:id="imState" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../connected_1.png" />
+                                                <Image url="@../connected.png" />
                                              </image>
                                           </ImageView>
                                           <Text fx:id="lblEstado" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" text="Conectado">
