@@ -48,10 +48,6 @@ public class FxDetalleMantenimientoController implements Initializable {
     @FXML
     private TableView<DetalleTB> tvDetail;
     @FXML
-    private Text lblEstado;
-    @FXML
-    private ImageView imState;
-    @FXML
     private HBox hbProccess;
     @FXML
     private Text lblItems;
@@ -74,6 +70,10 @@ public class FxDetalleMantenimientoController implements Initializable {
     private boolean onAnimationStart, onAnimationFinished;
 
     private boolean stateconnect;
+    @FXML
+    private ImageView imState;
+    @FXML
+    private Text lblEstado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -87,13 +87,13 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     private void initWindow() {
         stateconnect = DBUtil.StateConnection();
-        lblEstado.setText(stateconnect == true ? "Estado: conectado" : "Estado: desconectado");
+        lblEstado.setText(stateconnect == true ? "Conectado" : "Desconectado");
         if (stateconnect) {
             imState.setImage(new Image("/view/connected.png"));
             hbProccess.setDisable(false);
             initMaintenance("");
         } else {
-            imState.setImage(new Image("/view/disconnectd.png"));
+            imState.setImage(new Image("/view/disconnected.png"));
             hbProccess.setDisable(true);
         }
     }
@@ -185,7 +185,6 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     }
 
-    @FXML
     private void onMouseClickedState(MouseEvent event) {
         initWindow();
     }

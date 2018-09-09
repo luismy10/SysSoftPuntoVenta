@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
@@ -19,9 +20,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.DBUtil;
@@ -172,12 +176,16 @@ public class FxPersonaController implements Initializable {
                             ? cbSex.getSelectionModel().getSelectedItem().getIdDetalle().get()
                             : 0);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    
-                    Date date = dateFormat.parse(Tools.getDateDataPcker(dpBirthdate));
-                    personaTB.setFechaNacimiento(new java.sql.Date(date.getTime()));
+                    if (dpBirthdate.getValue() != null) {
+                        Date date = dateFormat.parse(Tools.getDateDataPcker(dpBirthdate));
+                        personaTB.setFechaNacimiento(new java.sql.Date(date.getTime()));
+                    } else {
+                        personaTB.setFechaNacimiento(null);
+                    }
+
                     personaTB.setUsuarioRegistro("76423388");
                     String result = PersonaADO.CrudEntity(personaTB);
-                    
+
                     switch (result) {
                         case "registered":
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Registrado correctamente.", false);
@@ -229,6 +237,37 @@ public class FxPersonaController implements Initializable {
     @FXML
     private void onActionToCancel(ActionEvent event) {
         Tools.Dispose(window);
+    }
+
+    @FXML
+    private void onActionAddName(ActionEvent event) {
+        TextInputDialog dialog = new TextInputDialog();
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("/view/icon.png"));
+        dialog.setTitle("Desglosar sus datos");
+        dialog.setHeaderText("Ingrese los datos completos, de apellidos a nombres");
+        dialog.setContentText("Por favor presione enter cuando aya ingresado los datos:\n");
+        dialog.initModality(Modality.WINDOW_MODAL);
+        dialog.initOwner(window.getScene().getWindow());
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+
+            String[] app = Tools.getDataPeople(result.get());
+            if (app != null) {
+                try {
+                    txtLastName.setText(app[0]);
+                    txtMotherLastName.setText(app[1]);
+                    txtFirstName.setText(app[2]);
+                    txtSecondName.setText(app[3] != null ? app[3] : "");
+                    System.out.println(app[3]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Error :"+e);
+                }
+
+            }
+        }
+
     }
 
 }

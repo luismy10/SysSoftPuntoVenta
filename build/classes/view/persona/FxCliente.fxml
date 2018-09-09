@@ -111,7 +111,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" styleClass="buttonMenu">
+                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onMouseClickedLoad" spacing="10.0" styleClass="buttonMenu">
                            <children>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -163,7 +163,19 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <TextField fx:id="txtSearch" onAction="#onActionSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" prefWidth="274.0" promptText="Buscar...." />
+                                    <TextField fx:id="txtSearch" onAction="#onActionSearch" prefHeight="30.0" prefWidth="274.0" promptText="Buscar...." />
+                                    <Label fx:id="lblLoad" contentDisplay="RIGHT" text="Cargando..." textOverrun="CLIP" visible="false">
+                                       <graphic>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../load.gif" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <font>
+                                          <Font name="Roboto" size="14.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

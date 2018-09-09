@@ -53,12 +53,12 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
-                                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="imState" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../connected_1.png" />
+                                                      <Image url="@../connected.png" />
                                                    </image>
                                                 </ImageView>
-                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Conectado">
+                                                <Text fx:id="lblEstado" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Conectado">
                                                    <font>
                                                       <Font name="Roboto" size="14.0" />
                                                    </font>
@@ -169,7 +169,7 @@
                                     <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
                                  </padding>
                               </HBox>
-                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                              <HBox alignment="CENTER_LEFT" onMouseClicked="#onMouseClickedConfiguracion" spacing="10.0" styleClass="buttonMenu">
                                  <children>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>

@@ -3,17 +3,23 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -37,13 +43,48 @@ public class FxClienteController implements Initializable {
     @FXML
     private TableColumn<PersonaTB, LocalDate> tcFechaRegistro;
 
+    private Executor exec;
+    private boolean proccess;
+    @FXML
+    private Label lblLoad;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        proccess = false;
+        exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocumento.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
         tcPersona.setCellValueFactory(cellData -> cellData.getValue().getApellidoPaterno());
         tcFechaRegistro.setCellValueFactory(cellData -> cellData.getValue().fechaRegistroProperty());
-        tvList.setItems(PersonaADO.ListPersonas(""));
+
+    }
+
+    public void fillCustomersTable(String value) {
+        Task<List<PersonaTB>> task = new Task<List<PersonaTB>>() {
+            @Override
+            public ObservableList<PersonaTB> call() {
+                return PersonaADO.ListPersonas(value);
+            }
+        };
+
+        task.setOnSucceeded((WorkerStateEvent e) -> {
+            tvList.setItems((ObservableList<PersonaTB>) task.getValue());
+            proccess = true;
+            lblLoad.setVisible(false);
+        });
+        task.setOnFailed((WorkerStateEvent event) -> {
+            proccess = true;
+            lblLoad.setVisible(false);
+        });
+
+        task.setOnScheduled((WorkerStateEvent event) -> {
+            lblLoad.setVisible(true);
+        });
+        exec.execute(task);
     }
 
     @FXML
@@ -60,12 +101,9 @@ public class FxClienteController implements Initializable {
 
     @FXML
     private void onActionSearch(ActionEvent event) {
-        tvList.requestFocus();
-    }
-
-    @FXML
-    private void onKeyReleasedSearch(KeyEvent event) {
-        tvList.setItems(PersonaADO.ListPersonas(txtSearch.getText()));
+        if (proccess) {
+            fillCustomersTable(txtSearch.getText());
+        }
     }
 
     @FXML
@@ -86,6 +124,13 @@ public class FxClienteController implements Initializable {
             tvList.requestFocus();
         }
 
+    }
+
+    @FXML
+    private void onMouseClickedLoad(MouseEvent event) {
+        if (proccess) {
+            fillCustomersTable("");
+        }
     }
 
 }

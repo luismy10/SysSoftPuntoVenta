@@ -13,7 +13,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class FxOperacionesController implements Initializable {
+public class FxConfiguracionController implements Initializable {
 
     @FXML
     private HBox window;
@@ -23,29 +23,30 @@ public class FxOperacionesController implements Initializable {
 
     }
 
-    private void openWindowCustomers() throws IOException {
-        URL url = getClass().getResource(Tools.FX_FILE_CLIENTE);
+    private void openWindowTablasBasicas() throws IOException {
+        URL url = getClass().getResource(Tools.FX_FILE_DETALLE_MATENIMIENTO);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
-        FxClienteController controller = fXMLLoader.getController();
+        FxDetalleMantenimientoController controller = fXMLLoader.getController();
         //
-        Stage stage = FxWindow.StageLoaderModal(parent, "Clientes", window.getScene().getWindow());
+        Stage stage = FxWindow.StageLoaderModal(parent, "Mantenimiento de tablas básicas", window.getScene().getWindow());
         stage.setMaximized(true);
         stage.show();
-        controller.fillCustomersTable("");
+//        controller.fillCustomersTable("");
     }
 
     @FXML
-    private void onKeyPressedCustomers(KeyEvent event) throws IOException {
+    private void onKeyPressedTablasBasicas(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowCustomers();
+            openWindowTablasBasicas();
         }
     }
 
     @FXML
-    private void onActionCustomers(ActionEvent event) throws IOException {
-        openWindowCustomers();
+    private void onActionTablasBasicas(ActionEvent event) throws IOException {
+        openWindowTablasBasicas();
+
     }
 
 }

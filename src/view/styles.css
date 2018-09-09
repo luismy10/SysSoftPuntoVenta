@@ -130,11 +130,6 @@
     -fx-background-color: #999999;
     -fx-cursor: hand;
 }
-.buttonMenu:focused{
-    -fx-background-color: #0288d1;
-    -fx-cursor: hand;
-    -fx-text-fill: #FFFFFF;
-}
 .buttonMenu:pressed{
     -fx-background-color: #666666;
 }
@@ -402,7 +397,53 @@
     -fx-background-color: derive(-fx-focus-color,100%);
 }
 
+/*------------------------*/
+.buttonFifth {
+    -fx-padding: 4 12 4 12;    
+    -fx-border-color: #2196F3;
+    -fx-border-width: 2;
+    -fx-border-radius: 3;
+    -fx-background-radius:3;
+    -fx-background-color:  #2196F3;
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 14px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
 
+.buttonFifth:hover {
+    -fx-background-color: #2196F3;
+    -fx-cursor: hand;
+}
+
+.buttonFifth:pressed, .buttonFifth:default:hover:pressed {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: #0288d1;
+}
+
+.buttonFifth:focused {
+    -fx-border-color:   #0288d1, #0288d1;
+    -fx-border-width: 2, 2;
+    -fx-border-radius: 3, 3;
+    -fx-border-insets: 0 0 0 0, 0;
+}
+
+.buttonFifth:disabled, .buttonFifth:default:disabled {
+    -fx-opacity: 0.4;
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: white;
+}
+
+.buttonFifth:default {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: #ffffff;
+}
+
+.buttonFifth:default:hover {
+    -fx-background-color: derive(-fx-focus-color,100%);
+}
+
+/*--------------*/
 .text-format{
     -fx-fill: #FFFFFF;
     -fx-font-size:18; 

@@ -33,6 +33,7 @@ public class Tools {
     static final String FX_FILE_OPERACIONES = "/view/inicio/FxOperaciones.fxml";
     static final String FX_FILE_PRINCIPAL = "/view/inicio/FxPrincipal.fxml";
     static final String FX_FILE_CLIENTE = "/view/persona/FxCliente.fxml";
+    static final String FX_FILE_CONFIGURACION = "/view/inicio/FxConfiguracion.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         Alert alert = new Alert(type);
@@ -104,6 +105,13 @@ public class Tools {
     public static String getDateDataPcker(DatePicker datePicker) {
         LocalDate localDate = datePicker.getValue();
         return localDate.toString();
+    }
+
+    public static String[] getDataPeople(String data) {
+        if (data.equalsIgnoreCase("") || data != null) {
+            return data.trim().split(" ");
+        }
+        return null;
     }
 
 }

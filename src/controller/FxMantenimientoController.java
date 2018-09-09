@@ -8,8 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -25,10 +23,6 @@ public class FxMantenimientoController implements Initializable {
     private TextField txtCode;
     @FXML
     private TextField txtName;
-
-    private boolean stateconnect;
-    @FXML
-    private ImageView imState;
     @FXML
     private Button btnToAction;
 
@@ -39,11 +33,8 @@ public class FxMantenimientoController implements Initializable {
 
     public void initWindow() {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
-        stateconnect = DBUtil.StateConnection();
-        if (stateconnect) {
+        if (DBUtil.StateConnection()) {
             txtCode.setText(MantenimientoADO.GetIdMantenimiento());
-        } else {
-            imState.setImage(new Image("/view/disconnectd.png"));
         }
     }
 
@@ -54,9 +45,8 @@ public class FxMantenimientoController implements Initializable {
         } else if (txtName.getText().equalsIgnoreCase("")) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mantenimiento", "Ingrese el nombre del mantenimiento, por favor.", false);
             txtName.requestFocus();
-        } else {
-            stateconnect = DBUtil.StateConnection();
-            if (stateconnect) {
+        } else {           
+            if (DBUtil.StateConnection()) {
                 short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
                 if (confirmation == 1) {
                     MantenimientoTB mantenimientoTB = new MantenimientoTB();

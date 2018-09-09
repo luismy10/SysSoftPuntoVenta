@@ -5,8 +5,9 @@
         <group>
             <file>file:/D:/proyectos/cursos/git/SysSoftProcess/src/controller/FxClienteController.java</file>
             <file>file:/D:/proyectos/cursos/git/SysSoftProcess/src/controller/FxPersonaController.java</file>
-            <file>file:/D:/proyectos/cursos/git/SysSoftProcess/src/model/PersonaADO.java</file>
-            <file>file:/D:/proyectos/cursos/git/SysSoftProcess/src/model/PersonaTB.java</file>
+            <file>file:/D:/proyectos/cursos/git/SysSoftProcess/src/controller/FxConfiguracionController.java</file>
+            <file>file:/D:/proyectos/cursos/git/SysSoftProcess/src/controller/Tools.java</file>
+            <file>file:/D:/proyectos/cursos/git/SysSoftProcess/src/controller/FxDirectorioController.java</file>
         </group>
     </open-files>
 </project-private>
