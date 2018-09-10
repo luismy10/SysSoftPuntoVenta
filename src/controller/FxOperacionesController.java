@@ -36,6 +36,19 @@ public class FxOperacionesController implements Initializable {
         controller.fillCustomersTable("");
     }
 
+    private void openWindowProviders() throws IOException {
+        URL url = getClass().getResource(Tools.FX_FILE_PROVEEDORES);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxProveedoresController controller = fXMLLoader.getController();
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Proveedores", window.getScene().getWindow());
+        stage.setMaximized(true);
+        stage.show();
+//        controller.fillCustomersTable("");
+    }
+
     @FXML
     private void onKeyPressedCustomers(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
@@ -46,6 +59,18 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private void onActionCustomers(ActionEvent event) throws IOException {
         openWindowCustomers();
+    }
+
+    @FXML
+    private void onKeyPressedProviders(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowProviders();
+        }
+    }
+
+    @FXML
+    private void onActionProviders(ActionEvent event) throws IOException {
+        openWindowProviders();
     }
 
 }

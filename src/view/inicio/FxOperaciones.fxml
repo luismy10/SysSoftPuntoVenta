@@ -104,7 +104,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" styleClass="buttonTransparent" text="Proveedores">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionProviders" onKeyPressed="#onKeyPressedProviders" styleClass="buttonTransparent" text="Proveedores">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

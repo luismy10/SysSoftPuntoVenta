@@ -32,7 +32,7 @@
                <children>
                   <HBox alignment="CENTER" style="-fx-border-width: 1; -fx-border-color: rgb(210,210,210);">
                      <children>
-                        <ImageView fitHeight="183.0" fitWidth="384.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="183.0" fitWidth="384.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                            <image>
                               <Image url="@../perfil.jpg" />
                            </image>
