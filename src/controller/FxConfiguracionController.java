@@ -28,8 +28,7 @@ public class FxConfiguracionController implements Initializable {
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
-        FxDetalleMantenimientoController controller = fXMLLoader.getController();
-        
+        FxDetalleMantenimientoController controller = fXMLLoader.getController();        
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Mantenimiento de tablas básicas", window.getScene().getWindow());
         stage.setMaximized(true);
@@ -48,6 +47,28 @@ public class FxConfiguracionController implements Initializable {
     private void onActionTablasBasicas(ActionEvent event) throws IOException {
         openWindowTablasBasicas();
 
+    }
+
+    @FXML
+    private void onKeyPressedCompany(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            
+        }
+    }
+
+    @FXML
+    private void onActionCompany(ActionEvent event) {
+    }
+
+    @FXML
+    private void onKeyPressedPrivileges(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            
+        }
+    }
+
+    @FXML
+    private void onActionPrivileges(ActionEvent event) {
     }
 
 }
