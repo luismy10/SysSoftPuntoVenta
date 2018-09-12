@@ -17,7 +17,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxProveedorProcesoController">
+
+<AnchorPane id="AnchorPane" fx:id="window" stylesheets="@../styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.FxProveedorProcesoController">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -95,28 +96,6 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label text="País:" textFill="#23283a">
-                                             <font>
-                                                <Font name="Roboto" size="14.0" />
-                                             </font>
-                                          </Label>
-                                          <ComboBox fx:id="cbPais" prefWidth="210.0" styleClass="comboBox" />
-                                          <Label text="Departamento:" textFill="#23283a">
-                                             <font>
-                                                <Font name="Roboto" size="14.0" />
-                                             </font>
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                          <ComboBox fx:id="cbDepartamento" prefWidth="210.0" styleClass="comboBox" />
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </padding>
-                                    </HBox>
-                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                       <children>
                                           <Label fx:id="lblDirectory" text="Directorio:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
@@ -186,7 +165,7 @@
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtBusinessNameFactura" prefHeight="30.0" prefWidth="209.0" />
+                                          <TextField fx:id="txtBusinessName1" prefHeight="30.0" prefWidth="209.0" />
                                           <Label text="Apellido materno:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
@@ -195,7 +174,7 @@
                                                 <Insets left="10.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField fx:id="txtTradenameFactura" prefHeight="30.0" prefWidth="196.0" />
+                                          <TextField fx:id="txtTradename1" prefHeight="30.0" prefWidth="196.0" />
                                        </children>
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
