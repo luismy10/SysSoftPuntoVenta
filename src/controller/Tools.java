@@ -36,6 +36,8 @@ public class Tools {
     static final String FX_FILE_CONFIGURACION = "/view/inicio/FxConfiguracion.fxml";
     static final String FX_FILE_ASIGNACION = "/view/persona/FxAsignacion.fxml";
     static final String FX_FILE_PROVEEDORES = "/view/proveedores/FxProveedores.fxml";
+    static final String FX_FILE_PROVEEDOREPROCESO = "/view/proveedores/FxProveedorProceso.fxml";
+    static final String FX_FILE_MIEMPRESA = "/view/miempresa/FxMiEmpresa.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         Alert alert = new Alert(type);

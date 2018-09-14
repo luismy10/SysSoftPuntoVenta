@@ -59,7 +59,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajustes">
+                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" text="Datos">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -68,7 +68,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionPrivileges" onKeyPressed="#onKeyPressedPrivileges" styleClass="buttonTransparent" text="Privilegios">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionPrivileges" onKeyPressed="#onKeyPressedPrivileges" styleClass="buttonTransparent" text="Roles">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -77,7 +77,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajustes">
+                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" text="Acesos">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>

@@ -35,6 +35,19 @@ public class FxConfiguracionController implements Initializable {
         stage.show();
         controller.initWindow();
     }
+    
+    private void openWindowMiEmpresa() throws IOException {
+        URL url = getClass().getResource(Tools.FX_FILE_MIEMPRESA);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+//        FxDetalleMantenimientoController controller = fXMLLoader.getController();        
+        //
+        Stage stage = FxWindow.StageLoader(parent, "Mi Empresa", window.getScene().getWindow());
+       
+        stage.show();
+//        controller.initWindow();
+    }
 
     @FXML
     private void onKeyPressedTablasBasicas(KeyEvent event) throws IOException {
@@ -50,14 +63,15 @@ public class FxConfiguracionController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedCompany(KeyEvent event) {
+    private void onKeyPressedCompany(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            
+            openWindowMiEmpresa() ;
         }
     }
 
     @FXML
-    private void onActionCompany(ActionEvent event) {
+    private void onActionCompany(ActionEvent event) throws IOException {
+        openWindowMiEmpresa() ;
     }
 
     @FXML

@@ -161,7 +161,7 @@
     -fx-background-radius: 3;
     -fx-font-family:"Roboto"; 
     -fx-font-size: 14px;
-    
+
 }
 .tableView .table-row-cell .text{
     -fx-fill: #23283a;
@@ -442,6 +442,35 @@
 .buttonFifth:default:hover {
     -fx-background-color: derive(-fx-focus-color,100%);
 }
+
+/*--------------*/
+.buttonSixth{
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 14px;
+    -fx-text-fill: black;
+    -fx-padding: 5 10 5 10;    
+    -fx-background-color: -fx-shadow-highlight-color, #E0E0E2, #E0E0E2, #E0E0E2;
+    -fx-border-color:  #999999;    
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+    -fx-background-radius:3;
+}
+.buttonSixth:hover{    
+    -fx-text-fill:  black;  
+    -fx-border-color:  #2196F3;
+    -fx-cursor: hand;
+}
+.buttonSixth:focused{
+    -fx-text-fill:  black;  
+    -fx-border-color:  #2196F3;
+    -fx-cursor: hand;
+}
+.buttonSixth:pressed{
+    
+    -fx-text-fill:  black;
+    -fx-border-color:  #999999;
+}
+
 
 /*--------------*/
 .text-format{

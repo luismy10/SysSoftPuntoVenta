@@ -46,7 +46,7 @@ public class FxOperacionesController implements Initializable {
         Stage stage = FxWindow.StageLoaderModal(parent, "Proveedores", window.getScene().getWindow());
         stage.setMaximized(true);
         stage.show();
-//        controller.fillCustomersTable("");
+        controller.fillCustomersTable("");
     }
 
     @FXML
