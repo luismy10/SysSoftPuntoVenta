@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxPersonaController">
+<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxPersonaController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -131,6 +131,19 @@
                                              </HBox.margin>
                                           </Label>
                                           <DatePicker fx:id="dpBirthdate" prefWidth="210.0" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <Label prefWidth="106.0" text="Estado:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="cbEstado" prefHeight="30.0" prefWidth="210.0" styleClass="comboBox" />
                                        </children>
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

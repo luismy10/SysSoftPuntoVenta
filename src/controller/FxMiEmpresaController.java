@@ -97,7 +97,7 @@ public class FxMiEmpresaController implements Initializable {
                 
 
                 ObservableList<PaisTB> lspais = cbPais.getItems();
-                if (list.get(0).getPais() != null) {
+                if (list.get(0).getPais() != null || !list.get(0).getPais().equals("")) {
                     for (int i = 0; i < lspais.size(); i++) {
                         if (list.get(0).getPais().equals(lspais.get(i).getPaisCodigo())) {
                             cbPais.getSelectionModel().select(i);
@@ -108,6 +108,7 @@ public class FxMiEmpresaController implements Initializable {
                         }
                     }
                 }
+                
                 ObservableList<CiudadTB> lsciudad = cbCiudad.getItems();
                 if (list.get(0).getCiudad() != 0) {
                     for (int i = 0; i < lsciudad.size(); i++) {

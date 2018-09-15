@@ -42,7 +42,7 @@ public class FxInicioController implements Initializable {
         try {
             stateconnect = DBUtil.StateConnection();
             lblEstado.setText(stateconnect == true ? "Conectado" : "Desconectado");
-
+            
             imState.setImage(stateconnect == true ? new Image("/view/connected.png")
                     : new Image("/view/disconnected.png"));
 

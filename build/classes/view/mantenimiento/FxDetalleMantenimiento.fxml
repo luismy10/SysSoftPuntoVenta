@@ -232,9 +232,9 @@
                                                 </HBox>
                                                 <TableView fx:id="tvDetail" onMouseClicked="#onMouseClickedDetail" prefHeight="322.0" prefWidth="452.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                                                   <columns>
-                                                    <TableColumn fx:id="tcNumero" prefWidth="75.0" text="N°" />
-                                                    <TableColumn fx:id="tcNombre" prefWidth="136.0" text="Nombre" />
-                                                      <TableColumn fx:id="tcDescripcion" prefWidth="230.0" text="Descripción" />
+                                                    <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
+                                                    <TableColumn fx:id="tcNombre" prefWidth="169.0" text="Nombre" />
+                                                      <TableColumn fx:id="tcDescripcion" prefWidth="212.0" text="Descripción" />
                                                       <TableColumn fx:id="tcEstado" prefWidth="90.0" text="Estado" />
                                                   </columns>
                                                 </TableView>

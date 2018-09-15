@@ -29,10 +29,10 @@ public class FxPerfilController implements Initializable {
     private VBox vbList;
     @FXML
     private Button btnToAction;
-
-    private long idPersona;
     @FXML
     private Text lblInformation;
+    
+    private String idPersona;
    
 
     @Override
@@ -65,13 +65,13 @@ public class FxPerfilController implements Initializable {
         onViewAsignacion();
     }
 
-    void setLoadView(long idPersona, String information) {
+    void setLoadView(String idPersona, String information) {
         this.idPersona = idPersona;
         lblInformation.setText(information);
         loadViewUpdate(idPersona);
     }
 
-    public void loadViewUpdate(long idPersona) {
+    public void loadViewUpdate(String idPersona) {
         if (DBUtil.StateConnection()) {
             try {
                 ArrayList<DirectorioTB> arrayList = DirectorioADO.GetIdDirectorio(idPersona);                

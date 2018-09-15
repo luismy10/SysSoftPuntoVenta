@@ -47,7 +47,7 @@ public class DirectorioADO {
             callableStatement.setLong("IdDirectorio", directorioTB.getIdDirectorio());
             callableStatement.setInt("Atributo", directorioTB.getAtributo());
             callableStatement.setString("Valor", directorioTB.getValor());
-            callableStatement.setLong("IdPersona", directorioTB.getIdPersona());
+            callableStatement.setString("IdPersona", directorioTB.getIdPersona());
             
             callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
             callableStatement.execute();
@@ -66,7 +66,7 @@ public class DirectorioADO {
         }
     }
     
-     public static ArrayList<DirectorioTB> GetIdDirectorio(long documento) {
+     public static ArrayList<DirectorioTB> GetIdDirectorio(String documento) {
         String selectStmt = "{call Sp_Get_Directorio_By_Id(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -74,7 +74,7 @@ public class DirectorioADO {
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setLong(1, documento);
+            preparedStatement.setString(1, documento);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 DirectorioTB directorioTB = new DirectorioTB();
@@ -82,7 +82,7 @@ public class DirectorioADO {
                 directorioTB.setAtributo(rsEmps.getInt("Atributo"));
                 directorioTB.setNombre(rsEmps.getString("Nombre"));
                 directorioTB.setValor(rsEmps.getString("Valor"));
-                directorioTB.setIdPersona(rsEmps.getLong("IdPersona"));
+                directorioTB.setIdPersona(rsEmps.getString("IdPersona"));
                 arrayList.add(directorioTB);
             }
         } catch (SQLException e) {

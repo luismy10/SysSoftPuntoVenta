@@ -2,10 +2,12 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -14,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -44,7 +47,7 @@ public class FxProveedoresController implements Initializable {
     @FXML
     private TableView<ProveedorTB> tvList;
     @FXML
-    private TableColumn<ProveedorTB, Long> tcId;
+    private TableColumn<ProveedorTB, Integer> tcId;
     @FXML
     private TableColumn<ProveedorTB, String> tcDocumentType;
     @FXML
@@ -52,13 +55,16 @@ public class FxProveedoresController implements Initializable {
     @FXML
     private TableColumn<ProveedorTB, String> tcBusinessName;
     @FXML
-    private TableColumn<?, ?> tcState;
+    private TableColumn<ProveedorTB, String> tcState;
+    @FXML
+    private TableColumn<ProveedorTB, LocalDate> tcFechaRegistro;
 
     private boolean stateconnect;
 
     private Executor exec;
 
     private boolean proccess;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -76,12 +82,16 @@ public class FxProveedoresController implements Initializable {
         } else {
             imState.setImage(new Image("/view/disconnected.png"));
         }
-        tcId.setCellValueFactory(cellData -> cellData.getValue().getIdProveedor().asObject());
+        tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocumentType.setCellValueFactory(cellData -> cellData.getValue().getTipoDocumentoName());
         tcDocument.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
-        tcBusinessName.setCellValueFactory(cellData -> 
-            cellData.getValue().getRazonSocial().concat(" / "+"\n"+cellData.getValue().getNombreComercial().get())
+        tcBusinessName.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getRazonSocial().get() + "\n" + cellData.getValue().getNombreComercial().get()
+        )
         );
+        tcState.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
+        tcFechaRegistro.setCellValueFactory(cellData -> cellData.getValue().fechaRegistroProperty());
+
     }
 
     public void fillCustomersTable(String value) {
@@ -133,16 +143,32 @@ public class FxProveedoresController implements Initializable {
 
     @FXML
     private void onMouseClickedEdit(MouseEvent event) throws IOException {
-        URL url = getClass().getResource(Tools.FX_FILE_PROVEEDOREPROCESO);
-        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
-        Parent parent = fXMLLoader.load(url.openStream());
-        //Controlller here
-        FxProveedorProcesoController controller = fXMLLoader.getController();
-        //
-        Stage stage = FxWindow.StageLoaderModal(parent, "Editr Proveedor", window.getScene().getWindow());
-        stage.setResizable(false);
-        stage.show();
-        controller.setValueUpdate();
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            URL url = getClass().getResource(Tools.FX_FILE_PROVEEDOREPROCESO);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxProveedorProcesoController controller = fXMLLoader.getController();
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Editr Proveedor", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.show();
+            controller.setValueUpdate(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Proveedor", "Debe seleccionar un proveedor para editarlo", false);
+            tvList.requestFocus();
+        }
+
+    }
+
+    @FXML
+    private void onMouseClickedList(MouseEvent event) {
+
+    }
+
+    @FXML
+    private void onMouseClickedReload(MouseEvent event) {
+        fillCustomersTable("");
     }
 
 }

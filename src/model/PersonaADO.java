@@ -11,12 +11,12 @@ import javafx.collections.ObservableList;
 public class PersonaADO {
 
     public static String CrudEntity(PersonaTB personaTB) {
-        String selectStmt = "{call Sp_Crud_Persona(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String selectStmt = "{call Sp_Crud_Persona(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
             DBUtil.dbConnect();
             callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
-            callableStatement.setLong("IdPersona", personaTB.getIdPersona());
+            callableStatement.setString("IdPersona", personaTB.getIdPersona());
             callableStatement.setInt("TipoDocumento", personaTB.getTipoDocumento());
             callableStatement.setString("NumeroDocumento", personaTB.getNumeroDocumento().get());
             callableStatement.setString("ApellidoPaterno", personaTB.getApellidoPaterno().get());
@@ -25,6 +25,7 @@ public class PersonaADO {
             callableStatement.setString("SegundoNombre", personaTB.getSegundoNombre());
             callableStatement.setInt("Sexo", personaTB.getSexo());
             callableStatement.setDate("FechaNacimiento", personaTB.getFechaNacimiento());
+            callableStatement.setInt("Estado", personaTB.getEstado());
             callableStatement.setString("UsuarioRegistro", personaTB.getUsuarioRegistro());
             //facturación
             callableStatement.setInt("TipoDocumentoFactura", personaTB.getTipoDocumentoFacturacion());
@@ -65,6 +66,7 @@ public class PersonaADO {
                 personaTB.setId(rsEmps.getRow());
                 personaTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 personaTB.setApellidoPaterno(rsEmps.getString("Datos"));
+                personaTB.setEstadoName(rsEmps.getString("Estado"));
                 personaTB.setFechaRegistro(rsEmps.getDate("FRegistro").toLocalDate());
                 empList.add(personaTB);
             }
@@ -99,7 +101,7 @@ public class PersonaADO {
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 PersonaTB personaTB = new PersonaTB();
-                personaTB.setIdPersona(rsEmps.getLong("IdPersona"));
+                personaTB.setIdPersona(rsEmps.getString("IdPersona"));
                 personaTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
                 personaTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 personaTB.setApellidoPaterno(rsEmps.getString("ApellidoPaterno"));
@@ -107,6 +109,7 @@ public class PersonaADO {
                 personaTB.setPrimerNombre(rsEmps.getString("PrimerNombre"));
                 personaTB.setSegundoNombre(rsEmps.getString("SegundoNombre"));
                 personaTB.setSexo(rsEmps.getInt("Sexo"));
+                personaTB.setEstado(rsEmps.getInt("Estado"));
                 //facturación
                 personaTB.setTipoDocumentoFacturacion(rsEmps.getInt("TipoFactura"));
                 personaTB.setNumeroDocumentoFacturacion(rsEmps.getString("NumeroFactura"));

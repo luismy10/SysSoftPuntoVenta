@@ -45,6 +45,8 @@ public class FxClienteController implements Initializable {
     @FXML
     private TableColumn<PersonaTB, String> tcPersona;
     @FXML
+    private TableColumn<PersonaTB, String> tcEstado;
+    @FXML
     private TableColumn<PersonaTB, LocalDate> tcFechaRegistro;
 
     private boolean stateconnect;
@@ -78,6 +80,7 @@ public class FxClienteController implements Initializable {
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocumento.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
         tcPersona.setCellValueFactory(cellData -> cellData.getValue().getApellidoPaterno());
+        tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
         tcFechaRegistro.setCellValueFactory(cellData -> cellData.getValue().fechaRegistroProperty());
 
     }
@@ -115,7 +118,7 @@ public class FxClienteController implements Initializable {
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
-         FxPersonaController controller = fXMLLoader.getController();
+        FxPersonaController controller = fXMLLoader.getController();
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Cliente", window.getScene().getWindow());
         stage.setResizable(false);

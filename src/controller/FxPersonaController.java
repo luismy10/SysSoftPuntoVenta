@@ -61,7 +61,7 @@ public class FxPersonaController implements Initializable {
     @FXML
     private Button btnCancel;
 
-    private long idPersona;
+    private String idPersona;
 
     private String information;
     @FXML
@@ -76,11 +76,13 @@ public class FxPersonaController implements Initializable {
     private TextField txtBusinessName;
     @FXML
     private TextField txtTradename;
+    @FXML
+    private ComboBox<DetalleTB> cbEstado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
-        idPersona = 0;
+        idPersona = "";
         if (DBUtil.StateConnection()) {
             DetalleADO.GetDetailIdName("1", "0003", "RUC").forEach(e -> {
                 cbDocumentType.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
@@ -90,6 +92,9 @@ public class FxPersonaController implements Initializable {
             });
             DetalleADO.GetDetailIdName("0", "0003", "RUC").forEach(e -> {
                 cbDocumentTypeFactura.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+            });
+            DetalleADO.GetDetailIdName("2", "0001", "").forEach(e -> {
+                cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
             });
         }
 
@@ -130,6 +135,15 @@ public class FxPersonaController implements Initializable {
                     break;
                 }
             }
+            
+            ObservableList<DetalleTB> lsest = cbEstado.getItems();
+            for (int i = 0; i < lsest.size(); i++) {
+                if (list.getEstado() == lsest.get(i).getIdDetalle().get()) {
+                    cbEstado.getSelectionModel().select(i);
+                    break;
+                }
+            }
+            
 
             ObservableList<DetalleTB> lstypefacturacion = cbDocumentTypeFactura.getItems();
             for (int i = 0; i < lstypefacturacion.size(); i++) {
@@ -191,6 +205,9 @@ public class FxPersonaController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese el primero nombre, por favor.", false);
 
             txtFirstName.requestFocus();
+        } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Seleccione el estado, por favor.", false);
+            cbEstado.requestFocus();
         } else {
             if (DBUtil.StateConnection()) {
                 short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
@@ -213,7 +230,7 @@ public class FxPersonaController implements Initializable {
                     } else {
                         personaTB.setFechaNacimiento(null);
                     }
-
+                    personaTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
                     personaTB.setUsuarioRegistro("76423388");
                     personaTB.setTipoDocumentoFacturacion(cbDocumentTypeFactura.getSelectionModel().getSelectedIndex() >= 0 ? cbDocumentTypeFactura.getSelectionModel().getSelectedItem().getIdDetalle().get()
                             : 0);

@@ -12,7 +12,7 @@ import javafx.beans.property.SimpleObjectProperty;
 public class PersonaTB extends FacturacionTB implements Serializable {
 
     private SimpleLongProperty id;
-    private Long idPersona;
+    private String idPersona;
     private int tipoDocumento;
     private SimpleStringProperty numeroDocumento;
     private SimpleStringProperty apellidoPaterno;
@@ -21,6 +21,8 @@ public class PersonaTB extends FacturacionTB implements Serializable {
     private String segundoNombre;
     private int sexo;
     private Date fechaNacimiento;
+    private int estado;
+    private SimpleStringProperty estadoName;
     private String usuarioRegistro;
     private ObjectProperty<LocalDate> fechaRegistro;
     private String usuarioActualizo;
@@ -30,27 +32,11 @@ public class PersonaTB extends FacturacionTB implements Serializable {
     public PersonaTB() {
     }
 
-    public PersonaTB(Long idPersona) {
+    public PersonaTB(String idPersona) {
         this.idPersona = idPersona;
     }
 
-    public PersonaTB(String apellidoPaterno) {
-        this.apellidoPaterno = new SimpleStringProperty(apellidoPaterno);
-    }
-
-    public PersonaTB(Long idPersona, SimpleLongProperty id, int tipoDocumento, SimpleStringProperty numeroDocumento, SimpleStringProperty apellidoPaterno, String apellidoMaterno, String primerNombre, String segundoNombre, int sexo, String usuarioRegistro, ObjectProperty<LocalDate> fechaRegistro) {
-        this.idPersona = idPersona;
-        this.id = id;
-        this.tipoDocumento = tipoDocumento;
-        this.numeroDocumento = numeroDocumento;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.primerNombre = primerNombre;
-        this.segundoNombre = segundoNombre;
-        this.sexo = sexo;
-        this.usuarioRegistro = usuarioRegistro;
-        this.fechaRegistro = fechaRegistro;
-    }
+   
 
     public SimpleLongProperty getId() {
         return id;
@@ -60,11 +46,11 @@ public class PersonaTB extends FacturacionTB implements Serializable {
         this.id = new SimpleLongProperty(id);
     }
 
-    public Long getIdPersona() {
+    public String getIdPersona() {
         return idPersona;
     }
 
-    public void setIdPersona(Long idPersona) {
+    public void setIdPersona(String idPersona) {
         this.idPersona = idPersona;
     }
 
@@ -172,6 +158,22 @@ public class PersonaTB extends FacturacionTB implements Serializable {
         this.directorioTBCollection = directorioTBCollection;
     }
 
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public SimpleStringProperty getEstadoName() {
+        return estadoName;
+    }
+
+    public void setEstadoName(String estadoName) {
+        this.estadoName = new SimpleStringProperty(estadoName);
+    }    
+    
     public ObjectProperty<LocalDate> fechaRegistroProperty() {
         return fechaRegistro;
     }

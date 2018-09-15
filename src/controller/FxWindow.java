@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.URL;
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
