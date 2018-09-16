@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.FxProveedorListaController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxProveedorListaController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -32,7 +31,7 @@
                         <Font name="Roboto" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtSearch" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtSearch" onAction="#onActionToSearch" onKeyPressed="#onKeyPressedToSearh" HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonFifth" text="Agregar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -49,11 +48,11 @@
             </HBox>
             <HBox VBox.vgrow="ALWAYS">
                <children>
-                  <TableView fx:id="tvList" prefHeight="300.0" prefWidth="700.0" HBox.hgrow="ALWAYS">
+                  <TableView fx:id="tvList" onMouseClicked="#onMouseClickedList" prefHeight="300.0" prefWidth="700.0" styleClass="tableView" HBox.hgrow="ALWAYS">
                     <columns>
-                      <TableColumn prefWidth="61.0" style="-fx-alignment: CENTER;" text="N°" />
-                        <TableColumn prefWidth="166.0" style="-fx-alignment: CENTER;" text="Documento" />
-                      <TableColumn prefWidth="468.0" text="Nombre/Representante" />
+                      <TableColumn fx:id="tcId" prefWidth="61.0" style="-fx-alignment: CENTER;" text="N°" />
+                        <TableColumn fx:id="tcDocument" prefWidth="141.0" style="-fx-alignment: CENTER;" text="Documento" />
+                      <TableColumn fx:id="tcRepresentative" prefWidth="497.0" text="Nombre/Representante" />
                     </columns>
                   </TableView>
                </children>

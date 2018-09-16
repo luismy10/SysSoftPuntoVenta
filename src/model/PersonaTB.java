@@ -1,6 +1,5 @@
 package model;
 
-import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -9,7 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-public class PersonaTB extends FacturacionTB implements Serializable {
+public class PersonaTB extends FacturacionTB {
 
     private SimpleLongProperty id;
     private String idPersona;

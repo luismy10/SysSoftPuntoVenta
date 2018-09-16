@@ -126,30 +126,4 @@ public class ProveedorADO {
         return arrayList;
     }
 
-    public static String CrudRepresentante(RepresentanteTB representanteTB) {
-        String selectStmt = "{call Sp_Crud_Proveedor(?,?)}";
-        CallableStatement callableStatement = null;
-        try {
-            DBUtil.dbConnect();
-            callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
-            callableStatement.setString("IdProveedor",representanteTB.getIdProveedor());
-            callableStatement.setString("IdPersona", representanteTB.getIdPersona());       
-
-            callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
-            callableStatement.execute();
-            return callableStatement.getString("Message");
-        } catch (SQLException e) {
-            return e.getLocalizedMessage();
-        } finally {
-            try {
-                if (callableStatement != null) {
-                    callableStatement.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-                return ex.getLocalizedMessage();
-            }
-        }
-    }
-
 }

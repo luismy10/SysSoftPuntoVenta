@@ -90,6 +90,7 @@
     -fx-font-size:14; 
 }
 
+/**********/
 .buttonTransparent{
     -fx-border-color: transparent;
     -fx-background-color: transparent;
@@ -114,13 +115,20 @@
 }
 /*--------------*/
 .buttonIcon{
-    -fx-border-color: transparent;
-    -fx-background-color: transparent;
+    -fx-background-color: -fx-shadow-highlight-color,rgb(43,87,154),rgb(43,87,154),rgb(43,87,154);
     -fx-font-family:"Roboto";  
-    -fx-font-size:14; 
+    -fx-font-size:16; 
+    -fx-text-fill: white;
 }
 .buttonIcon:hover{
-
+    -fx-background-color:  #3a3e4d;
+    -fx-cursor: hand;
+}
+.buttonIcon:pressed{
+    -fx-background-color: #373e58;
+}
+.buttonIcon:focused{
+    -fx-background-color: #373e58;
 }
 /*-----------------*/
 .buttonMenu{
@@ -466,7 +474,7 @@
     -fx-cursor: hand;
 }
 .buttonSixth:pressed{
-    
+
     -fx-text-fill:  black;
     -fx-border-color:  #999999;
 }
@@ -645,3 +653,53 @@
 .scroll-bar:vertical:focused {
     -fx-background-color: transparent;
 }
+
+/*-------------*/
+.labelTitle{
+    -fx-font-size:18; 
+    -fx-font-family:"Roboto Bold"; 
+    -fx-text-fill: white;
+}
+.labelSubtitle{
+    -fx-font-size:16; 
+    -fx-font-family:"Roboto Bold"; 
+    -fx-text-fill: white;
+}
+.labelNormal{
+    -fx-font-size:14; 
+    -fx-font-family:"Roboto Medium"; 
+    -fx-text-fill: white;
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * Button panel                                                    *
+ *                                                                             *
+ ******************************************************************************/
+.buttonPanel {
+    -fx-padding: 12 30 12 30;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 0;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: transparent;
+    -fx-font-size:16; 
+    -fx-font-family:"Roboto"; 
+    -fx-text-fill: white;    
+    -fx-opacity: 0.4;
+}
+.buttonPanel:hover{
+    -fx-background-color: #444858;
+    -fx-cursor: hand;-fx-opacity: 1;
+}
+.buttonPanel:pressed, .buttonPanel:default:hover:pressed {
+    -fx-text-fill:   #23283a;
+}
+.buttonPanel:focused{    
+    -fx-background-color:   #0a6db0;
+    -fx-opacity: 1;
+}
+
+
+

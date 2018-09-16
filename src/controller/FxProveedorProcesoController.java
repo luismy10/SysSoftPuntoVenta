@@ -3,25 +3,30 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.CiudadADO;
 import model.CiudadTB;
 import model.DBUtil;
@@ -29,8 +34,12 @@ import model.DetalleADO;
 import model.DetalleTB;
 import model.PaisADO;
 import model.PaisTB;
+import model.PersonaADO;
+import model.PersonaTB;
 import model.ProveedorADO;
 import model.ProveedorTB;
+import model.RepresentanteADO;
+import model.RepresentanteTB;
 
 public class FxProveedorProcesoController implements Initializable {
 
@@ -60,8 +69,24 @@ public class FxProveedorProcesoController implements Initializable {
     private ComboBox<DetalleTB> cbAmbito;
     @FXML
     private ComboBox<DetalleTB> cbEstado;
+    @FXML
+    private TextField txtSearch;
+    @FXML
+    private TableView<PersonaTB> tvList;
+    @FXML
+    private TableColumn<PersonaTB, Long> tcId;
+    @FXML
+    private TableColumn<PersonaTB, String> tcDocument;
+    @FXML
+    private TableColumn<PersonaTB, String> tcNames;
+    @FXML
+    private TableColumn<PersonaTB, String> tcLastName;
+    @FXML
+    private TableColumn<PersonaTB, String> tcEstado;
 
     private String idProveedor;
+
+    private Executor exec;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -82,6 +107,60 @@ public class FxProveedorProcesoController implements Initializable {
             });
 
         }
+
+        exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+        tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
+        tcDocument.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
+        tcNames.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getPrimerNombre() + " " + cellData.getValue().getSegundoNombre()
+        ));
+        tcLastName.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getApellidoPaterno().get() + " " + cellData.getValue().getApellidoMaterno()
+        ));
+        tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName()
+        );
+    }
+
+    public void fillCustomersTable(String value) {
+        if (!idProveedor.equalsIgnoreCase("")) {
+            Task<List<PersonaTB>> task = new Task<List<PersonaTB>>() {
+                @Override
+                public ObservableList<PersonaTB> call() {
+                    return PersonaADO.ListRepresentantes(idProveedor, value);
+                }
+            };
+            task.setOnSucceeded((WorkerStateEvent e) -> {
+                tvList.setItems((ObservableList<PersonaTB>) task.getValue());
+            });
+            exec.execute(task);
+        }
+
+    }
+
+    public void setValueAddRepresentante(String... value) {
+        String idPersona = PersonaADO.ListPersonasId(value[0]);
+        if (!idProveedor.equalsIgnoreCase("") && !idPersona.equalsIgnoreCase("")) {
+            String result = RepresentanteADO.CrudRepresentante(new RepresentanteTB(idProveedor, idPersona));
+            switch (result) {
+                case "registered":
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Agregado correctamente el representante.", false);
+                    fillCustomersTable("");
+                    break;
+                case "duplicate":
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "No puede haber 2 representantes con los mismos datos.", false);                    
+                    break;
+                case "error":
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Proveedor", "No se puedo agregar el representante.", false);
+                    break;
+                default:
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Proveedor", result, false);
+                    break;
+            }
+        }
+
     }
 
     public void setValueAdd(String... value) {
@@ -192,6 +271,7 @@ public class FxProveedorProcesoController implements Initializable {
                     switch (result) {
                         case "registered":
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Registrado correctamente.", false);
+
                             break;
                         case "updated":
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Actualizado correctamente.", false);
@@ -214,7 +294,7 @@ public class FxProveedorProcesoController implements Initializable {
         }
     }
 
-    private void onViewPerfil() throws IOException {
+    private void onViewPerfil(String id, String value) throws IOException {
         URL url = getClass().getResource(Tools.FX_FILE_PERFIL);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
@@ -224,7 +304,7 @@ public class FxProveedorProcesoController implements Initializable {
         Stage stage = FxWindow.StageLoaderModal(parent, "Perfil", window.getScene().getWindow());
         stage.setResizable(false);
         stage.show();
-        controller.setLoadView(idProveedor, txtBusinessName.getText());
+        controller.setLoadView(id, value);
     }
 
     @FXML
@@ -242,13 +322,13 @@ public class FxProveedorProcesoController implements Initializable {
     @FXML
     private void onKeyPressedToDirectory(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            onViewPerfil();
+            onViewPerfil(idProveedor, txtBusinessName.getText());
         }
     }
 
     @FXML
     private void onActionToDirectory(ActionEvent event) throws IOException {
-        onViewPerfil();
+        onViewPerfil(idProveedor, txtBusinessName.getText());
     }
 
     @FXML
@@ -274,18 +354,19 @@ public class FxProveedorProcesoController implements Initializable {
     }
 
     private void onViewPersonas() throws IOException {
-        
+
         URL url = getClass().getResource(Tools.FX_FILE_PROVEEDOLISTA);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
-//        FxPerfilController controller = fXMLLoader.getController();
+        FxProveedorListaController controller = fXMLLoader.getController();
+        controller.setInitProveedorProcesoController(this);
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Seleccionar Proveedor", window.getScene().getWindow());
         stage.setResizable(false);
-       
+
         stage.show();
-//        controller.setLoadView(idProveedor, txtBusinessName.getText());
+        controller.fillCustomersTable("");
     }
 
     @FXML
@@ -298,6 +379,76 @@ public class FxProveedorProcesoController implements Initializable {
         if (event.getCode() == KeyCode.ENTER) {
             onViewPersonas();
         }
+    }
+
+    @FXML
+    private void onKeyPressedSeach(KeyEvent event) {
+        fillCustomersTable(txtSearch.getText());
+    }
+
+    private void showDirectory() throws IOException {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            String idPersona = PersonaADO.ListPersonasId(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
+            onViewPerfil(idPersona,
+                    tvList.getSelectionModel().getSelectedItem().getApellidoPaterno().get() + " "
+                    + tvList.getSelectionModel().getSelectedItem().getApellidoMaterno() + " "
+                    + tvList.getSelectionModel().getSelectedItem().getPrimerNombre() + " "
+                    + tvList.getSelectionModel().getSelectedItem().getSegundoNombre());
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Proveedor", "Debe seleccionar un representante para mostrar su directorio.", false);
+            tvList.requestFocus();
+        }
+    }
+
+    @FXML
+    private void onKeyPressedDirectory(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            showDirectory();
+        }
+    }
+
+    @FXML
+    private void onActionDirectory(ActionEvent event) throws IOException {
+        showDirectory();
+    }
+
+    private void removerRepresentante() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Proveedor", "¿Esta seguro de continuar?", true);
+            if (confirmation == 1) {
+                String idPersona = PersonaADO.ListPersonasId(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
+                String result = RepresentanteADO.DeleteRepresentante(idProveedor, idPersona);
+                switch (result) {
+                    case "eliminado":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Eliminado correctamente.", false);
+                        fillCustomersTable("");
+                        break;
+                    case "error":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Proveedor", "No se puedo completar la ejecución.", false);
+                        break;
+                    default:
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Proveedor", result, false);
+                        break;
+                }
+
+            }
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Proveedor", "Debe seleccionar un representante para eliminarlo.", false);
+            tvList.requestFocus();
+        }
+
+    }
+
+    @FXML
+    private void onKeyPressedToRepresentanteRemover(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            removerRepresentante();
+        }
+    }
+
+    @FXML
+    private void onActionToRepresentanteRemover(ActionEvent event) {
+        removerRepresentante();
     }
 
 }

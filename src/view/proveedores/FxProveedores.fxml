@@ -214,8 +214,8 @@
                                           <TableColumn fx:id="tcDocumentType" prefWidth="122.0" style="-fx-alignment: CENTER;" text="Tipo Documento" />
                                           <TableColumn fx:id="tcDocument" prefWidth="131.0" style="-fx-alignment: CENTER;" text="Documento" />
                                           <TableColumn fx:id="tcBusinessName" prefWidth="304.0" text="Razón social/Nombre comercial" />
-                                          <TableColumn fx:id="tcState" prefWidth="108.0" text="Estado" />
-                                          <TableColumn fx:id="tcFechaRegistro" prefWidth="150.0" text="Fecha de Registro" />
+                                          <TableColumn fx:id="tcState" prefWidth="108.0" style="-fx-alignment: CENTER;" text="Estado" />
+                                          <TableColumn fx:id="tcFechaRegistro" prefWidth="150.0" style="-fx-alignment: CENTER;" text="Fecha de Registro" />
                                        </columns>
                                     </TableView>
                                     <HBox alignment="CENTER" style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #cccccc;">

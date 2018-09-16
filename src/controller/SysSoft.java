@@ -26,7 +26,6 @@ public class SysSoft extends Application {
         primaryStage.setMaximized(true);
         primaryStage.show();
         primaryStage.requestFocus();
-
         //controller.fillEmployeeTable();
     }
 

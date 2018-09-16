@@ -45,6 +45,7 @@ public class Tools {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("/view/icon.png"));
         alert.setTitle(title);
+        alert.getDialogPane().setStyle(""); 
         alert.initModality(Modality.WINDOW_MODAL);
         alert.initOwner(window);
         alert.setHeaderText(null);

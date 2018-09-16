@@ -178,7 +178,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <TextField promptText="Buscar...." HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSeach" promptText="Buscar...." HBox.hgrow="ALWAYS" />
                                           <Button mnemonicParsing="false" onAction="#onActionToRepresentanteRegister" onKeyPressed="#onKeyPressedToRepresentanteRegister" styleClass="buttonSixth">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -188,11 +188,20 @@
                                                 </ImageView>
                                              </graphic>
                                           </Button>
-                                          <Button mnemonicParsing="false" styleClass="buttonSixth">
+                                          <Button mnemonicParsing="false" onAction="#onActionToRepresentanteRemover" onKeyPressed="#onKeyPressedToRepresentanteRemover" styleClass="buttonSixth">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../edit.png" />
+                                                      <Image url="@../remove.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button mnemonicParsing="false" onAction="#onActionDirectory" onKeyPressed="#onKeyPressedDirectory" styleClass="buttonSixth">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../directory.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>
@@ -204,13 +213,13 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <TableView prefHeight="128.0" prefWidth="685.0" HBox.hgrow="ALWAYS">
+                                          <TableView fx:id="tvList" prefHeight="128.0" prefWidth="685.0" styleClass="tableView" HBox.hgrow="ALWAYS">
                                             <columns>
-                                              <TableColumn prefWidth="64.0" text="N°" />
-                                              <TableColumn prefWidth="114.0" text="Documento" />
-                                                <TableColumn prefWidth="219.0" text="Nombres" />
-                                                <TableColumn prefWidth="187.0" text="Apellidos" />
-                                                <TableColumn prefWidth="100.0" text="Estado" />
+                                              <TableColumn fx:id="tcId" prefWidth="64.0" style="-fx-alignment: CENTER;" text="N°" />
+                                              <TableColumn fx:id="tcDocument" prefWidth="114.0" style="-fx-alignment: CENTER;" text="Documento" />
+                                                <TableColumn fx:id="tcLastName" prefWidth="187.0" text="Apellidos" />
+                                                <TableColumn fx:id="tcNames" prefWidth="219.0" text="Nombres" />
+                                                <TableColumn fx:id="tcEstado" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Estado" />
                                             </columns>
                                              <HBox.margin>
                                                 <Insets />

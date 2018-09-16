@@ -1,7 +1,6 @@
 package controller;
 
 import java.net.URL;
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
@@ -31,8 +30,21 @@ public class FxWindow {
         stage.initOwner(window);
         return stage;
     }
-    
-     public static Stage StageLoader(Parent parent, String title, Window window) {
+
+    public static Stage StageLoaderModal(Parent parent, String title, Window window, double width, double height) {
+        Stage stage = new Stage();
+        Scene scene = new Scene(parent);
+        stage.getIcons().add(new Image(Tools.FX_LOGO));
+        stage.setScene(scene);
+        stage.setTitle(title);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(window);
+        width = scene.getWidth();
+        height = scene.getHeight();
+        return stage;
+    }
+
+    public static Stage StageLoader(Parent parent, String title, Window window) {
         Stage stage = new Stage();
         Scene scene = new Scene(parent);
         stage.getIcons().add(new Image(Tools.FX_LOGO));
@@ -40,5 +52,5 @@ public class FxWindow {
         stage.setTitle(title);
         return stage;
     }
-    
+
 }

@@ -30,7 +30,7 @@ public class FxOperacionesController implements Initializable {
         //Controlller here
         FxClienteController controller = fXMLLoader.getController();
         //
-        Stage stage = FxWindow.StageLoaderModal(parent, "Clientes", window.getScene().getWindow());
+        Stage stage = FxWindow.StageLoaderModal(parent, "Clientes", window.getScene().getWindow(),Session.WIDTH_WINDOW ,Session.HEIGHT_WINDOW);
         stage.setMaximized(true);
         stage.show();
         controller.fillCustomersTable("");
@@ -43,7 +43,7 @@ public class FxOperacionesController implements Initializable {
         //Controlller here
         FxProveedoresController controller = fXMLLoader.getController();
         //
-        Stage stage = FxWindow.StageLoaderModal(parent, "Proveedores", window.getScene().getWindow());
+        Stage stage = FxWindow.StageLoaderModal(parent, "Proveedores", window.getScene().getWindow(),Session.WIDTH_WINDOW ,Session.HEIGHT_WINDOW);
         stage.setMaximized(true);
         stage.show();
         controller.fillCustomersTable("");
