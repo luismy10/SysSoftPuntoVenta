@@ -693,11 +693,15 @@
     -fx-background-color: #444858;
     -fx-cursor: hand;-fx-opacity: 1;
 }
-.buttonPanel:pressed, .buttonPanel:default:hover:pressed {
+.buttonPanel:pressed, .buttonPanel:default:hover:pressed{
     -fx-text-fill:   #23283a;
 }
 .buttonPanel:focused{    
-    -fx-background-color:   #0a6db0;
+    -fx-background-color: #0a6db0;
+    -fx-opacity: 1;
+}
+.buttonPanelActive{
+    -fx-background-color: #0a6db0;
     -fx-opacity: 1;
 }
 
