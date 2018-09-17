@@ -9,6 +9,7 @@
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.chart.StackedAreaChart?>
 <?import javafx.scene.chart.StackedBarChart?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,372 +18,388 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxPrincipalController">
-   <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="66.0" style="-fx-border-color: #cccccc; -fx-border-width: 0  0 1px 0;">
+<ScrollPane fx:id="window" fitToWidth="true" prefHeight="476.0" prefWidth="718.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxPrincipalController">
+   <content>
+      <VBox stylesheets="@../styles.css">
          <children>
-            <Text fill="#514f4f" strokeType="OUTSIDE" strokeWidth="0.0" text="Jueves 12 de Enero del 2018">
-               <font>
-                  <Font name="Roboto" size="16.0" />
-               </font>
-            </Text>
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </HBox>
-      <HBox alignment="CENTER_LEFT" spacing="20.0" VBox.vgrow="ALWAYS">
-         <children>
-            <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #03A9F4; -fx-border-color: #03A9F4; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" prefHeight="66.0" style="-fx-border-color: #cccccc; -fx-border-width: 0  0 1px 0; -fx-background-color: white;">
                <children>
-                  <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00 S/." wrappingWidth="213.0">
-                                 <font>
-                                    <Font name="Roboto Bold" size="28.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Ventas del día de hoy" wrappingWidth="213.0">
-                                 <font>
-                                    <Font name="Roboto Bold" size="20.0" />
-                                 </font>
-                              </Text>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Emisión de hoy">
-                                 <font>
-                                    <Font name="Roboto Bold" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                  </HBox>
+                  <Text fill="#514f4f" strokeType="OUTSIDE" strokeWidth="0.0" text="Jueves 12 de Enero del 2018">
+                     <font>
+                        <Font name="Roboto" size="16.0" />
+                     </font>
+                  </Text>
                </children>
-            </AnchorPane>
-            <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #F44336; -fx-border-color: #F44336; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="66.0">
                <children>
-                  <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00 S/." wrappingWidth="213.0">
-                                 <font>
-                                    <Font name="Roboto Bold" size="28.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Ventas del día de hoy" wrappingWidth="213.0">
-                                 <font>
-                                    <Font name="Roboto Bold" size="20.0" />
-                                 </font>
-                              </Text>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Emisión de hoy">
-                                 <font>
-                                    <Font name="Roboto Bold" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                  </HBox>
+                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMayor" text="Pantalla principal">
+                     <font>
+                        <Font name="Roboto" size="24.0" />
+                     </font>
+                  </Text>
                </children>
-            </AnchorPane>
-            <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #FF9800; -fx-border-color: #FF9800; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
-                  <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #03A9F4; -fx-border-color: #03A9F4; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox prefWidth="234.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                        <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00 S/." wrappingWidth="213.0">
-                                 <font>
-                                    <Font name="Roboto Bold" size="28.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Total de cuentas a pagar" wrappingWidth="213.0">
-                                 <font>
-                                    <Font name="Roboto Bold" size="20.0" />
-                                 </font>
-                              </Text>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Emisión de hoy">
-                                 <font>
-                                    <Font name="Roboto Bold" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
-            <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #4CAF50; -fx-border-color: #4CAF50; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
-               <children>
-                  <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00 S/." wrappingWidth="213.0">
-                                 <font>
-                                    <Font name="Roboto Bold" size="28.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Ventas del día de hoy" wrappingWidth="213.0">
-                                 <font>
-                                    <Font name="Roboto Bold" size="20.0" />
-                                 </font>
-                              </Text>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Emisión de hoy">
-                                 <font>
-                                    <Font name="Roboto Bold" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </HBox>
-      <HBox alignment="BASELINE_LEFT" spacing="20.0" VBox.vgrow="ALWAYS">
-         <children>
-            <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
-               <children>
-                  <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                              <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../connected_1.png" />
-                                       </image>
-                                    </ImageView>
-                                    <VBox spacing="5.0">
-                                       <children>
-                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Clientes" wrappingWidth="165.0">
-                                             <font>
-                                                <Font name="Roboto Bold" size="20.0" />
-                                             </font>
-                                          </Text>
-                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="120">
-                                             <font>
-                                                <Font name="Roboto Bold" size="20.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </VBox>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTotales" text="800.60 S/." wrappingWidth="213.0">
+                                       <font>
+                                          <Font name="Roboto Bold" size="28.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextTotales" text="Ventas del día de hoy" wrappingWidth="213.0">
+                                       <font>
+                                          <Font name="Roboto Bold" size="20.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelNormal" text="Emisión de hoy">
+                                       <font>
+                                          <Font name="Roboto Bold" size="14.0" />
+                                       </font>
+                                    </Text>
                                  </children>
-                              </HBox>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </VBox>
+                        </HBox>
                      </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
-            <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
-               <children>
-                  <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  </AnchorPane>
+                  <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #F44336; -fx-border-color: #F44336; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                        <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                              <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../connected_1.png" />
-                                       </image>
-                                    </ImageView>
-                                    <VBox spacing="5.0">
-                                       <children>
-                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Clientes" wrappingWidth="165.0">
-                                             <font>
-                                                <Font name="Roboto Bold" size="20.0" />
-                                             </font>
-                                          </Text>
-                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="120">
-                                             <font>
-                                                <Font name="Roboto Bold" size="20.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </VBox>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTotales" text="0.00 S/." wrappingWidth="213.0">
+                                       <font>
+                                          <Font name="Roboto Bold" size="28.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextTotales" text="Ventas del día de hoy" wrappingWidth="213.0">
+                                       <font>
+                                          <Font name="Roboto Bold" size="20.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelNormal" text="Emisión de hoy">
+                                       <font>
+                                          <Font name="Roboto Bold" size="14.0" />
+                                       </font>
+                                    </Text>
                                  </children>
-                              </HBox>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </VBox>
+                        </HBox>
                      </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
-            <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
-               <children>
-                  <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  </AnchorPane>
+                  <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #FF9800; -fx-border-color: #FF9800; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                        <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                              <VBox prefWidth="234.0" spacing="10.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../connected_1.png" />
-                                       </image>
-                                    </ImageView>
-                                    <VBox spacing="5.0">
-                                       <children>
-                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Clientes" wrappingWidth="165.0">
-                                             <font>
-                                                <Font name="Roboto Bold" size="20.0" />
-                                             </font>
-                                          </Text>
-                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="120">
-                                             <font>
-                                                <Font name="Roboto Bold" size="20.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </VBox>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTotales" text="250.60 S/." wrappingWidth="213.0">
+                                       <font>
+                                          <Font name="Roboto Bold" size="28.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextTotales" text="Total de cuentas a pagar" wrappingWidth="213.0">
+                                       <font>
+                                          <Font name="Roboto Bold" size="20.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelNormal" text="Emisión de hoy">
+                                       <font>
+                                          <Font name="Roboto Bold" size="14.0" />
+                                       </font>
+                                    </Text>
                                  </children>
-                              </HBox>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </VBox>
+                        </HBox>
                      </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
-            <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
-               <children>
-                  <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  </AnchorPane>
+                  <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #4CAF50; -fx-border-color: #4CAF50; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                        <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                              <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../connected_1.png" />
-                                       </image>
-                                    </ImageView>
-                                    <VBox spacing="5.0">
-                                       <children>
-                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Clientes" wrappingWidth="165.0">
-                                             <font>
-                                                <Font name="Roboto Bold" size="20.0" />
-                                             </font>
-                                          </Text>
-                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="120">
-                                             <font>
-                                                <Font name="Roboto Bold" size="20.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </VBox>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTotales" text="0.00 S/." wrappingWidth="213.0">
+                                       <font>
+                                          <Font name="Roboto Bold" size="28.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextTotales" text="Ventas del día de hoy" wrappingWidth="213.0">
+                                       <font>
+                                          <Font name="Roboto Bold" size="20.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelNormal" text="Emisión de hoy">
+                                       <font>
+                                          <Font name="Roboto Bold" size="14.0" />
+                                       </font>
+                                    </Text>
                                  </children>
-                              </HBox>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </VBox>
+                        </HBox>
                      </children>
-                  </HBox>
+                  </AnchorPane>
                </children>
-            </AnchorPane>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" spacing="20.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../articles.png" />
+                                             </image>
+                                          </ImageView>
+                                          <VBox spacing="5.0">
+                                             <children>
+                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="Artículos" wrappingWidth="165.0">
+                                                   <font>
+                                                      <Font name="Roboto Bold" size="20.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="1600">
+                                                   <font>
+                                                      <Font name="Roboto Bold" size="20.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../clients.png" />
+                                             </image>
+                                          </ImageView>
+                                          <VBox spacing="5.0">
+                                             <children>
+                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="Clientes" wrappingWidth="165.0">
+                                                   <font>
+                                                      <Font name="Roboto Bold" size="20.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="120">
+                                                   <font>
+                                                      <Font name="Roboto Bold" size="20.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../providers.png" />
+                                             </image>
+                                          </ImageView>
+                                          <VBox spacing="5.0">
+                                             <children>
+                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="Proveedores" wrappingWidth="165.0">
+                                                   <font>
+                                                      <Font name="Roboto Bold" size="20.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="600">
+                                                   <font>
+                                                      <Font name="Roboto Bold" size="20.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane minWidth="-Infinity" prefWidth="234.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../perfil.png" />
+                                             </image>
+                                          </ImageView>
+                                          <VBox spacing="5.0">
+                                             <children>
+                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="Personal" wrappingWidth="165.0">
+                                                   <font>
+                                                      <Font name="Roboto Bold" size="20.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="120">
+                                                   <font>
+                                                      <Font name="Roboto Bold" size="20.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <HBox>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <children>
+                  <BarChart prefHeight="320.0" title="Ventas del día">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </BarChart>
+                  <PieChart prefHeight="320.0" title="Producto mas vendidos" />
+                  <StackedAreaChart prefHeight="320.0" title="Ventas por semana">
+                     <xAxis>
+                        <NumberAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </StackedAreaChart>
+               </children>
+            </HBox>
+            <HBox>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <children>
+                  <AreaChart prefHeight="320.0" title="Ventas por hora">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </AreaChart>
+                  <LineChart prefHeight="320.0" title="Ventas por día de la semana">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </LineChart>
+                  <StackedBarChart prefHeight="320.0" title="Ventas por mes(anual)">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </StackedBarChart>
+               </children>
+            </HBox>
          </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </HBox>
-      <HBox>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-         <children>
-            <BarChart prefHeight="320.0" title="Ventas del día">
-               <xAxis>
-                  <CategoryAxis side="BOTTOM" />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis side="LEFT" />
-               </yAxis>
-            </BarChart>
-            <PieChart prefHeight="320.0" title="Producto mas vendidos" />
-            <StackedAreaChart prefHeight="320.0" title="Ventas por semana">
-               <xAxis>
-                  <NumberAxis side="BOTTOM" />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis side="LEFT" />
-               </yAxis>
-            </StackedAreaChart>
-         </children>
-      </HBox>
-      <HBox>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-         <children>
-            <AreaChart prefHeight="320.0" title="Ventas por hora">
-               <xAxis>
-                  <CategoryAxis side="BOTTOM" />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis side="LEFT" />
-               </yAxis>
-            </AreaChart>
-            <LineChart prefHeight="320.0" title="Ventas por día de la semana">
-               <xAxis>
-                  <CategoryAxis side="BOTTOM" />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis side="LEFT" />
-               </yAxis>
-            </LineChart>
-            <StackedBarChart prefHeight="320.0" title="Ventas por mes(anual)">
-               <xAxis>
-                  <CategoryAxis side="BOTTOM" />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis side="LEFT" />
-               </yAxis>
-            </StackedBarChart>
-         </children>
-      </HBox>
-   </children>
-</VBox>
+      </VBox>
+   </content>
+</ScrollPane>

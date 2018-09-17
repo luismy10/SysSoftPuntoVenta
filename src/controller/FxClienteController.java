@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -21,13 +20,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.DBUtil;
@@ -37,7 +31,7 @@ import model.PersonaTB;
 public class FxClienteController implements Initializable {
 
     @FXML
-    private AnchorPane window;
+    private VBox window;
     @FXML
     private TextField txtSearch;
     @FXML
@@ -60,37 +54,20 @@ public class FxClienteController implements Initializable {
     private boolean proccess;
     @FXML
     private Label lblLoad;
-    @FXML
-    private ImageView imState;
-    @FXML
-    private Text lblEstado;
 
-    private Pane pane;
+    private AnchorPane content;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
-        pane = new Pane();
-        window.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-            Session.WIDTH_WINDOW = (double) newValue;
-            pane.setPrefWidth(Session.WIDTH_WINDOW);
-        });
-        window.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-            Session.HEIGHT_WINDOW = (double) newValue;
-            pane.setPrefHeight(Session.HEIGHT_WINDOW);
-        });
         proccess = false;
         stateconnect = DBUtil.StateConnection();
-        lblEstado.setText(stateconnect == true ? "Conectado" : "Desconectado");
         if (stateconnect) {
-            imState.setImage(new Image("/view/connected.png"));
+
             exec = Executors.newCachedThreadPool((runnable) -> {
                 Thread t = new Thread(runnable);
                 t.setDaemon(true);
                 return t;
             });
-        } else {
-            imState.setImage(new Image("/view/disconnected.png"));
         }
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
@@ -102,13 +79,13 @@ public class FxClienteController implements Initializable {
     }
 
     private void InitializationTransparentBackground() {
-        pane.setStyle("-fx-background-color: black");
-        pane.setTranslateX(0);
-        pane.setTranslateY(0);
-        pane.setPrefWidth(Session.WIDTH_WINDOW);
-        pane.setPrefHeight(Session.HEIGHT_WINDOW);
-        pane.setOpacity(0.7f);
-        window.getChildren().add(pane);
+        SysSoft.pane.setStyle("-fx-background-color: black");
+        SysSoft.pane.setTranslateX(0);
+        SysSoft.pane.setTranslateY(0);
+        SysSoft.pane.setPrefWidth(Session.WIDTH_WINDOW);
+        SysSoft.pane.setPrefHeight(Session.HEIGHT_WINDOW);
+        SysSoft.pane.setOpacity(0.7f);
+        content.getChildren().add(SysSoft.pane);
     }
 
     public void fillCustomersTable(String value) {
@@ -139,7 +116,19 @@ public class FxClienteController implements Initializable {
     }
 
     @FXML
-    private void onMouseClickedAdd(MouseEvent event) throws IOException {
+    private void onActionSearch(ActionEvent event) {
+        if (proccess) {
+            fillCustomersTable(txtSearch.getText());
+        }
+    }
+
+
+    void setContent(AnchorPane content) {
+        this.content = content;
+    }
+
+    @FXML
+    private void onActionAdd(ActionEvent event) throws IOException {
         InitializationTransparentBackground();
         URL url = getClass().getResource(Tools.FX_FILE_PERSONA);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -150,21 +139,14 @@ public class FxClienteController implements Initializable {
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Cliente", window.getScene().getWindow());
         stage.setResizable(false);
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            window.getChildren().remove(pane);
+            content.getChildren().remove(SysSoft.pane);
         });
         stage.show();
         controller.setValueAdd();
     }
 
     @FXML
-    private void onActionSearch(ActionEvent event) {
-        if (proccess) {
-            fillCustomersTable(txtSearch.getText());
-        }
-    }
-
-    @FXML
-    private void onMouseClickedEdit(MouseEvent event) throws IOException {
+    private void onActionEdit(ActionEvent event) throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             InitializationTransparentBackground();
             URL url = getClass().getResource(Tools.FX_FILE_PERSONA);
@@ -176,7 +158,7 @@ public class FxClienteController implements Initializable {
             Stage stage = FxWindow.StageLoaderModal(parent, "Editar cliente", window.getScene().getWindow());
             stage.setResizable(false);
             stage.setOnHiding((WindowEvent WindowEvent) -> {
-                window.getChildren().remove(pane);
+                content.getChildren().remove(SysSoft.pane);
             });
             stage.show();
             controller.setValueUpdate(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
@@ -184,11 +166,10 @@ public class FxClienteController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Clientes", "Seleccione un cliente para actualizar.", false);
             tvList.requestFocus();
         }
-
     }
 
     @FXML
-    private void onMouseClickedLoad(MouseEvent event) {
+    private void onActionReload(ActionEvent event) {
         if (proccess) {
             fillCustomersTable("");
         }

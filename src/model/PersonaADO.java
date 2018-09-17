@@ -16,7 +16,7 @@ public class PersonaADO {
         try {
             DBUtil.dbConnect();
             callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
-            callableStatement.setString("IdPersona", personaTB.getIdPersona());
+            callableStatement.setString("IdPersona", personaTB.getIdPersona().get());
             callableStatement.setInt("TipoDocumento", personaTB.getTipoDocumento());
             callableStatement.setString("NumeroDocumento", personaTB.getNumeroDocumento().get());
             callableStatement.setString("ApellidoPaterno", personaTB.getApellidoPaterno().get());

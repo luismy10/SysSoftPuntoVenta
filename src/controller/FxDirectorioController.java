@@ -1,32 +1,36 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
-import model.DBUtil;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import static model.DirectorioADO.*;
 import model.DirectorioTB;
+import model.PersonaADO;
 
 public class FxDirectorioController implements Initializable {
 
     @FXML
-    private AnchorPane window;
+    private VBox window;
     @FXML
     private TableView<DirectorioTB> tvList;
     @FXML
@@ -34,64 +38,98 @@ public class FxDirectorioController implements Initializable {
     @FXML
     private TableColumn<DirectorioTB, Long> tcId;
     @FXML
+    private TableColumn<DirectorioTB, String> tcCodigo;
+    @FXML
+    private TableColumn<DirectorioTB, String> tcTipoDocumento;
+    @FXML
     private TableColumn<DirectorioTB, String> tcDocumento;
     @FXML
     private TableColumn<DirectorioTB, String> tcPersona;
-    @FXML
-    private TableColumn<DirectorioTB, Date> tcFechaRegistro;
-
-    private boolean stateconnect;
 
     private Executor exec;
-
     @FXML
-    private ImageView imState;
-    @FXML
-    private Text lblEstado;
+    private Label lblLoad;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        stateconnect = DBUtil.StateConnection();
-        lblEstado.setText(stateconnect == true ? "Conectado" : "Desconectado");
-        if (stateconnect) {
-            imState.setImage(new Image("/view/connected.png"));
-            exec = Executors.newCachedThreadPool((runnable) -> {
-                Thread t = new Thread(runnable);
-                t.setDaemon(true);
-                return t;
-            });
-        } else {
-            imState.setImage(new Image("/view/disconnected.png"));
-        }
+
+        exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
+        tcCodigo.setCellValueFactory(cellData -> cellData.getValue().getPersona().getIdPersona());
+        tcTipoDocumento.setCellValueFactory(cellData -> cellData.getValue().getPersona().getTipoDocumentoName());
+        tcDocumento.setCellValueFactory(cellData -> cellData.getValue().getPersona().getNumeroDocumento());
         tcPersona.setCellValueFactory(cellData -> cellData.getValue().getPersona().getApellidoPaterno());
 
     }
 
     public void fillEmployeeTable() {
-        if (DBUtil.StateConnection()) {
-            Task<List<DirectorioTB>> task = new Task<List<DirectorioTB>>() {
-                @Override
-                public ObservableList<DirectorioTB> call() {
-                    try {
-                        return ListPrincipal();
-                    } catch (ClassNotFoundException | SQLException ex) {
-                        System.out.println(ex.getLocalizedMessage());
-                    }
-                    return null;
-                }
-            };
+        Task<List<DirectorioTB>> task = new Task<List<DirectorioTB>>() {
+            @Override
+            public ObservableList<DirectorioTB> call() {
+                return ListDirectory();
+            }
+        };
 
-            task.setOnSucceeded(e -> tvList.setItems((ObservableList<DirectorioTB>) task.getValue()));
-            exec.execute(task);
+        task.setOnSucceeded(e -> {
+            tvList.setItems((ObservableList<DirectorioTB>) task.getValue());
+            lblLoad.setVisible(false);
+        });
+        task.setOnFailed((WorkerStateEvent event) -> {
+            lblLoad.setVisible(false);
+        });
+
+        task.setOnScheduled((WorkerStateEvent event) -> {
+            lblLoad.setVisible(true);
+        });
+        exec.execute(task);
+    }
+
+    private void onViewPerfil() throws IOException {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            URL url = getClass().getResource(Tools.FX_FILE_PERFIL);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxPerfilController controller = fXMLLoader.getController();
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Perfil", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.show();
+            controller.setLoadView(tvList.getSelectionModel().getSelectedItem().getPersona().getIdPersona().get(),
+                    tvList.getSelectionModel().getSelectedItem().getPersona().getApellidoPaterno().get());
+
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Directorio", "Seleccione un item para mostrar su datos", false);
         }
-
     }
 
     @FXML
-    private void onMouseClickedReload(MouseEvent event) {
-        
+    private void onKeyPressedView(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            onViewPerfil();
+        }
+    }
+
+    @FXML
+    private void onActionView(ActionEvent event) throws IOException {
+        onViewPerfil();
+    }
+
+    @FXML
+    private void onKeyPressedReload(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            fillEmployeeTable();
+        }
+    }
+
+    @FXML
+    private void onActionReload(ActionEvent event) {
+        fillEmployeeTable();
     }
 
 }

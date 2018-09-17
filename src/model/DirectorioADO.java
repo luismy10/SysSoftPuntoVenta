@@ -10,35 +10,41 @@ import javafx.collections.ObservableList;
 
 public class DirectorioADO {
 
-    public static ObservableList<DirectorioTB> ListPrincipal() throws ClassNotFoundException, SQLException {
-        String selectStmt = "select CONCAT(per.ApellidoPaterno,' ',per.ApellidoMaterno,' ',per.PrimerNombre,' ',per.SegundoNombre) as Persona ,\n"
-                + "dic.Atributo,dic.Valor1,dic.Valor2,dic.Valor3 FROM \n"
-                + "PersonaTB as per inner join DirectorioTB as dic on per.IdPersona = dic.IdPersona";
+    public static ObservableList<DirectorioTB> ListDirectory() {
+        String selectStmt = "{call Sp_Listar_Directorio()}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<DirectorioTB> empList = FXCollections.observableArrayList();
         try {
-            ResultSet rsEmps = DBUtil.dbExecuteQuery(selectStmt);
-            ObservableList<DirectorioTB> empList = getEntityList(rsEmps);
-            return empList;
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+                DirectorioTB directorioTB = new DirectorioTB();
+                directorioTB.setId(rsEmps.getRow());
+                directorioTB.setPersona(new PersonaTB(rsEmps.getString("Codigo"),rsEmps.getString("Tipo"),rsEmps.getString("Documento"),rsEmps.getString("Datos")));
+                empList.add(directorioTB);  
+            }
         } catch (SQLException e) {
             System.out.println("SQL select operation has been failed: " + e);
-            throw e;
-        }
 
-    }
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
 
-    private static ObservableList<DirectorioTB> getEntityList(ResultSet rs) throws SQLException, ClassNotFoundException {
-        ObservableList<DirectorioTB> empList = FXCollections.observableArrayList();
-        long count = 0;
-        while (rs.next()) {
-            count++;
-            DirectorioTB emp = new DirectorioTB();
-            emp.setId(count);
-            emp.setPersona(new PersonaTB(rs.getString("Persona")));
-            empList.add(emp);
+            }
         }
         return empList;
     }
-    
-    public static String CrudEntity(DirectorioTB directorioTB){
+
+    public static String CrudEntity(DirectorioTB directorioTB) {
         String selectStmt = "{call Sp_Crud_Directorio(?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
@@ -48,7 +54,7 @@ public class DirectorioADO {
             callableStatement.setInt("Atributo", directorioTB.getAtributo());
             callableStatement.setString("Valor", directorioTB.getValor());
             callableStatement.setString("IdPersona", directorioTB.getIdPersona());
-            
+
             callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
             callableStatement.execute();
             return callableStatement.getString("Message");
@@ -65,8 +71,8 @@ public class DirectorioADO {
             }
         }
     }
-    
-     public static ArrayList<DirectorioTB> GetIdDirectorio(String documento) {
+
+    public static ArrayList<DirectorioTB> GetIdDirectorio(String documento) {
         String selectStmt = "{call Sp_Get_Directorio_By_Id(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -102,5 +108,5 @@ public class DirectorioADO {
         }
         return arrayList;
     }
-    
+
 }

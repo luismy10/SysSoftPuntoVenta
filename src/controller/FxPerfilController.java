@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -27,8 +26,6 @@ public class FxPerfilController implements Initializable {
     private AnchorPane window;
     @FXML
     private VBox vbList;
-    @FXML
-    private Button btnToAction;
     @FXML
     private Text lblInformation;
     

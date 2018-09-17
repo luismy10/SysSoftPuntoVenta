@@ -113,7 +113,7 @@ public class FxPersonaController implements Initializable {
 
         if (!arrayList.isEmpty()) {
             PersonaTB list = arrayList.get(0);
-            idPersona = list.getIdPersona();
+            idPersona = list.getIdPersona().get();
             ObservableList<DetalleTB> lstype = cbDocumentType.getItems();
             for (int i = 0; i < lstype.size(); i++) {
                 if (list.getTipoDocumento() == lstype.get(i).getIdDetalle().get()) {

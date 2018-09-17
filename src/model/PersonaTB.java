@@ -11,8 +11,9 @@ import javafx.beans.property.SimpleObjectProperty;
 public class PersonaTB extends FacturacionTB {
 
     private SimpleLongProperty id;
-    private String idPersona;
+    private SimpleStringProperty idPersona;
     private int tipoDocumento;
+    private SimpleStringProperty tipoDocumentoName;
     private SimpleStringProperty numeroDocumento;
     private SimpleStringProperty apellidoPaterno;
     private String apellidoMaterno;
@@ -31,11 +32,16 @@ public class PersonaTB extends FacturacionTB {
     public PersonaTB() {
     }
 
-    public PersonaTB(String idPersona) {
-        this.idPersona = idPersona;
+    public PersonaTB(String apellidoPaterno) {
+        this.apellidoPaterno = new SimpleStringProperty(apellidoPaterno);
     }
 
-   
+    public PersonaTB(String idPersona, String tipoDocumentoName, String numeroDocumento, String apellidoPaterno) {
+        this.idPersona = new SimpleStringProperty(idPersona);
+        this.tipoDocumentoName = new SimpleStringProperty(tipoDocumentoName);
+        this.numeroDocumento = new SimpleStringProperty(numeroDocumento);
+        this.apellidoPaterno = new SimpleStringProperty(apellidoPaterno);
+    }
 
     public SimpleLongProperty getId() {
         return id;
@@ -45,12 +51,12 @@ public class PersonaTB extends FacturacionTB {
         this.id = new SimpleLongProperty(id);
     }
 
-    public String getIdPersona() {
+    public SimpleStringProperty getIdPersona() {
         return idPersona;
     }
 
     public void setIdPersona(String idPersona) {
-        this.idPersona = idPersona;
+        this.idPersona = new SimpleStringProperty(idPersona);
     }
 
     public int getTipoDocumento() {
@@ -171,9 +177,18 @@ public class PersonaTB extends FacturacionTB {
 
     public void setEstadoName(String estadoName) {
         this.estadoName = new SimpleStringProperty(estadoName);
-    }    
-    
+    }
+
     public ObjectProperty<LocalDate> fechaRegistroProperty() {
         return fechaRegistro;
     }
+
+    public SimpleStringProperty getTipoDocumentoName() {
+        return tipoDocumentoName;
+    }
+
+    public void setTipoDocumentoName(String tipoDocumentoName) {
+        this.tipoDocumentoName = new SimpleStringProperty(tipoDocumentoName);
+    }
+
 }
