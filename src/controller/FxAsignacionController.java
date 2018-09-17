@@ -32,7 +32,7 @@ public class FxAsignacionController implements Initializable {
 
     private long idDirectorio;
 
-    private long idPersona;
+    private String idPersona;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -113,7 +113,7 @@ public class FxAsignacionController implements Initializable {
         Tools.Dispose(window);
     }
 
-    void setViewAdd(long idPersona) {
+    void setViewAdd(String idPersona) {
         this.idPersona = idPersona;
     }
 

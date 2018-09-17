@@ -13,43 +13,10 @@
 } 
 
 
-
-
-*{       
-    -color-primary:#3F51B5; 
-    -color-accent:#F44336; 
-    -color-secondary:#1E88E5; 
-    -color-dark-primary:#303F9F; 
-    -color-body:#F5F5F5; 
-} 
-
-.labelTitle{
-    -fx-font-size:18; 
-    -fx-font-family:"Roboto";  
-}
-
 .labelForm{ 
     -fx-font-size:14; 
     -fx-font-family:"Roboto";  
 } 
-/*------------*/
-.text-field{ 
-    -fx-font-size:14; 
-    -fx-font-family:"Roboto"; 
-    -fx-background-color:white;
-    -fx-border-color:#cccccc;
-} 
-.text-field:hover{
-    -fx-border-color:#00aff0;
-}
-.text-field:focused{
-    -fx-border-color:#00aff0;
-}
-.text-field:disabled{
-    -fx-background-color:#E0E0E2;    
-    -fx-border-color:#94BBDA;
-    -fx-opacity:1.0;
-}
 
 /*---------------*/
 .text-area{
@@ -85,11 +52,11 @@
 
 .labelBorder{
     -fx-padding: 4 30 4 30;  
-    -fx-border-color: #FE104C;
-    -fx-font-family:"Roboto";  
-    -fx-font-size:12; 
+    -fx-font-family:"Roboto Bold";  
+    -fx-font-size:14; 
 }
 
+/**********/
 .buttonTransparent{
     -fx-border-color: transparent;
     -fx-background-color: transparent;
@@ -114,13 +81,20 @@
 }
 /*--------------*/
 .buttonIcon{
-    -fx-border-color: transparent;
-    -fx-background-color: transparent;
+    -fx-background-color: -fx-shadow-highlight-color,rgb(43,87,154),rgb(43,87,154),rgb(43,87,154);
     -fx-font-family:"Roboto";  
-    -fx-font-size:14; 
+    -fx-font-size:16; 
+    -fx-text-fill: white;
 }
 .buttonIcon:hover{
-
+    -fx-background-color:  #3a3e4d;
+    -fx-cursor: hand;
+}
+.buttonIcon:pressed{
+    -fx-background-color: #373e58;
+}
+.buttonIcon:focused{
+    -fx-background-color: #373e58;
 }
 /*-----------------*/
 .buttonMenu{
@@ -135,82 +109,44 @@
 }
 
 
-.table-view{
-    -fx-border-radius: 3;
-    -fx-background-radius: 3;
-}
-
-.table-view .column-header{
-    -fx-background-color: #23283A;
-}
-.table-view .filler{
-    -fx-background-color: #23283A;
-}
-.table-view .column-header .label,.table-view .column-drag-header .label{
-    -fx-text-fill: #FFFFFF;
-    -fx-font-family:"Roboto"; 
-    -fx-font-size: 14px;
-}
-.table-view .column-header-background{
-    -fx-background-color: #23283A;
-}
-
 /*--------------------*/
 .tableView{
-    -fx-border-radius: 3;
-    -fx-background-radius: 3;
-    -fx-font-family:"Roboto"; 
-    -fx-font-size: 14px;
-
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
 }
 .tableView .table-row-cell .text{
     -fx-fill: #23283a;
 }
-
 .tableView .column-header{
-    -fx-background-color:  #23283a;
+    -fx-background-color:  #1a2226;
     -fx-border-width:0 1px 1px 0;
     -fx-border-color:#ccc;
 }
+.table-view .column-header:hover{
+    -fx-background-color: #7a7a7a;
+    -fx-cursor:hand;
+}
+.table-view .column-header .label:hover{
+    -fx-text-fill: white;
+}
 .tableView .filler{
-    -fx-background-color:  #23283a;
+    -fx-background-color: #1a2226;
     -fx-border-width:0 0 1px 0;
     -fx-border-color:#ccc;
 }
 .tableView .column-header .label,.tableView .column-drag-header .label{
-    -fx-text-fill: white;
-    -fx-font-family:"Roboto"; 
+    -fx-text-fill:  white;
+    -fx-font-family:"Roboto Medium"; 
     -fx-font-size: 14px;
+    -fx-padding: 10 0 10 0;
 }
 .tableView .column-header-background{
     -fx-background-color: white;
 }
-
-/*--------------------*/
-.tableMyView{
-    -fx-border-radius: 3;
-    -fx-background-radius: 3;
-}
-
-.tableMyView .column-header{
-    /*-fx-background-color:#e7e6e6;*/
-    -fx-background-color:#00a876;
-    -fx-border-width:0 1px 1px 0;
-    -fx-border-color:#00a876;
-}
-.tableMyView .filler{
-    -fx-background-color:#00a876;
-    -fx-border-width:0 0 1px 0;
-    -fx-border-color:#00a876;
-}
-.tableMyView .column-header .label,.tableView .column-drag-header .label{
-    /*-fx-text-fill: #757575;*/
-    -fx-text-fill:#212F3D;
+.tableView .table-cell {
     -fx-font-family:"Roboto"; 
     -fx-font-size: 14px;
-}
-.tableMyView .column-header-background{
-    -fx-background-color: white;
+    -fx-padding: 8px;
 }
 
 
@@ -466,7 +402,7 @@
     -fx-cursor: hand;
 }
 .buttonSixth:pressed{
-    
+
     -fx-text-fill:  black;
     -fx-border-color:  #999999;
 }
@@ -520,7 +456,7 @@
 .tab {
     -fx-background-insets: 0.0;
     -fx-background-radius: 0.0;
-    -fx-background-color:   #23283a;
+    -fx-background-color:    #1a2226;
 }
 .tab:selected{
     -fx-background-color:   #e7e6e6;
@@ -536,7 +472,7 @@
     -fx-padding: 0 30 0 30;
 }
 .tab-pane *.tab-header-background {
-    -fx-background-color:   #23283a;
+    -fx-background-color:    #1a2226;
 }
 .tab-pane:top *.tab-header-area {
     -fx-background-insets: 0, 0 0 1 0;
@@ -645,3 +581,394 @@
 .scroll-bar:vertical:focused {
     -fx-background-color: transparent;
 }
+
+/*-------------*/
+.labelTitle{
+    -fx-font-size:18; 
+    -fx-font-family:"Roboto Bold"; 
+    -fx-fill: white;
+}
+.labelSubtitle{
+    -fx-font-size:16; 
+    -fx-font-family:"Roboto Bold"; 
+    -fx-fill: white;
+}
+.labelNormal{
+    -fx-font-size:14; 
+    -fx-font-family:"Roboto Medium"; 
+    -fx-fill: white;
+}
+.labelMayor{
+    -fx-font-size:25; 
+    -fx-font-family:"Roboto Medium"; 
+    -fx-fill: #1a2226;
+}
+.labelMedio{
+    -fx-font-size:20; 
+    -fx-font-family:"Roboto Medium";
+}
+.labelTotales{
+    -fx-font-size:28; 
+    -fx-font-family:"Roboto Bold"; 
+    -fx-fill: white;
+}
+.labelTextTotales{
+    -fx-font-size:20; 
+    -fx-font-family:"Roboto Bold"; 
+    -fx-fill: white;
+}
+.labelTextPanel{
+    -fx-font-size:16; 
+    -fx-font-family:"Roboto"; 
+    -fx-fill: white;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Button panel                                                    *
+ *                                                                             *
+ ******************************************************************************/
+.buttonPanel {
+    -fx-padding: 12 30 12 30;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 0;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: transparent;
+    -fx-font-size:16; 
+    -fx-font-family:"Roboto"; 
+    -fx-text-fill: white;    
+    -fx-opacity: 0.4;
+}
+.buttonPanel:hover{
+    -fx-background-color: #444858;
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+.buttonPanel:pressed, .buttonPanel:default:hover:pressed{
+    -fx-text-fill:   #23283a;
+}
+/*#0C0F18*/
+.buttonPanel:focused{    
+    -fx-background-color: #0a6db0;
+    -fx-opacity: 1;
+}
+.buttonPanelActive{
+    -fx-background-color: #0a6db0;
+    -fx-opacity: 1;
+}
+/*******************************************************************************
+ *                                                                             *
+ * Button panel with Hbox                                                    *
+ *                                                                             *
+ ******************************************************************************/
+.buttonContainer {
+    -fx-padding:12px 30px 12px 30px;
+    -fx-spacing:10px;
+    -fx-opacity:0.4;
+}
+.buttonContainer:hover {
+    -fx-background-color: #444858;
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+.buttonContainer:pressed {
+    -fx-background-color: #1F2434;
+}
+.buttonContainerActivate{
+    -fx-background-color: #0a6db0;
+    -fx-padding:12px 30px 12px 30px;
+    -fx-spacing:10px;
+    -fx-opacity:1;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Table View                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+/*
+.table-view{
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-border-insets: 0, 0;
+}
+.table-view:focused{
+    -fx-border-color: #00aff0;
+}
+.table-view .column-header-background {
+    -fx-background-color: #cccccc;
+}
+.table-view .column-header, .table-view .filler{
+    -fx-background-color: #cccccc;
+    -fx-border-color: transparent transparent transparent transparent;
+}
+
+.table-view .filler {
+    -fx-background-color: transparent, #cccccc;
+}
+
+.table-view .column-header:last-visible {
+    -fx-border-color: transparent transparent transparent transparent;
+}
+
+.table-view .filler {
+    -fx-border-color: transparent transparent transparent transparent;
+}
+
+.table-view .column-header .label{
+    -fx-text-fill: #1a2226;
+    -fx-font-family:"Roboto Medium"; 
+    -fx-font-size: 14px;
+    -fx-padding: 8;
+}
+
+.table-view .column-header:hover{
+    -fx-background-color: #7a7a7a;
+    -fx-cursor:hand;
+}
+.table-view .column-header .label:hover{
+    -fx-text-fill: white;
+}
+
+.table-cell {
+    -fx-font-family:"Roboto "; 
+    -fx-font-size: 14px;
+    -fx-padding: 8px;
+}*/
+
+/*******************************************************************************
+ *                                                                             *
+ * Button Light                                                     *
+ *                                                                             *
+ ******************************************************************************/
+
+.buttonLight{
+    BACKGROUND: #cccccc;
+    BACKGROUND_PRESSED: #999999;
+
+    BORDER_HOVER: #7a7a7a;
+
+    TEXT: #111;
+    DEFAULT_BUTTON_TEXT: white;
+
+    FOCUS_RING_BORDER: #111;
+
+    -shrink-animate-on-press: true;
+}
+
+.buttonLight{
+    -fx-padding: 0.25em 1.666666em 0.25em 1.666666em; /*3 20 3 20*/
+
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: BACKGROUND;
+
+    -fx-font-family:"Roboto";
+    -fx-font-size: 14;
+    -fx-text-fill: TEXT;
+}
+.buttonLight:hover{
+    -fx-border-color: BORDER_HOVER;
+    -fx-border-width: 1;
+}
+.buttonLight:pressed{
+    -fx-border-color: BACKGROUND_PRESSED;
+    -fx-background-color: BACKGROUND_PRESSED;
+    -fx-border-width: 1;
+}
+.buttonLight:focused{
+    -fx-border-color: transparent, #00aff0;
+    -fx-border-radius: 0, 0;
+    -fx-border-width: 1;
+}
+.buttonLight:disabled, .buttonLight:default:disabled{
+    -fx-opacity: 0.4;
+    -fx-background-color: BACKGROUND;
+    -fx-text-fill: TEXT;
+}
+
+.buttonLight {
+    BORDER_HOVER_DEFAULT: derive(ACCENT_COLOR, -40%);
+}
+.buttonLight:default
+{
+    -fx-background-color: ACCENT_COLOR;
+    -fx-text-fill: DEFAULT_BUTTON_TEXT;
+}
+.buttonLight:default:hover{
+    -fx-border-color: BORDER_HOVER_DEFAULT;
+}
+.buttonLight:default:pressed {
+    -fx-background-color: derive(ACCENT_COLOR, -40%);
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Button Light Default                                                    *
+ *                                                                             *
+ ******************************************************************************/
+
+.buttonLightDefault{
+    BACKGROUND: #2796c4;
+    BACKGROUND_PRESSED: #175a75;
+
+    BORDER_HOVER: #175a75;
+
+    TEXT: #ffffff;
+    DEFAULT_BUTTON_TEXT: white;
+
+    FOCUS_RING_BORDER: #ffffff;
+
+    -shrink-animate-on-press: true;
+}
+
+.buttonLightDefault{
+    -fx-padding: 0.25em 1.666666em 0.25em 1.666666em; /*3 20 3 20*/
+
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: BACKGROUND;
+
+    -fx-font-family:"Roboto";
+    -fx-font-size: 14;
+    -fx-text-fill: TEXT;
+}
+.buttonLightDefault:hover{
+    -fx-border-color: BORDER_HOVER;
+    -fx-border-width: 1;
+}
+.buttonLightDefault:pressed{
+    -fx-border-color: BACKGROUND_PRESSED;
+    -fx-background-color: BACKGROUND_PRESSED;
+    -fx-border-width: 1;
+}
+.buttonLightDefault:focused{
+    -fx-border-color: transparent, #00aff0;
+    -fx-border-radius: 0, 0;
+    -fx-border-width: 1;
+}
+.buttonLightDefault:disabled, .buttonLightDefault:default:disabled{
+    -fx-opacity: 0.4;
+    -fx-background-color: BACKGROUND;
+    -fx-text-fill: TEXT;
+}
+
+.buttonLightDefault {
+    BORDER_HOVER_DEFAULT: derive(ACCENT_COLOR, -40%);
+}
+.buttonLightDefault:default
+{
+    -fx-background-color: ACCENT_COLOR;
+    -fx-text-fill: DEFAULT_BUTTON_TEXT;
+}
+.buttonLightDefault:default:hover{
+    -fx-border-color: BORDER_HOVER_DEFAULT;
+}
+.buttonLightDefault:default:pressed {
+    -fx-background-color: derive(ACCENT_COLOR, -40%);
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * Text Field (and Password Field)                                             *
+ *                                                                             *
+ ******************************************************************************/
+.text-field {
+
+}
+
+.text-field {
+    ACCENT_COLOR: #2796c4;
+    BORDER: #999999;
+    BORDER_HOVER: #666666;
+
+    BACKGROUND: white;
+    BACKGROUND_FOCUSED: #00aff0;
+    BACKGROUND_HOVER: white;
+
+    TEXT_COLOR: #111;
+    PROMPT_TEXT: #666666;
+
+    HIGHLIGHT: ACCENT_COLOR;
+    HIGHLIGHT_TEXT: white;
+
+    GRAPHIC: #747474;
+}
+
+.text-input{
+    -fx-background-radius: 0, 0;
+
+    -fx-background-color: BORDER, BACKGROUND;
+    -fx-border-width:1;
+    -fx-border-color: #999999;
+    -fx-prompt-text-fill: PROMPT_TEXT;
+
+    -fx-highlight-fill: HIGHLIGHT;
+    -fx-highlight-text-fill: HIGHLIGHT_TEXT;
+
+    -fx-font-size:14; 
+    -fx-font-family:"Roboto"; 
+}
+
+.text-input:hover{
+    -fx-background-color: BORDER_HOVER, BACKGROUND_HOVER;
+    -fx-border-color: #7a7a7a;
+}
+
+.text-input:focused{
+    -fx-background-color: #00aff0, BACKGROUND_HOVER;
+    -fx-border-width:1;
+    -fx-border-color: #00aff0;
+}
+
+.text-input > .right-button{
+    -fx-cursor: default;
+
+    -fx-background-insets: -0.1666665em -0.45em -0.1666665em -0.45em; /* 4 7 4 7 -> this values are subtracted by 2px in em because of the border of the textfield */
+    -fx-background-color: BACKGROUND_FOCUSED;  /* We must give it a color so that it reacts to the mouse */
+}
+
+.text-field > .right-button > .right-button-graphic {
+
+    -fx-padding: 0.416667em;
+    -fx-background-color: GRAPHIC;
+}
+
+.text-input > .right-button:hover > .right-button-graphic {
+    -fx-background-color: ACCENT_COLOR;
+}
+
+.text-input:disabled
+{
+    -fx-opacity: 1;
+    -fx-background-color: #d9d9d9, #eaeaea;
+    -fx-text-fill: #adadad;
+}
+
+/*
+.text-field{ 
+    -fx-font-size:14; 
+    -fx-font-family:"Roboto"; 
+    -fx-background-color:white;
+    -fx-border-color:#cccccc;
+} 
+.text-field:hover{
+    -fx-border-color:#00aff0;
+}
+.text-field:focused{
+    -fx-border-color:#00aff0;
+}
+.text-field:disabled{
+    -fx-background-color:#E0E0E2;    
+    -fx-border-color:#94BBDA;
+    -fx-opacity:1.0;
+}
+*/

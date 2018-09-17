@@ -42,10 +42,6 @@ public class FacturacionTB {
         this.numeroDocumentoFacturacion = numeroDocumentoFacturacion;
     }
 
-    
-    
-   
-
     public String getRazonSocial() {
         return razonSocial;
     }

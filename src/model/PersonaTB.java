@@ -1,6 +1,5 @@
 package model;
 
-import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -9,11 +8,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-public class PersonaTB extends FacturacionTB implements Serializable {
+public class PersonaTB extends FacturacionTB {
 
     private SimpleLongProperty id;
-    private Long idPersona;
+    private SimpleStringProperty idPersona;
     private int tipoDocumento;
+    private SimpleStringProperty tipoDocumentoName;
     private SimpleStringProperty numeroDocumento;
     private SimpleStringProperty apellidoPaterno;
     private String apellidoMaterno;
@@ -21,6 +21,8 @@ public class PersonaTB extends FacturacionTB implements Serializable {
     private String segundoNombre;
     private int sexo;
     private Date fechaNacimiento;
+    private int estado;
+    private SimpleStringProperty estadoName;
     private String usuarioRegistro;
     private ObjectProperty<LocalDate> fechaRegistro;
     private String usuarioActualizo;
@@ -30,26 +32,15 @@ public class PersonaTB extends FacturacionTB implements Serializable {
     public PersonaTB() {
     }
 
-    public PersonaTB(Long idPersona) {
-        this.idPersona = idPersona;
-    }
-
     public PersonaTB(String apellidoPaterno) {
         this.apellidoPaterno = new SimpleStringProperty(apellidoPaterno);
     }
 
-    public PersonaTB(Long idPersona, SimpleLongProperty id, int tipoDocumento, SimpleStringProperty numeroDocumento, SimpleStringProperty apellidoPaterno, String apellidoMaterno, String primerNombre, String segundoNombre, int sexo, String usuarioRegistro, ObjectProperty<LocalDate> fechaRegistro) {
-        this.idPersona = idPersona;
-        this.id = id;
-        this.tipoDocumento = tipoDocumento;
-        this.numeroDocumento = numeroDocumento;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.primerNombre = primerNombre;
-        this.segundoNombre = segundoNombre;
-        this.sexo = sexo;
-        this.usuarioRegistro = usuarioRegistro;
-        this.fechaRegistro = fechaRegistro;
+    public PersonaTB(String idPersona, String tipoDocumentoName, String numeroDocumento, String apellidoPaterno) {
+        this.idPersona = new SimpleStringProperty(idPersona);
+        this.tipoDocumentoName = new SimpleStringProperty(tipoDocumentoName);
+        this.numeroDocumento = new SimpleStringProperty(numeroDocumento);
+        this.apellidoPaterno = new SimpleStringProperty(apellidoPaterno);
     }
 
     public SimpleLongProperty getId() {
@@ -60,12 +51,12 @@ public class PersonaTB extends FacturacionTB implements Serializable {
         this.id = new SimpleLongProperty(id);
     }
 
-    public Long getIdPersona() {
+    public SimpleStringProperty getIdPersona() {
         return idPersona;
     }
 
-    public void setIdPersona(Long idPersona) {
-        this.idPersona = idPersona;
+    public void setIdPersona(String idPersona) {
+        this.idPersona = new SimpleStringProperty(idPersona);
     }
 
     public int getTipoDocumento() {
@@ -172,7 +163,32 @@ public class PersonaTB extends FacturacionTB implements Serializable {
         this.directorioTBCollection = directorioTBCollection;
     }
 
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public SimpleStringProperty getEstadoName() {
+        return estadoName;
+    }
+
+    public void setEstadoName(String estadoName) {
+        this.estadoName = new SimpleStringProperty(estadoName);
+    }
+
     public ObjectProperty<LocalDate> fechaRegistroProperty() {
         return fechaRegistro;
     }
+
+    public SimpleStringProperty getTipoDocumentoName() {
+        return tipoDocumentoName;
+    }
+
+    public void setTipoDocumentoName(String tipoDocumentoName) {
+        this.tipoDocumentoName = new SimpleStringProperty(tipoDocumentoName);
+    }
+
 }

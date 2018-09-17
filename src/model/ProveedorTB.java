@@ -1,12 +1,16 @@
 package model;
 
 import java.sql.Date;
-import javafx.beans.property.SimpleLongProperty;
+import java.time.LocalDate;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class ProveedorTB {
-
-    private SimpleLongProperty idProveedor;
+    
+    private SimpleIntegerProperty id;
+    private SimpleStringProperty idProveedor;
     private int tipoDocumento;
     private SimpleStringProperty tipoDocumentoName;
     private SimpleStringProperty numeroDocumento;
@@ -14,36 +18,31 @@ public class ProveedorTB {
     private SimpleStringProperty nombreComercial;
     private String pais;
     private int ciudad;
+    private int ambito;
     private int estado;
+    private SimpleStringProperty estadoName;
     private String usuarioRegistro;
-    private Date fechaRegistro;
+    private ObjectProperty<LocalDate> fechaRegistro;
     private String usuarioActualizado;
     private Date fechaActualizado;
 
     public ProveedorTB() {
     }
 
-    public ProveedorTB(SimpleLongProperty idProveedor, int tipoDocumento, SimpleStringProperty numeroDocumento, SimpleStringProperty razonSocial, SimpleStringProperty nombreComercial, String pais, int ciudad, int estado, String usuarioRegistro, Date fechaRegistro, String usuarioActualizado, Date fechaActualizado) {
-        this.idProveedor = idProveedor;
-        this.tipoDocumento = tipoDocumento;
-        this.numeroDocumento = numeroDocumento;
-        this.razonSocial = razonSocial;
-        this.nombreComercial = nombreComercial;
-        this.pais = pais;
-        this.ciudad = ciudad;
-        this.estado = estado;
-        this.usuarioRegistro = usuarioRegistro;
-        this.fechaRegistro = fechaRegistro;
-        this.usuarioActualizado = usuarioActualizado;
-        this.fechaActualizado = fechaActualizado;
+    public SimpleIntegerProperty getId() {
+        return id;
     }
 
-    public SimpleLongProperty getIdProveedor() {
+    public void setId(int id) {
+        this.id = new SimpleIntegerProperty(id);
+    }
+    
+    public SimpleStringProperty getIdProveedor() {
         return idProveedor;
     }
 
-    public void setIdProveedor(long idProveedor) {
-        this.idProveedor = new SimpleLongProperty(idProveedor);
+    public void setIdProveedor(String idProveedor) {
+        this.idProveedor = new SimpleStringProperty(idProveedor);
     }
 
     public int getTipoDocumento() {
@@ -94,6 +93,14 @@ public class ProveedorTB {
         this.ciudad = ciudad;
     }
 
+    public int getAmbito() {
+        return ambito;
+    }
+
+    public void setAmbito(int ambito) {
+        this.ambito = ambito;
+    }
+
     public int getEstado() {
         return estado;
     }
@@ -110,12 +117,12 @@ public class ProveedorTB {
         this.usuarioRegistro = usuarioRegistro;
     }
 
-    public Date getFechaRegistro() {
+    public ObjectProperty<LocalDate> getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
+    public void setFechaRegistro(LocalDate fechaRegistro) {
+        this.fechaRegistro = new SimpleObjectProperty<>(fechaRegistro);
     }
 
     public String getUsuarioActualizado() {
@@ -140,6 +147,18 @@ public class ProveedorTB {
 
     public void setTipoDocumentoName(String tipoDocumentoName) {
         this.tipoDocumentoName = new SimpleStringProperty(tipoDocumentoName);
+    }
+
+    public SimpleStringProperty getEstadoName() {
+        return estadoName;
+    }
+
+    public void setEstadoName(String estadoName) {
+        this.estadoName = new SimpleStringProperty(estadoName);
+    }
+    
+    public ObjectProperty<LocalDate> fechaRegistroProperty() {
+        return fechaRegistro;
     }
 
 }

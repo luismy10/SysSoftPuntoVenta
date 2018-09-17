@@ -10,7 +10,7 @@ public class DirectorioTB implements Serializable {
     private int atributo;
     private String nombre;
     private String valor;
-    private Long idPersona;
+    private String idPersona;
     private PersonaTB persona;
 
     public DirectorioTB() {
@@ -72,11 +72,11 @@ public class DirectorioTB implements Serializable {
         this.persona = persona;
     }
 
-    public Long getIdPersona() {
+    public String getIdPersona() {
         return idPersona;
     }
 
-    public void setIdPersona(Long idPersona) {
+    public void setIdPersona(String idPersona) {
         this.idPersona = idPersona;
     }
 
