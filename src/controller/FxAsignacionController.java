@@ -39,7 +39,7 @@ public class FxAsignacionController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
         idDirectorio = 0;
         if (DBUtil.StateConnection()) {
-            DetalleADO.GetDetailIdName("1", "0002", "FOTOGRAFÍA").forEach(e -> {
+            DetalleADO.GetDetailIdName("2", "0002", "").forEach(e -> {
                 cbAtributo.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
             });
 

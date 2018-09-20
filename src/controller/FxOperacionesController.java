@@ -7,14 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class FxOperacionesController implements Initializable {
 
@@ -85,6 +83,20 @@ public class FxOperacionesController implements Initializable {
         controller.fillEmployeeTable();
 
     }
+    
+    private void openWindowArticulos() throws IOException {
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_ARTICULO));
+        VBox node = fXMLPrincipal.load();
+//        FxDirectorioController controller = fXMLPrincipal.getController();
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        content.getChildren().add(node);
+//        controller.fillEmployeeTable();
+
+    }
 
     @FXML
     private void onKeyPressedCustomers(KeyEvent event) throws IOException {
@@ -125,6 +137,18 @@ public class FxOperacionesController implements Initializable {
     void setContent(AnchorPane windowinit,AnchorPane content) {
         this.windowinit=windowinit;
         this.content = content;
+    }
+
+    @FXML
+    private void onKeyPressedArticulos(KeyEvent event) throws IOException {
+        if(event.getCode() == KeyCode.ENTER){
+            openWindowArticulos();
+        }
+    }
+
+    @FXML
+    private void onActionArticulos(ActionEvent event) throws IOException {
+        openWindowArticulos();
     }
 
 }

@@ -39,6 +39,7 @@ public class Tools {
     static final String FX_FILE_PROVEEDOREPROCESO = "/view/proveedores/FxProveedorProceso.fxml";
     static final String FX_FILE_PROVEEDOLISTA = "/view/proveedores/FxProveedorLista.fxml";
     static final String FX_FILE_MIEMPRESA = "/view/miempresa/FxMiEmpresa.fxml";
+     static final String FX_FILE_ARTICULO = "/view/articulo/FxArticulos.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         Alert alert = new Alert(type);
