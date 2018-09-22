@@ -55,7 +55,7 @@
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox fx:id="cbDocumentType" prefHeight="30.0" prefWidth="210.0" styleClass="comboBox" />
+                                          <ComboBox fx:id="cbDocumentType" prefHeight="30.0" prefWidth="210.0" />
                                           <Label prefWidth="115.0" text="N° Documento:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
@@ -121,7 +121,7 @@
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox fx:id="cbSex" prefHeight="30.0" prefWidth="210.0" styleClass="comboBox" />
+                                          <ComboBox fx:id="cbSex" prefHeight="30.0" prefWidth="210.0" />
                                           <Label text="Fecha nacimiento:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
@@ -130,7 +130,7 @@
                                                 <Insets left="10.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <DatePicker fx:id="dpBirthdate" prefWidth="210.0" />
+                                          <DatePicker fx:id="dpBirthdate" prefHeight="30.0" prefWidth="210.0" showWeekNumbers="true" />
                                        </children>
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -143,7 +143,7 @@
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox fx:id="cbEstado" prefHeight="30.0" prefWidth="210.0" styleClass="comboBox" />
+                                          <ComboBox fx:id="cbEstado" prefHeight="30.0" prefWidth="210.0" />
                                        </children>
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -207,7 +207,7 @@
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox fx:id="cbDocumentTypeFactura" prefHeight="30.0" prefWidth="210.0" styleClass="comboBox" />
+                                          <ComboBox fx:id="cbDocumentTypeFactura" prefHeight="30.0" prefWidth="210.0" />
                                           <Label prefWidth="119.0" text="N° Documento:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />

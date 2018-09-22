@@ -1,0 +1,128 @@
+package model;
+
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+public class ArticuloADO {
+
+    public static String CrudEntity(ArticuloTB articuloTB) {
+        String selectStmt = "{call Sp_Crud_Articulo(?,?,?,?,?,?,?,?,?,?,?)}";
+        CallableStatement callableStatement = null;
+        try {
+            DBUtil.dbConnect();
+            callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
+            callableStatement.setString("IdArticulo", articuloTB.getIdArticulo());
+            callableStatement.setString("Clave", articuloTB.getClave().get());
+            callableStatement.setString("ClaveAlterna", articuloTB.getClaveAlterna());
+            callableStatement.setString("NombreMarca", articuloTB.getNombre().get());
+            callableStatement.setString("NombreGenerico", articuloTB.getNombreGenerico());
+            callableStatement.setString("Descripcion", articuloTB.getDescripcion());
+            callableStatement.setInt("Categoria", articuloTB.getCategorio());
+            callableStatement.setInt("Marca", articuloTB.getMarcar());
+            callableStatement.setInt("Presentacion", articuloTB.getPresentacion());
+            //--------------------------------------------------------------------------
+            callableStatement.setBinaryStream("Imagen", articuloTB.getImagenTB().getFile());
+            //---------------------------------------------------------------------------
+            callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
+            callableStatement.execute();
+            return callableStatement.getString("Message");
+        } catch (SQLException e) {
+            return e.getLocalizedMessage();
+        } finally {
+            try {
+                if (callableStatement != null) {
+                    callableStatement.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+                return ex.getLocalizedMessage();
+            }
+        }
+    }
+
+    public static ObservableList<ArticuloTB> ListArticulos(String value) {
+        String selectStmt = "{call Sp_Listar_Articulo(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<ArticuloTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            rsEmps = preparedStatement.executeQuery();
+
+            while (rsEmps.next()) {
+                ArticuloTB articuloTB = new ArticuloTB();
+                articuloTB.setId(rsEmps.getRow());
+                articuloTB.setClave(rsEmps.getString("Clave"));
+                articuloTB.setNombre(rsEmps.getString("NombreMarca"));
+                articuloTB.setMarcaName(rsEmps.getString("Marca"));
+                articuloTB.setPresentacionName(rsEmps.getString("Presentacion")); 
+                empList.add(articuloTB);
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+
+    public static ArrayList<ArticuloTB> GetArticulosById(String value) {
+        String selectStmt = "{call Sp_Get_Articulo_By_Id(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ArrayList<ArticuloTB> empList = new ArrayList<>();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+                ArticuloTB articuloTB = new ArticuloTB();
+                articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
+                articuloTB.setClave(rsEmps.getString("Clave"));
+                articuloTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
+                articuloTB.setNombre(rsEmps.getString("NombreMarca"));
+                articuloTB.setNombreGenerico(rsEmps.getString("NombreGenerico"));
+                articuloTB.setDescripcion(rsEmps.getString("Descripcion"));
+                articuloTB.setCategorio(rsEmps.getInt("Categoria"));
+                articuloTB.setMarcar(rsEmps.getInt("Marca"));
+                empList.add(articuloTB);
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+
+}

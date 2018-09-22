@@ -39,14 +39,15 @@ public class Tools {
     static final String FX_FILE_PROVEEDOREPROCESO = "/view/proveedores/FxProveedorProceso.fxml";
     static final String FX_FILE_PROVEEDOLISTA = "/view/proveedores/FxProveedorLista.fxml";
     static final String FX_FILE_MIEMPRESA = "/view/miempresa/FxMiEmpresa.fxml";
-     static final String FX_FILE_ARTICULO = "/view/articulo/FxArticulos.fxml";
+    static final String FX_FILE_ARTICULO = "/view/articulo/FxArticulos.fxml";
+    static final String FX_FILE_ARTICULOPROCESO = "/view/articulo/FxArticuloProceso.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         Alert alert = new Alert(type);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("/view/icon.png"));
         alert.setTitle(title);
-        alert.getDialogPane().setStyle(""); 
+        alert.getDialogPane().setStyle("");
         alert.initModality(Modality.WINDOW_MODAL);
         alert.initOwner(window);
         alert.setHeaderText(null);
@@ -120,6 +121,5 @@ public class Tools {
         }
         return null;
     }
-
 
 }

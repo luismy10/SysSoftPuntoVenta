@@ -18,28 +18,6 @@
     -fx-font-family:"Roboto";  
 } 
 
-/*---------------*/
-.text-area{
-    -fx-font-size:14;
-    -fx-font-family:"Roboto";
-    -fx-background-color:white;
-    -fx-border-color:#cccccc;
-}
-.text-area .content{
-    -fx-background-color:white;
-}
-.text-area:hover{
-    -fx-border-color:#00aff0;
-}
-.text-area:focused{
-    -fx-border-color:#00aff0;
-}
-.text-area:disabled{
-    -fx-background-color:#E0E0E2;
-    -fx-border-color:#94BBDA;
-    -fx-opacity:1.0;
-}
-
 .panelOption{
     -fx-background-color: rgb(241,241,241);
     -fx-border-color: transparent transparent rgb(210,210,210) transparent;
@@ -425,19 +403,6 @@
     -fx-fill: #FE104C;
 }
 
-/*----------*/
-.comboBox{
-    -fx-background-color:white;
-    -fx-border-color:#ccc;
-    -fx-font-family:"Roboto";  
-    -fx-font-size: 14px;
-}
-.comboBox:hover{
-    -fx-border-color:#00aff0;
-}
-.comboBox:focused{
-    -fx-border-color:#00aff0;
-}
 
 /*-------------*/
 .tab-pane {
@@ -482,37 +447,6 @@
     -fx-focus-color: transparent;
     -fx-border-color: transparent;
 }
-
-/*--------------*/
-
-.date-picker{
-    -fx-font-size:14; 
-    -fx-font-family:"Roboto"; 
-    -fx-background-color:white;
-    -fx-border-color:#cccccc;
-    -fx-border-width:1;
-}
-.date-picker:focused{
-    -fx-border-color: #00aff0;
-}
-.date-picker:hover{
-    -fx-border-color: #00aff0;
-}
-.date-picker > .text-field {
-    -fx-border-color: #ccc;
-    -fx-border-width: 0;
-    -fx-border-style: none;
-    -fx-border-radius: 0;
-}
-.date-picker > .arrow-button{
-    -fx-background-color:white;
-}
-.date-picker:disabled{
-    -fx-border-color: #94BBDA;
-    -fx-text-fill: #000000;
-    -fx-opacity: 1.0;   
-}
-
 
 /*----------------*/
 .scroll-bar:horizontal .track,
@@ -873,15 +807,81 @@
     -fx-background-color: derive(ACCENT_COLOR, -40%);
 }
 
+/*******************************************************************************
+ *                                                                             *
+ * Button Border                                                    *
+ *                                                                             *
+ ******************************************************************************/
+
+.buttonBorder{
+    BACKGROUND: transparent;
+    BACKGROUND_PRESSED: #cccccc;
+
+    BORDER_HOVER: #175a75;
+
+    TEXT: #ffffff;
+    DEFAULT_BUTTON_TEXT: white;
+
+    FOCUS_RING_BORDER: #ffffff;
+
+    -shrink-animate-on-press: true;
+}
+
+.buttonBorder{
+    -fx-padding: 0.25em 1.666666em 0.25em 1.666666em; /*3 20 3 20*/
+
+    -fx-border-color: #999999;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: BACKGROUND;
+
+    -fx-font-family:"Roboto";
+    -fx-font-size: 14;
+    -fx-text-fill: TEXT;
+}
+.buttonBorder:hover{
+    -fx-border-color: BORDER_HOVER;
+    -fx-border-width: 1;
+}
+.buttonBorder:pressed{
+    -fx-border-color: BACKGROUND_PRESSED;
+    -fx-background-color: BACKGROUND_PRESSED;
+    -fx-border-width: 1;
+}
+.buttonBorder:focused{
+    -fx-border-color: transparent, #00aff0;
+    -fx-border-radius: 0, 0;
+    -fx-border-width: 1;
+}
+.buttonBorder:disabled, .buttonBorder:default:disabled{
+    -fx-opacity: 0.4;
+    -fx-background-color: BACKGROUND;
+    -fx-text-fill: TEXT;
+}
+
+.buttonBorder {
+    BORDER_HOVER_DEFAULT: derive(ACCENT_COLOR, -40%);
+}
+.buttonBorder:default
+{
+    -fx-background-color: ACCENT_COLOR;
+    -fx-text-fill: DEFAULT_BUTTON_TEXT;
+}
+.buttonBorder:default:hover{
+    -fx-border-color: BORDER_HOVER_DEFAULT;
+}
+.buttonBorder:default:pressed {
+    -fx-background-color: derive(ACCENT_COLOR, -40%);
+}
+
 
 /*******************************************************************************
  *                                                                             *
  * Text Field (and Password Field)                                             *
  *                                                                             *
  ******************************************************************************/
-.text-field {
-
-}
 
 .text-field {
     ACCENT_COLOR: #2796c4;
@@ -901,33 +901,28 @@
     GRAPHIC: #747474;
 }
 
-.text-input{
+.text-field{
     -fx-background-radius: 0, 0;
 
     -fx-background-color: BORDER, BACKGROUND;
     -fx-border-width:1;
     -fx-border-color: #999999;
-    -fx-prompt-text-fill: PROMPT_TEXT;
-
-    -fx-highlight-fill: HIGHLIGHT;
-    -fx-highlight-text-fill: HIGHLIGHT_TEXT;
 
     -fx-font-size:14; 
     -fx-font-family:"Roboto"; 
 }
 
-.text-input:hover{
+.text-field:hover{
     -fx-background-color: BORDER_HOVER, BACKGROUND_HOVER;
     -fx-border-color: #7a7a7a;
 }
 
-.text-input:focused{
-    -fx-background-color: #00aff0, BACKGROUND_HOVER;
+.text-field:focused{
     -fx-border-width:1;
     -fx-border-color: #00aff0;
 }
 
-.text-input > .right-button{
+.text-field > .right-button{
     -fx-cursor: default;
 
     -fx-background-insets: -0.1666665em -0.45em -0.1666665em -0.45em; /* 4 7 4 7 -> this values are subtracted by 2px in em because of the border of the textfield */
@@ -940,33 +935,201 @@
     -fx-background-color: GRAPHIC;
 }
 
-.text-input > .right-button:hover > .right-button-graphic {
+.text-field > .right-button:hover > .right-button-graphic {
     -fx-background-color: ACCENT_COLOR;
 }
 
-.text-input:disabled
+.text-field:disabled
 {
     -fx-opacity: 1;
     -fx-background-color: #d9d9d9, #eaeaea;
     -fx-text-fill: #adadad;
 }
 
-/*
-.text-field{ 
+/*******************************************************************************
+*                                                                              *
+*Text Area                                                                     *
+*                                                                              *
+*******************************************************************************/
+.text-area{
+    BORDER: #999999;
+    BORDER_HOVER: #666666;
+
+    BACKGROUND: white;
+    BACKGROUND_FOCUSED: #00aff0;
+    BACKGROUND_HOVER: white;
+}
+.text-area{
+    -fx-background-radius: 0, 0;
+    
+    -fx-font-size:14;
+    -fx-font-family:"Roboto";
+
+    -fx-background-color: BORDER, BACKGROUND;
+    -fx-border-width:1;
+    -fx-border-color: #999999;
+}
+.text-area .content{
+    -fx-background-color: BACKGROUND_HOVER;
+}
+
+.text-area:hover{
+    -fx-background-color: BORDER_HOVER, BACKGROUND_HOVER;
+    -fx-border-color: #7a7a7a;
+}
+
+.text-area:focused{
+    -fx-border-width:1;
+    -fx-border-color: #00aff0;
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * Date Picker                                                                 *
+ *                                                                             *
+ ******************************************************************************/
+.date-picker{
+    -fx-background-color: transparent, transparent, transparent, transparent;
     -fx-font-size:14; 
     -fx-font-family:"Roboto"; 
     -fx-background-color:white;
-    -fx-border-color:#cccccc;
-} 
-.text-field:hover{
-    -fx-border-color:#00aff0;
+    -fx-border-color:#999999;
+    -fx-border-width:1;
 }
-.text-field:focused{
-    -fx-border-color:#00aff0;
+.date-picker:hover{
+    -fx-border-color: #7a7a7a;
 }
-.text-field:disabled{
-    -fx-background-color:#E0E0E2;    
-    -fx-border-color:#94BBDA;
-    -fx-opacity:1.0;
+.date-picker:focused{
+    -fx-border-color: #00aff0;
 }
-*/
+.date-picker > .arrow-button > .arrow {
+    -fx-shape: "M0,0v9h9V0H0z M2,8H1V7h1V8z M2,6H1V5h1V6z M2,4H1V3h1V4z M4,8H3V7h1V8z M4,6H3V5h1V6z M4,4H3V3h1V4z M6,8H5V7h1V8z M6,6H5 V5h1V6z M6,4H5V3h1V4z M8,8H7V7h1V8z M8,6H7V5h1V6z M8,4H7V3h1V4z";
+    -fx-background-color:  #1a2226;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.416667em 0.416667em 0.333333em 0.333333em; /* 5 5 4 4 */
+    -fx-scale-shape: true;
+}
+
+.date-picker .text-field{
+    -fx-border-color: #ccc;
+    -fx-border-width: 0;
+    -fx-border-style: none;
+    -fx-border-radius: 0;
+}
+
+.date-picker > .arrow-button{
+    -fx-background-color: white;
+}
+
+.date-picker > .arrow-button:hover {
+    -fx-background-color: #d9d9d9;
+    -fx-background-insets: 3 3 3 3;
+    -fx-background-radius: 0;
+}
+
+.date-picker > .arrow-button:pressed {
+    -fx-background-color: black;
+}
+
+.date-picker > .arrow-button:pressed > .arrow {
+    -fx-background-color: white;
+}
+
+.date-picker-popup {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+}
+
+.date-picker-popup > .month-year-pane {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+}
+
+.date-picker-popup > * > .spinner > .button {
+    -fx-padding: 0.25em 0.583333em 0.25em 0.583333em; /* 3 7 3 7 */
+}
+
+.date-picker-popup > * > .spinner > .button {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+}
+
+.date-picker-popup > * > .spinner {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+}
+
+.date-picker-popup > * > .spinner > .button:hover {
+    -fx-background-color: #dadada;
+}
+
+.date-picker-popup > * > .spinner > .button:armed {
+    -fx-background-color: #606060;
+}
+
+.date-picker-popup > * > .spinner > .button > .left-arrow,
+.date-picker-popup > * > .spinner > .button > .right-arrow {
+    -fx-background-color: #606060;
+    -fx-background-insets: 0;
+    -fx-effect: null;
+}
+
+.date-picker-popup > * > .spinner > .button:pressed > .left-arrow,
+.date-picker-popup > * > .spinner > .button:pressed > .right-arrow {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+}
+
+.date-picker-popup > .calendar-grid {
+    -fx-background-color: white;
+    /*-fx-background-insets: 1 0 0 0;*/
+    -fx-padding: 0;
+}
+
+.date-picker-popup > * > .previous-month,
+.date-picker-popup > * > .next-month {
+    -fx-background-color: white;
+    -fx-opacity: 0.3;
+}
+
+.date-picker-popup > * > .day-name-cell,
+.date-picker-popup > * > .week-number-cell {
+    -fx-font-size:14px;
+    -fx-font-family: "Roboto";
+}
+
+.date-picker:disabled{
+    -fx-background-color: #eaeaea;
+    -fx-text-fill: #adadad;
+    -fx-opacity: 1.0; 
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Combo Box                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.combo-box {
+    -fx-background-color: transparent, white, transparent, white;
+    -fx-border-width:1;
+    -fx-border-color: #999999;
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 14px;
+}
+
+.combo-box:hover {
+    -fx-border-color: #7a7a7a;
+}
+
+.combo-box:focused {
+    -fx-border-width:1;
+    -fx-border-color: #00aff0;
+}
+
+.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 14px;
+    -fx-padding: 6px;
+}

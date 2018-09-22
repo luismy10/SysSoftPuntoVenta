@@ -87,14 +87,15 @@ public class FxOperacionesController implements Initializable {
     private void openWindowArticulos() throws IOException {
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_ARTICULO));
         VBox node = fXMLPrincipal.load();
-//        FxDirectorioController controller = fXMLPrincipal.getController();
+        FxArticulosController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
         content.getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         content.getChildren().add(node);
-//        controller.fillEmployeeTable();
+        controller.fillArticlesTable("");
 
     }
 
