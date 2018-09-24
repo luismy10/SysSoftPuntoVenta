@@ -105,7 +105,7 @@
                                           <Image url="@../home.png" />
                                        </image>
                                     </ImageView>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Inicio" />
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Inicio" />
                                  </children>
                               </HBox>
                               <HBox fx:id="btnOperacion" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onMouseClickedOperaciones" styleClass="buttonContainer">
@@ -115,7 +115,7 @@
                                           <Image url="@../bag.png" />
                                        </image>
                                     </ImageView>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Operaciones" />
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Operaciones" />
                                  </children>
                               </HBox>
                               <HBox fx:id="btnConsultas" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onMouseClickedConsultas" styleClass="buttonContainer">
@@ -125,7 +125,7 @@
                                           <Image url="@../consultas.png" />
                                        </image>
                                     </ImageView>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Consultas" />
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Consultas" />
                                  </children>
                               </HBox>
                               <HBox fx:id="btnReportes" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onMouseClickedReportes" styleClass="buttonContainer">
@@ -135,7 +135,7 @@
                                           <Image url="@../reports.png" />
                                        </image>
                                     </ImageView>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Reportes" />
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Reportes" />
                                  </children>
                               </HBox>
                               <HBox fx:id="btnGraficos" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onMouseClickedGraficos" styleClass="buttonContainer">
@@ -145,7 +145,7 @@
                                           <Image url="@../charts.png" />
                                        </image>
                                     </ImageView>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Gráficos" />
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Gráficos" />
                                  </children>
                               </HBox>
                               <HBox fx:id="btnConfiguracion" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onMouseClickedConfiguracion" spacing="10.0" styleClass="buttonContainer">
@@ -155,7 +155,7 @@
                                           <Image url="@../configuration.png" />
                                        </image>
                                     </ImageView>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Configuracón" />
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Configuracón" />
                                  </children>
                               </HBox>
                            </children>

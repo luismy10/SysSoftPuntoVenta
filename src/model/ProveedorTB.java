@@ -27,7 +27,15 @@ public class ProveedorTB {
     private Date fechaActualizado;
 
     public ProveedorTB() {
+        
     }
+
+    public ProveedorTB(String numeroDocumento, String razonSocial) {
+        this.numeroDocumento = new SimpleStringProperty(numeroDocumento);
+        this.razonSocial = new SimpleStringProperty(razonSocial);
+    }
+    
+    
 
     public SimpleIntegerProperty getId() {
         return id;

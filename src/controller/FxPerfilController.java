@@ -1,6 +1,10 @@
 package controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -9,16 +13,23 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.DBUtil;
 import model.DirectorioADO;
 import model.DirectorioTB;
+import model.ImageADO;
+import model.ImagenTB;
 
 public class FxPerfilController implements Initializable {
 
@@ -28,12 +39,17 @@ public class FxPerfilController implements Initializable {
     private VBox vbList;
     @FXML
     private Text lblInformation;
-    
+    @FXML
+    private ImageView ivPerfil;
+
     private String idPersona;
-   
+
+    private long idImagen;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        idPersona = "";
+        idImagen = 0;
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
     }
 
@@ -65,13 +81,14 @@ public class FxPerfilController implements Initializable {
     void setLoadView(String idPersona, String information) {
         this.idPersona = idPersona;
         lblInformation.setText(information);
+        loadViewImage(idPersona);
         loadViewUpdate(idPersona);
     }
 
     public void loadViewUpdate(String idPersona) {
         if (DBUtil.StateConnection()) {
             try {
-                ArrayList<DirectorioTB> arrayList = DirectorioADO.GetIdDirectorio(idPersona);                
+                ArrayList<DirectorioTB> arrayList = DirectorioADO.GetIdDirectorio(idPersona);
                 for (int i = 0; i < arrayList.size(); i++) {
                     FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource("/view/persona/FxCard.fxml"));
                     HBox node = fXMLLoader.load();
@@ -89,6 +106,14 @@ public class FxPerfilController implements Initializable {
         }
     }
 
+    private void loadViewImage(String idRepresentante) {
+        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante);
+        if (imagenTB.getIdImage() != 0) {
+            idImagen = imagenTB.getIdImage();
+            ivPerfil.setImage(imagenTB.getImagen());
+        }
+    }
+
     @FXML
     private void onKeyPressedToReload(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -101,6 +126,40 @@ public class FxPerfilController implements Initializable {
     private void onActionToReload(ActionEvent event) {
         vbList.getChildren().clear();
         loadViewUpdate(idPersona);
+    }
+
+    @FXML
+    private void onMouseClickedImage(MouseEvent event) throws FileNotFoundException {
+        if (event.getClickCount() == 2) {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Importar una imagen");
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Elija una imagen", "*.png", "*.jpg", "*.jpeg"));
+            File file = fileChooser.showOpenDialog(window.getScene().getWindow());
+            if (file != null) {
+                file = new File(file.getAbsolutePath());
+                if (file.getName().endsWith("png") || file.getName().endsWith("jpg") || file.getName().endsWith("jpeg")) {
+                    ivPerfil.setImage(new Image(file.toURI().toString()));
+                    try (InputStream inputStream = new FileInputStream(file)) {
+                        ImagenTB imagenTB = new ImagenTB();
+                        imagenTB.setIdImage(idImagen);
+                        imagenTB.setFile(inputStream);
+                        imagenTB.setIdRelacionado(idPersona);
+                        String result = ImageADO.CrudImage(imagenTB);
+                        if (result.equalsIgnoreCase("insert")) {
+                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Perfil", "Registrado correctamente.", false);
+                        } else if (result.equalsIgnoreCase("update")) {
+                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Perfil", "Actualizado correctamente.", false);
+                        } else if (result.equalsIgnoreCase("error")) {
+                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Perfil", "No se puedo completar la ejecución.", false);
+                        } else {
+                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Perfil", result, false);
+                        }
+                    } catch (Exception ex) {
+
+                    }
+                }
+            }
+        }
     }
 
 }

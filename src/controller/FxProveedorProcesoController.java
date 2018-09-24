@@ -141,7 +141,7 @@ public class FxProveedorProcesoController implements Initializable {
     }
 
     public void setValueAddRepresentante(String... value) {
-        String idPersona = PersonaADO.ListPersonasId(value[0]);
+        String idPersona = PersonaADO.GetPersonasId(value[0]);
         if (!idProveedor.equalsIgnoreCase("") && !idPersona.equalsIgnoreCase("")) {
             String result = RepresentanteADO.CrudRepresentante(new RepresentanteTB(idProveedor, idPersona));
             switch (result) {
@@ -172,7 +172,7 @@ public class FxProveedorProcesoController implements Initializable {
         btnRegister.setText("Actualizar");
         btnRegister.getStyleClass().add("buttonFourth");
         txtDocumentNumberFactura.setText(value[0]);
-        ArrayList<ProveedorTB> list = ProveedorADO.GetIdPersona(value[0]);
+        ArrayList<ProveedorTB> list = ProveedorADO.GetIdLisProveedor(value[0]);
         if (!list.isEmpty()) {
             ProveedorTB proveedorTB = list.get(0);
             idProveedor = proveedorTB.getIdProveedor().get();
@@ -355,14 +355,14 @@ public class FxProveedorProcesoController implements Initializable {
 
     private void onViewPersonas() throws IOException {
 
-        URL url = getClass().getResource(Tools.FX_FILE_PROVEEDOLISTA);
+        URL url = getClass().getResource(Tools.FX_FILE_REPRESENTANTELISTA);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
-        FxProveedorListaController controller = fXMLLoader.getController();
+        FxRepresentanteListaController controller = fXMLLoader.getController();
         controller.setInitProveedorProcesoController(this);
         //
-        Stage stage = FxWindow.StageLoaderModal(parent, "Seleccionar Proveedor", window.getScene().getWindow());
+        Stage stage = FxWindow.StageLoaderModal(parent, "Seleccionar Representante", window.getScene().getWindow());
         stage.setResizable(false);
 
         stage.show();
@@ -388,7 +388,7 @@ public class FxProveedorProcesoController implements Initializable {
 
     private void showDirectory() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            String idPersona = PersonaADO.ListPersonasId(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
+            String idPersona = PersonaADO.GetPersonasId(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
             onViewPerfil(idPersona,
                     tvList.getSelectionModel().getSelectedItem().getApellidoPaterno().get() + " "
                     + tvList.getSelectionModel().getSelectedItem().getApellidoMaterno() + " "
@@ -416,7 +416,7 @@ public class FxProveedorProcesoController implements Initializable {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Proveedor", "¿Esta seguro de continuar?", true);
             if (confirmation == 1) {
-                String idPersona = PersonaADO.ListPersonasId(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
+                String idPersona = PersonaADO.GetPersonasId(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
                 String result = RepresentanteADO.DeleteRepresentante(idProveedor, idPersona);
                 switch (result) {
                     case "eliminado":

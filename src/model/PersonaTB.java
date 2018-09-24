@@ -28,12 +28,18 @@ public class PersonaTB extends FacturacionTB {
     private String usuarioActualizo;
     private String fechaActualizo;
     private Collection<DirectorioTB> directorioTBCollection;
+    private String datosCompletos;
 
     public PersonaTB() {
     }
 
     public PersonaTB(String apellidoPaterno) {
         this.apellidoPaterno = new SimpleStringProperty(apellidoPaterno);
+    }
+
+    public PersonaTB(String numeroDocumento, String datosCompletos) {
+        this.numeroDocumento = new SimpleStringProperty(numeroDocumento);
+        this.datosCompletos = datosCompletos;
     }
 
     public PersonaTB(String idPersona, String tipoDocumentoName, String numeroDocumento, String apellidoPaterno) {
@@ -191,4 +197,8 @@ public class PersonaTB extends FacturacionTB {
         this.tipoDocumentoName = new SimpleStringProperty(tipoDocumentoName);
     }
 
+    @Override
+    public String toString() {
+        return datosCompletos;
+    }
 }

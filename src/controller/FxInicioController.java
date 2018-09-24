@@ -2,8 +2,12 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,6 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import model.DBUtil;
 
 public class FxInicioController implements Initializable {
@@ -46,6 +51,8 @@ public class FxInicioController implements Initializable {
     private ScrollPane principal;
 
     private HBox operaciones;
+    
+    private HBox consultas;
 
     private HBox configuracion;
 
@@ -69,8 +76,14 @@ public class FxInicioController implements Initializable {
 
             FXMLLoader fXMLOperaciones = new FXMLLoader(getClass().getResource(Tools.FX_FILE_OPERACIONES));
             operaciones = fXMLOperaciones.load();
-            FxOperacionesController controller = fXMLOperaciones.getController();
-            controller.setContent(window, vbContent);
+            FxOperacionesController controllerOperaciones = fXMLOperaciones.getController();
+            controllerOperaciones.setContent(window, vbContent);
+            
+            FXMLLoader fXMLConsultas = new FXMLLoader(getClass().getResource(Tools.FX_FILE_CONSULTAS));
+            consultas = fXMLConsultas.load();
+            FxConsultasController controllerConsultas = fXMLConsultas.getController();
+            controllerConsultas.setContent(window, vbContent);
+            
 
             FXMLLoader fXMLConfiguracion = new FXMLLoader(getClass().getResource(Tools.FX_FILE_CONFIGURACION));
             configuracion = fXMLConfiguracion.load();
@@ -78,6 +91,18 @@ public class FxInicioController implements Initializable {
             setNode(principal);
             btnInicio.getStyleClass().add("buttonContainerActivate");
             width_siderbar = vbSiderBar.getPrefWidth();
+
+            TimerService service = new TimerService();
+            service.setPeriod(Duration.seconds(59));
+            service.setOnSucceeded((WorkerStateEvent t) -> {
+                try {
+                    DBUtil.dbConnect();
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            service.start();
 
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
@@ -145,6 +170,7 @@ public class FxInicioController implements Initializable {
 
     @FXML
     private void onMouseClickedConsultas(MouseEvent event) {
+        setNode(consultas);
         btnInicio.getStyleClass().remove("buttonContainerActivate");
         btnOperacion.getStyleClass().remove("buttonContainerActivate");
         btnReportes.getStyleClass().remove("buttonContainerActivate");

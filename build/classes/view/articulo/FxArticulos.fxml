@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticulosController">
+<VBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticulosController">
    <children>
       <HBox VBox.vgrow="ALWAYS">
          <children>
@@ -37,7 +37,7 @@
                      <children>
                         <HBox spacing="10.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#onActionAdd" styleClass="buttonLight" text="Agregar">
+                              <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -46,7 +46,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionEdit" styleClass="buttonLight" text="Editar">
+                              <Button mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -64,11 +64,20 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionReload" styleClass="buttonLight" text="Recargar">
+                              <Button mnemonicParsing="false" onAction="#onActionReload" onKeyPressed="#onKeyPressedReload" styleClass="buttonLight" text="Recargar">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../reload.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionClone" onKeyPressed="#onKeyPressedClone" styleClass="buttonLight" text="Clonar">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../clone.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -90,12 +99,12 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
-                                                <Label styleClass="labelNormal" text="Datos del artículo">
+                                                <Label styleClass="labelNormal" text="Datos del artículo" textFill="#1a2226">
                                                    <font>
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="lblLoad" contentDisplay="RIGHT" text="Cargando..." textOverrun="CLIP" visible="false">
+                                                <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                                                    <font>
                                                       <Font name="Roboto" size="14.0" />
                                                    </font>
@@ -114,13 +123,13 @@
                                     </VBox>
                                  </children>
                               </HBox>
-                              <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="327.0" prefWidth="711.0" styleClass="tableView" VBox.vgrow="ALWAYS">
+                              <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyReleased="#onKeyRelasedList" onMouseClicked="#onMouseClickedList" prefHeight="327.0" prefWidth="711.0" VBox.vgrow="ALWAYS">
                                  <columns>
                                     <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                                    <TableColumn fx:id="tcDocument" prefWidth="318.0" style="-fx-alignment: CENTER;" text="Clave/Descripción" />
-                                    <TableColumn fx:id="tcBusinessName" prefWidth="119.0" text="Categoría" />
-                                    <TableColumn fx:id="tcState" prefWidth="103.0" style="-fx-alignment: CENTER;" text="Marca" />
-                                    <TableColumn fx:id="tcFechaRegistro" prefWidth="88.0" style="-fx-alignment: CENTER;" text="Estado" />
+                                    <TableColumn fx:id="tcDocument" prefWidth="280.0" text="Clave/Descripción" />
+                                    <TableColumn fx:id="tcMarca" prefWidth="125.0" text="Marca" />
+                                    <TableColumn fx:id="tcPresentacion" prefWidth="135.0" text="Presentación" />
+                                    <TableColumn fx:id="tcEstado" prefWidth="85.0" text="Estado" />
                                  </columns>
                               </TableView>
                            </children>
@@ -128,25 +137,37 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </VBox>
-                        <VBox alignment="TOP_CENTER" spacing="10.0" style="-fx-border-width: 0 0 0 1; -fx-border-color: #ccc;" HBox.hgrow="SOMETIMES">
+                        <VBox alignment="TOP_CENTER" style="-fx-border-width: 0 0 0 1; -fx-border-color: #ccc;" HBox.hgrow="SOMETIMES">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="Artículo seleccionado" />
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../no-image.png" />
-                                 </image>
-                              </ImageView>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="GRISSLY GOMAS GUSANOS 90G" textAlignment="CENTER" wrappingWidth="320.0" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="S/. 2.60" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CANTIDAD ACTUAL" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="100 UNIDADES" />
+                              <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextTile" text="Artículo seleccionado">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <ImageView fx:id="ivPrincipal" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../no-image.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Text fx:id="lblName" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="-" textAlignment="CENTER" wrappingWidth="300.0" />
+                                    <Text fx:id="lblPrice" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPrice" text="-" />
+                                 </children>
+                              </VBox>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0" VBox.vgrow="SOMETIMES">
+                                 <children>
+                                    <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMediumSubtitle" text="CANTIDAD ACTUAL" wrappingWidth="73.9130859375" />
+                                    <Text fx:id="lblQuantity" fill="#117c02" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPrice" text="-" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
                            </children>
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
                         </VBox>
                      </children>
                   </HBox>

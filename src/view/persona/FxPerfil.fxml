@@ -32,7 +32,7 @@
                <children>
                   <HBox alignment="CENTER">
                      <children>
-                        <ImageView fitHeight="187.0" fitWidth="401.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                        <ImageView fx:id="ivPerfil" fitHeight="187.0" fitWidth="401.0" onMouseClicked="#onMouseClickedImage" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" HBox.hgrow="ALWAYS">
                            <image>
                               <Image url="@../perfil.jpg" />
                            </image>

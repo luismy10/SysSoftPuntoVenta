@@ -5,7 +5,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 
 import java.util.ResourceBundle;
@@ -109,7 +108,7 @@ public class FxPersonaController implements Initializable {
         btnDesglosar.setVisible(false);
         btnRegister.setText("Actualizar");
         btnRegister.getStyleClass().add("buttonFourth");
-        ArrayList<PersonaTB> arrayList = PersonaADO.GetIdPersona(value[0]);
+        ArrayList<PersonaTB> arrayList = PersonaADO.GetIdListPersona(value[0]);
 
         if (!arrayList.isEmpty()) {
             PersonaTB list = arrayList.get(0);
@@ -135,7 +134,7 @@ public class FxPersonaController implements Initializable {
                     break;
                 }
             }
-            
+
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
             for (int i = 0; i < lsest.size(); i++) {
                 if (list.getEstado() == lsest.get(i).getIdDetalle().get()) {
@@ -143,7 +142,6 @@ public class FxPersonaController implements Initializable {
                     break;
                 }
             }
-            
 
             ObservableList<DetalleTB> lstypefacturacion = cbDocumentTypeFactura.getItems();
             for (int i = 0; i < lstypefacturacion.size(); i++) {
@@ -225,8 +223,7 @@ public class FxPersonaController implements Initializable {
                             : 0);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     if (dpBirthdate.getValue() != null) {
-                        Date date = dateFormat.parse(Tools.getDateDataPcker(dpBirthdate));
-                        personaTB.setFechaNacimiento(new java.sql.Date(date.getTime()));
+                        personaTB.setFechaNacimiento(new java.sql.Date(dateFormat.parse(Tools.getDatePicker(dpBirthdate)).getTime()));
                     } else {
                         personaTB.setFechaNacimiento(null);
                     }
