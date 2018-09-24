@@ -89,7 +89,7 @@ public class PersonaADO {
         return empList;
     }
 
-    public static String ListPersonasId(String value) {
+    public static String GetPersonasId(String value) {
         String selectStmt = "SELECT IdPersona FROM PersonaTB WHERE NumeroDocumento = ?";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -121,7 +121,7 @@ public class PersonaADO {
         return IdPersona;
     }
 
-    public static ArrayList<PersonaTB> GetIdPersona(String documento) {
+    public static ArrayList<PersonaTB> GetIdListPersona(String documento) {
         String selectStmt = "{call Sp_Get_Persona_By_Id(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;

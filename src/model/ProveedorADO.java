@@ -85,7 +85,7 @@ public class ProveedorADO {
         return empList;
     }
 
-    public static ArrayList<ProveedorTB> GetIdPersona(String documento) {
+    public static ArrayList<ProveedorTB> GetIdLisProveedor(String documento) {
         String selectStmt = "{call Sp_Get_Proveedor_By_Id(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -125,5 +125,38 @@ public class ProveedorADO {
         }
         return arrayList;
     }
+    
+    public static String GetProveedorId(String value) {
+        String selectStmt = "SELECT IdProveedor FROM ProveedorTB WHERE NumeroDocumento = ?";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        String IdProveedor = "";
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+                IdProveedor = rsEmps.getString("IdProveedor");
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return IdProveedor;
+    }
+
 
 }

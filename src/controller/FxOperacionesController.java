@@ -22,7 +22,7 @@ public class FxOperacionesController implements Initializable {
     private TextField txtSearch;
 
     private AnchorPane content;
-    
+
     private AnchorPane windowinit;
 
     @Override
@@ -31,17 +31,7 @@ public class FxOperacionesController implements Initializable {
     }
 
     private void openWindowCustomers() throws IOException {
-//        URL url = getClass().getResource(Tools.FX_FILE_CLIENTE);
-//        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
-//        Parent parent = fXMLLoader.load(url.openStream());
-//        //Controlller here
-//        FxClienteController controller = fXMLLoader.getController();
-//        //
-//        Stage stage = FxWindow.StageLoaderModal(parent, "Clientes", window.getScene().getWindow(), Session.WIDTH_WINDOW, Session.HEIGHT_WINDOW);
-//        stage.setMaximized(true);
-//        stage.show();
-//        controller.fillCustomersTable("");
-        
+
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_CLIENTE));
         VBox node = fXMLPrincipal.load();
         FxClienteController controller = fXMLPrincipal.getController();
@@ -83,7 +73,7 @@ public class FxOperacionesController implements Initializable {
         controller.fillEmployeeTable();
 
     }
-    
+
     private void openWindowArticulos() throws IOException {
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_ARTICULO));
         VBox node = fXMLPrincipal.load();
@@ -96,6 +86,20 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setBottomAnchor(node, 0d);
         content.getChildren().add(node);
         controller.fillArticlesTable("");
+
+    }
+
+    private void openWindowCompras() throws IOException {
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_COMPRAS));
+        VBox node = fXMLPrincipal.load();
+        FxComprasController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        content.getChildren().add(node);
 
     }
 
@@ -135,14 +139,14 @@ public class FxOperacionesController implements Initializable {
         openWindowDirectory();
     }
 
-    void setContent(AnchorPane windowinit,AnchorPane content) {
-        this.windowinit=windowinit;
+    void setContent(AnchorPane windowinit, AnchorPane content) {
+        this.windowinit = windowinit;
         this.content = content;
     }
 
     @FXML
     private void onKeyPressedArticulos(KeyEvent event) throws IOException {
-        if(event.getCode() == KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             openWindowArticulos();
         }
     }
@@ -150,6 +154,18 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private void onActionArticulos(ActionEvent event) throws IOException {
         openWindowArticulos();
+    }
+
+    @FXML
+    private void onKeyPressedCompras(KeyEvent event) throws IOException  {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowCompras(); 
+        }
+    }
+
+    @FXML
+    private void onActionCompras(ActionEvent event) throws IOException {
+        openWindowCompras();
     }
 
 }

@@ -1,5 +1,6 @@
 package model;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -18,6 +19,15 @@ public class ArticuloTB {
     private SimpleStringProperty marcaName;
     private int presentacion;
     private SimpleStringProperty presentacionName;
+    private double stockMinimo;
+    private double stockMaximo;
+    private double precioCompra;
+    private SimpleDoubleProperty precioVenta;
+    private SimpleDoubleProperty cantidad;
+    private int estado;
+    private SimpleStringProperty estadoName;
+    private SimpleDoubleProperty descuento;
+    private SimpleDoubleProperty total;
     private ImagenTB imagenTB;
 
     public ArticuloTB() {
@@ -135,6 +145,77 @@ public class ArticuloTB {
     public void setPresentacionName(String presentacionName) {
         this.presentacionName = new SimpleStringProperty(presentacionName);
     }
-    
-    
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public SimpleStringProperty getEstadoName() {
+        return estadoName;
+    }
+
+    public void setEstadoName(String estadoName) {
+        this.estadoName = new SimpleStringProperty(estadoName);
+    }
+
+    public double getStockMinimo() {
+        return stockMinimo;
+    }
+
+    public void setStockMinimo(double stockMinimo) {
+        this.stockMinimo = stockMinimo;
+    }
+
+    public double getStockMaximo() {
+        return stockMaximo;
+    }
+
+    public void setStockMaximo(double stockMaximo) {
+        this.stockMaximo = stockMaximo;
+    }
+
+    public double getPrecioCompra() {
+        return precioCompra;
+    }
+
+    public void setPrecioCompra(double precioCompra) {
+        this.precioCompra = precioCompra;
+    }
+
+    public SimpleDoubleProperty getPrecioVenta() {
+        return precioVenta;
+    }
+
+    public void setPrecioVenta(double precioVenta) {
+        this.precioVenta = new SimpleDoubleProperty(precioVenta);
+    }
+
+    public SimpleDoubleProperty getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(double cantidad) {
+        this.cantidad = new SimpleDoubleProperty(cantidad);
+    }
+
+    public SimpleDoubleProperty getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(double descuento) {
+        this.descuento = new SimpleDoubleProperty(descuento);
+    }
+
+    public SimpleDoubleProperty getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = new SimpleDoubleProperty(total);
+    }
+
 }

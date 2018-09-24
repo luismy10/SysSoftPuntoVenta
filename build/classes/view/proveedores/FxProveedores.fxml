@@ -88,12 +88,12 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label styleClass="labelNormal" text="Datos de la persona o documento">
+                                          <Label styleClass="labelNormal" text="Datos de la persona o documento" textFill="#1a2226">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                           </Label>
-                                          <Label fx:id="lblLoad" contentDisplay="RIGHT" text="Cargando..." textOverrun="CLIP" visible="false">
+                                          <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>

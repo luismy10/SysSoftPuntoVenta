@@ -1,5 +1,11 @@
 package controller;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.Optional;
 import javafx.event.EventType;
@@ -37,11 +43,17 @@ public class Tools {
     static final String FX_FILE_ASIGNACION = "/view/persona/FxAsignacion.fxml";
     static final String FX_FILE_PROVEEDORES = "/view/proveedores/FxProveedores.fxml";
     static final String FX_FILE_PROVEEDOREPROCESO = "/view/proveedores/FxProveedorProceso.fxml";
-    static final String FX_FILE_PROVEEDOLISTA = "/view/proveedores/FxProveedorLista.fxml";
+    static final String FX_FILE_PROVEEDORLISTA = "/view/proveedores/FxProveedorLista.fxml";
+    static final String FX_FILE_REPRESENTANTELISTA = "/view/persona/FxRepresentanteLista.fxml";
     static final String FX_FILE_MIEMPRESA = "/view/miempresa/FxMiEmpresa.fxml";
     static final String FX_FILE_ARTICULO = "/view/articulo/FxArticulos.fxml";
     static final String FX_FILE_ARTICULOPROCESO = "/view/articulo/FxArticuloProceso.fxml";
-
+    static final String FX_FILE_COMPRAS = "/view/compra/FxCompras.fxml";
+    static final String FX_FILE_COMPRASREALIZADAS = "/view/compra/FxComprasRealizadas.fxml";
+    static final String FX_FILE_CONSULTAS = "/view/inicio/FxConsultas.fxml";
+    static final String FX_FILE_ARTICULOLISTA = "/view/articulo/FxArticuloLista.fxml";
+    static final String FX_FILE_ARTICULOCOMPRA = "/view/articulo/FxArticuloCompra.fxml";
+    
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         Alert alert = new Alert(type);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -110,16 +122,40 @@ public class Tools {
         }
     }
 
-    public static String getDateDataPcker(DatePicker datePicker) {
+    public static String[] getDataPeople(String data) {
+        if (!data.equalsIgnoreCase("") || !data.equals(null)) {
+            return data.trim().split(" ");
+        }
+        return null;
+    }
+
+    public static String roundingValue(double valor, int decimals) {
+        BigDecimal decimal = BigDecimal.valueOf(valor);
+        decimal = decimal.setScale(decimals, RoundingMode.HALF_UP);
+        return decimal.toPlainString();
+    }
+
+    public static void actualDate(String date, DatePicker datePicker) {
+        if (date.contains("-")) {
+            datePicker.setValue(LocalDate.of(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]), Integer.parseInt(date.split("-")[2])));
+        } else if (date.contains("/")) {
+            datePicker.setValue(LocalDate.of(Integer.parseInt(date.split("/")[0]), Integer.parseInt(date.split("/")[1]), Integer.parseInt(date.split("/")[2])));
+        }
+    }
+
+    public static String getDatePicker(DatePicker datePicker) {
         LocalDate localDate = datePicker.getValue();
         return localDate.toString();
     }
 
-    public static String[] getDataPeople(String data) {
-        if (data.equalsIgnoreCase("") || data != null) {
-            return data.trim().split(" ");
-        }
-        return null;
+    public static String getDate() {
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
+    }
+
+    public static Timestamp getDateHour() {
+        return new Timestamp(new Date().getTime());
     }
 
 }

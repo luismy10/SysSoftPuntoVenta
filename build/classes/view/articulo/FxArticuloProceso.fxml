@@ -58,7 +58,7 @@
                                                 <Insets />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField fx:id="txtClave" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="210.0" />
+                                          <TextField fx:id="txtClave" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedClave" prefHeight="30.0" prefWidth="210.0" />
                                           <Label prefHeight="18.0" prefWidth="115.0" text="Clave alterna:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
@@ -67,7 +67,7 @@
                                                 <Insets left="10.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField fx:id="txtClaveAlterna" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="210.0" />
+                                          <TextField fx:id="txtClaveAlterna" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedClaveAlterna" prefHeight="30.0" prefWidth="210.0" />
                                        </children>
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -155,6 +155,114 @@
                         </AnchorPane>
                      </content>
                   </Tab>
+                  <Tab text="Datos del precio">
+                    <content>
+                      <AnchorPane style="-fx-background-color: #e7e6e6;">
+                           <children>
+                              <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #cccccc;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                 </padding>
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="18.0" prefWidth="120.0" text="Stock mínimo:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtStockMinimo" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedMinimo" prefHeight="30.0" prefWidth="210.0" promptText="0" />
+                                          <Label prefHeight="18.0" prefWidth="115.0" text="Stock máximo:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtStockMaximo" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedMaxino" prefHeight="30.0" prefWidth="210.0" promptText="0" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="18.0" prefWidth="120.0" text="Cantidad:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtCantidad" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="210.0" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="18.0" prefWidth="120.0" text="Precio compra:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtPrecioCompra" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedPrecioCompra" prefHeight="30.0" prefWidth="210.0" promptText="0.00" />
+                                          <Label prefHeight="18.0" prefWidth="115.0" text="Sin impuesto:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtImpuestoCompra" disable="true" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="210.0" promptText="0.00" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="18.0" prefWidth="120.0" text="Precio de venta:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtPrecioVenta" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedPrecioVenta" prefHeight="30.0" prefWidth="210.0" promptText="0.00" />
+                                          <Label prefHeight="18.0" prefWidth="115.0" text="Sin impuesto:" textFill="#23283a">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtImpuestoVenta" disable="true" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="210.0" promptText="0.00" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children></VBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
                   <Tab text="Caracteristicas">
                      <content>
                         <AnchorPane style="-fx-background-color: #e7e6e6;">
@@ -186,7 +294,7 @@
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../icons8-foto-48.png" />
+                                                            <Image url="@../photo.png" />
                                                          </image>
                                                       </ImageView>
                                                    </graphic>
@@ -207,7 +315,7 @@
                                                       <Font name="Roboto" size="14.0" />
                                                    </font>
                                                 </Label>
-                                                <TextArea fx:id="txtDescripcion" prefHeight="140.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                                                <TextArea fx:id="txtDescripcion" prefHeight="140.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS" />
                                              </children>
                                           </VBox>
                                        </children>

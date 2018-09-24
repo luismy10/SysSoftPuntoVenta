@@ -19,8 +19,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import model.DBUtil;
-import model.PersonaADO;
-import model.PersonaTB;
+import model.ProveedorADO;
+import model.ProveedorTB;
 
 public class FxProveedorListaController implements Initializable {
 
@@ -29,55 +29,60 @@ public class FxProveedorListaController implements Initializable {
     @FXML
     private TextField txtSearch;
     @FXML
-    private TableView<PersonaTB> tvList;
+    private TableView<ProveedorTB> tvList;
     @FXML
-    private TableColumn<PersonaTB, Long> tcId;
+    private TableColumn<ProveedorTB, Integer> tcId;
     @FXML
-    private TableColumn<PersonaTB, String> tcDocument;
+    private TableColumn<ProveedorTB, String> tcDocument;
     @FXML
-    private TableColumn<PersonaTB, String> tcRepresentative;
+    private TableColumn<ProveedorTB, String> tcRepresentative;
+
+    private FxComprasController comprasController;
 
     private Executor exec;
     
-    private FxProveedorProcesoController controller;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
-        if (DBUtil.StateConnection()) {
-            exec = Executors.newCachedThreadPool((runnable) -> {
-                Thread t = new Thread(runnable);
-                t.setDaemon(true);
-                return t;
-            });
-        }
+
+        exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocument.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
         tcRepresentative.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getApellidoPaterno().get() + " " + cellData.getValue().getApellidoMaterno() + " "
-                + cellData.getValue().getPrimerNombre() + " " + cellData.getValue().getSegundoNombre()
+                cellData.getValue().getRazonSocial().get() + "\n" + cellData.getValue().getNombreComercial().get()
         ));
-    }
-    
-    public void setInitProveedorProcesoController(FxProveedorProcesoController controller) {
-        this.controller = controller;
     }
 
     public void fillCustomersTable(String value) {
         if (DBUtil.StateConnection()) {
-            Task<List<PersonaTB>> task = new Task<List<PersonaTB>>() {
+            Task<List<ProveedorTB>> task = new Task<List<ProveedorTB>>() {
                 @Override
-                public ObservableList<PersonaTB> call() {
-                    return PersonaADO.ListPersonasRepresentantes(value);
+                public ObservableList<ProveedorTB> call() {
+                    return ProveedorADO.ListProveedor(value);
                 }
             };
 
             task.setOnSucceeded((WorkerStateEvent e) -> {
-                tvList.setItems((ObservableList<PersonaTB>) task.getValue());
+                tvList.setItems((ObservableList<ProveedorTB>) task.getValue());
             });
             exec.execute(task);
         }
+
+    }
+
+    @FXML
+    private void onKeyPressedToSearh(KeyEvent event) {
+
+    }
+
+    @FXML
+    private void onActionToSearch(ActionEvent event) {
 
     }
 
@@ -92,25 +97,18 @@ public class FxProveedorListaController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedToSearh(KeyEvent event) {
-        fillCustomersTable(txtSearch.getText());
-    }
-
-    @FXML
-    private void onActionToSearch(ActionEvent event) {
-        tvList.requestFocus();
-    }
-
-    @FXML
     private void onMouseClickedList(MouseEvent event) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (event.getClickCount() == 2) {
-                controller.setValueAddRepresentante(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
+                comprasController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get(),
+                        tvList.getSelectionModel().getSelectedItem().getRazonSocial().get());
                 Tools.Dispose(window);
             }
         }
     }
 
-    
+    void setInitComptrasController(FxComprasController comprasController) {
+        this.comprasController = comprasController;
+    }
 
 }

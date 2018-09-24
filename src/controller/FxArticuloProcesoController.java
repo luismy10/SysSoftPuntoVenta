@@ -62,11 +62,29 @@ public class FxArticuloProcesoController implements Initializable {
     private long idImagen;
 
     private File selectFile;
+    @FXML
+    private TextField txtStockMinimo;
+    @FXML
+    private TextField txtStockMaximo;
+    @FXML
+    private TextField txtCantidad;
+    @FXML
+    private TextField txtPrecioCompra;
+    @FXML
+    private TextField txtImpuestoCompra;
+    @FXML
+    private TextField txtPrecioVenta;
+    @FXML
+    private TextField txtImpuestoVenta;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idArticulo = "";
         idImagen = 0;
+
+    }
+
+    public void setInitArticulo() {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
         DetalleADO.GetDetailIdName("2", "0006", "").forEach(e -> {
             cbCategoria.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
@@ -80,6 +98,63 @@ public class FxArticuloProcesoController implements Initializable {
         DetalleADO.GetDetailIdName("2", "0008", "").forEach(e -> {
             cbPresentacion.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
+    }
+
+    public void setValueClone(String value) {
+        ArrayList<ArticuloTB> list = ArticuloADO.GetArticulosById(value);
+        if (!list.isEmpty()) {
+            ArticuloTB articuloTB = list.get(0);
+            txtNombreMarca.setText(articuloTB.getNombre().get());
+            txtNombreGenerico.setText(articuloTB.getNombreGenerico());
+            txtDescripcion.setText(articuloTB.getDescripcion());
+
+            ObservableList<DetalleTB> lscate = cbCategoria.getItems();
+            if (articuloTB.getCategorio() != 0) {
+                for (int i = 0; i < lscate.size(); i++) {
+                    if (articuloTB.getCategorio() == lscate.get(i).getIdDetalle().get()) {
+                        cbCategoria.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            }
+
+            ObservableList<DetalleTB> lsmar = cbMarca.getItems();
+            if (articuloTB.getMarcar() != 0) {
+                for (int i = 0; i < lsmar.size(); i++) {
+                    if (articuloTB.getMarcar() == lsmar.get(i).getIdDetalle().get()) {
+                        cbMarca.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            }
+
+            ObservableList<DetalleTB> lspre = cbPresentacion.getItems();
+            if (articuloTB.getPresentacion() != 0) {
+                for (int i = 0; i < lspre.size(); i++) {
+                    if (articuloTB.getPresentacion() == lspre.get(i).getIdDetalle().get()) {
+                        cbPresentacion.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            }
+
+            ObservableList<DetalleTB> lsest = cbEstado.getItems();
+            if (articuloTB.getEstado() != 0) {
+                for (int i = 0; i < lsest.size(); i++) {
+                    if (articuloTB.getEstado() == lsest.get(i).getIdDetalle().get()) {
+                        cbEstado.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            }
+
+            txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
+            txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
+            txtCantidad.setText(Tools.roundingValue(articuloTB.getCantidad().get(), 2));
+            txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
+            txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
+
+        }
     }
 
     public void setValueEdit(String value) {
@@ -114,6 +189,32 @@ public class FxArticuloProcesoController implements Initializable {
                 }
             }
 
+            ObservableList<DetalleTB> lspre = cbPresentacion.getItems();
+            if (articuloTB.getPresentacion() != 0) {
+                for (int i = 0; i < lspre.size(); i++) {
+                    if (articuloTB.getPresentacion() == lspre.get(i).getIdDetalle().get()) {
+                        cbPresentacion.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            }
+
+            ObservableList<DetalleTB> lsest = cbEstado.getItems();
+            if (articuloTB.getEstado() != 0) {
+                for (int i = 0; i < lsest.size(); i++) {
+                    if (articuloTB.getEstado() == lsest.get(i).getIdDetalle().get()) {
+                        cbEstado.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            }
+
+            txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
+            txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
+            txtCantidad.setText(Tools.roundingValue(articuloTB.getCantidad().get(), 2));
+            txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
+            txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
+
             loadViewImage(idArticulo);
 
         }
@@ -130,22 +231,29 @@ public class FxArticuloProcesoController implements Initializable {
     private void aValidityProcess() {
         if (txtClave.getText().isEmpty()) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese la clave del artículo, por favor.", false);
-
             txtClave.requestFocus();
         } else if (txtNombreMarca.getText().isEmpty()) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el nombre del artículo, por favor.", false);
-
             txtNombreMarca.requestFocus();
+        } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Selecciona el estado del artículo, por favor.", false);
+            cbEstado.requestFocus();
+        } else if (txtPrecioCompra.getText().isEmpty()) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el precio de compra, por favor.", false);
+            txtPrecioCompra.requestFocus();
+        } else if (txtPrecioCompra.getText().isEmpty()) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el precio de venta, por favor.", false);
+            txtPrecioCompra.requestFocus();
         } else {
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Articulo", "¿Esta seguro de continuar?", true);
             if (confirmation == 1) {
                 ArticuloTB articuloTB = new ArticuloTB();
                 articuloTB.setIdArticulo(idArticulo);
-                articuloTB.setClave(txtClave.getText());
-                articuloTB.setClaveAlterna(txtClaveAlterna.getText());
-                articuloTB.setNombre(txtNombreMarca.getText());
-                articuloTB.setNombreGenerico(txtNombreGenerico.getText());
-                articuloTB.setDescripcion(txtDescripcion.getText());
+                articuloTB.setClave(txtClave.getText().trim());
+                articuloTB.setClaveAlterna(txtClaveAlterna.getText().trim());
+                articuloTB.setNombre(txtNombreMarca.getText().trim());
+                articuloTB.setNombreGenerico(txtNombreGenerico.getText().trim());
+                articuloTB.setDescripcion(txtDescripcion.getText().trim());
                 articuloTB.setImagenTB(new ImagenTB(selectFile != null
                         ? getFileResources(selectFile)
                         : getFileResources(null)));
@@ -158,7 +266,31 @@ public class FxArticuloProcesoController implements Initializable {
                 articuloTB.setPresentacion(cbPresentacion.getSelectionModel().getSelectedIndex() >= 0
                         ? cbPresentacion.getSelectionModel().getSelectedItem().getIdDetalle().get()
                         : 0);
-                
+
+                articuloTB.setStockMinimo(!txtStockMinimo.getText().trim().isEmpty()
+                        ? Double.parseDouble(txtStockMinimo.getText().trim())
+                        : 0);
+
+                articuloTB.setStockMaximo(!txtStockMaximo.getText().trim().isEmpty()
+                        ? Double.parseDouble(txtStockMaximo.getText().trim())
+                        : 0);
+
+                articuloTB.setPrecioCompra(!txtPrecioCompra.getText().trim().isEmpty()
+                        ? Double.parseDouble(txtPrecioCompra.getText().trim())
+                        : 0);
+
+                articuloTB.setPrecioVenta(!txtPrecioVenta.getText().trim().isEmpty()
+                        ? Double.parseDouble(txtPrecioVenta.getText().trim())
+                        : 0);
+
+                articuloTB.setCantidad(!txtCantidad.getText().trim().isEmpty()
+                        ? Double.parseDouble(txtCantidad.getText().trim())
+                        : 0);
+
+                articuloTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                        : 0);
+
                 String result = ArticuloADO.CrudEntity(articuloTB);
                 switch (result) {
                     case "registered":
@@ -264,6 +396,77 @@ public class FxArticuloProcesoController implements Initializable {
         } catch (FileNotFoundException ex) {
         }
         return inputStream;
+    }
+
+    @FXML
+    private void onKeyTypedClave(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z')) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedClaveAlterna(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z')) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedCantidad(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+            event.consume();
+        }
+        if (c == '.' && txtCantidad.getText().contains(".") || c == '-' && txtCantidad.getText().contains("-")) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedMinimo(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+            event.consume();
+        }
+        if (c == '.' && txtStockMinimo.getText().contains(".") || c == '-' && txtStockMinimo.getText().contains("-")) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedMaxino(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+            event.consume();
+        }
+        if (c == '.' && txtStockMaximo.getText().contains(".") || c == '-' && txtStockMaximo.getText().contains("-")) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedPrecioCompra(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+            event.consume();
+        }
+        if (c == '.' && txtPrecioCompra.getText().contains(".") || c == '-' && txtPrecioCompra.getText().contains("-")) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedPrecioVenta(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+            event.consume();
+        }
+        if (c == '.' && txtPrecioVenta.getText().contains(".") || c == '-' && txtPrecioVenta.getText().contains("-")) {
+            event.consume();
+        }
     }
 
 }
