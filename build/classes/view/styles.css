@@ -1312,3 +1312,27 @@
     -fx-background-color: #cdcdcd;
     -fx-border-color: #aaa;
 }
+
+
+/*******************************************************************************
+ *                                                                             *
+ * Tooltip                                                                     *
+ *                                                                             *
+ ******************************************************************************/
+
+.tooltip {
+    -fx-background-color: #f2f2f2;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0 0 0 0;
+
+    -fx-padding: 0.333333em 0.666667em 0.333333em 0.666667em;  /*4 8 4 8 */
+
+    -fx-font-family: "Roboto";
+    -fx-text-fill: #111;
+    -fx-font-size: 1.166667em; /* 14 */
+
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+
+    -fx-effect: null;
+}
