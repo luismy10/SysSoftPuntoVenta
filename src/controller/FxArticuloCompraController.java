@@ -65,13 +65,13 @@ public class FxArticuloCompraController implements Initializable {
     @FXML
     private void onActionAdd(ActionEvent event) {
         if (!Tools.isNumeric(txtCantidad.getText())) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor corrector", false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en la cantidad", false);
             txtCantidad.requestFocus();
         } else if (!Tools.isNumeric(txtCosto.getText())) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor corrector", false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el costo", false);
             txtCosto.requestFocus();
         } else if (!Tools.isNumeric(txtPrecio.getText())) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor corrector", false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el precio", false);
             txtPrecio.requestFocus();
         } else {
             ArticuloTB articuloTB = new ArticuloTB();
