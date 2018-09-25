@@ -56,7 +56,7 @@
                         <Font name="Roboto" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtImporte" prefHeight="30.0" prefWidth="130.0" />
+                  <TextField fx:id="txtImporte" onKeyTyped="#onKeyTypedImporte" prefHeight="30.0" prefWidth="130.0" />
                   <Label text="Cantidad:" textFill="#23283a">
                      <font>
                         <Font size="14.0" />
@@ -65,7 +65,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="txtCantidad" prefHeight="30.0" prefWidth="130.0" />
+                  <TextField fx:id="txtCantidad" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="130.0" />
                   <Label text="Incluye IGV:" textFill="#23283a">
                      <font>
                         <Font size="14.0" />
@@ -87,7 +87,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtCosto" />
+                  <TextField fx:id="txtCosto" onKeyTyped="#onKeyTypedCosto" />
                   <Label text="Impuesto:" textFill="#23283a">
                      <font>
                         <Font size="14.0" />
@@ -104,12 +104,25 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
+                  <Label prefWidth="112.0" text="Descuento:" textFill="#23283a">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtDescuento" onKeyTyped="#onKeyTypedDescuento" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
                   <Label prefWidth="112.0" text="Precio de venta:" textFill="#23283a">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtPrecio" />
+                  <TextField fx:id="txtPrecio" onKeyTyped="#onKeyTypedPrecio" />
                   <Label text="Impuesto:" textFill="#23283a">
                      <font>
                         <Font size="14.0" />

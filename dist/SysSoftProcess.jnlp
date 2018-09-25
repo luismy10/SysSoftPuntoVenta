@@ -8,7 +8,11 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+<<<<<<< HEAD
     <jar href="SysSoftProcess.jar" size="537538" download="eager" />
+=======
+    <jar href="SysSoftProcess.jar" size="538802" download="eager" />
+>>>>>>> 772050d6df231f19e79dd6242309695e4f92c60d
     <jar href="lib\sqljdbc4.jar" size="584207" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="SysSoftProcess" >

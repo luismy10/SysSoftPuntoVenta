@@ -85,11 +85,12 @@ public class FxComprasController implements Initializable {
 
     private double total;
 
-    public int count;
+    private int count;
     
-    public double sumarcompra;
+    private double sumarcompra;
+       
+    private double sumardescuento;
     
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idProveedor = idRepresentante = "";
@@ -318,17 +319,25 @@ public class FxComprasController implements Initializable {
     }
 
     public void setCalculateTotals() {
-        tvList.getItems().forEach(tran -> sumarcompra += tran.getPrecioCompra());
-        double temtotal = Double.parseDouble(Tools.roundingValue(sumarcompra, 2));
-        lblTotal.setText("S/. "+Tools.roundingValue(temtotal, 2));
+        tvList.getItems().forEach(tran -> sumarcompra += tran.getTotal().get());
+        double temtotal = Double.parseDouble(Tools.roundingValue(sumarcompra, 2));           
         
-        double subtotal = Tools.calculateValueNeto(18,temtotal);
-        lblSubTotal.setText(Tools.roundingValue(subtotal, 2));
+        tvList.getItems().forEach(tran -> sumardescuento += tran.getDescuento().get());
+        lblDescuento.setText("-"+Tools.roundingValue(sumardescuento, 2));
+        
+        double descuentoTotal = temtotal - sumardescuento; 
+        lblSubTotal.setText(Tools.roundingValue(temtotal, 2));
+        
+        double subtotal = Tools.calculateValueNeto(18,descuentoTotal);
+        lblGravada.setText(Tools.roundingValue(subtotal, 2));
         
         double impuesto = Tools.calculateTax(18,subtotal);
-        lblIgv.setText("S/. "+Tools.roundingValue(impuesto, 2));
+        lblIgv.setText(Tools.roundingValue(impuesto, 2));    
         
-        sumarcompra=0;
+        lblTotal.setText("S/. "+Tools.roundingValue(descuentoTotal, 2));   
+        
+        
+        sumarcompra=sumardescuento=0;
     }
 
 }

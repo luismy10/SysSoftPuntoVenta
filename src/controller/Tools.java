@@ -9,15 +9,19 @@ import java.util.Date;
 import java.time.LocalDate;
 import java.util.Optional;
 import javafx.event.EventType;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -53,7 +57,7 @@ public class Tools {
     static final String FX_FILE_CONSULTAS = "/view/inicio/FxConsultas.fxml";
     static final String FX_FILE_ARTICULOLISTA = "/view/articulo/FxArticuloLista.fxml";
     static final String FX_FILE_ARTICULOCOMPRA = "/view/articulo/FxArticuloCompra.fxml";
-    
+
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         Alert alert = new Alert(type);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -134,14 +138,14 @@ public class Tools {
         decimal = decimal.setScale(decimals, RoundingMode.HALF_UP);
         return decimal.toPlainString();
     }
-    
-    public static double calculateTax(int porcentaje,double valor) {
-        double igv = ((double)porcentaje / 100.00);
+
+    public static double calculateTax(int porcentaje, double valor) {
+        double igv = ((double) porcentaje / 100.00);
         double impu = valor * igv;
         return impu;
     }
-    
-    public static double calculateValueNeto(int porcentaje,double valuecalculate) {
+
+    public static double calculateValueNeto(int porcentaje, double valuecalculate) {
         double subprimer = ((double) porcentaje + 100);
         double valor = valuecalculate;
         double totalvalor = valor / (subprimer * 0.01);
@@ -154,6 +158,20 @@ public class Tools {
         } else if (date.contains("/")) {
             datePicker.setValue(LocalDate.of(Integer.parseInt(date.split("/")[0]), Integer.parseInt(date.split("/")[1]), Integer.parseInt(date.split("/")[2])));
         }
+    }
+
+    public static boolean isNumeric(String cadena) {
+        if (cadena == null || cadena.isEmpty()) {
+            return false;
+        }
+        boolean resultado;
+        try {
+            Double.parseDouble(cadena);
+            resultado = true;
+        } catch (NumberFormatException ex) {
+            resultado = false;
+        }
+        return resultado;
     }
 
     public static String getDatePicker(DatePicker datePicker) {
@@ -169,6 +187,19 @@ public class Tools {
 
     public static Timestamp getDateHour() {
         return new Timestamp(new Date().getTime());
+    }
+    
+    public static void showTooltip(Window owner, Control control, String tooltipText, ImageView tooltipGraphic) {
+        Point2D p = control.localToScene(0.0, 0.0);
+
+        final Tooltip customTooltip = new Tooltip();
+        customTooltip.setText(tooltipText);
+
+        control.setTooltip(customTooltip);
+        customTooltip.setAutoHide(true);
+
+        customTooltip.show(owner);
+
     }
 
 }
