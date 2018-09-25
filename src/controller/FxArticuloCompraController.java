@@ -87,6 +87,7 @@ public class FxArticuloCompraController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya existe en la lista el artículo", false);
             } else {
                 comprasController.setCount(comprasController.getCount() + 1);
+                comprasController.setCalculateTotals();
             }
 
             Tools.Dispose(window);

@@ -65,6 +65,8 @@ public class FxComprasController implements Initializable {
     @FXML
     private Text lblDescuento;
     @FXML
+    private Text lblGravada;
+    @FXML
     private Text lblIgv;
     @FXML
     private Text lblTotal;
@@ -84,6 +86,9 @@ public class FxComprasController implements Initializable {
     private double total;
 
     public int count;
+    
+    public double sumarcompra;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -310,6 +315,20 @@ public class FxComprasController implements Initializable {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public void setCalculateTotals() {
+        tvList.getItems().forEach(tran -> sumarcompra += tran.getPrecioCompra());
+        double temtotal = Double.parseDouble(Tools.roundingValue(sumarcompra, 2));
+        lblTotal.setText("S/. "+Tools.roundingValue(temtotal, 2));
+        
+        double subtotal = Tools.calculateValueNeto(18,temtotal);
+        lblSubTotal.setText(Tools.roundingValue(subtotal, 2));
+        
+        double impuesto = Tools.calculateTax(18,subtotal);
+        lblIgv.setText("S/. "+Tools.roundingValue(impuesto, 2));
+        
+        sumarcompra=0;
     }
 
 }

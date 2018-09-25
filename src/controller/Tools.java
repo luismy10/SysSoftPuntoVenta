@@ -134,6 +134,19 @@ public class Tools {
         decimal = decimal.setScale(decimals, RoundingMode.HALF_UP);
         return decimal.toPlainString();
     }
+    
+    public static double calculateTax(int porcentaje,double valor) {
+        double igv = ((double)porcentaje / 100.00);
+        double impu = valor * igv;
+        return impu;
+    }
+    
+    public static double calculateValueNeto(int porcentaje,double valuecalculate) {
+        double subprimer = ((double) porcentaje + 100);
+        double valor = valuecalculate;
+        double totalvalor = valor / (subprimer * 0.01);
+        return totalvalor;
+    }
 
     public static void actualDate(String date, DatePicker datePicker) {
         if (date.contains("-")) {
