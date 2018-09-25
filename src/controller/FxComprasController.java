@@ -5,6 +5,7 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -86,11 +87,11 @@ public class FxComprasController implements Initializable {
     private double total;
 
     private int count;
-    
+
     private double sumarcompra;
-       
+
     private double sumardescuento;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idProveedor = idRepresentante = "";
@@ -190,11 +191,29 @@ public class FxComprasController implements Initializable {
     }
 
     private void onViewEdit() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
 
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compras", "Seleccione un artículo para editarlo", false);
+
+        }
     }
 
     private void onViewRemove() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Compras", "¿Esta seguro de quitar el artículo?", true);
+            if (confirmation == 1) {
+                ObservableList<ArticuloTB> observableList, articuloTBs;
+                observableList = tvList.getItems();
+                articuloTBs = tvList.getSelectionModel().getSelectedItems();
+                articuloTBs.forEach(e -> observableList.remove(e));
+                setCount(getCount() - 1);
+                setCalculateTotals();
+            }
 
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compras", "Seleccione un artículo para removerlo", false);
+        }
     }
 
     private void onViewProviders() throws IOException {
@@ -320,24 +339,23 @@ public class FxComprasController implements Initializable {
 
     public void setCalculateTotals() {
         tvList.getItems().forEach(tran -> sumarcompra += tran.getTotal().get());
-        double temtotal = Double.parseDouble(Tools.roundingValue(sumarcompra, 2));           
-        
+        double temtotal = Double.parseDouble(Tools.roundingValue(sumarcompra, 2));
+
         tvList.getItems().forEach(tran -> sumardescuento += tran.getDescuento().get());
-        lblDescuento.setText("-"+Tools.roundingValue(sumardescuento, 2));
-        
-        double descuentoTotal = temtotal - sumardescuento; 
+        lblDescuento.setText("-" + Tools.roundingValue(sumardescuento, 2));
+
+        double descuentoTotal = temtotal - sumardescuento;
         lblSubTotal.setText(Tools.roundingValue(temtotal, 2));
-        
-        double subtotal = Tools.calculateValueNeto(18,descuentoTotal);
+
+        double subtotal = Tools.calculateValueNeto(18, descuentoTotal);
         lblGravada.setText(Tools.roundingValue(subtotal, 2));
-        
-        double impuesto = Tools.calculateTax(18,subtotal);
-        lblIgv.setText(Tools.roundingValue(impuesto, 2));    
-        
-        lblTotal.setText("S/. "+Tools.roundingValue(descuentoTotal, 2));   
-        
-        
-        sumarcompra=sumardescuento=0;
+
+        double impuesto = Tools.calculateTax(18, subtotal);
+        lblIgv.setText(Tools.roundingValue(impuesto, 2));
+
+        lblTotal.setText("S/. " + Tools.roundingValue(descuentoTotal, 2));
+
+        sumarcompra = sumardescuento = 0;
     }
 
 }

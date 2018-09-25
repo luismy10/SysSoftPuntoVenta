@@ -21,9 +21,9 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private TextField txtSearch;
 
-    private AnchorPane content;
-
     private AnchorPane windowinit;
+
+    private AnchorPane content;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -157,9 +157,9 @@ public class FxOperacionesController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedCompras(KeyEvent event) throws IOException  {
+    private void onKeyPressedCompras(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowCompras(); 
+            openWindowCompras();
         }
     }
 

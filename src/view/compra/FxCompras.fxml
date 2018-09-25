@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxComprasController">
+<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxComprasController">
    <children>
       <HBox VBox.vgrow="ALWAYS">
          <children>
@@ -143,25 +143,25 @@
                               <VBox spacing="10.0">
                                  <children>
                                     <Label styleClass="labelNormal" text="Sub Total" textFill="#1a2226" />
-                                    <Text fx:id="lblSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/. 0.00" />
+                                    <Text fx:id="lblSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
                                  </children>
                               </VBox>
                               <VBox spacing="10.0">
                                  <children>
                                     <Label styleClass="labelNormal" text="Descuento" textFill="#1a2226" />
-                                    <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/. 0.00" />
+                                    <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
                                  </children>
                               </VBox>
                               <VBox spacing="10.0">
                                  <children>
                                     <Label styleClass="labelNormal" text="Op. Gravada" textFill="#1a2226" />
-                                    <Text fx:id="lblGravada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/. 0.00" />
+                                    <Text fx:id="lblGravada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
                                  </children>
                               </VBox>
                               <VBox spacing="10.0">
                                  <children>
                                     <Label styleClass="labelNormal" text="IGV" textFill="#1a2226" />
-                                    <Text fx:id="lblIgv" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/. 0.00" />
+                                    <Text fx:id="lblIgv" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
                                  </children>
                               </VBox>
                               <VBox spacing="10.0">
