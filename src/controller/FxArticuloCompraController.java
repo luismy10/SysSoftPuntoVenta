@@ -2,6 +2,7 @@ package controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,14 +39,17 @@ public class FxArticuloCompraController implements Initializable {
     private Text lblDescripcion;
     @FXML
     private CheckBox cbImpuesto;
-
-    private FxComprasController comprasController;
     @FXML
     private TextField txtDescuento;
+
+    private FxComprasController comprasController;
+
+    private boolean validationelemnt;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        validationelemnt = false;
     }
 
     private boolean validateStock(TableView<ArticuloTB> view, ArticuloTB articuloTB) {
@@ -89,8 +93,17 @@ public class FxArticuloCompraController implements Initializable {
                             : txtDescuento.getText()
                     ));
 
-            if (validateStock(comprasController.getTvList(), articuloTB)) {
+            if (validateStock(comprasController.getTvList(), articuloTB) && !validationelemnt) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya existe en la lista el artículo", false);
+            } else if (validationelemnt) {
+                
+                ObservableList<ArticuloTB> observableList, articuloTBs;
+                observableList = comprasController.getTvList().getItems();
+                articuloTBs = comprasController.getTvList().getSelectionModel().getSelectedItems();
+                articuloTBs.forEach(e -> observableList.remove(e));
+                comprasController.setCount(comprasController.getCount() - 1);
+                comprasController.setCalculateTotals();
+                
             } else {
                 comprasController.setCount(comprasController.getCount() + 1);
                 comprasController.setCalculateTotals();
@@ -112,6 +125,16 @@ public class FxArticuloCompraController implements Initializable {
     void setLoadData(String... value) {
         lblClave.setText(value[0]);
         lblDescripcion.setText(value[1]);
+    }
+
+    void setLoadEdit(ArticuloTB articuloTB) {
+        lblClave.setText(articuloTB.getClave().get());
+        lblDescripcion.setText(articuloTB.getNombre().get());
+        txtCantidad.setText("" + articuloTB.getCantidad().get());
+        txtCosto.setText("" + articuloTB.getPrecioCompra());
+        txtDescuento.setText("" + articuloTB.getDescuento().get());
+        txtPrecio.setText("" + articuloTB.getPrecioVenta().get());
+        validationelemnt = true;
     }
 
     @FXML

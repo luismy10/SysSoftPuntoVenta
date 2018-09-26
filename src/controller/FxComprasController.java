@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -193,6 +195,39 @@ public class FxComprasController implements Initializable {
     private void onViewEdit() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
 
+            ObservableList<ArticuloTB> articuloTBs;
+            articuloTBs = tvList.getSelectionModel().getSelectedItems();
+            articuloTBs.forEach(e -> {
+
+                try {
+                    URL url = getClass().getResource(Tools.FX_FILE_ARTICULOCOMPRA);
+                    FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+                    Parent parent = fXMLLoader.load(url.openStream());
+                    //Controlller here
+                    FxArticuloCompraController controller = fXMLLoader.getController();
+                    controller.setInitCompraController(this);
+                    //
+                    Stage stage = FxWindow.StageLoaderModal(parent, "Editar artículo", window.getScene().getWindow());
+                    stage.setResizable(false);
+                    stage.show();
+                    ArticuloTB articuloTB = new ArticuloTB();
+                    articuloTB.setId(e.getId().get());
+                    articuloTB.setClave(e.getClave().get());
+                    articuloTB.setNombre(e.getNombre().get());
+                    articuloTB.setCantidad(e.getCantidad().get());
+                    articuloTB.setPrecioCompra(e.getPrecioCompra());
+                    articuloTB.setPrecioVenta(e.getPrecioVenta().get());
+                    articuloTB.setDescuento(e.getDescuento().get());
+                    articuloTB.setTotal(e.getTotal().get());
+
+                    controller.setLoadEdit(articuloTB);
+
+                } catch (IOException ex) {
+                    Logger.getLogger(FxComprasController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            });
+
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compras", "Seleccione un artículo para editarlo", false);
 
@@ -259,7 +294,7 @@ public class FxComprasController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedEdit(KeyEvent event) {
+    private void onKeyPressedEdit(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             onViewEdit();
         }

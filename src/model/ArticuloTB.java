@@ -32,7 +32,7 @@ public class ArticuloTB {
 
     public ArticuloTB() {
 
-    }
+    } 
 
     public SimpleIntegerProperty getId() {
         return id;
