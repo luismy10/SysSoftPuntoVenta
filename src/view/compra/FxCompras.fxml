@@ -121,7 +121,6 @@
                               </HBox>
                               <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="320.0" prefWidth="711.0" VBox.vgrow="ALWAYS">
                                  <columns>
-                                    <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                                     <TableColumn fx:id="tcArticulo" prefWidth="379.0" text="Clave/Descripción" />
                                     <TableColumn fx:id="tcCantidad" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Cantidad" />
                                     <TableColumn fx:id="tcPrecio" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Precio U.N" />

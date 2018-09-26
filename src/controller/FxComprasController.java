@@ -52,8 +52,6 @@ public class FxComprasController implements Initializable {
     @FXML
     private TableView<ArticuloTB> tvList;
     @FXML
-    private TableColumn<ArticuloTB, Integer> tcId;
-    @FXML
     private TableColumn<ArticuloTB, String> tcArticulo;
     @FXML
     private TableColumn<ArticuloTB, String> tcCantidad;
@@ -88,8 +86,6 @@ public class FxComprasController implements Initializable {
 
     private double total;
 
-    private int count;
-
     private double sumarcompra;
 
     private double sumardescuento;
@@ -97,7 +93,6 @@ public class FxComprasController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idProveedor = idRepresentante = "";
-        count = 1;
         Tools.actualDate(Tools.getDate(), tpFechaCompra);
         DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> {
             cbComprobante.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
@@ -107,7 +102,6 @@ public class FxComprasController implements Initializable {
     }
 
     private void initTable() {
-        tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombre().get()
         ));
@@ -163,9 +157,9 @@ public class FxComprasController implements Initializable {
                 cbRepresentante.getItems().clear();
                 cbNumeracion.clear();
                 Tools.actualDate(Tools.getDate(), tpFechaCompra);
-                lblSubTotal.setText("S/. 0.00");
-                lblDescuento.setText("S/. 0.00");
-                lblIgv.setText("S/. 0.00");
+                lblSubTotal.setText("0.00");
+                lblDescuento.setText("0.00");
+                lblIgv.setText("0.00");
                 lblTotal.setText("S/. 0.00");
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Compras", result, false);
@@ -211,7 +205,6 @@ public class FxComprasController implements Initializable {
                     stage.setResizable(false);
                     stage.show();
                     ArticuloTB articuloTB = new ArticuloTB();
-                    articuloTB.setId(e.getId().get());
                     articuloTB.setClave(e.getClave().get());
                     articuloTB.setNombre(e.getNombre().get());
                     articuloTB.setCantidad(e.getCantidad().get());
@@ -242,7 +235,6 @@ public class FxComprasController implements Initializable {
                 observableList = tvList.getItems();
                 articuloTBs = tvList.getSelectionModel().getSelectedItems();
                 articuloTBs.forEach(e -> observableList.remove(e));
-                setCount(getCount() - 1);
                 setCalculateTotals();
             }
 
@@ -364,14 +356,6 @@ public class FxComprasController implements Initializable {
         return tvList;
     }
 
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
     public void setCalculateTotals() {
         tvList.getItems().forEach(tran -> sumarcompra += tran.getTotal().get());
         double temtotal = Double.parseDouble(Tools.roundingValue(sumarcompra, 2));
@@ -388,6 +372,7 @@ public class FxComprasController implements Initializable {
         double impuesto = Tools.calculateTax(18, subtotal);
         lblIgv.setText(Tools.roundingValue(impuesto, 2));
 
+        total = Double.parseDouble(Tools.roundingValue(descuentoTotal, 2));
         lblTotal.setText("S/. " + Tools.roundingValue(descuentoTotal, 2));
 
         sumarcompra = sumardescuento = 0;

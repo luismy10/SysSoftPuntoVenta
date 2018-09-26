@@ -57,7 +57,7 @@
                         <Font name="Roboto" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtImporte" onKeyTyped="#onKeyTypedImporte" prefHeight="30.0" prefWidth="130.0" />
+                  <TextField fx:id="txtImporte" onAction="#onActionImporte" onKeyTyped="#onKeyTypedImporte" prefHeight="30.0" prefWidth="130.0" />
                   <Label text="Cantidad:" textFill="#23283a">
                      <font>
                         <Font size="14.0" />

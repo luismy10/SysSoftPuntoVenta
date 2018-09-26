@@ -79,7 +79,6 @@ public class FxArticuloCompraController implements Initializable {
             txtPrecio.requestFocus();
         } else {
             ArticuloTB articuloTB = new ArticuloTB();
-            articuloTB.setId(comprasController.getCount());
             articuloTB.setClave(lblClave.getText());
             articuloTB.setNombre(lblDescripcion.getText());
             articuloTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
@@ -96,16 +95,14 @@ public class FxArticuloCompraController implements Initializable {
             if (validateStock(comprasController.getTvList(), articuloTB) && !validationelemnt) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya existe en la lista el artículo", false);
             } else if (validationelemnt) {
-                
                 ObservableList<ArticuloTB> observableList, articuloTBs;
                 observableList = comprasController.getTvList().getItems();
                 articuloTBs = comprasController.getTvList().getSelectionModel().getSelectedItems();
                 articuloTBs.forEach(e -> observableList.remove(e));
-                comprasController.setCount(comprasController.getCount() - 1);
                 comprasController.setCalculateTotals();
-                
+                validateStock(comprasController.getTvList(), articuloTB);
+                comprasController.setCalculateTotals();
             } else {
-                comprasController.setCount(comprasController.getCount() + 1);
                 comprasController.setCalculateTotals();
             }
 
@@ -135,6 +132,25 @@ public class FxArticuloCompraController implements Initializable {
         txtDescuento.setText("" + articuloTB.getDescuento().get());
         txtPrecio.setText("" + articuloTB.getPrecioVenta().get());
         validationelemnt = true;
+    }
+
+    private void generationPrice() {
+        double importe = Double.parseDouble(txtImporte.getText());
+        double cantidad = Double.parseDouble(txtCantidad.getText());
+
+        double preciocompra = importe / cantidad;
+        txtCosto.setText(Tools.roundingValue(preciocompra, 2));
+
+        double valorNeto = Tools.calculateValueNeto(18, preciocompra);
+        txtCostoImpuesto.setText(Tools.roundingValue(valorNeto, 2));
+
+        txtPrecio.setText(Tools.calculateAumento(30, preciocompra));
+
+        double valorNetoVenta = Tools.calculateValueNeto(18, Double.parseDouble(txtPrecio.getText()));
+
+        txtPrecioImpuesto.setText(Tools.roundingValue(valorNetoVenta, 2));
+
+        txtUtilidad.setText(Tools.roundingValue((Double.parseDouble(txtPrecio.getText()) - preciocompra), 2));
     }
 
     @FXML
@@ -190,6 +206,14 @@ public class FxArticuloCompraController implements Initializable {
         if (c == '.' && txtPrecio.getText().contains(".") || c == '-' && txtPrecio.getText().contains("-")) {
             event.consume();
         }
+    }
+
+    @FXML
+    private void onActionImporte(ActionEvent event) {
+        if (Tools.isNumeric(txtImporte.getText()) && Tools.isNumeric(txtCantidad.getText())) {
+            generationPrice();
+        }
+
     }
 
 }

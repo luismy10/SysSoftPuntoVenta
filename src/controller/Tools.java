@@ -144,6 +144,12 @@ public class Tools {
         double impu = valor * igv;
         return impu;
     }
+    
+    public static String calculateAumento(double porcentaje, double costo) {
+        double totalimporte = costo + (costo *(porcentaje/100));
+        double redondeandoimporte = Double.parseDouble(Tools.roundingValue(totalimporte, 1));
+        return Tools.roundingValue(redondeandoimporte,2);
+    }
 
     public static double calculateValueNeto(int porcentaje, double valuecalculate) {
         double subprimer = ((double) porcentaje + 100);

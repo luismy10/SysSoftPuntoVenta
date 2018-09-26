@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -44,7 +45,7 @@ public class FxArticuloListaController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcPrecio;
 
-    private Executor exec;
+    private ExecutorService exec;
 
     private FxComprasController comprasController;
 
@@ -82,7 +83,9 @@ public class FxArticuloListaController implements Initializable {
         });
 
         exec.execute(task);
-
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
     }
 
     @FXML
@@ -112,8 +115,6 @@ public class FxArticuloListaController implements Initializable {
             }
         }
     }
-
-    
 
     void setInitComptrasController(FxComprasController comprasController) {
         this.comprasController = comprasController;
