@@ -171,7 +171,7 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" spacing="10.0" style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc;">
+                  <HBox alignment="CENTER" style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc;">
                      <children>
                         <HBox alignment="CENTER" style="-fx-background-color: #cccccc;">
                            <children>
@@ -202,7 +202,7 @@
                                     <Font name="Calibri" size="14.0" />
                                  </font>
                               </Label>
-                              <Button mnemonicParsing="false" styleClass="buttonLight" text="Siguiente">
+                              <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Siguiente">
                                  <font>
                                     <Font name="Calibri" size="14.0" />
                                  </font>

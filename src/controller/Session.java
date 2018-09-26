@@ -9,5 +9,6 @@ public class Session {
     public static String PAIS_ID;
     public static double WIDTH_WINDOW;
     public static double HEIGHT_WINDOW;
+    public static double IMPUESTO;
     
 }

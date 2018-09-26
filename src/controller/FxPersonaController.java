@@ -107,7 +107,7 @@ public class FxPersonaController implements Initializable {
     public void setValueUpdate(String... value) {
         btnDesglosar.setVisible(false);
         btnRegister.setText("Actualizar");
-        btnRegister.getStyleClass().add("buttonFourth");
+        btnRegister.getStyleClass().add("buttonLightWarning");
         ArrayList<PersonaTB> arrayList = PersonaADO.GetIdListPersona(value[0]);
 
         if (!arrayList.isEmpty()) {

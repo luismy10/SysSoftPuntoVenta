@@ -5,6 +5,8 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -15,7 +17,7 @@
    <children>
       <VBox style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox style="-fx-background-color: #23283A;">
+            <HBox style="-fx-background-color: #1a2226;">
                <children>
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Agregar información para el directorio">
                      <font>
@@ -29,7 +31,7 @@
             </HBox>
             <HBox VBox.vgrow="ALWAYS">
                <children>
-                  <VBox spacing="10.0" style="-fx-border-color: #757575; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
+                  <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelForm" text="Atributo" />
                         <ComboBox fx:id="cbAtributo" prefWidth="501.0" promptText="Ejemplo: Teléfono, Celular, Dirección, Email etc." styleClass="comboBox" />
@@ -37,9 +39,26 @@
                         <TextField fx:id="txtValor" promptText="Ejemplo: 966750883, av.las flores n°1, www.somos.com" />
                         <HBox alignment="CENTER" spacing="10.0">
                            <children>
-                              <Button fx:id="btnToAction" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonPrimary" text="Agregar" />
-                              <Button mnemonicParsing="false" onAction="#onActionCancel" onKeyPressed="#onKeyPressedCancel" styleClass="buttonSecondary" text="Cancelar" />
+                              <Button fx:id="btnToAction" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightDefault" text="Agregar">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../plus.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button mnemonicParsing="false" onAction="#onActionCancel" onKeyPressed="#onKeyPressedCancel" styleClass="buttonLight" text="Cancelar">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../close.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
                            </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
                         </HBox>
                      </children>
                      <padding>
@@ -48,7 +67,7 @@
                   </VBox>
                </children>
                <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </HBox>
          </children>

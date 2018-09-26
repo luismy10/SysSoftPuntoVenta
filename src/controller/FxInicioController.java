@@ -22,6 +22,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import model.DBUtil;
+import model.DetalleADO;
+import model.DetalleTB;
 
 public class FxInicioController implements Initializable {
 
@@ -103,6 +105,10 @@ public class FxInicioController implements Initializable {
                 }
             });
             service.start();
+            
+            DetalleADO.GetDetailIdName("3", "0010", "").forEach(e -> {
+                Session.IMPUESTO = Double.parseDouble(e.getDescripcion().get());
+            });
 
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());

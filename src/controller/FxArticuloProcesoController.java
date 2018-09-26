@@ -159,6 +159,7 @@ public class FxArticuloProcesoController implements Initializable {
 
     public void setValueEdit(String value) {
         btnRegister.setText("Actualizar");
+        btnRegister.getStyleClass().add("buttonLightWarning");
         ArrayList<ArticuloTB> list = ArticuloADO.GetArticulosById(value);
         if (!list.isEmpty()) {
             ArticuloTB articuloTB = list.get(0);

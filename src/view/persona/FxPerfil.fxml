@@ -16,7 +16,7 @@
    <children>
       <VBox layoutX="10.0" layoutY="10.0" minHeight="-Infinity" stylesheets="@../styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #23283A;">
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #1a2226;">
                <children>
                   <AnchorPane HBox.hgrow="ALWAYS">
                      <children>

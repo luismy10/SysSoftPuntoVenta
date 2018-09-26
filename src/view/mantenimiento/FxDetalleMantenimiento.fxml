@@ -20,7 +20,7 @@
          <children>
             <VBox minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                <children>
-                  <HBox spacing="20.0" style="-fx-background-color: #23283a;">
+                  <HBox spacing="20.0" style="-fx-background-color: #1a2226 #1a2226;">
                      <children>
                         <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" HBox.hgrow="ALWAYS">
                            <children>

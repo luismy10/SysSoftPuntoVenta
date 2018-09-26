@@ -85,4 +85,5 @@ public class FxConfiguracionController implements Initializable {
     private void onActionPrivileges(ActionEvent event) {
     }
 
+
 }

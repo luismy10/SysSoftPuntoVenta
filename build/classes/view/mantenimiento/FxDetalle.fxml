@@ -6,14 +6,16 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="window" prefWidth="540.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxDetalleController">
+<AnchorPane id="AnchorPane" fx:id="window" prefWidth="540.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxDetalleController">
     <children>
-        <AnchorPane style="-fx-background-color: #23283A;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane style="-fx-background-color: #1a2226 #1a2226;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <Label fx:id="lblTitle" styleClass="labelTitle" text="Detalle del mantenimiento" textFill="WHITE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0">
                     <font>
@@ -23,11 +25,8 @@
             </children>
         </AnchorPane>
         <AnchorPane style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="82.0">
-            <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </padding>
             <children>
-                <VBox spacing="10.0" style="-fx-border-color: #757575; -fx-border-radius: 5;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                <VBox spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                     <children>
                         <Label styleClass="labelForm" text="Código">
                             <font>
@@ -51,9 +50,26 @@
                         <ComboBox fx:id="cbEstado" minHeight="-Infinity" minWidth="-Infinity" prefWidth="501.0" styleClass="comboBox" />
                         <HBox alignment="TOP_CENTER" spacing="10.0">
                             <children>
-                                <Button fx:id="btnToAction" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonPrimary" text="Registrar" />
-                                <Button mnemonicParsing="false" onAction="#onActionToCancel" onKeyPressed="#onPressedToCancel" styleClass="buttonSecondary" text="Cancelar" />
+                                <Button fx:id="btnToAction" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLightDefault" text="Registrar">
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../save.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
+                                <Button mnemonicParsing="false" onAction="#onActionToCancel" onKeyPressed="#onPressedToCancel" styleClass="buttonLight" text="Cancelar">
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../close.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                             </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
                         </HBox>
                     </children>
                     <padding>

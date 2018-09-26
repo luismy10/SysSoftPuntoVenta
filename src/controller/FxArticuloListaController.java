@@ -19,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -116,6 +117,18 @@ public class FxArticuloListaController implements Initializable {
         }
     }
 
+    @FXML
+    private void onKeyPressedAdd(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            
+        }
+    }
+
+    @FXML
+    private void onActionAdd(ActionEvent event) {
+        
+    }
+    
     void setInitComptrasController(FxComprasController comprasController) {
         this.comprasController = comprasController;
     }

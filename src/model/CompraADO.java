@@ -21,8 +21,8 @@ public class CompraADO {
             codigo_compra.execute();
             String id_compra = codigo_compra.getString(1);
 
-            compra = DBUtil.getConnection().prepareStatement("INSERT INTO CompraTB(IdCompra,Proveedor,Representante,Comprobante,Numeracion,FechaCompra,SubTotal,Descuento,Igv,Total) "
-                    + "VALUES(?,?,?,?,?,?,?,?,?,?)");
+            compra = DBUtil.getConnection().prepareStatement("INSERT INTO CompraTB(IdCompra,Proveedor,Representante,Comprobante,Numeracion,FechaCompra,SubTotal,Descuento,Gravada,Igv,Total) "
+                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?)");
             compra.setString(1, id_compra);
             compra.setString(2, compraTB.getProveedor());
             compra.setString(3, compraTB.getRepresentante());
@@ -31,8 +31,9 @@ public class CompraADO {
             compra.setTimestamp(6, compraTB.getFechaRegistro());
             compra.setDouble(7, compraTB.getSubTotal());
             compra.setDouble(8, compraTB.getDescuento());
-            compra.setDouble(9, compraTB.getIgv());
-            compra.setDouble(10, compraTB.getTotal().get());
+            compra.setDouble(9, compraTB.getGravada());
+            compra.setDouble(10, compraTB.getIgv());
+            compra.setDouble(11, compraTB.getTotal().get());
             compra.addBatch();
             compra.executeBatch();
             DBUtil.getConnection().commit();

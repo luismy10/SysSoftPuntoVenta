@@ -82,14 +82,6 @@ public class FxComprasController implements Initializable {
 
     private double descuento;
 
-    private double igv;
-
-    private double total;
-
-    private double sumarcompra;
-
-    private double sumardescuento;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idProveedor = idRepresentante = "";
@@ -145,10 +137,11 @@ public class FxComprasController implements Initializable {
             compraTB.setComprobante(cbComprobante.getSelectionModel().getSelectedItem().getIdDetalle().get());
             compraTB.setNumeracion(cbNumeracion.getText().trim());
             compraTB.setFechaRegistro(Timestamp.valueOf(Tools.getDatePicker(tpFechaCompra) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
-            compraTB.setSubTotal(subTotal);
-            compraTB.setDescuento(descuento);
-            compraTB.setIgv(igv);
-            compraTB.setTotal(total);
+            compraTB.setSubTotal(Double.parseDouble(lblSubTotal.getText()));
+            compraTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
+            compraTB.setGravada(Double.parseDouble(lblGravada.getText()));
+            compraTB.setIgv(Double.parseDouble(lblIgv.getText()));
+            compraTB.setTotal(Double.parseDouble(lblTotal.getText()));
             String result = CompraADO.CrudEntity(compraTB);
             if (result.equalsIgnoreCase("register")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Compras", "Registrado correctamente la compra.", false);
@@ -157,10 +150,13 @@ public class FxComprasController implements Initializable {
                 cbRepresentante.getItems().clear();
                 cbNumeracion.clear();
                 Tools.actualDate(Tools.getDate(), tpFechaCompra);
+                tvList.getItems().clear();
+                initTable();
                 lblSubTotal.setText("0.00");
                 lblDescuento.setText("0.00");
+                lblGravada.setText("0.00");
                 lblIgv.setText("0.00");
-                lblTotal.setText("S/. 0.00");
+                lblTotal.setText("0.00");
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Compras", result, false);
 
@@ -357,25 +353,29 @@ public class FxComprasController implements Initializable {
     }
 
     public void setCalculateTotals() {
-        tvList.getItems().forEach(tran -> sumarcompra += tran.getTotal().get());
-        double temtotal = Double.parseDouble(Tools.roundingValue(sumarcompra, 2));
+        
+        double subTotalInterno,descuentoInterno;
+        
+        tvList.getItems().forEach(e -> subTotal += e.getSubTotal().get());
+        lblSubTotal.setText(Tools.roundingValue(subTotal, 2));
+        subTotalInterno=subTotal;
+        subTotal = 0;
 
-        tvList.getItems().forEach(tran -> sumardescuento += tran.getDescuento().get());
-        lblDescuento.setText("-" + Tools.roundingValue(sumardescuento, 2));
+        tvList.getItems().forEach(e -> descuento += e.getDescuento().get());
+        lblDescuento.setText(Tools.roundingValue(descuento, 2));
+        descuentoInterno=descuento;
+        descuento = 0;
+        
+        double total = subTotalInterno - descuentoInterno;        
+        lblTotal.setText(Tools.roundingValue(total, 2));        
+        
 
-        double descuentoTotal = temtotal - sumardescuento;
-        lblSubTotal.setText(Tools.roundingValue(temtotal, 2));
+        double gravada = Tools.calculateValueNeto(Session.IMPUESTO, total);
+        lblGravada.setText(Tools.roundingValue(gravada, 2));
 
-        double subtotal = Tools.calculateValueNeto(18, descuentoTotal);
-        lblGravada.setText(Tools.roundingValue(subtotal, 2));
-
-        double impuesto = Tools.calculateTax(18, subtotal);
+        double impuesto = Tools.calculateTax(Session.IMPUESTO, gravada);
         lblIgv.setText(Tools.roundingValue(impuesto, 2));
 
-        total = Double.parseDouble(Tools.roundingValue(descuentoTotal, 2));
-        lblTotal.setText("S/. " + Tools.roundingValue(descuentoTotal, 2));
-
-        sumarcompra = sumardescuento = 0;
     }
 
 }

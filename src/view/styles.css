@@ -843,6 +843,145 @@
     -fx-background-color: derive(ACCENT_COLOR, -40%);
 }
 
+
+/*******************************************************************************
+ *                                                                             *
+ * Button Light Warning                                                    *
+ *                                                                             *
+ ******************************************************************************/
+
+.buttonLightWarning {
+    BACKGROUND: #ea5f09;
+    BACKGROUND_PRESSED: #aa521d;
+
+    BORDER_HOVER: #ce5104;
+
+    TEXT: #ffffff;
+    DEFAULT_BUTTON_TEXT: white;
+
+    FOCUS_RING_BORDER: #ffffff;
+
+    -shrink-animate-on-press: true;
+}
+
+.buttonLightWarning{
+    -fx-padding: 0.25em 1.666666em 0.25em 1.666666em; /*3 20 3 20*/
+
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: BACKGROUND;
+
+    -fx-font-family:"Roboto";
+    -fx-font-size: 14;
+    -fx-text-fill: TEXT;
+}
+.buttonLightWarning:hover{
+    -fx-border-color: BORDER_HOVER;
+    -fx-border-width: 1;
+}
+.buttonLightWarning:pressed{
+    -fx-border-color: BACKGROUND_PRESSED;
+    -fx-background-color: BACKGROUND_PRESSED;
+    -fx-border-width: 1;
+}
+.buttonLightWarning:focused{
+    -fx-border-color: transparent, #00aff0;
+    -fx-border-radius: 0, 0;
+    -fx-border-width: 1;
+}
+.buttonLightWarning:disabled, .buttonLightWarning:default:disabled{
+    -fx-opacity: 0.4;
+    -fx-background-color: BACKGROUND;
+    -fx-text-fill: TEXT;
+}
+
+.buttonLightWarning {
+    BORDER_HOVER_DEFAULT: derive(ACCENT_COLOR, -40%);
+}
+.buttonLightWarning:default
+{
+    -fx-background-color: ACCENT_COLOR;
+    -fx-text-fill: DEFAULT_BUTTON_TEXT;
+}
+.buttonLightWarning:default:hover{
+    -fx-border-color: BORDER_HOVER_DEFAULT;
+}
+.buttonLightWarning:default:pressed {
+    -fx-background-color: derive(ACCENT_COLOR, -40%);
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Button Light Success                                                    *
+ *                                                                             *
+ ******************************************************************************/
+
+.buttonLightSuccess  {
+    BACKGROUND: #32a019;
+    BACKGROUND_PRESSED: #264f1c;
+
+    BORDER_HOVER: #237c0e;
+
+    TEXT: #ffffff;
+    DEFAULT_BUTTON_TEXT: white;
+
+    FOCUS_RING_BORDER: #ffffff;
+
+    -shrink-animate-on-press: true;
+}
+
+.buttonLightSuccess{
+    -fx-padding: 0.25em 1.666666em 0.25em 1.666666em; /*3 20 3 20*/
+
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: BACKGROUND;
+
+    -fx-font-family:"Roboto";
+    -fx-font-size: 14;
+    -fx-text-fill: TEXT;
+}
+.buttonLightSuccess:hover{
+    -fx-border-color: BORDER_HOVER;
+    -fx-border-width: 1;
+}
+.buttonLightSuccess:pressed{
+    -fx-border-color: BACKGROUND_PRESSED;
+    -fx-background-color: BACKGROUND_PRESSED;
+    -fx-border-width: 1;
+}
+.buttonLightSuccess:focused{
+    -fx-border-color: transparent, #00aff0;
+    -fx-border-radius: 0, 0;
+    -fx-border-width: 1;
+}
+.buttonLightSuccess:disabled, .buttonLightSuccess:default:disabled{
+    -fx-opacity: 0.4;
+    -fx-background-color: BACKGROUND;
+    -fx-text-fill: TEXT;
+}
+
+.buttonLightSuccess {
+    BORDER_HOVER_DEFAULT: derive(ACCENT_COLOR, -40%);
+}
+.buttonLightSuccess:default
+{
+    -fx-background-color: ACCENT_COLOR;
+    -fx-text-fill: DEFAULT_BUTTON_TEXT;
+}
+.buttonLightSuccess:default:hover{
+    -fx-border-color: BORDER_HOVER_DEFAULT;
+}
+.buttonLightSuccess:default:pressed {
+    -fx-background-color: derive(ACCENT_COLOR, -40%);
+}
+
 /*******************************************************************************
  *                                                                             *
  * Button Border                                                    *
@@ -1214,7 +1353,7 @@
 /* selected */
 .check-box:selected > .box{
     -fx-background-color: #666666;
-    -fx-border-color: ACCENT_COLOR;
+    -fx-border-color: black;
 }
 
 .check-box:selected > .box > .mark{

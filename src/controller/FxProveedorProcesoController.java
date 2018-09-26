@@ -170,7 +170,7 @@ public class FxProveedorProcesoController implements Initializable {
 
     public void setValueUpdate(String... value) {
         btnRegister.setText("Actualizar");
-        btnRegister.getStyleClass().add("buttonFourth");
+        btnRegister.getStyleClass().add("buttonLightWarning");
         txtDocumentNumberFactura.setText(value[0]);
         ArrayList<ProveedorTB> list = ProveedorADO.GetIdLisProveedor(value[0]);
         if (!list.isEmpty()) {

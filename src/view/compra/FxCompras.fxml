@@ -142,31 +142,56 @@
                               <VBox spacing="10.0">
                                  <children>
                                     <Label styleClass="labelNormal" text="Sub Total" textFill="#1a2226" />
-                                    <Text fx:id="lblSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/." />
+                                          <Text fx:id="lblSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                               <VBox spacing="10.0">
                                  <children>
                                     <Label styleClass="labelNormal" text="Descuento" textFill="#1a2226" />
-                                    <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/. -" />
+                                          <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                               <VBox spacing="10.0">
                                  <children>
                                     <Label styleClass="labelNormal" text="Op. Gravada" textFill="#1a2226" />
-                                    <Text fx:id="lblGravada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/." />
+                                          <Text fx:id="lblGravada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                               <VBox spacing="10.0">
                                  <children>
                                     <Label styleClass="labelNormal" text="IGV" textFill="#1a2226" />
-                                    <Text fx:id="lblIgv" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/." />
+                                          <Text fx:id="lblIgv" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                               <VBox spacing="10.0">
                                  <children>
                                     <Label styleClass="labelNormal" text="Total" textFill="#1a2226" />
-                                    <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/. 0.00" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/." />
+                                          <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </children>

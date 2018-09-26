@@ -19,6 +19,7 @@ public class CompraTB {
     private ObjectProperty<LocalDate> fechaCompra;
     private Timestamp fechaRegistro;
     private double subTotal;
+    private double gravada;
     private double descuento;
     private double igv;
     private SimpleDoubleProperty total;
@@ -103,6 +104,14 @@ public class CompraTB {
 
     public void setSubTotal(double subTotal) {
         this.subTotal = subTotal;
+    }
+
+    public double getGravada() {
+        return gravada;
+    }
+
+    public void setGravada(double gravada) {
+        this.gravada = gravada;
     }
 
     public double getDescuento() {

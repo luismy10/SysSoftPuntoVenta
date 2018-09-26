@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -66,7 +67,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="txtCantidad" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="130.0" />
+                  <TextField fx:id="txtCantidad" onAction="#onActionCantidad" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="130.0" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -74,68 +75,67 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-border-color: #cccccc;">
+                  <HBox alignment="CENTER_LEFT" style="-fx-border-color: #cccccc;">
                      <children>
-                        <Label text="Incluye IGV:" textFill="#23283a">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </Label>
-                        <CheckBox fx:id="cbImpuesto" ellipsisString="" mnemonicParsing="false" />
+                        <ScrollPane fitToHeight="true">
+                           <content>
+                              <VBox prefHeight="130.0">
+                                 <children>
+                                    <HBox spacing="10.0">
+                                       <children>
+                                          <Label text="Incluye IGV:" textFill="#23283a">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <CheckBox fx:id="cbImpuesto" ellipsisString="" mnemonicParsing="false" selected="true" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" right="10.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
                      </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
                   </HBox>
                   <Separator orientation="VERTICAL" prefHeight="100.0" />
-                  <VBox>
+                  <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox spacing="20.0">
+                        <HBox>
                            <children>
-                              <VBox>
+                              <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label text="Costo del artículo:" textFill="#23283a">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtCosto" onKeyTyped="#onKeyTypedCosto" />
-                                 </children>
-                              </VBox>
-                              <VBox>
-                                 <children>
-                                    <Label text="Impuesto:" textFill="#23283a">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField fx:id="txtCostoImpuesto" disable="true" />
+                                    <TextField fx:id="txtCosto" onKeyReleased="#onKeyReleasedCosto" onKeyTyped="#onKeyTypedCosto" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
                            <children>
-                              <VBox>
+                              <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label prefWidth="112.0" text="Descuento:" textFill="#23283a">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtDescuento" onKeyTyped="#onKeyTypedDescuento" />
+                                    <TextField fx:id="txtDescuento" onKeyTyped="#onKeyTypedDescuento" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
                         </HBox>
                      </children>
                   </VBox>
@@ -148,21 +148,12 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="10.0">
                      <children>
-                        <Label prefWidth="112.0" text="Precio de venta:" textFill="#23283a">
+                        <Label text="Margen de utilidad %" textFill="#23283a">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtPrecio" onKeyTyped="#onKeyTypedPrecio" />
-                        <Label text="Impuesto:" textFill="#23283a">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </Label>
-                        <TextField fx:id="txtPrecioImpuesto" disable="true" />
+                        <TextField fx:id="txtMargen" onKeyReleased="#onKeyReleasedMargen" onKeyTyped="#onKeyTypedMargen" HBox.hgrow="ALWAYS" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -170,12 +161,25 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="10.0">
                      <children>
-                        <Label prefWidth="112.0" text="Utilidad:" textFill="#23283a">
+                        <Label prefWidth="134.0" text="Precio de venta:" textFill="#23283a">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtUtilidad" disable="true" />
+                        <TextField fx:id="txtPrecio" onKeyTyped="#onKeyTypedPrecio" HBox.hgrow="ALWAYS" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                     <children>
+                        <Label prefWidth="134.0" text="Utilidad generada:" textFill="#23283a">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtUtilidad" disable="true" HBox.hgrow="ALWAYS" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

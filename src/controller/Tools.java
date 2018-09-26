@@ -57,6 +57,8 @@ public class Tools {
     static final String FX_FILE_CONSULTAS = "/view/inicio/FxConsultas.fxml";
     static final String FX_FILE_ARTICULOLISTA = "/view/articulo/FxArticuloLista.fxml";
     static final String FX_FILE_ARTICULOCOMPRA = "/view/articulo/FxArticuloCompra.fxml";
+    
+    
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         Alert alert = new Alert(type);
@@ -139,8 +141,8 @@ public class Tools {
         return decimal.toPlainString();
     }
 
-    public static double calculateTax(int porcentaje, double valor) {
-        double igv = ((double) porcentaje / 100.00);
+    public static double calculateTax(double porcentaje, double valor) {
+        double igv = (porcentaje / 100.00);
         double impu = valor * igv;
         return impu;
     }
@@ -151,8 +153,8 @@ public class Tools {
         return Tools.roundingValue(redondeandoimporte,2);
     }
 
-    public static double calculateValueNeto(int porcentaje, double valuecalculate) {
-        double subprimer = ((double) porcentaje + 100);
+    public static double calculateValueNeto(double porcentaje, double valuecalculate) {
+        double subprimer = (porcentaje + 100);
         double valor = valuecalculate;
         double totalvalor = valor / (subprimer * 0.01);
         return totalvalor;

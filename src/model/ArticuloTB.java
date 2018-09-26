@@ -27,12 +27,13 @@ public class ArticuloTB {
     private int estado;
     private SimpleStringProperty estadoName;
     private SimpleDoubleProperty descuento;
+    private SimpleDoubleProperty subTotal;
     private SimpleDoubleProperty total;
     private ImagenTB imagenTB;
 
     public ArticuloTB() {
 
-    } 
+    }
 
     public SimpleIntegerProperty getId() {
         return id;
@@ -216,6 +217,14 @@ public class ArticuloTB {
 
     public void setTotal(double total) {
         this.total = new SimpleDoubleProperty(total);
+    }
+
+    public SimpleDoubleProperty getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(double subTotal) {
+        this.subTotal = new SimpleDoubleProperty(subTotal);
     }
 
 }

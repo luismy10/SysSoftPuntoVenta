@@ -144,7 +144,7 @@
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
-                                          <Button fx:id="btnDirectory" mnemonicParsing="false" onAction="#onActionToDirectory" onKeyPressed="#onKeyPressedToDirectory" styleClass="buttonLight" text="Agregar...">
+                                          <Button fx:id="btnDirectory" mnemonicParsing="false" onAction="#onActionToDirectory" onKeyPressed="#onKeyPressedToDirectory" styleClass="buttonLightSuccess" text="Agregar o Ver">
                                              <graphic>
                                                 <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>

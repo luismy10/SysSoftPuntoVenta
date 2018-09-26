@@ -160,6 +160,9 @@ public class DetalleADO {
                 DetalleTB detalleTB = new DetalleTB();
                 detalleTB.setIdDetalle(resultSet.getInt("IdDetalle"));
                 detalleTB.setNombre(resultSet.getString("Nombre"));
+                if (value[0].equalsIgnoreCase("3")) {
+                    detalleTB.setDescripcion(resultSet.getString("Descripcion"));
+                }
                 empList.add(detalleTB);
             }
 
