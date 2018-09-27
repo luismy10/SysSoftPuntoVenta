@@ -108,6 +108,11 @@ public class FxArticuloCompraController implements Initializable {
                         : txtDescuento.getText()
                 ));
 
+        articuloTB.setUtilidad(Tools.isNumeric(txtUtilidad.getText())
+                ? Double.parseDouble(txtUtilidad.getText()) : 0
+        );
+        
+        articuloTB.setImpuesto(cbImpuesto.isSelected());
         if (validateStock(comprasController.getTvList(), articuloTB) && !validationelemnt) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya existe en la lista el artículo", false);
         } else if (validationelemnt) {
@@ -143,9 +148,11 @@ public class FxArticuloCompraController implements Initializable {
         lblClave.setText(articuloTB.getClave().get());
         lblDescripcion.setText(articuloTB.getNombre().get());
         txtCantidad.setText("" + articuloTB.getCantidad().get());
-        txtCosto.setText("" + articuloTB.getPrecioCompra());
-        txtDescuento.setText("" + articuloTB.getDescuento().get());
-        txtPrecio.setText("" + articuloTB.getPrecioVenta().get());
+        txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompra(),2));
+        txtDescuento.setText(Tools.roundingValue(articuloTB.getDescuento().get(),2));
+        txtPrecio.setText(Tools.roundingValue(articuloTB.getPrecioVenta().get(),2));
+        txtUtilidad.setText(Tools.roundingValue(articuloTB.getUtilidad().get(), 2));
+        cbImpuesto.setSelected(articuloTB.isImpuesto());
         validationelemnt = true;
     }
 
@@ -155,12 +162,12 @@ public class FxArticuloCompraController implements Initializable {
 
         double preciocompra = importe / cantidad;
         txtCosto.setText(Tools.roundingValue(preciocompra, 2));
-        
+
         txtMargen.setText("30");
-        
+
         txtPrecio.setText(Tools.calculateAumento(Tools.isNumeric(txtMargen.getText())
                 ? Double.parseDouble(txtMargen.getText()) : 30,
-                 preciocompra));
+                preciocompra));
 
         txtUtilidad.setText(Tools.roundingValue((Double.parseDouble(txtPrecio.getText()) - preciocompra), 2));
     }
@@ -241,7 +248,9 @@ public class FxArticuloCompraController implements Initializable {
             if (cbImpuesto.isSelected()) {
                 double preciocompra = Double.parseDouble(txtCosto.getText());
 
-                txtPrecio.setText(Tools.calculateAumento(Double.parseDouble(txtMargen.getText()), preciocompra));
+                txtPrecio.setText(Tools.calculateAumento(Tools.isNumeric(txtMargen.getText())
+                        ? Double.parseDouble(txtMargen.getText()) : 0,
+                        preciocompra));
 
                 txtUtilidad.setText(Tools.roundingValue((Double.parseDouble(txtPrecio.getText()) - preciocompra), 2));
 
@@ -251,7 +260,9 @@ public class FxArticuloCompraController implements Initializable {
 
                 double preciocompra = precioigv;
 
-                txtPrecio.setText(Tools.calculateAumento(Double.parseDouble(txtMargen.getText()), preciocompra));
+                txtPrecio.setText(Tools.calculateAumento(Tools.isNumeric(txtMargen.getText())
+                        ? Double.parseDouble(txtMargen.getText()) : 0,
+                        preciocompra));
 
                 txtUtilidad.setText(Tools.roundingValue((Double.parseDouble(txtPrecio.getText()) - preciocompra), 2));
             }

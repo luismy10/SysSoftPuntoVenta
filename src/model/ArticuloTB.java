@@ -29,6 +29,8 @@ public class ArticuloTB {
     private SimpleDoubleProperty descuento;
     private SimpleDoubleProperty subTotal;
     private SimpleDoubleProperty total;
+    private SimpleDoubleProperty utilidad;
+    private boolean impuesto;
     private ImagenTB imagenTB;
 
     public ArticuloTB() {
@@ -227,4 +229,22 @@ public class ArticuloTB {
         this.subTotal = new SimpleDoubleProperty(subTotal);
     }
 
+    public SimpleDoubleProperty getUtilidad() {
+        return utilidad;
+    }
+
+    public void setUtilidad(double utilidad) {
+        this.utilidad = new SimpleDoubleProperty(utilidad);
+    }
+
+    public boolean isImpuesto() {
+        return impuesto;
+    }
+
+    public void setImpuesto(boolean impuesto) {
+        this.impuesto = impuesto;
+    }
+    
+    
+    
 }

@@ -208,7 +208,8 @@ public class FxComprasController implements Initializable {
                     articuloTB.setPrecioVenta(e.getPrecioVenta().get());
                     articuloTB.setDescuento(e.getDescuento().get());
                     articuloTB.setTotal(e.getTotal().get());
-
+                    articuloTB.setUtilidad(e.getUtilidad().get());
+                    articuloTB.setImpuesto(e.isImpuesto());
                     controller.setLoadEdit(articuloTB);
 
                 } catch (IOException ex) {
