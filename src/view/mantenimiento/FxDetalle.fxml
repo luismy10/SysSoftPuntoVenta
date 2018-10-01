@@ -17,7 +17,7 @@
     <children>
         <AnchorPane style="-fx-background-color: #1a2226 #1a2226;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Label fx:id="lblTitle" styleClass="labelTitle" text="Detalle del mantenimiento" textFill="WHITE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0">
+                <Label fx:id="lblTitle" styleClass="labelRobotoMedium18" text="Detalle del mantenimiento" textFill="WHITE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0">
                     <font>
                         <Font name="Calibri" size="19.0" />
                     </font>
@@ -28,25 +28,25 @@
             <children>
                 <VBox spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                     <children>
-                        <Label styleClass="labelForm" text="Código">
+                        <Label styleClass="labelRoboto14" text="Código">
                             <font>
                                 <Font name="Roboto Bold" size="14.0" />
                             </font>
                         </Label>
                         <TextField fx:id="txtCode" disable="true" onAction="#onActionToRegister" />
-                        <Label styleClass="labelForm" text="Nombre">
+                        <Label styleClass="labelRoboto14" text="Nombre">
                             <font>
                                 <Font name="Roboto" size="14.0" />
                             </font>
                         </Label>
                         <TextField fx:id="txtName" onAction="#onActionToRegister" />
-                        <Label styleClass="labelForm" text="Descripción">
+                        <Label styleClass="labelRoboto14" text="Descripción">
                             <font>
                                 <Font name="Roboto" size="14.0" />
                             </font>
                         </Label>
                         <TextArea fx:id="txtDescripcion" onKeyPressed="#OnKeyPressedDescripcion" prefHeight="88.0" wrapText="true" />
-                        <Label styleClass="labelForm" text="Estado" />
+                        <Label styleClass="labelRoboto14" text="Estado" />
                         <ComboBox fx:id="cbEstado" minHeight="-Infinity" minWidth="-Infinity" prefWidth="501.0" styleClass="comboBox" />
                         <HBox alignment="TOP_CENTER" spacing="10.0">
                             <children>

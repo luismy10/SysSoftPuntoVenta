@@ -9,12 +9,13 @@ import java.util.ArrayList;
 public class EmpresaADO {
 
     public static String CrudEntity(EmpresaTB empresaTB) {
-        String selectStmt = "{call Sp_Crud_MiEmpresa(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String selectStmt = "{call Sp_Crud_MiEmpresa(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
             DBUtil.dbConnect();
             callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
             callableStatement.setInt("IdEmpresa", empresaTB.getIdEmpresa());
+            callableStatement.setInt("GiroComercial", empresaTB.getGiroComerial());
             callableStatement.setString("Nombre", empresaTB.getNombre());
             callableStatement.setString("Telefono", empresaTB.getTelefono());
             callableStatement.setString("Celular", empresaTB.getCelular());
@@ -28,6 +29,8 @@ public class EmpresaADO {
             callableStatement.setString("NombreComercial", empresaTB.getNombreComercial());
             callableStatement.setString("Pais", empresaTB.getPais());
             callableStatement.setInt("Ciudad", empresaTB.getCiudad());
+            callableStatement.setInt("Provincia", empresaTB.getProvincia());
+            callableStatement.setInt("Distrito", empresaTB.getDistrito());
             //
             callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
             callableStatement.execute();
@@ -57,19 +60,22 @@ public class EmpresaADO {
             while (rsEmps.next()) {
                 EmpresaTB empresaTB = new EmpresaTB();
                 empresaTB.setIdEmpresa(rsEmps.getInt("IdEmpresa"));
+                empresaTB.setGiroComerial(rsEmps.getInt("GiroComercial"));
                 empresaTB.setNombre(rsEmps.getString("Nombre"));
                 empresaTB.setTelefono(rsEmps.getString("Telefono"));
                 empresaTB.setCelular(rsEmps.getString("Celular"));
                 empresaTB.setPaginaWeb(rsEmps.getString("PaginaWeb"));
                 empresaTB.setEmail(rsEmps.getString("Email"));
                 empresaTB.setDomicilio(rsEmps.getString("Domicilio"));
-                
-                empresaTB.setTipoDocumento(rsEmps.getInt("TipoDocumento")); 
-                empresaTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento")); 
-                empresaTB.setRazonSocial(rsEmps.getString("RazonSocial")); 
-                empresaTB.setNombreComercial(rsEmps.getString("NombreComercial")); 
-                empresaTB.setPais(rsEmps.getString("Pais")); 
-                empresaTB.setCiudad(rsEmps.getInt("Ciudad")); 
+
+                empresaTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
+                empresaTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
+                empresaTB.setRazonSocial(rsEmps.getString("RazonSocial"));
+                empresaTB.setNombreComercial(rsEmps.getString("NombreComercial"));
+                empresaTB.setPais(rsEmps.getString("Pais"));
+                empresaTB.setCiudad(rsEmps.getInt("Ciudad"));
+                empresaTB.setProvincia(rsEmps.getInt("Provincia"));
+                empresaTB.setDistrito(rsEmps.getInt("Distrito"));
                 arrayList.add(empresaTB);
             }
         } catch (SQLException e) {

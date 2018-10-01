@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -21,13 +21,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.ArticuloADO;
@@ -56,27 +57,19 @@ public class FxArticulosController implements Initializable {
     private TableColumn<ArticuloTB, String> tcPresentacion;
     @FXML
     private TableColumn<ArticuloTB, String> tcEstado;
-
-    private Executor exec;
+    @FXML
+    private TableColumn<ArticuloTB, ImageView> tcLote;
+    @FXML
+    private VBox vbOpciones;
 
     private AnchorPane content;
-    @FXML
-    private ImageView ivPrincipal;
-    @FXML
-    private Text lblName;
-    @FXML
-    private Text lblPrice;
-    @FXML
-    private Text lblQuantity;
+
+    private FxArticuloSeleccionadoController seleccionadoController;
+
+    private FxArticuloDetalleController detalleController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocument.setCellValueFactory(cellData -> Bindings.concat(
@@ -85,10 +78,21 @@ public class FxArticulosController implements Initializable {
         tcMarca.setCellValueFactory(cellData -> cellData.getValue().getMarcaName());
         tcPresentacion.setCellValueFactory(cellData -> cellData.getValue().getPresentacionName());
         tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
+        tcLote.setCellValueFactory(new PropertyValueFactory<>("imageLote"));
+        
+        changeViewArticuloSeleccionado();
+        
     }
 
     public void fillArticlesTable(String value) {
         if (DBUtil.StateConnection()) {
+
+            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+                Thread t = new Thread(runnable);
+                t.setDaemon(true);
+                return t;
+            });
+
             Task<List<ArticuloTB>> task = new Task<List<ArticuloTB>>() {
                 @Override
                 public ObservableList<ArticuloTB> call() {
@@ -108,13 +112,17 @@ public class FxArticulosController implements Initializable {
                 lblLoad.setVisible(true);
             });
             exec.execute(task);
+
+            if (!exec.isShutdown()) {
+                exec.shutdown();
+            }
         }
 
     }
 
     private void loadViewImage(String idRepresentante) {
         ImagenTB imagenTB = ImageADO.GetImage(idRepresentante);
-        ivPrincipal.setImage(imagenTB.getImagen());
+        seleccionadoController.getIvPrincipal().setImage(imagenTB.getImagen());
     }
 
     private void InitializationTransparentBackground() {
@@ -192,6 +200,36 @@ public class FxArticulosController implements Initializable {
 
     }
 
+    public void changeViewArticuloSeleccionado() {
+        try {
+            FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource("/view/articulo/FxArticuloSeleccionado.fxml"));
+            VBox seleccionado = fXMLSeleccionado.load();
+            VBox.setVgrow(seleccionado, Priority.SOMETIMES);
+            seleccionadoController = fXMLSeleccionado.getController();
+            seleccionadoController.setArticuloController(this);
+
+            vbOpciones.getChildren().clear();
+            vbOpciones.getChildren().add(seleccionado);
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
+    public void changeViewArticuloDetalle() {
+        try {
+            FXMLLoader fXMLDetall = new FXMLLoader(getClass().getResource("/view/articulo/FxArticuloDetalle.fxml"));
+            VBox detalle = fXMLDetall.load();
+            VBox.setVgrow(detalle, Priority.SOMETIMES);
+            detalleController = fXMLDetall.getController();
+            detalleController.setArticuloController(this);
+
+            vbOpciones.getChildren().clear();
+            vbOpciones.getChildren().add(detalle);
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
     @FXML
     private void onActionAdd(ActionEvent event) throws IOException {
         onViewArticuloAdd();
@@ -230,7 +268,7 @@ public class FxArticulosController implements Initializable {
 
     @FXML
     private void onActionSearch(ActionEvent event) {
-
+        fillArticlesTable(txtSearch.getText());
     }
 
     @FXML
@@ -253,9 +291,10 @@ public class FxArticulosController implements Initializable {
                 ArrayList<ArticuloTB> list = ArticuloADO.GetArticulosByIdView(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
                 if (!list.isEmpty()) {
                     ArticuloTB articuloTB = list.get(0);
-                    lblName.setText(articuloTB.getNombre().get());
-                    lblPrice.setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
-                    lblQuantity.setText(articuloTB.getCantidad().get() % 1 == 0
+                    seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
+                    seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
+                    seleccionadoController.getLblPrice().setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
+                    seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad().get() % 1 == 0
                             ? Tools.roundingValue(articuloTB.getCantidad().get(), 0)
                             : Tools.roundingValue(articuloTB.getCantidad().get(), 2));
                 }
@@ -274,9 +313,10 @@ public class FxArticulosController implements Initializable {
                 ArrayList<ArticuloTB> list = ArticuloADO.GetArticulosByIdView(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
                 if (!list.isEmpty()) {
                     ArticuloTB articuloTB = list.get(0);
-                    lblName.setText(articuloTB.getNombre().get());
-                    lblPrice.setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
-                    lblQuantity.setText(articuloTB.getCantidad().get() % 1 == 0
+                    seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
+                    seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
+                    seleccionadoController.getLblPrice().setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
+                    seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad().get() % 1 == 0
                             ? Tools.roundingValue(articuloTB.getCantidad().get(), 0)
                             : Tools.roundingValue(articuloTB.getCantidad().get(), 2));
                 }
@@ -285,9 +325,10 @@ public class FxArticulosController implements Initializable {
                 ArrayList<ArticuloTB> list = ArticuloADO.GetArticulosByIdView(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
                 if (!list.isEmpty()) {
                     ArticuloTB articuloTB = list.get(0);
-                    lblName.setText(articuloTB.getNombre().get());
-                    lblPrice.setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
-                    lblQuantity.setText(articuloTB.getCantidad().get() % 1 == 0
+                    seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
+                    seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
+                    seleccionadoController.getLblPrice().setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
+                    seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad().get() % 1 == 0
                             ? Tools.roundingValue(articuloTB.getCantidad().get(), 0)
                             : Tools.roundingValue(articuloTB.getCantidad().get(), 2));
                 }

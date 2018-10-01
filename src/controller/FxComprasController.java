@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -81,6 +82,8 @@ public class FxComprasController implements Initializable {
     private double subTotal;
 
     private double descuento;
+    @FXML
+    private Button btnArticulo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -104,7 +107,7 @@ public class FxComprasController implements Initializable {
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getDescuento().get(), 2)));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getTotal().get(), 2)));
+                Tools.roundingValue(cellData.getValue().getImporte().get(), 2)));
     }
 
     private void InitializationTransparentBackground() {
@@ -130,6 +133,9 @@ public class FxComprasController implements Initializable {
         } else if (tpFechaCompra.getValue() == null) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compras", "Ingrese la fecha de compra, por favor.", false);
             tpFechaCompra.requestFocus();
+        } else if (tvList.getItems().isEmpty()) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compras", "Ingrese algún producto para realizar la compra, por favor.", false);
+            btnArticulo.requestFocus();
         } else {
             CompraTB compraTB = new CompraTB();
             compraTB.setProveedor(idProveedor);
@@ -142,7 +148,7 @@ public class FxComprasController implements Initializable {
             compraTB.setGravada(Double.parseDouble(lblGravada.getText()));
             compraTB.setIgv(Double.parseDouble(lblIgv.getText()));
             compraTB.setTotal(Double.parseDouble(lblTotal.getText()));
-            String result = CompraADO.CrudEntity(compraTB);
+            String result = CompraADO.CrudEntity(compraTB, tvList);
             if (result.equalsIgnoreCase("register")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Compras", "Registrado correctamente la compra.", false);
                 idProveedor = idRepresentante = "";
@@ -201,13 +207,15 @@ public class FxComprasController implements Initializable {
                     stage.setResizable(false);
                     stage.show();
                     ArticuloTB articuloTB = new ArticuloTB();
+                    articuloTB.setIdArticulo(e.getIdArticulo());
                     articuloTB.setClave(e.getClave().get());
                     articuloTB.setNombre(e.getNombre().get());
                     articuloTB.setCantidad(e.getCantidad().get());
                     articuloTB.setPrecioCompra(e.getPrecioCompra());
+                    articuloTB.setPrecioCompraReal(e.getPrecioCompraReal());
                     articuloTB.setPrecioVenta(e.getPrecioVenta().get());
                     articuloTB.setDescuento(e.getDescuento().get());
-                    articuloTB.setTotal(e.getTotal().get());
+                    articuloTB.setImporte(e.getImporte().get());
                     articuloTB.setUtilidad(e.getUtilidad().get());
                     articuloTB.setImpuesto(e.isImpuesto());
                     controller.setLoadEdit(articuloTB);
@@ -354,22 +362,21 @@ public class FxComprasController implements Initializable {
     }
 
     public void setCalculateTotals() {
-        
-        double subTotalInterno,descuentoInterno;
-        
+
+        double subTotalInterno, descuentoInterno;
+
         tvList.getItems().forEach(e -> subTotal += e.getSubTotal().get());
         lblSubTotal.setText(Tools.roundingValue(subTotal, 2));
-        subTotalInterno=subTotal;
+        subTotalInterno = subTotal;
         subTotal = 0;
 
         tvList.getItems().forEach(e -> descuento += e.getDescuento().get());
         lblDescuento.setText(Tools.roundingValue(descuento, 2));
-        descuentoInterno=descuento;
+        descuentoInterno = descuento;
         descuento = 0;
-        
-        double total = subTotalInterno - descuentoInterno;        
-        lblTotal.setText(Tools.roundingValue(total, 2));        
-        
+
+        double total = subTotalInterno - descuentoInterno;
+        lblTotal.setText(Tools.roundingValue(total, 2));
 
         double gravada = Tools.calculateValueNeto(Session.IMPUESTO, total);
         lblGravada.setText(Tools.roundingValue(gravada, 2));

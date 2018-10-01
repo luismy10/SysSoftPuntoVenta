@@ -14,20 +14,27 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import model.CiudadADO;
 import model.CiudadTB;
 import model.DBUtil;
 import model.DetalleADO;
 import model.DetalleTB;
+import model.DistritoADO;
+import model.DistritoTB;
 import model.EmpresaADO;
 import model.EmpresaTB;
 import model.PaisADO;
 import model.PaisTB;
+import model.ProvinciaADO;
+import model.ProvinciaTB;
 
 public class FxMiEmpresaController implements Initializable {
 
     @FXML
-    private AnchorPane window;
+    private VBox window;
+    @FXML
+    private ComboBox<DetalleTB> cbGiroComercial;
     @FXML
     private TextField txtNombre;
     @FXML
@@ -53,6 +60,10 @@ public class FxMiEmpresaController implements Initializable {
     @FXML
     private ComboBox<CiudadTB> cbCiudad;
     @FXML
+    private ComboBox<ProvinciaTB> cbProvincia;
+    @FXML
+    private ComboBox<DistritoTB> cbCiudadDistrito;
+    @FXML
     private Button btnRegister;
     @FXML
     private Button btnCancel;
@@ -61,9 +72,14 @@ public class FxMiEmpresaController implements Initializable {
 
     private int idEmpresa;
 
+    private AnchorPane content;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if (DBUtil.StateConnection()) {
+            DetalleADO.GetDetailIdName("3", "0011", "").forEach(e -> {
+                cbGiroComercial.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+            });
             PaisADO.ListPais().forEach(e -> {
                 cbPais.getItems().add(new PaisTB(e.getPaisCodigo(), e.getPaisNombre()));
             });
@@ -74,15 +90,26 @@ public class FxMiEmpresaController implements Initializable {
             if (!list.isEmpty()) {
                 validate = true;
                 idEmpresa = list.get(0).getIdEmpresa();
+
+                ObservableList<DetalleTB> lsgiro = cbGiroComercial.getItems();
+                if (list.get(0).getGiroComerial() != 0) {
+                    for (int i = 0; i < lsgiro.size(); i++) {
+                        if (list.get(0).getGiroComerial() == lsgiro.get(i).getIdDetalle().get()) {
+                            cbGiroComercial.getSelectionModel().select(i);
+                            break;
+                        }
+                    }
+                }
+
                 txtNombre.setText(list.get(0).getNombre());
                 txtTelefono.setText(list.get(0).getTelefono());
                 txtCelular.setText(list.get(0).getCelular());
                 txtPaginasWeb.setText(list.get(0).getPaginaWeb());
                 txtEmail.setText(list.get(0).getEmail());
                 txtDomicilio.setText(list.get(0).getDomicilio());
-                
+
                 ObservableList<DetalleTB> lsdoc = cbTipoDocumento.getItems();
-                if(list.get(0).getTipoDocumento() != 0){
+                if (list.get(0).getTipoDocumento() != 0) {
                     for (int i = 0; i < lsdoc.size(); i++) {
                         if (list.get(0).getTipoDocumento() == lsdoc.get(i).getIdDetalle().get()) {
                             cbTipoDocumento.getSelectionModel().select(i);
@@ -90,34 +117,66 @@ public class FxMiEmpresaController implements Initializable {
                         }
                     }
                 }
-                
+
                 txtNumeroDocumento.setText(list.get(0).getNumeroDocumento());
                 txtRazonSocial.setText(list.get(0).getRazonSocial());
                 txtNombreComercial.setText(list.get(0).getNombreComercial());
-                
 
                 ObservableList<PaisTB> lspais = cbPais.getItems();
                 if (list.get(0).getPais() != null || !list.get(0).getPais().equals("")) {
                     for (int i = 0; i < lspais.size(); i++) {
                         if (list.get(0).getPais().equals(lspais.get(i).getPaisCodigo())) {
                             cbPais.getSelectionModel().select(i);
-                            CiudadADO.ListPais(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-                                cbCiudad.getItems().add(new CiudadTB(e.getCiudadID(), e.getCiudadDistrito()));
+                            CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
+                                cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
                             });
                             break;
                         }
                     }
                 }
-                
+
                 ObservableList<CiudadTB> lsciudad = cbCiudad.getItems();
                 if (list.get(0).getCiudad() != 0) {
                     for (int i = 0; i < lsciudad.size(); i++) {
-                        if (list.get(0).getCiudad() == lsciudad.get(i).getCiudadID()) {
+                        if (list.get(0).getCiudad() == lsciudad.get(i).getIdCiudad()) {
                             cbCiudad.getSelectionModel().select(i);
+                            ProvinciaADO.ListProvincia(cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
+                                cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
+                            });
                             break;
                         }
                     }
                 }
+
+                ObservableList<ProvinciaTB> lsprovin = cbProvincia.getItems();
+                if (list.get(0).getProvincia() != 0) {
+                    for (int i = 0; i < lsprovin.size(); i++) {
+                        if (list.get(0).getProvincia() == lsprovin.get(i).getIdProvincia()) {
+                            cbProvincia.getSelectionModel().select(i);
+                            DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
+                                cbCiudadDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
+                            });
+                            break;
+                        }
+                    }
+                }
+
+                ObservableList<DistritoTB> lsdistrito = cbCiudadDistrito.getItems();
+                if (list.get(0).getDistrito() != 0) {
+                    for (int i = 0; i < lsdistrito.size(); i++) {
+                        if (list.get(0).getDistrito() == lsdistrito.get(i).getIdDistrito()) {
+                            cbCiudadDistrito.getSelectionModel().select(i);
+                            break;
+                        }
+                    } 
+                }
+                Session.EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();
+                Session.TELEFONO = list.get(0).getTelefono();
+                Session.CELULAR = list.get(0).getCelular();
+                Session.PAGINAWEB = list.get(0).getPaginaWeb();
+                Session.EMAIL = list.get(0).getEmail();
+                Session.DIRECCION = list.get(0).getDomicilio();
+
             } else {
                 validate = false;
             }
@@ -126,38 +185,49 @@ public class FxMiEmpresaController implements Initializable {
     }
 
     private void aValidityProcess() {
-        if (txtNombre.getText().equalsIgnoreCase("")) {
+        if (cbGiroComercial.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Seleccione el giro comercial, por favor.", false);
+            cbGiroComercial.requestFocus();
+        } else if (txtNombre.getText().equalsIgnoreCase("")) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese el nombre de la empresa, por favor.", false);
             txtNombre.requestFocus();
+        } else if (txtDomicilio.getText().isEmpty()) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese la dirección fiscal de la empresa, por favor.", false);
+            txtDomicilio.requestFocus();
         } else {
             if (DBUtil.StateConnection()) {
                 short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mi Empresa", "¿Esta seguro de continuar?", true);
                 if (confirmation == 1) {
                     EmpresaTB empresaTB = new EmpresaTB();
                     empresaTB.setIdEmpresa(validate == true ? idEmpresa : 0);
+                    empresaTB.setGiroComerial(cbGiroComercial.getSelectionModel().getSelectedItem().getIdDetalle().get());
                     empresaTB.setNombre(txtNombre.getText().trim());
-                    empresaTB.setTelefono(txtTelefono.getText().trim());
-                    empresaTB.setCelular(txtCelular.getText().trim());
+                    empresaTB.setTelefono(txtTelefono.getText().trim().isEmpty() ? "0000000" : txtTelefono.getText().trim());
+                    empresaTB.setCelular(txtCelular.getText().trim().isEmpty() ? "000000000" : txtCelular.getText().trim());
                     empresaTB.setPaginaWeb(txtPaginasWeb.getText().trim());
                     empresaTB.setEmail(txtEmail.getText().trim());
                     empresaTB.setDomicilio(txtDomicilio.getText().trim());
                     empresaTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedIndex() >= 0
                             ? cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get()
                             : 0);
-                    empresaTB.setNumeroDocumento(txtNumeroDocumento.getText().trim());
-                    empresaTB.setRazonSocial(txtRazonSocial.getText().trim());
+                    empresaTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().isEmpty() ? "000000000000" : txtNumeroDocumento.getText().trim());
+                    empresaTB.setRazonSocial(txtRazonSocial.getText().trim().isEmpty() ? txtNombre.getText().trim() : txtRazonSocial.getText().trim());
                     empresaTB.setNombreComercial(txtNombreComercial.getText().trim());
                     empresaTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0
                             ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()
-                            : null);
+                            : "");
                     empresaTB.setCiudad(cbCiudad.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbCiudad.getSelectionModel().getSelectedItem().getCiudadID()
+                            ? cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()
                             : 0);
+                    empresaTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0
+                            ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
+                    empresaTB.setDistrito(cbCiudadDistrito.getSelectionModel().getSelectedIndex() >= 0
+                            ? cbCiudadDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
                     String result = EmpresaADO.CrudEntity(empresaTB);
                     switch (result) {
                         case "registered":
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Registrado correctamente.", false);
-                            Tools.Dispose(window);
+
                             break;
                         case "updated":
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Actualizado correctamente.", false);
@@ -179,33 +249,65 @@ public class FxMiEmpresaController implements Initializable {
     }
 
     @FXML
-    private void onActionToRegister(ActionEvent event) {
+    private void onActionToRegister(ActionEvent event
+    ) {
         aValidityProcess();
     }
 
     @FXML
-    private void onKeyPressedToRegister(KeyEvent event) {
+    private void onKeyPressedToRegister(KeyEvent event
+    ) {
         if (event.getCode() == KeyCode.ENTER) {
             aValidityProcess();
         }
     }
 
     @FXML
-    private void onKeyPressedToCancel(KeyEvent event) {
+    private void onKeyPressedToCancel(KeyEvent event
+    ) {
     }
 
     @FXML
-    private void onActionToCancel(ActionEvent event) {
+    private void onActionToCancel(ActionEvent event
+    ) {
     }
 
     @FXML
-    private void onActionPais(ActionEvent event) {
+    private void onActionPais(ActionEvent event
+    ) {
         if (cbPais.getSelectionModel().getSelectedIndex() >= 0) {
             cbCiudad.getItems().clear();
-            CiudadADO.ListPais(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-                cbCiudad.getItems().add(new CiudadTB(e.getCiudadID(), e.getCiudadDistrito()));
+            CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
+                cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
             });
         }
+    }
+
+    @FXML
+    private void onActionDepartamento(ActionEvent event
+    ) {
+        if (cbCiudad.getSelectionModel().getSelectedIndex() >= 0) {
+            cbProvincia.getItems().clear();
+            ProvinciaADO.ListProvincia(cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
+                cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
+            });
+        }
+    }
+
+    @FXML
+    private void onActionProvincia(ActionEvent event
+    ) {
+        if (cbProvincia.getSelectionModel().getSelectedIndex() >= 0) {
+            cbCiudadDistrito.getItems().clear();
+            DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
+                cbCiudadDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
+            });
+        }
+    }
+
+    void setContent(AnchorPane content
+    ) {
+        this.content = content;
     }
 
 }

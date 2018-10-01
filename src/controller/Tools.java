@@ -57,8 +57,10 @@ public class Tools {
     static final String FX_FILE_CONSULTAS = "/view/inicio/FxConsultas.fxml";
     static final String FX_FILE_ARTICULOLISTA = "/view/articulo/FxArticuloLista.fxml";
     static final String FX_FILE_ARTICULOCOMPRA = "/view/articulo/FxArticuloCompra.fxml";
-    
-    
+    static final String FX_FILE_COMPRASDETALLE = "/view/compra/FxCompraDetalle.fxml";
+    static final String FX_FILE_LOTE = "/view/lote/FxLote.fxml";
+    static final String FX_FILE_LOTECAMBIAR = "/view/lote/FxLoteCambiar.fxml";
+    static final String FX_FILE_LOTEPROCESO = "/view/lote/FxLoteProceso.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         Alert alert = new Alert(type);
@@ -129,7 +131,7 @@ public class Tools {
     }
 
     public static String[] getDataPeople(String data) {
-        if (!data.equalsIgnoreCase("") || !data.equals(null)) {
+        if (data != null || !data.isEmpty()) {
             return data.trim().split(" ");
         }
         return null;
@@ -146,11 +148,11 @@ public class Tools {
         double impu = valor * igv;
         return impu;
     }
-    
+
     public static String calculateAumento(double porcentaje, double costo) {
-        double totalimporte = costo + (costo *(porcentaje/100));
+        double totalimporte = costo + (costo * (porcentaje / 100));
         double redondeandoimporte = Double.parseDouble(Tools.roundingValue(totalimporte, 1));
-        return Tools.roundingValue(redondeandoimporte,2);
+        return Tools.roundingValue(redondeandoimporte, 2);
     }
 
     public static double calculateValueNeto(double porcentaje, double valuecalculate) {
@@ -196,7 +198,7 @@ public class Tools {
     public static Timestamp getDateHour() {
         return new Timestamp(new Date().getTime());
     }
-    
+
     public static void showTooltip(Window owner, Control control, String tooltipText, ImageView tooltipGraphic) {
         Point2D p = control.localToScene(0.0, 0.0);
 

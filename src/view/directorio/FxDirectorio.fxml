@@ -30,7 +30,7 @@
                               <Image url="@../directory.png" />
                            </image>
                         </ImageView>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="Directorio" />
+                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Directorio" />
                      </children>
                   </HBox>
                   <VBox spacing="10.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
@@ -47,7 +47,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label styleClass="labelNormal" text="Datos de la persona" textFill="#1a2226">
+                                          <Label styleClass="labelRoboto14" text="Datos de la persona" textFill="#1a2226">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>

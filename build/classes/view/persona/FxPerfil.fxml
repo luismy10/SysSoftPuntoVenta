@@ -20,7 +20,7 @@
                <children>
                   <AnchorPane HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelTitle" text="Perfil" textFill="WHITE" AnchorPane.leftAnchor="0.0" />
+                        <Label styleClass="labelRobotoMedium18" text="Perfil" textFill="WHITE" AnchorPane.leftAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </children>
@@ -65,7 +65,7 @@
                   </VBox>
                </content>
             </ScrollPane>
-            <HBox alignment="CENTER" style="-fx-background-color: white;">
+            <HBox alignment="CENTER" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonTransparent" text="Agregar">
                      <graphic>

@@ -3,6 +3,7 @@ package model;
 public class EmpresaTB {
     
     private int idEmpresa;
+    private int giroComerial;
     private String nombre;
     private String telefono;
     private String celular;
@@ -13,8 +14,10 @@ public class EmpresaTB {
     private String numeroDocumento;
     private String razonSocial;
     private String nombreComercial;
-    private String pais;
+    private String pais;    
     private int ciudad;
+    private int distrito;
+    private int provincia;
 
     public EmpresaTB() {
     }
@@ -41,6 +44,14 @@ public class EmpresaTB {
 
     public void setIdEmpresa(int idEmpresa) {
         this.idEmpresa = idEmpresa;
+    }
+
+    public int getGiroComerial() {
+        return giroComerial;
+    }
+
+    public void setGiroComerial(int giroComerial) {
+        this.giroComerial = giroComerial;
     }
 
     public String getNombre() {
@@ -137,6 +148,22 @@ public class EmpresaTB {
 
     public void setCiudad(int ciudad) {
         this.ciudad = ciudad;
+    }
+
+    public int getDistrito() {
+        return distrito;
+    }
+
+    public void setDistrito(int distrito) {
+        this.distrito = distrito;
+    }
+
+    public int getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(int provincia) {
+        this.provincia = provincia;
     }
     
     

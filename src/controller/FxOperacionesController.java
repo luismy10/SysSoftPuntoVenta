@@ -103,6 +103,20 @@ public class FxOperacionesController implements Initializable {
 
     }
 
+    private void openWindowLote() throws IOException {
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_LOTE));
+        VBox node = fXMLPrincipal.load();
+        FxLoteController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        content.getChildren().add(node);
+
+    }
+
     @FXML
     private void onKeyPressedCustomers(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
@@ -166,6 +180,19 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private void onActionCompras(ActionEvent event) throws IOException {
         openWindowCompras();
+    }
+
+    @FXML
+    private void onActionLotes(ActionEvent event) throws IOException {
+        openWindowLote();
+
+    }
+
+    @FXML
+    private void onKeyPressedLotes(KeyEvent event) throws IOException {
+        if(event.getCode() == KeyCode.ENTER){
+            openWindowLote();
+        }
     }
 
 }

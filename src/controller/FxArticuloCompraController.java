@@ -1,11 +1,14 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableView;
@@ -13,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import model.ArticuloTB;
 
 public class FxArticuloCompraController implements Initializable {
@@ -44,14 +48,20 @@ public class FxArticuloCompraController implements Initializable {
 
     private boolean validationelemnt;
 
+    private String idArticulo;
+
+    private boolean validarlote;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
         validationelemnt = false;
+        validarlote = false;
         txtMargen.setText("30");
+        idArticulo = "";
     }
 
-    private boolean validateStock(TableView<ArticuloTB> view, ArticuloTB articuloTB) {
+    private boolean validateStock(TableView<ArticuloTB> view, ArticuloTB articuloTB) throws IOException {
         boolean ret = false;
         for (int i = 0; i < view.getItems().size(); i++) {
             if (view.getItems().get(i).getClave().get().equals(articuloTB.getClave().get())) {
@@ -60,13 +70,28 @@ public class FxArticuloCompraController implements Initializable {
             }
         }
         if (!ret) {
-            view.getItems().add(articuloTB);
+            if (validarlote) {
+                URL url = getClass().getResource(Tools.FX_FILE_LOTEPROCESO);
+                FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxLoteProcesoController controller = fXMLLoader.getController();
+                controller.setLoteController(this); 
+                //
+                Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Lote", window.getScene().getWindow());
+                stage.setResizable(false);
+                stage.show();
+                controller.setLoadData(String.valueOf(articuloTB.getCantidad().get()));
+            } else {
+                view.getItems().add(articuloTB);
+            }
+
         }
         return ret;
     }
 
     @FXML
-    private void onActionAdd(ActionEvent event) {
+    private void onActionAdd(ActionEvent event) throws IOException {
         if (!Tools.isNumeric(txtCantidad.getText())) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en la cantidad", false);
             txtCantidad.requestFocus();
@@ -78,23 +103,24 @@ public class FxArticuloCompraController implements Initializable {
             txtPrecio.requestFocus();
         } else {
             if (cbImpuesto.isSelected()) {
-                addArticulo(Double.parseDouble(txtCosto.getText()));
+                addArticulo(Double.parseDouble(txtCosto.getText()), Double.parseDouble(txtCosto.getText()));
             } else {
                 double igv = Tools.calculateTax(Session.IMPUESTO, Double.parseDouble(txtCosto.getText()));
                 double precioigv = (Double.parseDouble(txtCosto.getText()) + igv);
-                addArticulo(precioigv);
+                addArticulo(precioigv, Double.parseDouble(txtCosto.getText()));
             }
 
         }
     }
 
-    private void addArticulo(double costo) {
+    private void addArticulo(double costo, double costoreal) throws IOException {
         ArticuloTB articuloTB = new ArticuloTB();
+        articuloTB.setIdArticulo(idArticulo);
         articuloTB.setClave(lblClave.getText());
         articuloTB.setNombre(lblDescripcion.getText());
         articuloTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
         articuloTB.setPrecioCompra(costo);
-
+        articuloTB.setPrecioCompraReal(costoreal);
         articuloTB.setDescuento(txtDescuento.getText().isEmpty() ? 0
                 : Double.parseDouble(txtDescuento.getText()));
 
@@ -102,7 +128,7 @@ public class FxArticuloCompraController implements Initializable {
 
         articuloTB.setSubTotal((Double.parseDouble(txtCantidad.getText()) * costo));
 
-        articuloTB.setTotal(
+        articuloTB.setImporte(
                 (Double.parseDouble(txtCantidad.getText()) * costo)
                 - Double.parseDouble(txtDescuento.getText().isEmpty() ? "0"
                         : txtDescuento.getText()
@@ -111,7 +137,7 @@ public class FxArticuloCompraController implements Initializable {
         articuloTB.setUtilidad(Tools.isNumeric(txtUtilidad.getText())
                 ? Double.parseDouble(txtUtilidad.getText()) : 0
         );
-        
+
         articuloTB.setImpuesto(cbImpuesto.isSelected());
         if (validateStock(comprasController.getTvList(), articuloTB) && !validationelemnt) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya existe en la lista el artículo", false);
@@ -127,7 +153,7 @@ public class FxArticuloCompraController implements Initializable {
             comprasController.setCalculateTotals();
         }
 
-        Tools.Dispose(window);
+//        Tools.Dispose(window);
     }
 
     @FXML
@@ -139,18 +165,21 @@ public class FxArticuloCompraController implements Initializable {
         this.comprasController = comprasController;
     }
 
-    void setLoadData(String... value) {
-        lblClave.setText(value[0]);
-        lblDescripcion.setText(value[1]);
+    void setLoadData(String value[], boolean lote) {
+        idArticulo = value[0];
+        lblClave.setText(value[1]);
+        lblDescripcion.setText(value[2]);
+        validarlote = lote;
     }
 
     void setLoadEdit(ArticuloTB articuloTB) {
+        idArticulo = articuloTB.getIdArticulo();
         lblClave.setText(articuloTB.getClave().get());
         lblDescripcion.setText(articuloTB.getNombre().get());
         txtCantidad.setText("" + articuloTB.getCantidad().get());
-        txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompra(),2));
-        txtDescuento.setText(Tools.roundingValue(articuloTB.getDescuento().get(),2));
-        txtPrecio.setText(Tools.roundingValue(articuloTB.getPrecioVenta().get(),2));
+        txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompraReal(), 2));
+        txtDescuento.setText(Tools.roundingValue(articuloTB.getDescuento().get(), 2));
+        txtPrecio.setText(Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
         txtUtilidad.setText(Tools.roundingValue(articuloTB.getUtilidad().get(), 2));
         cbImpuesto.setSelected(articuloTB.isImpuesto());
         validationelemnt = true;
@@ -280,6 +309,29 @@ public class FxArticuloCompraController implements Initializable {
 
     @FXML
     private void onKeyReleasedMargen(KeyEvent event) {
+        if (Tools.isNumeric(txtMargen.getText()) && Tools.isNumeric(txtCosto.getText())) {
+            if (cbImpuesto.isSelected()) {
+                double preciocompra = Double.parseDouble(txtCosto.getText());
+
+                txtPrecio.setText(Tools.calculateAumento(Double.parseDouble(txtMargen.getText()), preciocompra));
+
+                txtUtilidad.setText(Tools.roundingValue((Double.parseDouble(txtPrecio.getText()) - preciocompra), 2));
+
+            } else {
+                double igv = Tools.calculateTax(Session.IMPUESTO, Double.parseDouble(txtCosto.getText()));
+                double precioigv = (Double.parseDouble(txtCosto.getText()) + igv);
+
+                double preciocompra = precioigv;
+
+                txtPrecio.setText(Tools.calculateAumento(Double.parseDouble(txtMargen.getText()), preciocompra));
+
+                txtUtilidad.setText(Tools.roundingValue((Double.parseDouble(txtPrecio.getText()) - preciocompra), 2));
+            }
+        }
+    }
+
+    @FXML
+    private void onActionImpuesto(ActionEvent event) {
         if (Tools.isNumeric(txtMargen.getText()) && Tools.isNumeric(txtCosto.getText())) {
             if (cbImpuesto.isSelected()) {
                 double preciocompra = Double.parseDouble(txtCosto.getText());

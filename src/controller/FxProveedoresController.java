@@ -5,7 +5,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -52,10 +52,6 @@ public class FxProveedoresController implements Initializable {
     @FXML
     private TableColumn<ProveedorTB, LocalDate> tcFechaRegistro;
 
-    private boolean stateconnect;
-
-    private Executor exec;
-
     private boolean proccess;
 
     private AnchorPane content;
@@ -63,14 +59,7 @@ public class FxProveedoresController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         proccess = false;
-        stateconnect = DBUtil.StateConnection();
-        if (stateconnect) {
-            exec = Executors.newCachedThreadPool((runnable) -> {
-                Thread t = new Thread(runnable);
-                t.setDaemon(true);
-                return t;
-            });
-        }
+
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocumentType.setCellValueFactory(cellData -> cellData.getValue().getTipoDocumentoName());
         tcDocument.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
@@ -95,6 +84,13 @@ public class FxProveedoresController implements Initializable {
 
     public void fillCustomersTable(String value) {
         if (DBUtil.StateConnection()) {
+
+            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+                Thread t = new Thread(runnable);
+                t.setDaemon(true);
+                return t;
+            });
+
             Task<List<ProveedorTB>> task = new Task<List<ProveedorTB>>() {
                 @Override
                 public ObservableList<ProveedorTB> call() {
@@ -116,6 +112,10 @@ public class FxProveedoresController implements Initializable {
                 lblLoad.setVisible(true);
             });
             exec.execute(task);
+
+            if (!exec.isShutdown()) {
+                exec.shutdown();
+            }
         }
 
     }

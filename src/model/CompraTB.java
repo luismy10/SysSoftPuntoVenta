@@ -1,4 +1,3 @@
-
 package model;
 
 import java.sql.Timestamp;
@@ -8,13 +7,14 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-
 public class CompraTB {
+
     private SimpleIntegerProperty id;
     private String idCompra;
     private String proveedor;
     private String representante;
     private int comprobante;
+    private String comprobanteName;
     private String numeracion;
     private ObjectProperty<LocalDate> fechaCompra;
     private Timestamp fechaRegistro;
@@ -24,10 +24,10 @@ public class CompraTB {
     private double igv;
     private SimpleDoubleProperty total;
     private ProveedorTB proveedorTB;
-    private ArticuloTB articuloTB;        
+    private ArticuloTB articuloTB;
 
     public CompraTB() {
-        
+
     }
 
     public SimpleIntegerProperty getId() {
@@ -36,7 +36,7 @@ public class CompraTB {
 
     public void setId(int id) {
         this.id = new SimpleIntegerProperty(id);
-    }   
+    }
 
     public String getIdCompra() {
         return idCompra;
@@ -70,6 +70,14 @@ public class CompraTB {
         this.comprobante = comprobante;
     }
 
+    public String getComprobanteName() {
+        return comprobanteName;
+    }
+
+    public void setComprobanteName(String comprobanteName) {
+        this.comprobanteName = comprobanteName;
+    }
+
     public String getNumeracion() {
         return numeracion;
     }
@@ -85,15 +93,15 @@ public class CompraTB {
     public void setFechaRegistro(Timestamp fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
-    
-     public ObjectProperty<LocalDate> getFechaCompra() {
+
+    public ObjectProperty<LocalDate> getFechaCompra() {
         return fechaCompra;
     }
 
     public void setFechaCompra(LocalDate fechaCompra) {
         this.fechaCompra = new SimpleObjectProperty<>(fechaCompra);
     }
-    
+
     public ObjectProperty<LocalDate> fechaCompraProperty() {
         return fechaCompra;
     }
@@ -153,8 +161,5 @@ public class CompraTB {
     public void setArticuloTB(ArticuloTB articuloTB) {
         this.articuloTB = articuloTB;
     }
-    
-    
-    
-    
+
 }

@@ -191,8 +191,8 @@ public class FxProveedorProcesoController implements Initializable {
                 for (int i = 0; i < lspais.size(); i++) {
                     if (list.get(0).getPais().equals(lspais.get(i).getPaisCodigo())) {
                         cbPais.getSelectionModel().select(i);
-                        CiudadADO.ListPais(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-                            cbCiudad.getItems().add(new CiudadTB(e.getCiudadID(), e.getCiudadDistrito()));
+                        CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
+                            cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
                         });
                         break;
                     }
@@ -202,7 +202,7 @@ public class FxProveedorProcesoController implements Initializable {
             ObservableList<CiudadTB> lsciudad = cbCiudad.getItems();
             if (proveedorTB.getCiudad() != 0) {
                 for (int i = 0; i < lsciudad.size(); i++) {
-                    if (proveedorTB.getCiudad() == lsciudad.get(i).getCiudadID()) {
+                    if (proveedorTB.getCiudad() == lsciudad.get(i).getIdCiudad()) {
                         cbCiudad.getSelectionModel().select(i);
                         break;
                     }
@@ -260,7 +260,7 @@ public class FxProveedorProcesoController implements Initializable {
                             ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()
                             : "");
                     proveedorTB.setCiudad(cbCiudad.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbCiudad.getSelectionModel().getSelectedItem().getCiudadID()
+                            ? cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()
                             : 0);
                     proveedorTB.setAmbito(cbAmbito.getSelectionModel().getSelectedIndex() >= 0
                             ? cbAmbito.getSelectionModel().getSelectedItem().getIdDetalle().get()
@@ -347,8 +347,8 @@ public class FxProveedorProcesoController implements Initializable {
     private void onActionPais(ActionEvent event) {
         if (cbPais.getSelectionModel().getSelectedIndex() >= 0) {
             cbCiudad.getItems().clear();
-            CiudadADO.ListPais(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-                cbCiudad.getItems().add(new CiudadTB(e.getCiudadID(), e.getCiudadDistrito()));
+            CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
+                cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
             });
         }
     }

@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +24,8 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import model.DBUtil;
 import model.DetalleADO;
-import model.DetalleTB;
+import model.EmpresaADO;
+import model.EmpresaTB;
 
 public class FxInicioController implements Initializable {
 
@@ -53,7 +55,7 @@ public class FxInicioController implements Initializable {
     private ScrollPane principal;
 
     private HBox operaciones;
-    
+
     private HBox consultas;
 
     private HBox configuracion;
@@ -80,15 +82,16 @@ public class FxInicioController implements Initializable {
             operaciones = fXMLOperaciones.load();
             FxOperacionesController controllerOperaciones = fXMLOperaciones.getController();
             controllerOperaciones.setContent(window, vbContent);
-            
+
             FXMLLoader fXMLConsultas = new FXMLLoader(getClass().getResource(Tools.FX_FILE_CONSULTAS));
             consultas = fXMLConsultas.load();
             FxConsultasController controllerConsultas = fXMLConsultas.getController();
             controllerConsultas.setContent(window, vbContent);
-            
 
             FXMLLoader fXMLConfiguracion = new FXMLLoader(getClass().getResource(Tools.FX_FILE_CONFIGURACION));
             configuracion = fXMLConfiguracion.load();
+            FxConfiguracionController configuracionController = fXMLConfiguracion.getController();
+            configuracionController.setContent(window, vbContent);
 
             setNode(principal);
             btnInicio.getStyleClass().add("buttonContainerActivate");
@@ -105,7 +108,17 @@ public class FxInicioController implements Initializable {
                 }
             });
             service.start();
-            
+
+            ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
+            if (!list.isEmpty()) {
+                Session.EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();
+                Session.TELEFONO = list.get(0).getTelefono();
+                Session.CELULAR = list.get(0).getCelular();
+                Session.PAGINAWEB = list.get(0).getPaginaWeb();
+                Session.EMAIL = list.get(0).getEmail();
+                Session.DIRECCION = list.get(0).getDomicilio();
+            }
+
             DetalleADO.GetDetailIdName("3", "0010", "").forEach(e -> {
                 Session.IMPUESTO = Double.parseDouble(e.getDescripcion().get());
             });

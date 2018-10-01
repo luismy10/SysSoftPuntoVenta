@@ -8,7 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class CiudadADO {
-     public static ObservableList<CiudadTB> ListPais(String value) {
+     public static ObservableList<CiudadTB> ListCiudad(String value) {
         String selectStmt = "{call Sp_Listar_Ciudad(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -19,7 +19,7 @@ public class CiudadADO {
             preparedStatement.setString(1, value);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                CiudadTB ciudadTB = new CiudadTB(resultSet.getInt("CiudadID"), resultSet.getString("CiudadDistrito"));
+                CiudadTB ciudadTB = new CiudadTB(resultSet.getInt("IdCiudad"), resultSet.getString("Departamento"));
                 empList.add(ciudadTB);
             }
 

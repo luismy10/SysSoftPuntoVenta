@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
@@ -46,18 +45,11 @@ public class FxArticuloListaController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcPrecio;
 
-    private ExecutorService exec;
-
     private FxComprasController comprasController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
-        exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(
@@ -71,6 +63,12 @@ public class FxArticuloListaController implements Initializable {
     }
 
     public void fillProvidersTable(String value) {
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
 
         Task<List<ArticuloTB>> task = new Task<List<ArticuloTB>>() {
             @Override
@@ -91,44 +89,94 @@ public class FxArticuloListaController implements Initializable {
 
     @FXML
     private void onKeyPressedToSearh(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            tvList.requestFocus();
+        }
     }
 
-    @FXML
-    private void onActionToSearch(ActionEvent event) {
+    private void openWindowAddArticulo() throws IOException {
+        URL url = getClass().getResource(Tools.FX_FILE_ARTICULOPROCESO);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxArticuloProcesoController controller = fXMLLoader.getController();
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Artículo", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.show();
+        controller.setInitArticulo();
+    }
+
+    private void openWindowCompra() throws IOException {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+
+            URL url = getClass().getResource(Tools.FX_FILE_ARTICULOCOMPRA);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxArticuloCompraController controller = fXMLLoader.getController();
+            controller.setInitCompraController(comprasController);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Agregar artículo", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.show();
+            controller.setLoadData(new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
+                tvList.getSelectionModel().getSelectedItem().getClave().get(),
+                tvList.getSelectionModel().getSelectedItem().getNombre().get()},
+                     tvList.getSelectionModel().getSelectedItem().isLote()
+            );
+
+        }
     }
 
     @FXML
     private void onMouseClickedList(MouseEvent event) throws IOException {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            if (event.getClickCount() == 2) {
-                URL url = getClass().getResource(Tools.FX_FILE_ARTICULOCOMPRA);
-                FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
-                Parent parent = fXMLLoader.load(url.openStream());
-                //Controlller here
-                FxArticuloCompraController controller = fXMLLoader.getController();
-                controller.setInitCompraController(comprasController);
-                //
-                Stage stage = FxWindow.StageLoaderModal(parent, "Agregar artículo", window.getScene().getWindow());
-                stage.setResizable(false);
-                stage.show();
-                controller.setLoadData(tvList.getSelectionModel().getSelectedItem().getClave().get(),
-                        tvList.getSelectionModel().getSelectedItem().getNombre().get());
-            }
+        if (event.getClickCount() == 2) {
+            openWindowCompra();
         }
     }
 
     @FXML
-    private void onKeyPressedAdd(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
-            
+    private void onKeyPressedList(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowCompra();
         }
     }
 
     @FXML
-    private void onActionAdd(ActionEvent event) {
-        
+    private void onKeyPressedAdd(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowAddArticulo();
+        }
     }
-    
+
+    @FXML
+    private void onActionAdd(ActionEvent event) throws IOException {
+        openWindowAddArticulo();
+    }
+
+    @FXML
+    private void onKeyReleasedToSearch(KeyEvent event) {
+        fillProvidersTable(txtSearch.getText());
+    }
+
+    @FXML
+    private void onActionToSearch(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void onKeyPressedReload(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            fillProvidersTable("");
+        }
+    }
+
+    @FXML
+    private void onActionReload(ActionEvent event) {
+        fillProvidersTable("");
+    }
+
     void setInitComptrasController(FxComprasController comprasController) {
         this.comprasController = comprasController;
     }

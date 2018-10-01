@@ -108,7 +108,7 @@ public class FxMantenimientoController implements Initializable {
         txtCode.setText(idMantenimiento);
         txtName.setText(nombre);
         btnToAction.setText("Actualizar");
-        btnToAction.getStyleClass().add("buttonFourth");
+        btnToAction.getStyleClass().add("buttonLightWarning");
     }
 
 }

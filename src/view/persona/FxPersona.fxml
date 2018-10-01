@@ -27,7 +27,7 @@
                         <Image url="@../logo.png" />
                      </image>
                   </ImageView>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Datos del cliente">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Datos del cliente">
                      <font>
                         <Font name="Roboto" size="18.0" />
                      </font>
@@ -50,13 +50,13 @@
                                           <Insets />
                                        </VBox.margin>
                                        <children>
-                                          <Label text="Tipo documento:" textFill="#23283a">
+                                          <Label styleClass="labelRoboto14" text="Tipo documento:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
                                           <ComboBox fx:id="cbDocumentType" prefHeight="30.0" prefWidth="210.0" />
-                                          <Label prefWidth="115.0" text="N° Documento:" textFill="#23283a">
+                                          <Label prefWidth="115.0" styleClass="labelRoboto14" text="N° Documento:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
@@ -72,13 +72,13 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label text="Apellido paterno:" textFill="#23283a">
+                                          <Label styleClass="labelRoboto14" text="Apellido paterno:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
                                           <TextField fx:id="txtLastName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="210.0" />
-                                          <Label prefWidth="115.0" text="Apellido materno:" textFill="#23283a">
+                                          <Label prefWidth="115.0" styleClass="labelRoboto14" text="Apellido materno:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
@@ -94,13 +94,13 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label prefWidth="106.0" text="Primer nombre:" textFill="#23283a">
+                                          <Label prefWidth="106.0" styleClass="labelRoboto14" text="Primer nombre:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
                                           <TextField fx:id="txtFirstName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="210.0" />
-                                          <Label prefWidth="115.0" text="Segundo nombre:" textFill="#23283a">
+                                          <Label prefWidth="115.0" styleClass="labelRoboto14" text="Segundo nombre:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
@@ -116,13 +116,13 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label prefWidth="106.0" text="Sexo:" textFill="#23283a">
+                                          <Label prefWidth="106.0" styleClass="labelRoboto14" text="Sexo:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
                                           <ComboBox fx:id="cbSex" prefHeight="30.0" prefWidth="210.0" />
-                                          <Label text="Fecha nacimiento:" textFill="#23283a">
+                                          <Label styleClass="labelRoboto14" text="Fecha nacimiento:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
@@ -138,7 +138,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label prefWidth="106.0" text="Estado:" textFill="#23283a">
+                                          <Label prefWidth="106.0" styleClass="labelRoboto14" text="Estado:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
@@ -151,7 +151,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label fx:id="lblDirectory" text="Directorio:" textFill="#23283a">
+                                          <Label fx:id="lblDirectory" styleClass="labelRoboto14" text="Directorio:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
@@ -202,13 +202,13 @@
                                           <Insets />
                                        </VBox.margin>
                                        <children>
-                                          <Label text="Tipo documento:" textFill="#23283a">
+                                          <Label styleClass="labelRoboto14" text="Tipo documento:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
                                           <ComboBox fx:id="cbDocumentTypeFactura" prefHeight="30.0" prefWidth="210.0" />
-                                          <Label prefWidth="119.0" text="N° Documento:" textFill="#23283a">
+                                          <Label prefWidth="119.0" styleClass="labelRoboto14" text="N° Documento:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
@@ -224,13 +224,13 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label prefWidth="106.0" text="Razón social:" textFill="#23283a">
+                                          <Label prefWidth="106.0" styleClass="labelRoboto14" text="Razón social:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
                                           <TextField fx:id="txtBusinessName" prefHeight="30.0" prefWidth="210.0" />
-                                          <Label text="Nombre comercial:" textFill="#23283a">
+                                          <Label styleClass="labelRoboto14" text="Nombre comercial:" textFill="#23283a">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>

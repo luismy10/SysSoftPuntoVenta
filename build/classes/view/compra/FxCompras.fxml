@@ -30,7 +30,7 @@
                               <Image url="@../purchases.png" />
                            </image>
                         </ImageView>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="Compras" />
+                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Compras" />
                      </children>
                   </HBox>
                   <VBox minHeight="-Infinity" minWidth="-Infinity">
@@ -46,7 +46,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Artículo">
+                              <Button fx:id="btnArticulo" mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Artículo">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -99,19 +99,19 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
-                                                <Label prefWidth="90.0" styleClass="labelMediumSubtitle" text="Proveedor:" textFill="#1a2226" />
+                                                <Label prefWidth="90.0" styleClass="labelRoboto14" text="Proveedor:" textFill="#1a2226" />
                                                 <TextField fx:id="txtProveedor" prefHeight="30.0" promptText="Buscar...." HBox.hgrow="ALWAYS" />
-                                                <Label prefWidth="112.0" styleClass="labelMediumSubtitle" text="Representante:" textFill="#1a2226" />
+                                                <Label prefWidth="112.0" styleClass="labelRoboto14" text="Representante:" textFill="#1a2226" />
                                                 <ComboBox fx:id="cbRepresentante" onAction="#onActionRepresentante" prefHeight="30.0" prefWidth="204.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
-                                                <Label styleClass="labelMediumSubtitle" text="Comprobante:" textFill="#1a2226" />
+                                                <Label styleClass="labelRoboto14" text="Comprobante:" textFill="#1a2226" />
                                                 <ComboBox fx:id="cbComprobante" prefHeight="30.0" prefWidth="160.0" HBox.hgrow="ALWAYS" />
-                                                <Label styleClass="labelMediumSubtitle" text="Numeración:" textFill="#1a2226" />
+                                                <Label styleClass="labelRoboto14" text="Numeración:" textFill="#1a2226" />
                                                 <TextField fx:id="cbNumeracion" onKeyTyped="#onKeyTypedNumeracion" prefHeight="30.0" prefWidth="160.0" HBox.hgrow="ALWAYS" />
-                                                <Label styleClass="labelMediumSubtitle" text="Fecha de compra:" textFill="#1a2226" />
+                                                <Label styleClass="labelRoboto14" text="Fecha de compra:" textFill="#1a2226" />
                                                 <DatePicker fx:id="tpFechaCompra" editable="false" prefHeight="30.0" prefWidth="204.0" />
                                              </children>
                                           </HBox>
@@ -121,7 +121,7 @@
                               </HBox>
                               <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="320.0" prefWidth="711.0" VBox.vgrow="ALWAYS">
                                  <columns>
-                                    <TableColumn fx:id="tcArticulo" prefWidth="379.0" text="Clave/Descripción" />
+                                    <TableColumn fx:id="tcArticulo" prefWidth="379.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
                                     <TableColumn fx:id="tcCantidad" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Cantidad" />
                                     <TableColumn fx:id="tcPrecio" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Precio U.N" />
                                     <TableColumn fx:id="tcDescuento" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Descuento" />
@@ -141,55 +141,55 @@
                            <children>
                               <VBox spacing="10.0">
                                  <children>
-                                    <Label styleClass="labelNormal" text="Sub Total" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="Sub Total" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/." />
-                                          <Text fx:id="lblSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
                               <VBox spacing="10.0">
                                  <children>
-                                    <Label styleClass="labelNormal" text="Descuento" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="Descuento" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/. -" />
-                                          <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/. -" />
+                                          <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
                               <VBox spacing="10.0">
                                  <children>
-                                    <Label styleClass="labelNormal" text="Op. Gravada" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="Op. Gravada" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/." />
-                                          <Text fx:id="lblGravada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblGravada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
                               <VBox spacing="10.0">
                                  <children>
-                                    <Label styleClass="labelNormal" text="IGV" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="IGV" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/." />
-                                          <Text fx:id="lblIgv" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblIgv" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
                               <VBox spacing="10.0">
                                  <children>
-                                    <Label styleClass="labelNormal" text="Total" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="Total" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
-                                          <Text fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="S/." />
-                                          <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTitle" text="0.00" />
+                                          <Text fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>
                                  </children>

@@ -86,267 +86,6 @@
     -fx-background-color: #666666;
 }
 
-
-/*--------------------*/
-
-.buttonPrimary {
-    -fx-padding: 4 12 4 12;   
-    -fx-border-color: #FE104C;
-    -fx-border-width: 2;
-    -fx-border-radius: 3;
-    -fx-background-radius: 3;
-    -fx-background-color: #FE104C;
-    -fx-font-family:"Roboto";  
-    -fx-font-size: 14px;
-    -fx-text-fill: #FFFFFF;
-    -fx-background-insets: 0 0 0 0, 0, 1, 2;
-}
-
-.buttonPrimary:hover {
-    -fx-background-color: #FE104C;
-    -fx-cursor: hand;
-}
-
-.buttonPrimary:pressed, .buttonPrimary:default:hover:pressed {
-    -fx-background-color: #FE104C;
-    -fx-text-fill:black;
-}
-
-.buttonPrimary:focused {
-    -fx-border-color:  #0288d1,  #0288d1;
-    -fx-border-width: 2, 2;
-    -fx-border-radius: 3, 3;
-    -fx-border-insets: 0 0 0 0, 0;
-}
-
-.buttonPrimary:disabled, .buttonPrimary:default:disabled {
-    -fx-opacity: 0.4;
-    -fx-background-color: #1d1d1d;
-    -fx-text-fill: white;
-}
-
-.buttonPrimary:default {
-    -fx-background-color: -fx-focus-color;
-    -fx-text-fill: #ffffff;
-}
-
-.buttonPrimary:default:hover {
-    -fx-background-color: derive(-fx-focus-color,100%);
-}
-
-/*----------------*/
-.buttonSecondary {
-    -fx-padding: 4 12 4 12;    
-    -fx-border-color:  #23283A;
-    -fx-border-width: 2;
-    -fx-border-radius: 3;
-    -fx-background-radius:3;
-    -fx-background-color:  #23283A;
-    -fx-font-family:"Roboto";  
-    -fx-font-size: 14px;
-    -fx-text-fill: #FFFFFF;
-    -fx-background-insets: 0 0 0 0, 0, 1, 2;
-}
-
-.buttonSecondary:hover {
-    -fx-background-color:  #23283A;
-    -fx-cursor: hand;
-}
-
-.buttonSecondary:pressed, .buttonSecondary:default:hover:pressed {
-    -fx-background-color:  #23283A;
-    -fx-text-fill: #0288d1;
-}
-
-.buttonSecondary:focused {
-    -fx-border-color:   #0288d1, #0288d1;
-    -fx-border-width: 2, 2;
-    -fx-border-radius: 3, 3;
-    -fx-border-insets: 0 0 0 0, 0;
-}
-
-.buttonSecondary:disabled, .buttonSecondary:default:disabled {
-    -fx-opacity: 0.4;
-    -fx-background-color: #1d1d1d;
-    -fx-text-fill: white;
-}
-
-.buttonSecondary:default {
-    -fx-background-color: -fx-focus-color;
-    -fx-text-fill: #ffffff;
-}
-
-.buttonSecondary:default:hover {
-    -fx-background-color: derive(-fx-focus-color,100%);
-}
-
-/*------------------------*/
-.buttonTertiary {
-    -fx-padding: 4 12 4 12;    
-    -fx-border-color:  #00a876;
-    -fx-border-width: 2;
-    -fx-border-radius: 3;
-    -fx-background-radius:3;
-    -fx-background-color:  #00a876;
-    -fx-font-family:"Roboto";  
-    -fx-font-size: 14px;
-    -fx-text-fill: #FFFFFF;
-    -fx-background-insets: 0 0 0 0, 0, 1, 2;
-}
-
-.buttonTertiary:hover {
-    -fx-background-color:  #00a876;
-    -fx-cursor: hand;
-}
-
-.buttonTertiary:pressed, .buttonTertiary:default:hover:pressed {
-    -fx-background-color:  #00a876;
-    -fx-text-fill: #0288d1;
-}
-
-.buttonTertiary:focused {
-    -fx-border-color:   #0288d1, #0288d1;
-    -fx-border-width: 2, 2;
-    -fx-border-radius: 3, 3;
-    -fx-border-insets: 0 0 0 0, 0;
-}
-
-.buttonTertiary:disabled, .buttonTertiary:default:disabled {
-    -fx-opacity: 0.4;
-    -fx-background-color: #1d1d1d;
-    -fx-text-fill: white;
-}
-
-.buttonTertiary:default {
-    -fx-background-color: -fx-focus-color;
-    -fx-text-fill: #ffffff;
-}
-
-.buttonTertiary:default:hover {
-    -fx-background-color: derive(-fx-focus-color,100%);
-}
-
-/*------------------------*/
-.buttonFourth {
-    -fx-padding: 4 12 4 12;    
-    -fx-border-color: #FF5722;
-    -fx-border-width: 2;
-    -fx-border-radius: 3;
-    -fx-background-radius:3;
-    -fx-background-color:  #FF5722;
-    -fx-font-family:"Roboto";  
-    -fx-font-size: 14px;
-    -fx-text-fill: #FFFFFF;
-    -fx-background-insets: 0 0 0 0, 0, 1, 2;
-}
-
-.buttonFourth:hover {
-    -fx-background-color: #FF5722;
-    -fx-cursor: hand;
-}
-
-.buttonFourth:pressed, .buttonFourth:default:hover:pressed {
-    -fx-background-color: #FF5722;
-    -fx-text-fill: #0288d1;
-}
-
-.buttonFourth:focused {
-    -fx-border-color:   #0288d1, #0288d1;
-    -fx-border-width: 2, 2;
-    -fx-border-radius: 3, 3;
-    -fx-border-insets: 0 0 0 0, 0;
-}
-
-.buttonFourth:disabled, .buttonFourth:default:disabled {
-    -fx-opacity: 0.4;
-    -fx-background-color: #1d1d1d;
-    -fx-text-fill: white;
-}
-
-.buttonFourth:default {
-    -fx-background-color: -fx-focus-color;
-    -fx-text-fill: #ffffff;
-}
-
-.buttonFourth:default:hover {
-    -fx-background-color: derive(-fx-focus-color,100%);
-}
-
-/*------------------------*/
-.buttonFifth {
-    -fx-padding: 4 12 4 12;    
-    -fx-border-color: #2196F3;
-    -fx-border-width: 2;
-    -fx-border-radius: 3;
-    -fx-background-radius:3;
-    -fx-background-color:  #2196F3;
-    -fx-font-family:"Roboto";  
-    -fx-font-size: 14px;
-    -fx-text-fill: #FFFFFF;
-    -fx-background-insets: 0 0 0 0, 0, 1, 2;
-}
-
-.buttonFifth:hover {
-    -fx-background-color: #2196F3;
-    -fx-cursor: hand;
-}
-
-.buttonFifth:pressed, .buttonFifth:default:hover:pressed {
-    -fx-background-color: #2196F3;
-    -fx-text-fill: #0288d1;
-}
-
-.buttonFifth:focused {
-    -fx-border-color:   #0288d1, #0288d1;
-    -fx-border-width: 2, 2;
-    -fx-border-radius: 3, 3;
-    -fx-border-insets: 0 0 0 0, 0;
-}
-
-.buttonFifth:disabled, .buttonFifth:default:disabled {
-    -fx-opacity: 0.4;
-    -fx-background-color: #1d1d1d;
-    -fx-text-fill: white;
-}
-
-.buttonFifth:default {
-    -fx-background-color: -fx-focus-color;
-    -fx-text-fill: #ffffff;
-}
-
-.buttonFifth:default:hover {
-    -fx-background-color: derive(-fx-focus-color,100%);
-}
-
-/*--------------*/
-.buttonSixth{
-    -fx-font-family:"Roboto";  
-    -fx-font-size: 14px;
-    -fx-text-fill: black;
-    -fx-padding: 5 10 5 10;    
-    -fx-background-color: -fx-shadow-highlight-color, #E0E0E2, #E0E0E2, #E0E0E2;
-    -fx-border-color:  #999999;    
-    -fx-border-width: 1;
-    -fx-border-radius: 3;
-    -fx-background-radius:3;
-}
-.buttonSixth:hover{    
-    -fx-text-fill:  black;  
-    -fx-border-color:  #2196F3;
-    -fx-cursor: hand;
-}
-.buttonSixth:focused{
-    -fx-text-fill:  black;  
-    -fx-border-color:  #2196F3;
-    -fx-cursor: hand;
-}
-.buttonSixth:pressed{
-
-    -fx-text-fill:  black;
-    -fx-border-color:  #999999;
-}
-
-
 /*--------------*/
 .text-format{
     -fx-fill: #FFFFFF;
@@ -432,7 +171,7 @@
 
 .scroll-bar > .thumb{
     -fx-background-color: THUMB;
-    -fx-background-insets: 0;
+    -fx-background-insets: 1;
     -fx-background-radius: 0;
 }
 
@@ -446,90 +185,16 @@
 
 .scroll-bar > .track {
     -fx-background-color: TRACK;
-    -fx-background-insets: 0;
+    -fx-background-insets: 1;
     -fx-background-radius: 0;
 }
 .scroll-bar > .track-background {
     -fx-background-insets: 0;
 }
 
-/* Buttons */
-.scroll-bar > .increment-button,
-.scroll-bar > .decrement-button {
-    -fx-background-color: INC_DEC_BUTTON;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0;
-
-    -fx-padding: 0.5em 0.25em 0.5em 0.25em; /* 6 3 6 3*/
-}
-
-.scroll-bar:horizontal > .increment-button,
-.scroll-bar:horizontal > .decrement-button {
-    -fx-padding: 0.25em 0.5em 0.25em 0.5em ; /* 3 6 3 6*/
-}
-
-.scroll-bar > .increment-button:hover,
-.scroll-bar > .decrement-button:hover  {
-    -fx-background-color: INC_DEC_BUTTON_HOVER;
-}
-
-.scroll-bar > .increment-button:pressed,
-.scroll-bar > .decrement-button:pressed {
-    -fx-background-color: INC_DEC_BUTTON_PRESSED;
-}
-
-.scroll-bar > .decrement-button > .decrement-arrow,
-.scroll-bar > .increment-button > .increment-arrow{
-    -fx-background-insets: 1 0 -1 0, 0;
-    -fx-background-color: transparent, #606060;
-    -fx-effect: null;
-}
-
 /* Disabled */
 .scroll-bar:disabled {
     -fx-opacity: 0.4;
-}
-
-/* ARROW SHAPES */
-.scroll-bar:horizontal > .increment-button > .increment-arrow {
-    -fx-shape: "M14.4,18.611l3.633-3.637L14.4,11.338l0.352-0.352l3.992,3.988 l-3.992,3.988L14.4,18.611z";
-}
-
-.scroll-bar:horizontal > .decrement-button > .decrement-arrow {
-    -fx-shape: "M18.393,18.963L14.4,14.975l3.992-3.988l0.352,0.352l-3.633,3.637 l3.633,3.637L18.393,18.963z";
-}
-
-.scroll-bar:vertical > .increment-button > .increment-arrow {
-    -fx-shape: "M20.561,13.154l-3.988,3.992l-3.988-3.992l0.352-0.352 l3.637,3.633l3.637-3.633L20.561,13.154z";
-}
-
-.scroll-bar:vertical > .decrement-button > .decrement-arrow {
-    -fx-shape: "M20.209,17.146l-3.637-3.633l-3.637,3.633l-0.352-0.352 l3.988-3.992l3.988,3.992L20.209,17.146z";
-}
-
-.scroll-bar > .decrement-button:pressed > .decrement-arrow,
-.scroll-bar > .increment-button:pressed > .increment-arrow {
-    -fx-background-color: transparent, white;
-    -fx-effect: null;
-}
-
-.scroll-bar:vertical > .increment-button > .increment-arrow,
-.scroll-bar:vertical > .decrement-button > .decrement-arrow {
-    -fx-padding: 2.5px 4px 2.5px 4px;
-}
-
-.scroll-bar:horizontal > .increment-button > .increment-arrow,
-.scroll-bar:horizontal > .decrement-button > .decrement-arrow {
-    -fx-padding: 4px 2.5px 4px 2.5px;
-    -fx-translate-y: -1; /* HACK:  Somehow the arrow is not centered so we add this to center it */
-}
-
-.scroll-bar > .increment-button > .increment-arrow, .scroll-bar > .decrement-button > .decrement-arrow {
-    -fx-background-color: ARROW;
-}
-
-.scroll-bar > .increment-button:pressed > .increment-arrow, .scroll-bar > .decrement-button:pressed > .decrement-arrow {
-    -fx-background-color: ARROW_PRESSED;
 }
 
 /**************************** Scroll Pane *************************************/
@@ -548,52 +213,123 @@
     -fx-background-insets: 0 0 0 0;
 }
 
-/*-------------*/
-.labelMediumSubtitle{
+/*******************************************************************************
+ *                                                                             *
+ * Label roboto sizes                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+.labelRoboto10{
+    -fx-font-size:10; 
+    -fx-font-family:"Roboto"; 
+}
+.labelRoboto12{
+    -fx-font-size:12; 
+    -fx-font-family:"Roboto"; 
+}
+.labelRoboto14{
+    -fx-font-size:14; 
+    -fx-font-family:"Roboto"; 
+}
+.labelRoboto16{
+    -fx-font-size:16; 
+    -fx-font-family:"Roboto"; 
+}
+.labelRoboto18{
+    -fx-font-size:18; 
+    -fx-font-family:"Roboto"; 
+}
+.labelRoboto20{
+    -fx-font-size:20; 
+    -fx-font-family:"Roboto"; 
+}
+.labelRoboto22{
+    -fx-font-size:22; 
+    -fx-font-family:"Roboto"; 
+}
+.labelRoboto24{
+    -fx-font-size:24; 
+    -fx-font-family:"Roboto"; 
+}
+.labelRoboto26{
+    -fx-font-size:26; 
+    -fx-font-family:"Roboto"; 
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Label roboto medium sizes                                                  *
+ *                                                                             *
+ ******************************************************************************/
+.labelRobotoMedium10{
+    -fx-font-size:10; 
+    -fx-font-family:"Roboto Medium"; 
+}
+.labelRobotoMedium12{
+    -fx-font-size:12; 
+    -fx-font-family:"Roboto Medium"; 
+}
+.labelRobotoMedium14{
     -fx-font-size:14; 
     -fx-font-family:"Roboto Medium"; 
 }
-.labelTitle{
-    -fx-font-size:18; 
-    -fx-font-family:"Roboto Bold"; 
-}
-.labelSubtitle{
-    -fx-font-size:16; 
-    -fx-font-family:"Roboto Bold"; 
-}
-.labelNormal{
+.labelRobotoMedium16{
     -fx-font-size:16; 
     -fx-font-family:"Roboto Medium"; 
 }
-.labelMayor{
-    -fx-font-size:25; 
-    -fx-font-family:"Roboto Medium"; 
-    -fx-fill: #1a2226;
-}
-.labelMedio{
-    -fx-font-size:20; 
-    -fx-font-family:"Roboto Medium";
-}
-.labelTotales{
-    -fx-font-size:28; 
-    -fx-font-family:"Roboto Bold"; 
-    -fx-fill: white;
-}
-.labelTextTotales{
-    -fx-font-size:20; 
-    -fx-font-family:"Roboto Bold"; 
-}
-.labelTextTile{
+.labelRobotoMedium18{
     -fx-font-size:18; 
-    -fx-font-family:"Roboto"; 
+    -fx-font-family:"Roboto Medium"; 
 }
-.labelTextPrice{
+.labelRobotoMedium20{
+    -fx-font-size:22; 
+    -fx-font-family:"Roboto Medium"; 
+}
+.labelRobotoMedium24{
+    -fx-font-size:24; 
+    -fx-font-family:"Roboto Medium"; 
+}
+.labelRobotoMedium26{
+    -fx-font-size:26; 
+    -fx-font-family:"Roboto Medium"; 
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Label roboto bold sizes                                                  *
+ *                                                                             *
+ ******************************************************************************/
+.labelRobotoBold10{
+    -fx-font-size:10; 
+    -fx-font-family:"Roboto Bold"; 
+}
+.labelRobotoBold12{
+    -fx-font-size:12; 
+    -fx-font-family:"Roboto Bold"; 
+}
+.labelRobotoBold14{
+    -fx-font-size:14; 
+    -fx-font-family:"Roboto Bold"; 
+}
+.labelRobotoBold16{
+    -fx-font-size:16; 
+    -fx-font-family:"Roboto Bold"; 
+}
+.labelRobotoBold18{
+    -fx-font-size:18; 
+    -fx-font-family:"Roboto Bold"; 
+}
+.labelRobotoBold20{
     -fx-font-size:22; 
     -fx-font-family:"Roboto Bold"; 
 }
-.labelTextPanel{
-    -fx-font-size:16; 
-    -fx-font-family:"Roboto"; 
+.labelRobotoBold24{
+    -fx-font-size:24; 
+    -fx-font-family:"Roboto Bold"; 
+}
+.labelRobotoBold26{
+    -fx-font-size:26; 
+    -fx-font-family:"Roboto Bold"; 
 }
 
 /*******************************************************************************
@@ -665,6 +401,16 @@
     -fx-border-radius: 0;
     -fx-background-radius: 0;
 }
+.table-view .filler, .table-view .column-header{
+    -fx-background-color:  #1a2226;
+    -fx-border-width:0 1px 1px 0;
+    -fx-border-color:#ccc;
+}
+/***** Column Header *****/
+
+.table-view .column-header-background{
+    -fx-background-color:  #1a2226;
+}
 .table-view .column-header{
     -fx-background-color:  #1a2226;
     -fx-border-width:0 1px 1px 0;
@@ -674,35 +420,22 @@
     -fx-background-color: #7a7a7a;
     -fx-cursor:hand;
 }
-.table-view .column-header .label:hover{
-    -fx-text-fill: white;
-}
-.table-view .filler{
-    -fx-background-color: #1a2226;
-    -fx-border-width:0 0 1px 0;
-    -fx-border-color:#ccc;
-}
-.table-view .column-header .label,.tableView .column-drag-header .label{
+.table-view .column-header .label{
     -fx-text-fill:  white;
     -fx-font-family:"Roboto Medium"; 
     -fx-font-size: 14px;
-    -fx-padding: 10 0 10 0;
+    -fx-padding: 8 0 8 0;
 }
-.table-view .column-header-background{
-    -fx-background-color: white;
+.table-view .column-header .label:hover{
+    -fx-text-fill: white;
 }
-.table-view .table-cell {
+
+/***** Table View "body"  *****/
+
+.table-view .table-cell{
     -fx-font-family:"Roboto"; 
     -fx-font-size: 14px;
     -fx-padding: 8px;
-    -fx-text-fill: #23283a;
-}
-.table-view .table-row-cell:selected {
-    -fx-background-color: #00aff0; 
-}
-.table-view .table-row-cell:selected .text {
-    -fx-fill: white ;
-
 }
 
 /*******************************************************************************
@@ -1051,6 +784,75 @@
     -fx-background-color: derive(ACCENT_COLOR, -40%);
 }
 
+/*******************************************************************************
+ *                                                                             *
+ * Button Info                                                    *
+ *                                                                             *
+ ******************************************************************************/
+
+.buttonInfo  {
+    BACKGROUND: #17a2b8;
+    BACKGROUND_PRESSED: #128597;
+
+    BORDER_HOVER: #175a75;
+
+    TEXT: #ffffff;
+    DEFAULT_BUTTON_TEXT: white;
+
+    FOCUS_RING_BORDER: #ffffff;
+
+    -shrink-animate-on-press: true;
+}
+
+.buttonInfo{
+    -fx-padding: 0.25em 0.86em 0.25em 0.86em; /*3 12 3 12*/
+
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    /*#17a2b8*/
+    -fx-background-color: BACKGROUND;
+
+    -fx-font-family:"Roboto";
+    -fx-font-size: 14;
+    -fx-text-fill: TEXT;
+}
+.buttonInfo:hover{
+    -fx-border-color: BORDER_HOVER;
+    -fx-border-width: 1;
+}
+.buttonInfo:pressed{
+    -fx-border-color: BACKGROUND_PRESSED;
+    -fx-background-color: BACKGROUND_PRESSED;
+    -fx-border-width: 1;
+}
+.buttonInfo:focused{
+    -fx-border-color: transparent, #00aff0;
+    -fx-border-radius: 0, 0;
+    -fx-border-width: 1;
+}
+.buttonInfo:disabled, .buttonInfo:default:disabled{
+    -fx-opacity: 0.4;
+    -fx-background-color: BACKGROUND;
+    -fx-text-fill: TEXT;
+}
+
+.buttonInfo {
+    BORDER_HOVER_DEFAULT: derive(ACCENT_COLOR, -40%);
+}
+.buttonInfo:default
+{
+    -fx-background-color: ACCENT_COLOR;
+    -fx-text-fill: DEFAULT_BUTTON_TEXT;
+}
+.buttonInfo:default:hover{
+    -fx-border-color: BORDER_HOVER_DEFAULT;
+}
+.buttonInfo:default:pressed {
+    -fx-background-color: derive(ACCENT_COLOR, -40%);
+}
 
 /*******************************************************************************
  *                                                                             *
@@ -1309,6 +1111,11 @@
     -fx-padding: 6px;
 }
 
+.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:hover{
+    -fx-background-color: #00aff0;
+    -fx-text-fill: white;
+}
+
 
 /*******************************************************************************
  *                                                                             *
@@ -1474,4 +1281,45 @@
     -fx-border-width: 1px;
 
     -fx-effect: null;
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * List View                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.list-view {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+
+    -fx-border-color: #a4a4a4;
+    -fx-border-width: 1px;
+}
+
+.list-view:focused {
+    -fx-border-color: #00aff0;
+}
+
+.list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    -fx-padding: 8px;
+    -fx-font-family: "Roboto";
+    -fx-text-fill: #1a2226;
+    -fx-font-size: 1.166667em;  /*14*/
+}
+
+.list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:focused {
+    -fx-background-color: #cccccc;
+}
+
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    -fx-background-color: white;
+}
+
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:focused {
+    -fx-background-color: #00aff0;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
 }

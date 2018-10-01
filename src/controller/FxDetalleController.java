@@ -70,7 +70,7 @@ public class FxDetalleController implements Initializable {
         txtCode.setText(values[1]);
         idDetalle = Integer.parseInt(values[2]);
         btnToAction.setText("Actualizar");
-        btnToAction.getStyleClass().add("buttonFourth");
+        btnToAction.getStyleClass().add("buttonLightWarning");
         txtName.setText(values[3]);
         txtDescripcion.setText(values[4]);
         cbEstado.setValue(values[5].equals("1") ? new Estado("1", "Habilitado") : new Estado("0", "Inhabilitado"));

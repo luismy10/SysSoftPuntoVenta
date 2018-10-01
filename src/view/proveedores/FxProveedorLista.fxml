@@ -19,7 +19,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-border-color: #cccccc;">
                <children>
-                  <Label styleClass="labelNormal" text="Buscar:">
+                  <Label styleClass="labelRoboto14" text="Buscar:">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>

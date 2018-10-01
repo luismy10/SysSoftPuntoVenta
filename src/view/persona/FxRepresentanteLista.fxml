@@ -19,7 +19,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-border-color: #cccccc;">
                <children>
-                  <Label text="Buscar:">
+                  <Label styleClass="labelRoboto14" text="Buscar:" textFill="#1a2226">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -32,7 +32,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="txtSearch" onAction="#onActionToSearch" onKeyPressed="#onKeyPressedToSearh" HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonFifth" text="Agregar">
+                  <Button mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLight" text="Agregar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -64,14 +64,13 @@
                <children>
                   <VBox alignment="CENTER">
                      <children>
-                        <Label styleClass="labelForm" text="Página" />
                         <HBox alignment="CENTER" spacing="10.0">
                            <children>
-                              <Button mnemonicParsing="false" styleClass="buttonSecondary" text="Anterior" />
+                              <Button mnemonicParsing="false" styleClass="buttonLight" text="Anterior" />
                               <Label styleClass="labelBorder" text="0" />
                               <Label styleClass="labelForm" text="de" />
                               <Label styleClass="labelBorder" text="0" />
-                              <Button mnemonicParsing="false" styleClass="buttonSecondary" text="Siguiente" />
+                              <Button mnemonicParsing="false" styleClass="buttonLight" text="Siguiente" />
                            </children>
                         </HBox>
                      </children>

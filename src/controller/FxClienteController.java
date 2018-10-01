@@ -5,7 +5,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -46,29 +46,16 @@ public class FxClienteController implements Initializable {
     private TableColumn<PersonaTB, String> tcEstado;
     @FXML
     private TableColumn<PersonaTB, LocalDate> tcFechaRegistro;
-
-    private boolean stateconnect;
-
-    private Executor exec;
-
-    private boolean proccess;
     @FXML
     private Label lblLoad;
+
+    private boolean proccess;
 
     private AnchorPane content;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         proccess = false;
-        stateconnect = DBUtil.StateConnection();
-        if (stateconnect) {
-
-            exec = Executors.newCachedThreadPool((runnable) -> {
-                Thread t = new Thread(runnable);
-                t.setDaemon(true);
-                return t;
-            });
-        }
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocumento.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
@@ -90,6 +77,13 @@ public class FxClienteController implements Initializable {
 
     public void fillCustomersTable(String value) {
         if (DBUtil.StateConnection()) {
+
+            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+                Thread t = new Thread(runnable);
+                t.setDaemon(true);
+                return t;
+            });
+
             Task<List<PersonaTB>> task = new Task<List<PersonaTB>>() {
                 @Override
                 public ObservableList<PersonaTB> call() {
@@ -111,6 +105,10 @@ public class FxClienteController implements Initializable {
                 lblLoad.setVisible(true);
             });
             exec.execute(task);
+
+            if (!exec.isShutdown()) {
+                exec.shutdown();
+            }
         }
 
     }
@@ -121,7 +119,6 @@ public class FxClienteController implements Initializable {
             fillCustomersTable(txtSearch.getText());
         }
     }
-
 
     void setContent(AnchorPane content) {
         this.content = content;

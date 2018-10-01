@@ -7,11 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class ArticuloADO {
 
     public static String CrudEntity(ArticuloTB articuloTB) {
-        String selectStmt = "{call Sp_Crud_Articulo(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String selectStmt = "{call Sp_Crud_Articulo(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
             DBUtil.dbConnect();
@@ -31,6 +33,7 @@ public class ArticuloADO {
             callableStatement.setDouble("PrecioVenta", articuloTB.getPrecioVenta().get());
             callableStatement.setDouble("Cantidad", articuloTB.getCantidad().get());
             callableStatement.setInt("Estado", articuloTB.getEstado());
+            callableStatement.setObject("Lote", articuloTB.isLote());
             //--------------------------------------------------------------------------
             callableStatement.setBinaryStream("Imagen", articuloTB.getImagenTB().getFile());
             //---------------------------------------------------------------------------
@@ -65,14 +68,18 @@ public class ArticuloADO {
             while (rsEmps.next()) {
                 ArticuloTB articuloTB = new ArticuloTB();
                 articuloTB.setId(rsEmps.getRow());
-                articuloTB.setIdArticulo(rsEmps.getString("IdArticulo")); 
+                articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
                 articuloTB.setClave(rsEmps.getString("Clave"));
                 articuloTB.setNombre(rsEmps.getString("NombreMarca"));
                 articuloTB.setMarcaName(rsEmps.getString("Marca"));
-                articuloTB.setPresentacionName(rsEmps.getString("Presentacion")); 
+                articuloTB.setPresentacionName(rsEmps.getString("Presentacion"));
                 articuloTB.setEstadoName(rsEmps.getString("Estado"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                articuloTB.setLote(rsEmps.getBoolean("Lote")); 
+                articuloTB.setImageLote(rsEmps.getBoolean("Lote")
+                        ? new ImageView(new Image("/view/lote-box.png", 28, 28, false, false))
+                        : null);
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {
@@ -121,6 +128,7 @@ public class ArticuloADO {
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setPresentacion(rsEmps.getInt("Presentacion"));
                 articuloTB.setEstado(rsEmps.getInt("Estado"));
+                articuloTB.setLote(rsEmps.getBoolean("Lote"));
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {
@@ -141,7 +149,7 @@ public class ArticuloADO {
         }
         return empList;
     }
-    
+
     public static ArrayList<ArticuloTB> GetArticulosByIdView(String value) {
         String selectStmt = "{call Sp_Get_Articulo_By_Id_View(?)}";
         PreparedStatement preparedStatement = null;

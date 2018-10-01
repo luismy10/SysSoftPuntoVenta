@@ -3,6 +3,7 @@ package model;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.image.ImageView;
 
 public class ArticuloTB {
 
@@ -22,13 +23,16 @@ public class ArticuloTB {
     private double stockMinimo;
     private double stockMaximo;
     private double precioCompra;
+    private double precioCompraReal;
     private SimpleDoubleProperty precioVenta;
     private SimpleDoubleProperty cantidad;
     private int estado;
+    private boolean lote;
+    private ImageView imageLote;
     private SimpleStringProperty estadoName;
     private SimpleDoubleProperty descuento;
     private SimpleDoubleProperty subTotal;
-    private SimpleDoubleProperty total;
+    private SimpleDoubleProperty importe;
     private SimpleDoubleProperty utilidad;
     private boolean impuesto;
     private ImagenTB imagenTB;
@@ -157,6 +161,14 @@ public class ArticuloTB {
         this.estado = estado;
     }
 
+    public boolean isLote() {
+        return lote;
+    }
+
+    public void setLote(boolean lote) {
+        this.lote = lote;
+    }
+
     public SimpleStringProperty getEstadoName() {
         return estadoName;
     }
@@ -189,6 +201,14 @@ public class ArticuloTB {
         this.precioCompra = precioCompra;
     }
 
+    public double getPrecioCompraReal() {
+        return precioCompraReal;
+    }
+
+    public void setPrecioCompraReal(double precioCompraReal) {
+        this.precioCompraReal = precioCompraReal;
+    }
+
     public SimpleDoubleProperty getPrecioVenta() {
         return precioVenta;
     }
@@ -213,12 +233,12 @@ public class ArticuloTB {
         this.descuento = new SimpleDoubleProperty(descuento);
     }
 
-    public SimpleDoubleProperty getTotal() {
-        return total;
+    public SimpleDoubleProperty getImporte() {
+        return importe;
     }
 
-    public void setTotal(double total) {
-        this.total = new SimpleDoubleProperty(total);
+    public void setImporte(double importe) {
+        this.importe = new SimpleDoubleProperty(importe);
     }
 
     public SimpleDoubleProperty getSubTotal() {
@@ -244,7 +264,13 @@ public class ArticuloTB {
     public void setImpuesto(boolean impuesto) {
         this.impuesto = impuesto;
     }
-    
-    
-    
+
+    public ImageView getImageLote() {
+        return imageLote;
+    }
+
+    public void setImageLote(ImageView imageLote) {
+        this.imageLote = imageLote;
+    }
+
 }

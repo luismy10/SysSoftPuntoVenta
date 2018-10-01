@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -56,12 +57,6 @@ public class FxArticuloProcesoController implements Initializable {
     private ImageView lnPrincipal;
     @FXML
     private Button btnRegister;
-
-    private String idArticulo;
-
-    private long idImagen;
-
-    private File selectFile;
     @FXML
     private TextField txtStockMinimo;
     @FXML
@@ -76,12 +71,19 @@ public class FxArticuloProcesoController implements Initializable {
     private TextField txtPrecioVenta;
     @FXML
     private TextField txtImpuestoVenta;
+    @FXML
+    private CheckBox cbLote;
+    
+    private String idArticulo;
+
+    private long idImagen;
+
+    private File selectFile;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idArticulo = "";
         idImagen = 0;
-
     }
 
     public void setInitArticulo() {
@@ -209,6 +211,8 @@ public class FxArticuloProcesoController implements Initializable {
                     }
                 }
             }
+            
+            cbLote.setSelected(articuloTB.isLote());
 
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
@@ -239,12 +243,6 @@ public class FxArticuloProcesoController implements Initializable {
         } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Selecciona el estado del artículo, por favor.", false);
             cbEstado.requestFocus();
-        } else if (txtPrecioCompra.getText().isEmpty()) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el precio de compra, por favor.", false);
-            txtPrecioCompra.requestFocus();
-        } else if (txtPrecioCompra.getText().isEmpty()) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el precio de venta, por favor.", false);
-            txtPrecioCompra.requestFocus();
         } else {
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Articulo", "¿Esta seguro de continuar?", true);
             if (confirmation == 1) {
@@ -268,29 +266,30 @@ public class FxArticuloProcesoController implements Initializable {
                         ? cbPresentacion.getSelectionModel().getSelectedItem().getIdDetalle().get()
                         : 0);
 
-                articuloTB.setStockMinimo(!txtStockMinimo.getText().trim().isEmpty()
+                articuloTB.setStockMinimo(Tools.isNumeric(txtStockMinimo.getText())
                         ? Double.parseDouble(txtStockMinimo.getText().trim())
                         : 0);
 
-                articuloTB.setStockMaximo(!txtStockMaximo.getText().trim().isEmpty()
+                articuloTB.setStockMaximo(Tools.isNumeric(txtStockMaximo.getText())
                         ? Double.parseDouble(txtStockMaximo.getText().trim())
                         : 0);
 
-                articuloTB.setPrecioCompra(!txtPrecioCompra.getText().trim().isEmpty()
-                        ? Double.parseDouble(txtPrecioCompra.getText().trim())
+                articuloTB.setPrecioCompra(Tools.isNumeric(txtPrecioCompra.getText())
+                        ? Double.parseDouble(txtPrecioCompra.getText())
                         : 0);
 
-                articuloTB.setPrecioVenta(!txtPrecioVenta.getText().trim().isEmpty()
-                        ? Double.parseDouble(txtPrecioVenta.getText().trim())
+                articuloTB.setPrecioVenta(Tools.isNumeric(txtPrecioVenta.getText())
+                        ? Double.parseDouble(txtPrecioVenta.getText())
                         : 0);
 
-                articuloTB.setCantidad(!txtCantidad.getText().trim().isEmpty()
-                        ? Double.parseDouble(txtCantidad.getText().trim())
+                articuloTB.setCantidad(Tools.isNumeric(txtCantidad.getText())
+                        ? Double.parseDouble(txtCantidad.getText())
                         : 0);
 
                 articuloTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
                         ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get()
                         : 0);
+                articuloTB.setLote(cbLote.isSelected());
 
                 String result = ArticuloADO.CrudEntity(articuloTB);
                 switch (result) {
@@ -468,6 +467,11 @@ public class FxArticuloProcesoController implements Initializable {
         if (c == '.' && txtPrecioVenta.getText().contains(".") || c == '-' && txtPrecioVenta.getText().contains("-")) {
             event.consume();
         }
+    }
+
+    @FXML
+    private void onActionLote(ActionEvent event) {
+        
     }
 
 }

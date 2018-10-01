@@ -30,7 +30,7 @@
                               <Image url="@../clients.png" />
                            </image>
                         </ImageView>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="Clientes" />
+                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Clientes" />
                      </children>
                   </HBox>
                   <VBox minHeight="-Infinity" minWidth="-Infinity">
@@ -91,7 +91,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label styleClass="labelNormal" text="Datos de la persona o documento" textFill="#1a2226">
+                                          <Label styleClass="labelRoboto14" text="Datos de la persona o documento" textFill="#1a2226">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>

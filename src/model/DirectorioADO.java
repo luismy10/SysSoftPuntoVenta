@@ -108,5 +108,27 @@ public class DirectorioADO {
         }
         return arrayList;
     }
-
+    
+    public static String DeleteDirectory(long idDirectorio) {
+        String selectStmt = "delete from DirectorioTB where IdDirectorio = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setLong(1, idDirectorio);
+            return preparedStatement.executeUpdate() == 1 ? "eliminado" : "error";
+        } catch (SQLException e) {
+            return "La operación de selección de SQL ha fallado: " + e.getLocalizedMessage();
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+                return "La consulta se cerro antes de finalizar: " + ex.getLocalizedMessage();
+            }
+        }
+    }
+    
 }

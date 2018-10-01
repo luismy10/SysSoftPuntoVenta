@@ -29,20 +29,20 @@
                         <Image url="@../purchases.png" />
                      </image>
                   </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="Detalle de la compra" />
+                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Detalle de la compra" />
                </children>
             </HBox>
             <VBox spacing="10.0" style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
                   <HBox spacing="10.0">
                      <children>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Clave:" />
+                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Clave:" />
                         <Text fx:id="lblClave" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" />
                      </children>
                   </HBox>
                   <HBox spacing="10.0">
                      <children>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" text="Descripción:" />
+                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Descripción:" />
                         <Text fx:id="lblDescripcion" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelTextPanel" />
                      </children>
                   </HBox>
@@ -53,13 +53,13 @@
             </VBox>
             <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
-                  <Label text="Importe:" textFill="#23283a">
+                  <Label styleClass="labelRoboto14" text="Importe:" textFill="#23283a">
                      <font>
                         <Font name="Roboto" size="14.0" />
                      </font>
                   </Label>
                   <TextField fx:id="txtImporte" onAction="#onActionImporte" onKeyTyped="#onKeyTypedImporte" prefHeight="30.0" prefWidth="130.0" />
-                  <Label text="Cantidad:" textFill="#23283a">
+                  <Label styleClass="labelRoboto14" text="Cantidad:" textFill="#23283a">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -83,7 +83,7 @@
                                  <children>
                                     <HBox spacing="10.0">
                                        <children>
-                                          <Label text="Incluye IGV:" textFill="#23283a">
+                                          <Label styleClass="labelRoboto14" text="Incluye IGV:" textFill="#23283a">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
@@ -91,7 +91,7 @@
                                                 <Insets left="10.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <CheckBox fx:id="cbImpuesto" ellipsisString="" mnemonicParsing="false" selected="true" />
+                                          <CheckBox fx:id="cbImpuesto" ellipsisString="" mnemonicParsing="false" onAction="#onActionImpuesto" selected="true" />
                                        </children>
                                        <padding>
                                           <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
@@ -113,12 +113,12 @@
                            <children>
                               <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label text="Costo del artículo:" textFill="#23283a">
+                                    <Label styleClass="labelRoboto14" text="Costo del artículo:" textFill="#23283a">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtCosto" onKeyReleased="#onKeyReleasedCosto" onKeyTyped="#onKeyTypedCosto" VBox.vgrow="ALWAYS" />
+                                    <TextField fx:id="txtCosto" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedCosto" onKeyTyped="#onKeyTypedCosto" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
@@ -127,12 +127,12 @@
                            <children>
                               <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label prefWidth="112.0" text="Descuento:" textFill="#23283a">
+                                    <Label prefWidth="112.0" styleClass="labelRoboto14" text="Descuento:" textFill="#23283a">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtDescuento" onKeyTyped="#onKeyTypedDescuento" VBox.vgrow="ALWAYS" />
+                                    <TextField fx:id="txtDescuento" onAction="#onActionAdd" onKeyTyped="#onKeyTypedDescuento" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
@@ -148,12 +148,12 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="10.0">
                      <children>
-                        <Label text="Margen de utilidad %" textFill="#23283a">
+                        <Label styleClass="labelRoboto14" text="Margen de utilidad %" textFill="#23283a">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtMargen" onKeyReleased="#onKeyReleasedMargen" onKeyTyped="#onKeyTypedMargen" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtMargen" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedMargen" onKeyTyped="#onKeyTypedMargen" HBox.hgrow="ALWAYS" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -161,12 +161,12 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="10.0">
                      <children>
-                        <Label prefWidth="134.0" text="Precio de venta:" textFill="#23283a">
+                        <Label prefWidth="134.0" styleClass="labelRoboto14" text="Precio de venta:" textFill="#23283a">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtPrecio" onKeyTyped="#onKeyTypedPrecio" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtPrecio" onAction="#onActionAdd" onKeyTyped="#onKeyTypedPrecio" HBox.hgrow="ALWAYS" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -174,7 +174,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="10.0">
                      <children>
-                        <Label prefWidth="134.0" text="Utilidad generada:" textFill="#23283a">
+                        <Label prefWidth="134.0" styleClass="labelRoboto14" text="Utilidad generada:" textFill="#23283a">
                            <font>
                               <Font size="14.0" />
                            </font>

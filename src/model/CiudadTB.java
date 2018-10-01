@@ -2,7 +2,7 @@ package model;
 
 public class CiudadTB {
 
-    private int ciudadID;
+    private int idCiudad;
     private String ciudadNombre;
     private String paisCodigo;
     private String ciudadDistrito;
@@ -11,25 +11,18 @@ public class CiudadTB {
     public CiudadTB() {
     }
 
-    public CiudadTB(int ciudadID, String ciudadDistrito) {
-        this.ciudadID = ciudadID;
+    public CiudadTB(int idCiudad, String ciudadDistrito) {
+        this.idCiudad = idCiudad;
         this.ciudadDistrito = ciudadDistrito;
     }
 
-    public CiudadTB(int ciudadID, String ciudadNombre, String paisCodigo, String ciudadDistrito, int iudadPoblacion) {
-        this.ciudadID = ciudadID;
-        this.ciudadNombre = ciudadNombre;
-        this.paisCodigo = paisCodigo;
-        this.ciudadDistrito = ciudadDistrito;
-        this.iudadPoblacion = iudadPoblacion;
+
+    public int getIdCiudad() {
+        return idCiudad;
     }
 
-    public int getCiudadID() {
-        return ciudadID;
-    }
-
-    public void setCiudadID(int ciudadID) {
-        this.ciudadID = ciudadID;
+    public void setIdCiudad(int idCiudad) {
+        this.idCiudad = idCiudad;
     }
 
     public String getCiudadNombre() {

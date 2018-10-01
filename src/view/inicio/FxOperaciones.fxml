@@ -16,7 +16,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="66.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-width: 0  0 1px 0;">
                <children>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelMedio" text="Seleccione la operacion a realiazar">
+                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto20" text="Seleccione la operacion a realiazar">
                      <font>
                         <Font name="Roboto" size="22.0" />
                      </font>
@@ -30,7 +30,7 @@
                <children>
                   <VBox alignment="CENTER" spacing="15.0">
                      <children>
-                        <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingrese la opción a buscar">
+                        <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Ingrese la opción a buscar">
                            <font>
                               <Font name="Roboto" size="16.0" />
                            </font>
@@ -140,11 +140,11 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" styleClass="buttonTransparent" text="Lotes">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionLotes" onKeyPressed="#onKeyPressedLotes" styleClass="buttonTransparent" text="Lotes">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../lotes.png" />
+                                    <Image url="@../lote-box.png" />
                                  </image>
                               </ImageView>
                            </graphic>
