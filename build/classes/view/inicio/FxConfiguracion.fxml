@@ -30,7 +30,7 @@
                <children>
                   <VBox alignment="CENTER" spacing="15.0">
                      <children>
-                        <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Ingrese la opción a buscar">
+                        <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular18" text="Ingrese la opción a buscar">
                            <font>
                               <Font name="Roboto" size="16.0" />
                            </font>
@@ -59,7 +59,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" text="Datos">
+                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Datos">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -77,7 +77,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" text="Acesos">
+                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Acesos">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -95,7 +95,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajustes">
+                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Ajustes">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>

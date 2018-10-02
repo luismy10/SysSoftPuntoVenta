@@ -1,4 +1,4 @@
-/*----#0c4065------*/
+/*ROBOTO FONT*/
 @font-face {
     font-family: 'Roboto Medium'; 
     src: url('Roboto-Medium.ttf'); 
@@ -12,6 +12,11 @@
     src: url('Roboto-Regular.ttf'); 
 } 
 
+/*OPEN SANS FONT*/
+@font-face { 
+    font-family: 'Open Regular'; 
+    src: url('OpenSans-Regular.ttf'); 
+} 
 
 .labelForm{ 
     -fx-font-size:14; 
@@ -330,6 +335,44 @@
 .labelRobotoBold26{
     -fx-font-size:26; 
     -fx-font-family:"Roboto Bold"; 
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Label open sans regular sizes                                                  *
+ *                                                                             *
+ ******************************************************************************/
+.labelOpenSansRegular10{
+    -fx-font-size:10; 
+    -fx-font-family:"Open Regular"; 
+}
+.labelOpenSansRegular12{
+    -fx-font-size:12; 
+    -fx-font-family:"Open Regular"; 
+}
+.labelOpenSansRegular14{
+    -fx-font-size:14; 
+    -fx-font-family:"Open Regular"; 
+}
+.labelOpenSansRegular16{
+    -fx-font-size:16; 
+    -fx-font-family:"Open Regular"; 
+}
+.labelOpenSansRegular18{
+    -fx-font-size:18; 
+    -fx-font-family:"Open Regular"; 
+}
+.labelOpenSansRegular20{
+    -fx-font-size:22; 
+    -fx-font-family:"Open Regular"; 
+}
+.labelOpenSansRegular24{
+    -fx-font-size:24; 
+    -fx-font-family:"Open Regular"; 
+}
+.labelOpenSansRegular26{
+    -fx-font-size:26; 
+    -fx-font-family:"Open Regular"; 
 }
 
 /*******************************************************************************
@@ -1323,3 +1366,4 @@
     -fx-background-insets: 0;
     -fx-text-fill: white;
 }
+

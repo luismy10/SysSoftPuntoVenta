@@ -35,13 +35,13 @@
                         <HBox spacing="10.0">
                            <children>
                               <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto16" text="Clave:" />
-                              <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto16" text="-" />
+                              <Text fx:id="lblClave" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto16" text="-" />
                            </children>
                         </HBox>
                         <HBox spacing="10.0">
                            <children>
                               <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto16" text="Descripción:" />
-                              <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto16" text="-" />
+                              <Text fx:id="lblDescripcion" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto16" text="-" />
                            </children>
                         </HBox>
                      </children>
@@ -91,9 +91,9 @@
                            <children>
                               <TableView fx:id="tvList" prefHeight="303.0" prefWidth="650.0" HBox.hgrow="ALWAYS">
                                 <columns>
-                                  <TableColumn fx:id="tcLote" prefWidth="160.0" text="N° Lote" />
-                                  <TableColumn fx:id="tcFabricacion" prefWidth="170.0" text="Fecha de fabricación" />
-                                    <TableColumn fx:id="tcCaducidad" prefWidth="170.0" text="Fecha de caducidad" />
+                                  <TableColumn fx:id="tcLote" prefWidth="140.0" text="N° Lote" />
+                                  <TableColumn fx:id="tcFabricacion" prefWidth="180.0" text="Fecha de fabricación" />
+                                    <TableColumn fx:id="tcCaducidad" prefWidth="180.0" text="Fecha de caducidad" />
                                     <TableColumn fx:id="tcCantidad" prefWidth="142.0" text="Cantidad" />
                                 </columns>
                               </TableView>

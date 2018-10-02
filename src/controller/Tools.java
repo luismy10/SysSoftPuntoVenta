@@ -2,6 +2,7 @@ package controller;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -63,15 +64,17 @@ public class Tools {
     static final String FX_FILE_LOTEPROCESO = "/view/lote/FxLoteProceso.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
+        final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("/view/icon.png"));
-        alert.setTitle(title);
-        alert.getDialogPane().setStyle("");
+        alert.setTitle(title);        
         alert.initModality(Modality.WINDOW_MODAL);
         alert.initOwner(window);
         alert.setHeaderText(null);
         alert.setContentText(value);
+        alert.getDialogPane().getStylesheets().add(url.toExternalForm());
+        
         ButtonType buttonTypeOne = new ButtonType("Aceptar", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeTwo = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
         ButtonType buttonTypeClose = new ButtonType("Aceptar", ButtonBar.ButtonData.CANCEL_CLOSE);

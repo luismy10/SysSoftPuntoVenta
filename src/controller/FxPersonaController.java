@@ -291,15 +291,16 @@ public class FxPersonaController implements Initializable {
 
     @FXML
     private void onActionAddName(ActionEvent event) {
+        final URL url = getClass().getResource("/view/alert.css");
         TextInputDialog dialog = new TextInputDialog();
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("/view/icon.png"));
         dialog.setTitle("Desglosar sus datos");
         dialog.setHeaderText("Ingrese los datos completos, de apellidos a nombres");
-        dialog.setContentText("Por favor presione enter cuando aya ingresado los datos:\n");
+        dialog.setContentText("Enter para continuar");
         dialog.initModality(Modality.WINDOW_MODAL);
         dialog.initOwner(window.getScene().getWindow());
-
+        dialog.getDialogPane().getStylesheets().add(url.toExternalForm());
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
 

@@ -76,12 +76,14 @@ public class FxArticuloCompraController implements Initializable {
                 Parent parent = fXMLLoader.load(url.openStream());
                 //Controlller here
                 FxLoteProcesoController controller = fXMLLoader.getController();
-                controller.setLoteController(this); 
+                controller.setLoteController(this);
                 //
                 Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Lote", window.getScene().getWindow());
                 stage.setResizable(false);
                 stage.show();
-                controller.setLoadData(String.valueOf(articuloTB.getCantidad().get()));
+                controller.setLoadData(articuloTB.getClave().get(),
+                        articuloTB.getNombre().get(),
+                        String.valueOf(articuloTB.getCantidad().get()));
             } else {
                 view.getItems().add(articuloTB);
             }
@@ -159,10 +161,6 @@ public class FxArticuloCompraController implements Initializable {
     @FXML
     private void onActionCancel(ActionEvent event) {
         Tools.Dispose(window);
-    }
-
-    void setInitCompraController(FxComprasController comprasController) {
-        this.comprasController = comprasController;
     }
 
     void setLoadData(String value[], boolean lote) {
@@ -352,5 +350,15 @@ public class FxArticuloCompraController implements Initializable {
             }
         }
     }
+
+    void setInitCompraController(FxComprasController comprasController) {
+        this.comprasController = comprasController;
+    }
+
+    public FxComprasController getComprasController() {
+        return comprasController;
+    }
+    
+    
 
 }

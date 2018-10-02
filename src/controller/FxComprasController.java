@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +33,7 @@ import model.CompraADO;
 import model.CompraTB;
 import model.DetalleADO;
 import model.DetalleTB;
+import model.LoteTB;
 import model.PersonaADO;
 import model.PersonaTB;
 import model.ProveedorADO;
@@ -72,7 +74,9 @@ public class FxComprasController implements Initializable {
     private Text lblIgv;
     @FXML
     private Text lblTotal;
-
+    @FXML
+    private Button btnArticulo;
+    
     private AnchorPane content;
 
     private String idProveedor;
@@ -82,12 +86,13 @@ public class FxComprasController implements Initializable {
     private double subTotal;
 
     private double descuento;
-    @FXML
-    private Button btnArticulo;
-
+    
+    private ArrayList<LoteTB> loteTBs;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idProveedor = idRepresentante = "";
+        loteTBs = new ArrayList<>();
         Tools.actualDate(Tools.getDate(), tpFechaCompra);
         DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> {
             cbComprobante.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
@@ -345,7 +350,8 @@ public class FxComprasController implements Initializable {
     @FXML
     private void onKeyTypedNumeracion(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
+        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && (c != '-')
+                && (c != '/') && (c != '+') && (c != '*') && (c != '(') && (c != ')') && (c != '|') && (c != '°')) {
             event.consume();
         }
     }
@@ -386,4 +392,9 @@ public class FxComprasController implements Initializable {
 
     }
 
+    public ArrayList<LoteTB> getLoteTBs() {
+        return loteTBs;
+    }
+
+    
 }

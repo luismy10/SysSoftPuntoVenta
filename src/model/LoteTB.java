@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 public class LoteTB {
 
     private long idLote;
+    private String loteGenerado;
     private String numeroLote;
     private ObjectProperty<LocalDate> fechaFabricacion;
     private ObjectProperty<LocalDate> fechaCaducidad;
@@ -44,8 +45,8 @@ public class LoteTB {
         this.fechaFabricacion = new SimpleObjectProperty(fechaFabricacion);
     }
 
-    public ObjectProperty<LocalDate> getFechaCaducidad() {
-        return fechaCaducidad;
+    public LocalDate getFechaCaducidad() {
+        return fechaCaducidad.get();
     }
 
     public void setFechaCaducidad(LocalDate fechaCaducidad) {
