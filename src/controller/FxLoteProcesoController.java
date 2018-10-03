@@ -106,6 +106,10 @@ public class FxLoteProcesoController implements Initializable {
 
     private void toRegisterBatch() {
         if (cantidadlote == cantidad) {
+            listLote.forEach((loteTB) -> {
+                articuloCompraController.getComprasController().getLoteTBs().add(loteTB);
+            });
+            articuloCompraController.setValidarlote(false);
             Tools.Dispose(window);
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Lotes", "La cantidad y la entrada total deben ser la misma", false);
@@ -181,7 +185,7 @@ public class FxLoteProcesoController implements Initializable {
     }
 
     public void calculateBatch() {
-        double entrada = 0;      
+        double entrada = 0;
         for (int i = 0; i < tvList.getItems().size(); i++) {
             entrada += tvList.getItems().get(i).getExistenciaActual();
         }

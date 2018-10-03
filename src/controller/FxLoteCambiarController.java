@@ -71,6 +71,7 @@ public class FxLoteCambiarController implements Initializable {
                             loteTB.setExistenciaInicial(Double.parseDouble(txtCantidad.getText()));
                             loteTB.setFechaFabricacion(dtFabricacion.getValue());
                             loteTB.setFechaCaducidad(dtCaducidad.getValue());
+                            loteTB.setIdArticulo("");
                             procesoController.getTvList().getItems().add(loteTB);
                             procesoController.getListLote()
                                     .add(loteTB);

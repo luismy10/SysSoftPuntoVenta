@@ -389,7 +389,9 @@ public class FxComprasController implements Initializable {
 
         double impuesto = Tools.calculateTax(Session.IMPUESTO, gravada);
         lblIgv.setText(Tools.roundingValue(impuesto, 2));
-
+        
+        loteTBs.forEach(e->System.out.println(e.getNumeroLote()));
+        System.out.println(loteTBs.size());
     }
 
     public ArrayList<LoteTB> getLoteTBs() {

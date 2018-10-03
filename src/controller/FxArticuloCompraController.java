@@ -86,6 +86,7 @@ public class FxArticuloCompraController implements Initializable {
                         String.valueOf(articuloTB.getCantidad().get()));
             } else {
                 view.getItems().add(articuloTB);
+                Tools.Dispose(window); 
             }
 
         }
@@ -153,9 +154,9 @@ public class FxArticuloCompraController implements Initializable {
             comprasController.setCalculateTotals();
         } else {
             comprasController.setCalculateTotals();
+            
         }
 
-//        Tools.Dispose(window);
     }
 
     @FXML
@@ -350,6 +351,10 @@ public class FxArticuloCompraController implements Initializable {
             }
         }
     }
+
+    public void setValidarlote(boolean validarlote) {
+        this.validarlote = validarlote;
+    }  
 
     void setInitCompraController(FxComprasController comprasController) {
         this.comprasController = comprasController;
