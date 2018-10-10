@@ -32,7 +32,7 @@ public class FxMantenimientoController implements Initializable {
     }
 
     public void initWindow() {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         if (DBUtil.StateConnection()) {
             txtCode.setText(MantenimientoADO.GetIdMantenimiento());
         }

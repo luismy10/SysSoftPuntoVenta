@@ -3,11 +3,11 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -76,7 +76,7 @@ public class FxComprasController implements Initializable {
     private Text lblTotal;
     @FXML
     private Button btnArticulo;
-    
+
     private AnchorPane content;
 
     private String idProveedor;
@@ -86,13 +86,13 @@ public class FxComprasController implements Initializable {
     private double subTotal;
 
     private double descuento;
-    
-    private ArrayList<LoteTB> loteTBs;
-    
+
+    private ObservableList<LoteTB> loteTBs;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idProveedor = idRepresentante = "";
-        loteTBs = new ArrayList<>();
+        loteTBs = FXCollections.observableArrayList();
         Tools.actualDate(Tools.getDate(), tpFechaCompra);
         DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> {
             cbComprobante.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
@@ -153,7 +153,7 @@ public class FxComprasController implements Initializable {
             compraTB.setGravada(Double.parseDouble(lblGravada.getText()));
             compraTB.setIgv(Double.parseDouble(lblIgv.getText()));
             compraTB.setTotal(Double.parseDouble(lblTotal.getText()));
-            String result = CompraADO.CrudEntity(compraTB, tvList);
+            String result = CompraADO.CrudEntity(compraTB, tvList,loteTBs);
             if (result.equalsIgnoreCase("register")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Compras", "Registrado correctamente la compra.", false);
                 idProveedor = idRepresentante = "";
@@ -162,6 +162,7 @@ public class FxComprasController implements Initializable {
                 cbNumeracion.clear();
                 Tools.actualDate(Tools.getDate(), tpFechaCompra);
                 tvList.getItems().clear();
+                loteTBs.clear();
                 initTable();
                 lblSubTotal.setText("0.00");
                 lblDescuento.setText("0.00");
@@ -195,11 +196,9 @@ public class FxComprasController implements Initializable {
 
     private void onViewEdit() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-
             ObservableList<ArticuloTB> articuloTBs;
             articuloTBs = tvList.getSelectionModel().getSelectedItems();
             articuloTBs.forEach(e -> {
-
                 try {
                     URL url = getClass().getResource(Tools.FX_FILE_ARTICULOCOMPRA);
                     FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -223,14 +222,12 @@ public class FxComprasController implements Initializable {
                     articuloTB.setImporte(e.getImporte().get());
                     articuloTB.setUtilidad(e.getUtilidad().get());
                     articuloTB.setImpuesto(e.isImpuesto());
-                    controller.setLoadEdit(articuloTB);
-
+                    articuloTB.setLote(e.isLote());
+                    controller.setLoadEdit(articuloTB, tvList.getSelectionModel().getSelectedIndex(), loteTBs);
                 } catch (IOException ex) {
                     Logger.getLogger(FxComprasController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             });
-
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compras", "Seleccione un artículo para editarlo", false);
 
@@ -244,8 +241,19 @@ public class FxComprasController implements Initializable {
                 ObservableList<ArticuloTB> observableList, articuloTBs;
                 observableList = tvList.getItems();
                 articuloTBs = tvList.getSelectionModel().getSelectedItems();
-                articuloTBs.forEach(e -> observableList.remove(e));
+                
+                articuloTBs.forEach(e -> {                    
+                    for (int i = 0; i < loteTBs.size(); i++) {
+                        if (loteTBs.get(i).getIdArticulo().equals(e.getIdArticulo())) {
+                            loteTBs.remove(i);
+                            i--;
+                        }
+                    }
+                    observableList.remove(e);
+                });
                 setCalculateTotals();
+
+
             }
 
         } else {
@@ -389,14 +397,11 @@ public class FxComprasController implements Initializable {
 
         double impuesto = Tools.calculateTax(Session.IMPUESTO, gravada);
         lblIgv.setText(Tools.roundingValue(impuesto, 2));
-        
-        loteTBs.forEach(e->System.out.println(e.getNumeroLote()));
-        System.out.println(loteTBs.size());
+
     }
 
-    public ArrayList<LoteTB> getLoteTBs() {
+    public ObservableList<LoteTB> getLoteTBs() {
         return loteTBs;
     }
 
-    
 }

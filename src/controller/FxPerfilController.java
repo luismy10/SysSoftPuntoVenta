@@ -50,7 +50,7 @@ public class FxPerfilController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         idPersona = "";
         idImagen = 0;
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
     private void onViewAsignacion() throws IOException {
@@ -107,7 +107,7 @@ public class FxPerfilController implements Initializable {
     }
 
     private void loadViewImage(String idRepresentante) {
-        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante);
+        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante,true);
         if (imagenTB.getIdImage() != 0) {
             idImagen = imagenTB.getIdImage();
             ivPerfil.setImage(imagenTB.getImagen());

@@ -87,7 +87,7 @@ public class FxArticuloProcesoController implements Initializable {
     }
 
     public void setInitArticulo() {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         DetalleADO.GetDetailIdName("2", "0006", "").forEach(e -> {
             cbCategoria.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
@@ -226,7 +226,7 @@ public class FxArticuloProcesoController implements Initializable {
     }
 
     private void loadViewImage(String idRepresentante) {
-        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante);
+        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante,true);
         if (imagenTB.getIdImage() > 0) {
             idImagen = imagenTB.getIdImage();
             lnPrincipal.setImage(imagenTB.getImagen());

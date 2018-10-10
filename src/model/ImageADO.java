@@ -37,8 +37,14 @@ public class ImageADO {
         }
     }
 
-    public static ImagenTB GetImage(String idRepresentante) {
-        String selectStmt = "SELECT IdImagen,Imagen FROM ImagenTB WHERE IdRelacionado = ?";
+    public static ImagenTB GetImage(String idRepresentante, boolean complete) {
+        String selectStmt;
+        if (complete) {
+            selectStmt = "SELECT IdImagen,Imagen FROM ImagenTB WHERE IdRelacionado = ?";
+
+        } else {
+            selectStmt = "SELECT Imagen FROM ImagenTB WHERE IdRelacionado = ?";
+        }
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ImagenTB imagenTB = new ImagenTB();
@@ -49,7 +55,9 @@ public class ImageADO {
             rsEmps = preparedStatement.executeQuery();
 
             while (rsEmps.next()) {
-                imagenTB.setIdImage(rsEmps.getLong("IdImagen"));                
+                if (complete) {
+                    imagenTB.setIdImage(rsEmps.getLong("IdImagen"));
+                }
                 imagenTB.setImagen(new Image(rsEmps.getBinaryStream("Imagen")));
             }
         } catch (SQLException e) {

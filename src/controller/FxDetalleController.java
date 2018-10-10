@@ -40,7 +40,7 @@ public class FxDetalleController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         cbEstado.getItems().add(new Estado("1", "Habilitado"));
         cbEstado.getItems().add(new Estado("0", "Inhabilitado"));
         cbEstado.setConverter(new javafx.util.StringConverter<Estado>() {

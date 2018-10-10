@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxLoteCambiarController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxLoteCambiarController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -44,9 +44,9 @@
                </padding>
                <children>
                   <Label prefWidth="52.0" styleClass="labelRoboto14" text="Lote:" />
-                  <TextField fx:id="txtLote" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtLote" onAction="#onActionAgregar" HBox.hgrow="ALWAYS" />
                   <Label styleClass="labelRoboto14" text="Cantidad:" />
-                  <TextField fx:id="txtCantidad" onKeyTyped="#onKeyTypedCantidad" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtCantidad" onAction="#onActionAgregar" onKeyTyped="#onKeyTypedCantidad" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" spacing="10.0">

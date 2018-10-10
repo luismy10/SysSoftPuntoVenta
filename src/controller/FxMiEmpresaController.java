@@ -10,11 +10,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import model.CiudadADO;
 import model.CiudadTB;
 import model.DBUtil;
@@ -32,7 +32,7 @@ import model.ProvinciaTB;
 public class FxMiEmpresaController implements Initializable {
 
     @FXML
-    private VBox window;
+    private ScrollPane window;
     @FXML
     private ComboBox<DetalleTB> cbGiroComercial;
     @FXML
@@ -65,8 +65,6 @@ public class FxMiEmpresaController implements Initializable {
     private ComboBox<DistritoTB> cbCiudadDistrito;
     @FXML
     private Button btnRegister;
-    @FXML
-    private Button btnCancel;
 
     private boolean validate;
 
@@ -168,7 +166,7 @@ public class FxMiEmpresaController implements Initializable {
                             cbCiudadDistrito.getSelectionModel().select(i);
                             break;
                         }
-                    } 
+                    }
                 }
                 Session.EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();
                 Session.TELEFONO = list.get(0).getTelefono();
@@ -260,16 +258,6 @@ public class FxMiEmpresaController implements Initializable {
         if (event.getCode() == KeyCode.ENTER) {
             aValidityProcess();
         }
-    }
-
-    @FXML
-    private void onKeyPressedToCancel(KeyEvent event
-    ) {
-    }
-
-    @FXML
-    private void onActionToCancel(ActionEvent event
-    ) {
     }
 
     @FXML

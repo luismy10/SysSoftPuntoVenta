@@ -27,6 +27,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import model.ArticuloTB;
@@ -83,7 +84,7 @@ public class FxCompraDetalleController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         tcId.setCellValueFactory(callData -> callData.getValue().getId().asObject());
         tcCantidad.setCellValueFactory(callData -> callData.getValue().getCantidad().asObject());
         tcDescripcion.setCellValueFactory(callData -> Bindings.concat(
@@ -186,7 +187,9 @@ public class FxCompraDetalleController implements Initializable {
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, DBUtil.getConnection());
 
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            
             JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+            jasperViewer.setIconImage(new ImageIcon(getClass().getResource(Tools.FX_LOGO)).getImage());
             jasperViewer.setTitle("Detalle de compra");
             jasperViewer.setSize(840, 650);
             jasperViewer.setLocationRelativeTo(null);

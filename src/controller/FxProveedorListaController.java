@@ -44,7 +44,7 @@ public class FxProveedorListaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
 
         exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);

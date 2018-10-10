@@ -49,7 +49,7 @@ public class FxArticuloListaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(

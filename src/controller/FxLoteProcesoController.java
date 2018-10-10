@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,7 +50,11 @@ public class FxLoteProcesoController implements Initializable {
 
     private FxArticuloCompraController articuloCompraController;
 
-    private ArrayList<LoteTB> listLote;
+    private ObservableList<LoteTB> listLote;
+
+    private ObservableList<LoteTB> listComprasLote;
+
+    private String idArticulo;
 
     private double cantidad;
 
@@ -57,13 +62,16 @@ public class FxLoteProcesoController implements Initializable {
 
     private double diferencia;
 
-    private double total;
+    private boolean editbatch;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
+        listLote = FXCollections.observableArrayList();
+        listComprasLote = FXCollections.observableArrayList();
         initTableView();
-        listLote = new ArrayList<>();
+        cantidad = 0;
+        editbatch = false;
     }
 
     public void initTableView() {
@@ -77,15 +85,36 @@ public class FxLoteProcesoController implements Initializable {
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getExistenciaActual(), 2)
         ));
+        tvList.setItems(listLote);
+
     }
 
     public void setLoadData(String... value) {
-        lblClave.setText(value[0]);
-        lblDescripcion.setText(value[1]);
-        lblCantidad.setText(lblCantidad.getText() + " " + value[2]);
-        cantidadlote = Double.parseDouble(value[2]);
-        lblDiferencia.setText(lblDiferencia.getText() + " " + value[2]);
-        diferencia = Double.parseDouble(value[2]);
+        idArticulo = value[0];
+        lblClave.setText(value[1]);
+        lblDescripcion.setText(value[2]);
+        lblCantidad.setText(lblCantidad.getText() + " " + value[3]);
+        cantidadlote = Double.parseDouble(value[3]);
+        lblDiferencia.setText(lblDiferencia.getText() + " " + value[3]);
+        diferencia = Double.parseDouble(value[3]);
+    }
+
+    public void setEditData(String value[], ObservableList<LoteTB> loteTBs) {
+        idArticulo = value[0];
+        lblClave.setText(value[1]);
+        lblDescripcion.setText(value[2]);
+        lblCantidad.setText(lblCantidad.getText() + " " + value[3]);
+        cantidadlote = Double.parseDouble(value[3]);
+        lblDiferencia.setText(lblDiferencia.getText() + " " + value[3]);
+        diferencia = Double.parseDouble(value[3]);
+        listComprasLote = loteTBs;
+        listComprasLote.forEach((ltb) -> {
+            if (ltb.getIdArticulo().equals(idArticulo)) {
+                listLote.add(ltb);
+            }
+        });
+        editbatch = true;
+        calculateBatch();
     }
 
     private void openWindowAgregar(boolean generate) throws IOException {
@@ -104,13 +133,47 @@ public class FxLoteProcesoController implements Initializable {
         }
     }
 
-    private void toRegisterBatch() {
+    private void openWindowEditar() throws IOException {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            URL url = getClass().getResource(Tools.FX_FILE_LOTECAMBIAR);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxLoteCambiarController controller = fXMLLoader.getController();
+            controller.setProcesoController(this);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Lote", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.show();
+            controller.setEditBatch(new String[]{
+                String.valueOf(tvList.getSelectionModel().getSelectedIndex()),
+                String.valueOf(tvList.getSelectionModel().getSelectedItem().getTipoLote()),
+                String.valueOf(tvList.getSelectionModel().getSelectedItem().getNumeroLote()),
+                String.valueOf(tvList.getSelectionModel().getSelectedItem().getExistenciaInicial()),
+                String.valueOf(tvList.getSelectionModel().getSelectedItem().getFechaFabricacion()),
+                String.valueOf(tvList.getSelectionModel().getSelectedItem().getFechaCaducidad())
+            });
+        }
+
+    }
+
+    private void toRegisterBatch() throws IOException {
         if (cantidadlote == cantidad) {
+            if (editbatch) {
+                for (int i = 0; i < listComprasLote.size(); i++) {
+                    if (listComprasLote.get(i).getIdArticulo().equals(idArticulo)) {
+                        listComprasLote.remove(i);
+                        i--;
+                    }
+                }
+            }
             listLote.forEach((loteTB) -> {
                 articuloCompraController.getComprasController().getLoteTBs().add(loteTB);
             });
             articuloCompraController.setValidarlote(false);
+            articuloCompraController.setCantidadInicial(cantidad);
             Tools.Dispose(window);
+            articuloCompraController.addArticuloList();
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Lotes", "La cantidad y la entrada total deben ser la misma", false);
         }
@@ -136,6 +199,18 @@ public class FxLoteProcesoController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedEditar(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowEditar();
+        }
+    }
+
+    @FXML
+    private void onActionEditar(ActionEvent event) throws IOException {
+        openWindowEditar();
+    }
+
+    @FXML
     private void onActionAgregar(ActionEvent event) throws IOException {
         openWindowAgregar(false);
     }
@@ -143,24 +218,30 @@ public class FxLoteProcesoController implements Initializable {
     @FXML
     private void onKeyPressedQuitar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                listLote.remove(tvList.getSelectionModel().getSelectedIndex());
+                calculateBatch();
+            }
         }
     }
 
     @FXML
     private void onActionQuitar(ActionEvent event) throws IOException {
-
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            listLote.remove(tvList.getSelectionModel().getSelectedIndex());
+            calculateBatch();
+        }
     }
 
     @FXML
-    private void onKeyPressedToRegister(KeyEvent event) {
+    private void onKeyPressedToRegister(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             toRegisterBatch();
         }
     }
 
     @FXML
-    private void onActionToRegister(ActionEvent event) {
+    private void onActionToRegister(ActionEvent event) throws IOException {
         toRegisterBatch();
     }
 
@@ -176,11 +257,7 @@ public class FxLoteProcesoController implements Initializable {
         Tools.Dispose(window);
     }
 
-    public TableView<LoteTB> getTvList() {
-        return tvList;
-    }
-
-    public ArrayList<LoteTB> getListLote() {
+    public ObservableList<LoteTB> getListLote() {
         return listLote;
     }
 
@@ -192,8 +269,12 @@ public class FxLoteProcesoController implements Initializable {
         diferencia -= entrada;
         lblTotal.setText("Entrada total " + entrada);
         lblDiferencia.setText("Diferencia " + diferencia);
-        cantidad += entrada;
+        cantidad = entrada;
         diferencia = cantidadlote;
+    }
+
+    public String getIdArticulo() {
+        return idArticulo;
     }
 
     public void setLoteController(FxArticuloCompraController articuloCompraController) {

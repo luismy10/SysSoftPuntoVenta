@@ -7,13 +7,12 @@ import javafx.beans.property.SimpleObjectProperty;
 public class LoteTB {
 
     private long idLote;
-    private String loteGenerado;
+    private boolean tipoLote;
     private String numeroLote;
     private ObjectProperty<LocalDate> fechaFabricacion;
     private ObjectProperty<LocalDate> fechaCaducidad;
     private double existenciaInicial;
     private double existenciaActual;
-    private int estado;
     private String idArticulo;
     private String idCompra;
 
@@ -69,12 +68,12 @@ public class LoteTB {
         this.existenciaActual = existenciaActual;
     }
 
-    public int getEstado() {
-        return estado;
+    public boolean getTipoLote() {
+        return tipoLote;
     }
 
-    public void setEstado(int estado) {
-        this.estado = estado;
+    public void setTipoLote(boolean tipoLote) {
+        this.tipoLote = tipoLote;
     }
 
     public String getIdArticulo() {
@@ -93,12 +92,5 @@ public class LoteTB {
         this.idCompra = idCompra;
     }
     
-     public ObjectProperty<LocalDate> fechaFabricacionProperty() {
-        return fechaFabricacion;
-    }
-    
-    public ObjectProperty<LocalDate> fechaCaducidadProperty() {
-        return fechaCaducidad;
-    }
 
 }

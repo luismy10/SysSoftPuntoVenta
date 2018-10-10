@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.CallableStatement;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,13 +12,16 @@ import javafx.scene.control.TableView;
 
 public class CompraADO {
 
-    public static String CrudEntity(CompraTB compraTB, TableView<ArticuloTB> tableView) {
+    public static String CrudEntity(CompraTB compraTB, TableView<ArticuloTB> tableView, ObservableList<LoteTB> loteTBs) {
         PreparedStatement compra = null;
         CallableStatement codigo_compra = null;
 
         PreparedStatement detalle_compra = null;
 
         PreparedStatement articulo_update = null;
+
+        PreparedStatement lote_compra = null;
+
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
@@ -33,7 +37,10 @@ public class CompraADO {
             detalle_compra = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleCompraTB(IdCompra,IdArticulo,Cantidad,PrecioCompra,PrecioVenta,Importe)"
                     + "VALUES(?,?,?,?,?,?)");
 
-            articulo_update = DBUtil.getConnection().prepareStatement("update ArticuloTB SET PrecioCompra = ?, PrecioVenta = ?, Cantidad = Cantidad + ? WHERE IdArticulo = ?");
+            articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET PrecioCompra = ?, PrecioVenta = ?, Cantidad = Cantidad + ? WHERE IdArticulo = ?");
+
+            lote_compra = DBUtil.getConnection().prepareStatement("INSERT INTO LoteTB(TipoLote,NumeroLote,FechaFabricacion,FechaCaducidad,ExistenciaInicial,ExistenciaActual,IdArticulo,IdCompra) "
+                    + "VALUES(?,?,?,?,?,?,?,?)");
 
             compra.setString(1, id_compra);
             compra.setString(2, compraTB.getProveedor());
@@ -65,10 +72,22 @@ public class CompraADO {
 
             }
 
+            for (int i = 0; i < loteTBs.size(); i++) {
+                lote_compra.setObject(1, loteTBs.get(i).getTipoLote());
+                lote_compra.setString(2, loteTBs.get(i).getTipoLote() ? (loteTBs.get(i).getIdArticulo()+id_compra) : loteTBs.get(i).getNumeroLote());
+                lote_compra.setDate(3, Date.valueOf(loteTBs.get(i).getFechaFabricacion()));
+                lote_compra.setDate(4, Date.valueOf(loteTBs.get(i).getFechaCaducidad()));
+                lote_compra.setDouble(5, loteTBs.get(i).getExistenciaInicial());
+                lote_compra.setDouble(6, loteTBs.get(i).getExistenciaActual());
+                lote_compra.setString(7, loteTBs.get(i).getIdArticulo());
+                lote_compra.setString(8, id_compra);
+                lote_compra.addBatch();
+            }
+
             compra.executeBatch();
             detalle_compra.executeBatch();
             articulo_update.executeBatch();
-
+            lote_compra.executeBatch();
             DBUtil.getConnection().commit();
             return "register";
         } catch (SQLException ex) {
@@ -92,12 +111,13 @@ public class CompraADO {
                 if (codigo_compra != null) {
                     codigo_compra.close();
                 }
+                if (lote_compra != null) {
+                    lote_compra.close();
+                }
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {
-
             }
         }
-
     }
 
     public static ObservableList<CompraTB> ListComprasRealizadas(String... value) {

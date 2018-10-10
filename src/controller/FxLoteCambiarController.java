@@ -31,15 +31,35 @@ public class FxLoteCambiarController implements Initializable {
 
     private FxLoteProcesoController procesoController;
 
+    private boolean statebatch;
+
+    private boolean typebatch;
+
+    private int indexbatch;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
+        statebatch = false;
+        typebatch = false;
+        indexbatch = 0;
     }
 
     public void generateBatch(String descripcion) {
         txtArticulo.setText(descripcion);
         txtLote.setDisable(true);
-        txtLote.setText(LoteADO.GenerateBatch());
+        txtLote.setText("LT001GENERADO");
+        typebatch = true;
+    }
+
+    public void setEditBatch(String[] value) {
+        statebatch = true;
+        indexbatch = Integer.parseInt(value[0]);
+        typebatch = Boolean.valueOf(value[1]);
+        txtLote.setText(value[2]);
+        txtCantidad.setText(value[3]);
+        Tools.actualDate(value[4], dtFabricacion);
+        Tools.actualDate(value[5], dtCaducidad);
     }
 
     @FXML
@@ -53,7 +73,7 @@ public class FxLoteCambiarController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Lotes", "Ingrese la cantidad de unidades del lote, por favor", false);
                 txtCantidad.requestFocus();
             } else {
-                if (Double.parseDouble(txtCantidad.getText()) <1) {
+                if (Double.parseDouble(txtCantidad.getText()) < 1) {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Lotes", "La cantidad debe ser mayor a 0, por favor", false);
                     txtCantidad.requestFocus();
                 } else {
@@ -66,16 +86,21 @@ public class FxLoteCambiarController implements Initializable {
                             dtCaducidad.requestFocus();
                         } else {
                             LoteTB loteTB = new LoteTB();
+                            loteTB.setTipoLote(typebatch);
                             loteTB.setNumeroLote(txtLote.getText());
                             loteTB.setExistenciaActual(Double.parseDouble(txtCantidad.getText()));
                             loteTB.setExistenciaInicial(Double.parseDouble(txtCantidad.getText()));
                             loteTB.setFechaFabricacion(dtFabricacion.getValue());
                             loteTB.setFechaCaducidad(dtCaducidad.getValue());
-                            loteTB.setIdArticulo("");
-                            procesoController.getTvList().getItems().add(loteTB);
-                            procesoController.getListLote()
-                                    .add(loteTB);
-                            procesoController.calculateBatch();
+                            loteTB.setIdArticulo(procesoController.getIdArticulo());
+                            if (!statebatch) {
+                                procesoController.getListLote().add(loteTB);
+                                procesoController.calculateBatch();
+                            } else {
+                                procesoController.getListLote().set(indexbatch, loteTB);
+                                procesoController.calculateBatch();
+                            }
+
                             Tools.Dispose(window);
                         }
                     }

@@ -34,6 +34,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import model.CompraADO;
@@ -184,6 +185,7 @@ public class FxComprasRealizadasController implements Initializable {
 
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+            jasperViewer.setIconImage(new ImageIcon(getClass().getResource(Tools.FX_LOGO)).getImage());
             jasperViewer.setTitle("Reporte general de compras");
             jasperViewer.setSize(840, 650);
             jasperViewer.setLocationRelativeTo(null);

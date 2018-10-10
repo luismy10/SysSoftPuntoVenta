@@ -18,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.ArticuloTB;
+import model.LoteTB;
 
 public class FxArticuloCompraController implements Initializable {
 
@@ -50,70 +51,78 @@ public class FxArticuloCompraController implements Initializable {
 
     private String idArticulo;
 
+    private boolean lote;
+
     private boolean validarlote;
+
+    private boolean loteedit;
+
+    private int indexcompra;
+
+    private ObservableList<LoteTB> loteTBs;
+
+    private double cantidadinicial;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         validationelemnt = false;
+        lote = loteedit = false;
         validarlote = false;
         txtMargen.setText("30");
         idArticulo = "";
+        indexcompra = 0;
+        cantidadinicial = 0;
     }
 
-    private boolean validateStock(TableView<ArticuloTB> view, ArticuloTB articuloTB) throws IOException {
-        boolean ret = false;
-        for (int i = 0; i < view.getItems().size(); i++) {
-            if (view.getItems().get(i).getClave().get().equals(articuloTB.getClave().get())) {
-                ret = true;
-                break;
-            }
-        }
-        if (!ret) {
-            if (validarlote) {
-                URL url = getClass().getResource(Tools.FX_FILE_LOTEPROCESO);
-                FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
-                Parent parent = fXMLLoader.load(url.openStream());
-                //Controlller here
-                FxLoteProcesoController controller = fXMLLoader.getController();
-                controller.setLoteController(this);
-                //
-                Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Lote", window.getScene().getWindow());
-                stage.setResizable(false);
-                stage.show();
-                controller.setLoadData(articuloTB.getClave().get(),
-                        articuloTB.getNombre().get(),
-                        String.valueOf(articuloTB.getCantidad().get()));
-            } else {
-                view.getItems().add(articuloTB);
-                Tools.Dispose(window); 
-            }
-
-        }
-        return ret;
-    }
-
-    @FXML
-    private void onActionAdd(ActionEvent event) throws IOException {
-        if (!Tools.isNumeric(txtCantidad.getText())) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en la cantidad", false);
-            txtCantidad.requestFocus();
-        } else if (!Tools.isNumeric(txtCosto.getText())) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el costo", false);
-            txtCosto.requestFocus();
-        } else if (!Tools.isNumeric(txtPrecio.getText())) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el precio", false);
-            txtPrecio.requestFocus();
+    private void openWindowLote(ArticuloTB articuloTB) throws IOException {
+        URL url = getClass().getResource(Tools.FX_FILE_LOTEPROCESO);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxLoteProcesoController controller = fXMLLoader.getController();
+        controller.setLoteController(this);
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Lote", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.show();
+        if (!loteedit) {
+            controller.setLoadData(articuloTB.getIdArticulo(), articuloTB.getClave().get(),
+                    articuloTB.getNombre().get(),
+                    String.valueOf(articuloTB.getCantidad().get()));
         } else {
-            if (cbImpuesto.isSelected()) {
-                addArticulo(Double.parseDouble(txtCosto.getText()), Double.parseDouble(txtCosto.getText()));
-            } else {
-                double igv = Tools.calculateTax(Session.IMPUESTO, Double.parseDouble(txtCosto.getText()));
-                double precioigv = (Double.parseDouble(txtCosto.getText()) + igv);
-                addArticulo(precioigv, Double.parseDouble(txtCosto.getText()));
-            }
-
+            controller.setEditData(new String[]{articuloTB.getIdArticulo(), articuloTB.getClave().get(),
+                articuloTB.getNombre().get(),
+                String.valueOf(articuloTB.getCantidad().get())},
+                    loteTBs);
         }
+    }
+
+    void setLoadData(String value[], boolean lote) {
+        idArticulo = value[0];
+        lblClave.setText(value[1]);
+        lblDescripcion.setText(value[2]);
+        validarlote = lote;
+        this.lote = lote;
+    }
+
+    public void setLoadEdit(ArticuloTB articuloTB, int index, ObservableList<LoteTB> loteTBs) {
+        idArticulo = articuloTB.getIdArticulo();
+        lblClave.setText(articuloTB.getClave().get());
+        lblDescripcion.setText(articuloTB.getNombre().get());
+        txtCantidad.setText("" + articuloTB.getCantidad().get());
+        txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompraReal(), 2));
+        txtDescuento.setText(Tools.roundingValue(articuloTB.getDescuento().get(), 2));
+        txtPrecio.setText(Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
+        txtUtilidad.setText(Tools.roundingValue(articuloTB.getUtilidad().get(), 2));
+        cbImpuesto.setSelected(articuloTB.isImpuesto());
+        validationelemnt = true;
+        validarlote = articuloTB.isLote();
+        this.lote = articuloTB.isLote();
+        indexcompra = index;
+        loteedit = true;
+        this.loteTBs = loteTBs;
+        cantidadinicial = articuloTB.getCantidad().get();
     }
 
     private void addArticulo(double costo, double costoreal) throws IOException {
@@ -142,48 +151,22 @@ public class FxArticuloCompraController implements Initializable {
         );
 
         articuloTB.setImpuesto(cbImpuesto.isSelected());
+        articuloTB.setLote(lote);
         if (validateStock(comprasController.getTvList(), articuloTB) && !validationelemnt) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya existe en la lista el artículo", false);
         } else if (validationelemnt) {
-            ObservableList<ArticuloTB> observableList, articuloTBs;
-            observableList = comprasController.getTvList().getItems();
-            articuloTBs = comprasController.getTvList().getSelectionModel().getSelectedItems();
-            articuloTBs.forEach(e -> observableList.remove(e));
-            comprasController.setCalculateTotals();
-            validateStock(comprasController.getTvList(), articuloTB);
-            comprasController.setCalculateTotals();
+            if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {
+                openWindowLote(articuloTB);
+            } else {
+                comprasController.getTvList().getItems().set(indexcompra, articuloTB);
+                comprasController.setCalculateTotals();
+                Tools.Dispose(window);
+            }
         } else {
             comprasController.setCalculateTotals();
-            
         }
-
     }
-
-    @FXML
-    private void onActionCancel(ActionEvent event) {
-        Tools.Dispose(window);
-    }
-
-    void setLoadData(String value[], boolean lote) {
-        idArticulo = value[0];
-        lblClave.setText(value[1]);
-        lblDescripcion.setText(value[2]);
-        validarlote = lote;
-    }
-
-    void setLoadEdit(ArticuloTB articuloTB) {
-        idArticulo = articuloTB.getIdArticulo();
-        lblClave.setText(articuloTB.getClave().get());
-        lblDescripcion.setText(articuloTB.getNombre().get());
-        txtCantidad.setText("" + articuloTB.getCantidad().get());
-        txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompraReal(), 2));
-        txtDescuento.setText(Tools.roundingValue(articuloTB.getDescuento().get(), 2));
-        txtPrecio.setText(Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
-        txtUtilidad.setText(Tools.roundingValue(articuloTB.getUtilidad().get(), 2));
-        cbImpuesto.setSelected(articuloTB.isImpuesto());
-        validationelemnt = true;
-    }
-
+    
     private void generationPrice() {
         double importe = Double.parseDouble(txtImporte.getText());
         double cantidad = Double.parseDouble(txtCantidad.getText());
@@ -199,6 +182,58 @@ public class FxArticuloCompraController implements Initializable {
 
         txtUtilidad.setText(Tools.roundingValue((Double.parseDouble(txtPrecio.getText()) - preciocompra), 2));
     }
+    
+    private boolean validateStock(TableView<ArticuloTB> view, ArticuloTB articuloTB) throws IOException {
+        boolean ret = false;
+        for (int i = 0; i < view.getItems().size(); i++) {
+            if (view.getItems().get(i).getClave().get().equals(articuloTB.getClave().get())) {
+                ret = true;
+                break;
+            }
+        }
+        if (!ret) {
+            if (validarlote) {
+                openWindowLote(articuloTB);
+            } else {
+                view.getItems().add(articuloTB);
+                Tools.Dispose(window);
+            }
+        }
+        return ret;
+    }
+
+    public void addArticuloList() throws IOException{
+        if (!Tools.isNumeric(txtCantidad.getText())) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en la cantidad", false);
+            txtCantidad.requestFocus();
+        } else if (!Tools.isNumeric(txtCosto.getText())) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el costo", false);
+            txtCosto.requestFocus();
+        } else if (!Tools.isNumeric(txtPrecio.getText())) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el precio", false);
+            txtPrecio.requestFocus();
+        } else {
+            if (cbImpuesto.isSelected()) {
+                addArticulo(Double.parseDouble(txtCosto.getText()), Double.parseDouble(txtCosto.getText()));
+            } else {
+                double igv = Tools.calculateTax(Session.IMPUESTO, Double.parseDouble(txtCosto.getText()));
+                double precioigv = (Double.parseDouble(txtCosto.getText()) + igv);
+                addArticulo(precioigv, Double.parseDouble(txtCosto.getText()));
+            }
+        }
+    }
+
+    @FXML
+    private void onActionAdd(ActionEvent event) throws IOException {
+        addArticuloList();
+    }
+
+    @FXML
+    private void onActionCancel(ActionEvent event) {
+        Tools.Dispose(window);
+    }
+
+    
 
     @FXML
     private void onKeyTypedImporte(KeyEvent event) {
@@ -294,7 +329,6 @@ public class FxArticuloCompraController implements Initializable {
 
                 txtUtilidad.setText(Tools.roundingValue((Double.parseDouble(txtPrecio.getText()) - preciocompra), 2));
             }
-
         }
     }
 
@@ -354,16 +388,18 @@ public class FxArticuloCompraController implements Initializable {
 
     public void setValidarlote(boolean validarlote) {
         this.validarlote = validarlote;
-    }  
+    }
 
-    void setInitCompraController(FxComprasController comprasController) {
+    public void setCantidadInicial(double cantidadinicial) {
+        this.cantidadinicial = cantidadinicial;
+    }
+
+    public void setInitCompraController(FxComprasController comprasController) {
         this.comprasController = comprasController;
     }
 
     public FxComprasController getComprasController() {
         return comprasController;
     }
-    
-    
 
 }

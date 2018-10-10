@@ -18,7 +18,7 @@ public class FxArticuloSeleccionadoController implements Initializable {
     private Text lblPrice;
     @FXML
     private Text lblQuantity;
-    
+
     private FxArticulosController articuloController;
 
     @Override
@@ -45,10 +45,13 @@ public class FxArticuloSeleccionadoController implements Initializable {
     @FXML
     private void onMouseClickedDetalle(MouseEvent event) {
         articuloController.changeViewArticuloDetalle();
+        if (articuloController.getTvList().getSelectionModel().getSelectedIndex() >= 0) {
+            articuloController.onViewDetailArticulo();
+        }
     }
 
     void setArticuloController(FxArticulosController articuloController) {
-        this.articuloController=articuloController;
+        this.articuloController = articuloController;
     }
 
 }

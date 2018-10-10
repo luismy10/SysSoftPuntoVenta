@@ -36,7 +36,7 @@ public class FxAsignacionController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         idDirectorio = 0;
         if (DBUtil.StateConnection()) {
             DetalleADO.GetDetailIdName("2", "0002", "").forEach(e -> {

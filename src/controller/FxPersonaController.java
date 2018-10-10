@@ -80,7 +80,7 @@ public class FxPersonaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         idPersona = "";
         if (DBUtil.StateConnection()) {
             DetalleADO.GetDetailIdName("1", "0003", "RUC").forEach(e -> {

@@ -36,6 +36,7 @@ import model.ArticuloTB;
 import model.DBUtil;
 import model.ImageADO;
 import model.ImagenTB;
+import model.LoteADO;
 
 public class FxArticulosController implements Initializable {
 
@@ -79,9 +80,9 @@ public class FxArticulosController implements Initializable {
         tcPresentacion.setCellValueFactory(cellData -> cellData.getValue().getPresentacionName());
         tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
         tcLote.setCellValueFactory(new PropertyValueFactory<>("imageLote"));
-        
+
         changeViewArticuloSeleccionado();
-        
+
     }
 
     public void fillArticlesTable(String value) {
@@ -121,7 +122,7 @@ public class FxArticulosController implements Initializable {
     }
 
     private void loadViewImage(String idRepresentante) {
-        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante);
+        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante,false);
         seleccionadoController.getIvPrincipal().setImage(imagenTB.getImagen());
     }
 
@@ -283,21 +284,28 @@ public class FxArticulosController implements Initializable {
         onViewArticuloClone();
     }
 
+    public void onViewDetailArticulo() {
+        loadViewImage(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
+        ArrayList<ArticuloTB> list = ArticuloADO.GetArticulosByIdView(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
+        if (!list.isEmpty()) {
+            ArticuloTB articuloTB = list.get(0);
+            seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
+            seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
+            seleccionadoController.getLblPrice().setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
+            seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad().get() % 1 == 0
+                    ? Tools.roundingValue(articuloTB.getCantidad().get(), 0)
+                    : Tools.roundingValue(articuloTB.getCantidad().get(), 2));
+            if (detalleController != null) {
+                detalleController.getTvList().setItems(LoteADO.ListProveedor(tvList.getSelectionModel().getSelectedItem().getIdArticulo()));
+            }
+        }
+    }
+
     @FXML
     private void onMouseClickedList(MouseEvent event) throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (event.getClickCount() == 1) {
-                loadViewImage(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
-                ArrayList<ArticuloTB> list = ArticuloADO.GetArticulosByIdView(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
-                if (!list.isEmpty()) {
-                    ArticuloTB articuloTB = list.get(0);
-                    seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
-                    seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
-                    seleccionadoController.getLblPrice().setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
-                    seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad().get() % 1 == 0
-                            ? Tools.roundingValue(articuloTB.getCantidad().get(), 0)
-                            : Tools.roundingValue(articuloTB.getCantidad().get(), 2));
-                }
+                onViewDetailArticulo();
             } else if (event.getClickCount() == 2) {
                 onViewArticuloEdit();
             }
@@ -309,33 +317,17 @@ public class FxArticulosController implements Initializable {
     private void onKeyRelasedList(KeyEvent event) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (event.getCode() == KeyCode.UP) {
-                loadViewImage(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
-                ArrayList<ArticuloTB> list = ArticuloADO.GetArticulosByIdView(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
-                if (!list.isEmpty()) {
-                    ArticuloTB articuloTB = list.get(0);
-                    seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
-                    seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
-                    seleccionadoController.getLblPrice().setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
-                    seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad().get() % 1 == 0
-                            ? Tools.roundingValue(articuloTB.getCantidad().get(), 0)
-                            : Tools.roundingValue(articuloTB.getCantidad().get(), 2));
-                }
+                onViewDetailArticulo();
             } else if (event.getCode() == KeyCode.DOWN) {
-                loadViewImage(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
-                ArrayList<ArticuloTB> list = ArticuloADO.GetArticulosByIdView(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
-                if (!list.isEmpty()) {
-                    ArticuloTB articuloTB = list.get(0);
-                    seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
-                    seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
-                    seleccionadoController.getLblPrice().setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
-                    seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad().get() % 1 == 0
-                            ? Tools.roundingValue(articuloTB.getCantidad().get(), 0)
-                            : Tools.roundingValue(articuloTB.getCantidad().get(), 2));
-                }
+                onViewDetailArticulo();
             }
         }
     }
 
+    public TableView<ArticuloTB> getTvList() {
+        return tvList;
+    }
+    
     void setContent(AnchorPane content) {
         this.content = content;
     }

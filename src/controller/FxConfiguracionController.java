@@ -7,13 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class FxConfiguracionController implements Initializable {
 
@@ -47,7 +46,7 @@ public class FxConfiguracionController implements Initializable {
     private void openWindowMiEmpresa() throws IOException {
 
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_MIEMPRESA));
-        VBox node = fXMLPrincipal.load();
+        ScrollPane node = fXMLPrincipal.load();
         FxMiEmpresaController controller = fXMLPrincipal.getController();
         controller.setContent(windowinit);
         content.getChildren().clear();

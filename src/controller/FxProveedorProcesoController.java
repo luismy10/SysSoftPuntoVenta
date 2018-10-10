@@ -90,7 +90,7 @@ public class FxProveedorProcesoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         idProveedor = "";
         if (DBUtil.StateConnection()) {
             DetalleADO.GetDetailIdName("2", "0003", "").forEach(e -> {

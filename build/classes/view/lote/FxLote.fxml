@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxLoteController">
+<VBox id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxLoteController">
    <children>
       <VBox VBox.vgrow="ALWAYS">
          <children>
@@ -114,8 +114,8 @@
                         <TableColumn prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                         <TableColumn prefWidth="109.0" style="-fx-alignment: CENTER;" text="N° Lote" />
                         <TableColumn prefWidth="263.0" style="-fx-alignment: CENTER;" text="Artículo" />
-                        <TableColumn prefWidth="120.0" text="Fecha fabricación" />
-                        <TableColumn prefWidth="120.0" style="-fx-alignment: CENTER;" text="Fecha Caducidad" />
+                        <TableColumn prefWidth="130.0" text="Fch. de fabricación" />
+                        <TableColumn prefWidth="130.0" style="-fx-alignment: CENTER;" text="Fch. de Caducidad" />
                         <TableColumn prefWidth="100.0" style="-fx-alignment: CENTER;" text="Exis. Inicial" />
                         <TableColumn prefWidth="100.0" style="-fx-alignment: CENTER;" text="Exis. Actual" />
                      </columns>
@@ -132,7 +132,7 @@
                <children>
                   <Text fill="#134d68" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="Los lotes a caducarse se marcan en rojo" />
                   <Text fill="#d00c0c" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-cursor: hand;" styleClass="labelRobotoMedium16" text="Lotes caducados 0" underline="true" />
-                  <Text fill="#e13f13" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-cursor: hand;" styleClass="labelRobotoMedium16" text="Lotes proximos a caducarse 0" underline="true" />
+                  <Text fill="#43a139" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-cursor: hand;" styleClass="labelRobotoMedium16" text="Lotes proximos a caducarse 0" underline="true" />
                </children>
             </HBox>
             <HBox alignment="CENTER" style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc;">

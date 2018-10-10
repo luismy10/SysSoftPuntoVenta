@@ -76,7 +76,7 @@ public class ArticuloADO {
                 articuloTB.setEstadoName(rsEmps.getString("Estado"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
-                articuloTB.setLote(rsEmps.getBoolean("Lote")); 
+                articuloTB.setLote(rsEmps.getBoolean("Lote"));
                 articuloTB.setImageLote(rsEmps.getBoolean("Lote")
                         ? new ImageView(new Image("/view/lote-box.png", 28, 28, false, false))
                         : null);
@@ -151,7 +151,10 @@ public class ArticuloADO {
     }
 
     public static ArrayList<ArticuloTB> GetArticulosByIdView(String value) {
-        String selectStmt = "{call Sp_Get_Articulo_By_Id_View(?)}";
+//        String selectStmt = "{call Sp_Get_Articulo_By_Id_View(?)}";
+        String selectStmt = "select NombreMarca,NombreGenerico,PrecioVenta,Cantidad\n"
+                + "		from ArticuloTB\n"
+                + "		where IdArticulo=?";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ArrayList<ArticuloTB> empList = new ArrayList<>();

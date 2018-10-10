@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox id="AnchorPane" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloDetalleController">
+<VBox id="AnchorPane" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloDetalleController">
    <children>
       <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
          <children>
@@ -21,7 +21,7 @@
                   <Image url="@../arrow.png" />
                </image>
             </ImageView>
-            <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Detalle del artículo" textAlignment="CENTER" wrappingWidth="377.0" HBox.hgrow="ALWAYS" />
+            <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Detalle del artículo" textAlignment="CENTER" wrappingWidth="346.0" HBox.hgrow="ALWAYS" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -38,12 +38,11 @@
                            <children>
                               <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <TableView prefHeight="283.0" prefWidth="410.0" VBox.vgrow="ALWAYS">
+                                    <TableView fx:id="tvList" prefHeight="283.0" prefWidth="390.0" VBox.vgrow="ALWAYS">
                                       <columns>
-                                        <TableColumn prefWidth="100.0" text="N° Lote" />
-                                        <TableColumn prefWidth="100.0" text="Exis. inicial" />
-                                          <TableColumn prefWidth="100.0" text="Exis. actual" />
-                                          <TableColumn prefWidth="113.0" text="Caducidad" />
+                                        <TableColumn fx:id="tcExistenciaInicial" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Exis. inicial" />
+                                          <TableColumn fx:id="tcExistenciaActual" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Exis. actual" />
+                                          <TableColumn fx:id="tcCantidad" prefWidth="176.0" style="-fx-alignment: CENTER-RIGHT;" text="Caducidad" />
                                       </columns>
                                     </TableView>
                                  </children>
