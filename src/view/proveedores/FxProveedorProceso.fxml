@@ -424,8 +424,9 @@
                                                         <columns>
                                                           <TableColumn fx:id="tcId" prefWidth="64.0" style="-fx-alignment: CENTER;" text="N°" />
                                                           <TableColumn fx:id="tcDocument" prefWidth="114.0" style="-fx-alignment: CENTER;" text="Documento" />
-                                                            <TableColumn fx:id="tcLastName" prefWidth="187.0" text="Apellidos" />
-                                                            <TableColumn fx:id="tcNames" prefWidth="219.0" text="Nombres" />
+                                                            <TableColumn fx:id="tcLastName" prefWidth="187.0" style="-fx-alignment: CENTER-LEFT;" text="Apellidos" />
+                                                            <TableColumn fx:id="tcNames" prefWidth="219.0" style="-fx-alignment: CENTER-LEFT;" text="Nombres" />
+                                                            <TableColumn fx:id="tcContacto" prefWidth="219.0" style="-fx-alignment: CENTER-LEFT;" text="Teléfono/Celular" />
                                                         </columns>
                                                          <HBox.margin>
                                                             <Insets />

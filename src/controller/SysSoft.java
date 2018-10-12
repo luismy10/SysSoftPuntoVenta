@@ -1,7 +1,6 @@
 package controller;
 
 import com.sun.javafx.application.LauncherImpl;
-import java.io.IOException;
 import java.net.URL;
 import javafx.application.Application;
 import javafx.application.Preloader;

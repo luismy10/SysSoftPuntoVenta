@@ -1,6 +1,5 @@
 package controller;
 
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -8,7 +7,6 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.application.Preloader;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -98,6 +96,7 @@ public class FxPreloader extends Preloader {
                     }
                 });
                 service.start();
+                
                 ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
                 if (!list.isEmpty()) {
                     Session.EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();

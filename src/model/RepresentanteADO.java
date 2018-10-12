@@ -10,13 +10,13 @@ import javafx.collections.ObservableList;
 public class RepresentanteADO {
 
     public static String CrudRepresentante(RepresentanteTB representanteTB) {
-        String selectStmt = "{call Sp_Crud_Representante(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String selectStmt = "{call Sp_Crud_Representante(?,?,?,?,?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
             DBUtil.dbConnect();
             callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
             callableStatement.setString("IdRepresentante", representanteTB.getIdRepresentante());
-            callableStatement.setString("TipoDocumento", representanteTB.getTipoDocumento());
+            callableStatement.setInt("TipoDocumento", representanteTB.getTipoDocumento());
             callableStatement.setString("NumeroDocumento", representanteTB.getNumeroDocumento());
             callableStatement.setString("Apellidos", representanteTB.getApellidos());
             callableStatement.setString("Nombres", representanteTB.getNombres());
@@ -24,7 +24,6 @@ public class RepresentanteADO {
             callableStatement.setString("Celular", representanteTB.getCelular());
             callableStatement.setString("Email", representanteTB.getEmail());
             callableStatement.setString("Direccion", representanteTB.getDireccion());
-            callableStatement.setInt("Estado", representanteTB.getEstado());
             callableStatement.setString("IdProveedor", representanteTB.getIdProveedor());
             callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
             callableStatement.execute();
@@ -67,7 +66,7 @@ public class RepresentanteADO {
     }
 
     public static ObservableList<RepresentanteTB> ListRepresentantes(String... value) {
-        String selectStmt = "{call Sp_Listar_Representantes(?,?)}";
+        String selectStmt = "{call Sp_Listar_Representante(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<RepresentanteTB> empList = FXCollections.observableArrayList();
@@ -80,14 +79,12 @@ public class RepresentanteADO {
 
             while (rsEmps.next()) {
                 RepresentanteTB representanteTB = new RepresentanteTB();
-//                PersonaTB personaTB = new PersonaTB();
-//                personaTB.setId(rsEmps.getRow());
-//                personaTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
-//                personaTB.setApellidoPaterno(rsEmps.getString("ApellidoPaterno"));
-//                personaTB.setApellidoMaterno(rsEmps.getString("ApellidoMaterno"));
-//                personaTB.setPrimerNombre(rsEmps.getString("PrimerNombre"));
-//                personaTB.setSegundoNombre(rsEmps.getString("SegundoNombre"));
-//                personaTB.setEstadoName(rsEmps.getString("Estado")); 
+                representanteTB.setId(rsEmps.getInt("Filas"));
+                representanteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento")); 
+                representanteTB.setApellidos(rsEmps.getString("Apellidos"));
+                representanteTB.setNombres(rsEmps.getString("Nombres"));
+                representanteTB.setTelefono(rsEmps.getString("Telefono"));
+                representanteTB.setCelular(rsEmps.getString("Celular"));
                 empList.add(representanteTB);
             }
         } catch (SQLException e) {

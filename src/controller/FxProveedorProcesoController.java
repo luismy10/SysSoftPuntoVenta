@@ -37,7 +37,6 @@ import model.DistritoTB;
 import model.PaisADO;
 import model.PaisTB;
 import model.PersonaADO;
-import model.PersonaTB;
 import model.ProveedorADO;
 import model.ProveedorTB;
 import model.ProvinciaADO;
@@ -88,6 +87,8 @@ public class FxProveedorProcesoController implements Initializable {
     @FXML
     private TableColumn<RepresentanteTB, String> tcLastName;
     @FXML
+    private TableColumn<RepresentanteTB, String> tcContacto;
+    @FXML
     private Tab tbRepresentantes;
     @FXML
     private TextField txtTelefono;
@@ -118,10 +119,12 @@ public class FxProveedorProcesoController implements Initializable {
 
     private String idProveedor;
 
+    private String idRepresentante;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
-        idProveedor = "";
+        idProveedor = idRepresentante = "";
         DetalleADO.GetDetailIdName("2", "0003", "").forEach(e -> {
             cbDocumentTypeFactura.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
@@ -134,6 +137,9 @@ public class FxProveedorProcesoController implements Initializable {
         DetalleADO.GetDetailIdName("2", "0001", "").forEach(e -> {
             cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
+        DetalleADO.GetDetailIdName("2", "0003", "").forEach(e -> {
+            cbDocumentoRepresentante.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocument.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroDocumento()));
@@ -142,6 +148,13 @@ public class FxProveedorProcesoController implements Initializable {
         ));
         tcNames.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombres()
         ));
+        tcContacto.setCellValueFactory(cellData
+                -> Bindings.concat(
+                        !Tools.isText(cellData.getValue().getTelefono())
+                        ? "TEL: " + cellData.getValue().getTelefono() + "\n" + "CEL: " + cellData.getValue().getCelular()
+                        : "CEL: " + cellData.getValue().getCelular()
+                )
+        );
 
     }
 
@@ -166,29 +179,6 @@ public class FxProveedorProcesoController implements Initializable {
             if (!exec.isShutdown()) {
                 exec.shutdown();
             }
-        }
-
-    }
-
-    public void setValueAddRepresentante(String... value) {
-        String idPersona = PersonaADO.GetPersonasId(value[0]);
-        if (!idProveedor.equalsIgnoreCase("") && !idPersona.equalsIgnoreCase("")) {
-//            String result = RepresentanteADO.CrudRepresentante(new RepresentanteTB(idProveedor, idPersona));
-//            switch (result) {
-//                case "registered":
-//                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Agregado correctamente el representante.", false);
-//                    fillCustomersTable("");
-//                    break;
-//                case "duplicate":
-//                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "No puede haber 2 representantes con los mismos datos.", false);
-//                    break;
-//                case "error":
-//                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Proveedor", "No se puedo agregar el representante.", false);
-//                    break;
-//                default:
-//                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Proveedor", result, false);
-//                    break;
-//            }
         }
 
     }
@@ -291,20 +281,49 @@ public class FxProveedorProcesoController implements Initializable {
         }
     }
 
-    private void onViewPersonas() throws IOException {
+    private void onViewRepresentante() throws IOException {
         if (cbDocumentoRepresentante.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Proveedor", "Seleccione el tipo de documento", false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "Seleccione el tipo de documento", false);
             cbDocumentoRepresentante.requestFocus();
         } else if (txtNunDocumentoRepresentante.getText().isEmpty()) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Proveedor", "Ingrese el número del documento", false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "Ingrese el número del documento", false);
             txtNunDocumentoRepresentante.requestFocus();
         } else if (txtApellidosRepresentante.getText().isEmpty()) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Proveedor", "Ingrese los apellidos", false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "Ingrese los apellidos", false);
             txtApellidosRepresentante.requestFocus();
         } else if (txtNombresRepresentante.getText().isEmpty()) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Proveedor", "Ingrese los nombres", false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "Ingrese los nombres", false);
             txtNombresRepresentante.requestFocus();
         } else {
+            RepresentanteTB representanteTB = new RepresentanteTB();
+            representanteTB.setIdRepresentante(idRepresentante);
+            representanteTB.setTipoDocumento(cbDocumentoRepresentante.getSelectionModel().getSelectedItem().getIdDetalle().get());
+            representanteTB.setNumeroDocumento(txtNunDocumentoRepresentante.getText().trim());
+            representanteTB.setApellidos(txtApellidosRepresentante.getText().toUpperCase().trim());
+            representanteTB.setNombres(txtNombresRepresentante.getText().toUpperCase().trim());
+            representanteTB.setTelefono(txtTelefonoRepresentante.getText().trim());
+            representanteTB.setCelular(txtCelularRepresentante.getText().trim());
+            representanteTB.setEmail(txtEmailRepresentante.getText().trim());
+            representanteTB.setDireccion(txtDireccionRepresentante.getText().trim());
+            representanteTB.setIdProveedor(idProveedor);
+            if (!idProveedor.equalsIgnoreCase("")) {
+                String result = RepresentanteADO.CrudRepresentante(representanteTB);
+                switch (result) {
+                    case "registered":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Agregado correctamente el representante.", false);
+                        fillCustomersTable("");
+                        break;
+                    case "duplicate":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "No puede haber 2 representantes con los mismos datos.", false);
+                        break;
+                    case "error":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "No se puedo agregar el representante.", false);
+                        break;
+                    default:
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Representante", result, false);
+                        break;
+                }
+            }
 
         }
 
@@ -493,13 +512,13 @@ public class FxProveedorProcesoController implements Initializable {
 
     @FXML
     private void onActionToRepresentanteRegister(ActionEvent event) throws IOException {
-        onViewPersonas();
+        onViewRepresentante();
     }
 
     @FXML
     private void onKeyPressedToRepresentanteRegister(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            onViewPersonas();
+            onViewRepresentante();
         }
     }
 

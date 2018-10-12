@@ -228,7 +228,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtEmail" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="209.0" />
+                                                      <TextField fx:id="txtEmail" prefHeight="30.0" prefWidth="209.0" />
                                                       <Label prefWidth="130.0" styleClass="labelRoboto14" text="Pagina web:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
@@ -297,6 +297,94 @@
                                              <children>
                                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                                    <children>
+                                                      <Label prefHeight="18.0" prefWidth="130.0" styleClass="labelRoboto14" text="Tipo de documento:" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ComboBox fx:id="cbDocumentoRepresentante" prefHeight="30.0" prefWidth="210.0" />
+                                                      <Label prefWidth="120.0" styleClass="labelRoboto14" text="N° Documento:" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                         <HBox.margin>
+                                                            <Insets left="10.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <TextField fx:id="txtNunDocumentoRepresentante" prefHeight="30.0" prefWidth="210.0" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                   </padding>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                   <children>
+                                                      <Label prefHeight="18.0" prefWidth="130.0" styleClass="labelRoboto14" text="Apellidos:" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField fx:id="txtApellidosRepresentante" prefWidth="210.0" />
+                                                      <Label prefWidth="120.0" styleClass="labelRoboto14" text="Nombres:" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                         <HBox.margin>
+                                                            <Insets left="10.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <TextField fx:id="txtNombresRepresentante" prefHeight="30.0" prefWidth="210.0" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                   </padding>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                   <children>
+                                                      <Label prefHeight="18.0" prefWidth="130.0" styleClass="labelRoboto14" text="Teléfono:" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField fx:id="txtTelefonoRepresentante" prefHeight="30.0" prefWidth="210.0" />
+                                                      <Label prefWidth="120.0" styleClass="labelRoboto14" text="Celular:" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                         <HBox.margin>
+                                                            <Insets left="10.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <TextField fx:id="txtCelularRepresentante" prefWidth="210.0" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                   </padding>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                   <children>
+                                                      <Label prefHeight="18.0" prefWidth="130.0" styleClass="labelRoboto14" text="Email:" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField fx:id="txtEmailRepresentante" prefHeight="30.0" prefWidth="210.0" />
+                                                      <Label prefWidth="120.0" styleClass="labelRoboto14" text="Dirección:" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                         <HBox.margin>
+                                                            <Insets left="10.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <TextField fx:id="txtDireccionRepresentante" prefWidth="210.0" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                   </padding>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                   <children>
                                                       <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSeach" promptText="Buscar...." HBox.hgrow="ALWAYS" />
                                                       <Button mnemonicParsing="false" onAction="#onActionToRepresentanteRegister" onKeyPressed="#onKeyPressedToRepresentanteRegister" styleClass="buttonLight">
                                                          <graphic>
@@ -316,11 +404,11 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Button>
-                                                      <Button mnemonicParsing="false" onAction="#onActionDirectory" onKeyPressed="#onKeyPressedDirectory" styleClass="buttonLight">
+                                                      <Button mnemonicParsing="false" onAction="#onActionLista" onKeyPressed="#onKeyPressedLista" styleClass="buttonLight">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
-                                                                  <Image url="@../directory.png" />
+                                                                  <Image url="@../search.png" />
                                                                </image>
                                                             </ImageView>
                                                          </graphic>
@@ -332,13 +420,13 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
                                                    <children>
-                                                      <TableView fx:id="tvList" prefHeight="128.0" prefWidth="685.0" styleClass="tableView" HBox.hgrow="ALWAYS">
+                                                      <TableView fx:id="tvList" prefHeight="200.0" prefWidth="685.0" styleClass="tableView" HBox.hgrow="ALWAYS">
                                                         <columns>
                                                           <TableColumn fx:id="tcId" prefWidth="64.0" style="-fx-alignment: CENTER;" text="N°" />
                                                           <TableColumn fx:id="tcDocument" prefWidth="114.0" style="-fx-alignment: CENTER;" text="Documento" />
-                                                            <TableColumn fx:id="tcLastName" prefWidth="187.0" text="Apellidos" />
-                                                            <TableColumn fx:id="tcNames" prefWidth="219.0" text="Nombres" />
-                                                            <TableColumn fx:id="tcEstado" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Estado" />
+                                                            <TableColumn fx:id="tcLastName" prefWidth="187.0" style="-fx-alignment: CENTER-LEFT;" text="Apellidos" />
+                                                            <TableColumn fx:id="tcNames" prefWidth="219.0" style="-fx-alignment: CENTER-LEFT;" text="Nombres" />
+                                                            <TableColumn fx:id="tcContacto" prefWidth="219.0" style="-fx-alignment: CENTER-LEFT;" text="Teléfono/Celular" />
                                                         </columns>
                                                          <HBox.margin>
                                                             <Insets />

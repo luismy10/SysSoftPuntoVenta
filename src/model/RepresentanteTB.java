@@ -6,7 +6,7 @@ public class RepresentanteTB {
 
     private SimpleIntegerProperty id;
     private String idRepresentante;
-    private String tipoDocumento;
+    private int tipoDocumento;
     private String numeroDocumento;
     private String apellidos;
     private String nombres;
@@ -14,7 +14,6 @@ public class RepresentanteTB {
     private String celular;
     private String email;
     private String direccion;
-    private int estado;
     private String idProveedor;
 
     public RepresentanteTB() {
@@ -37,11 +36,11 @@ public class RepresentanteTB {
         this.idRepresentante = idRepresentante;
     }
 
-    public String getTipoDocumento() {
+    public int getTipoDocumento() {
         return tipoDocumento;
     }
 
-    public void setTipoDocumento(String tipoDocumento) {
+    public void setTipoDocumento(int tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
     }
 
@@ -99,14 +98,6 @@ public class RepresentanteTB {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
-    }
-
-    public int getEstado() {
-        return estado;
-    }
-
-    public void setEstado(int estado) {
-        this.estado = estado;
     }
 
     public String getIdProveedor() {
