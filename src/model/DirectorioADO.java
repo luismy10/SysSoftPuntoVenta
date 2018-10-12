@@ -10,14 +10,15 @@ import javafx.collections.ObservableList;
 
 public class DirectorioADO {
 
-    public static ObservableList<DirectorioTB> ListDirectory() {
-        String selectStmt = "{call Sp_Listar_Directorio()}";
+    public static ObservableList<DirectorioTB> ListDirectory(String value) {
+        String selectStmt = "{call Sp_Listar_Directorio(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<DirectorioTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 DirectorioTB directorioTB = new DirectorioTB();

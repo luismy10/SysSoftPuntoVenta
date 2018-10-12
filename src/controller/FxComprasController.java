@@ -343,12 +343,12 @@ public class FxComprasController implements Initializable {
         idProveedor = ProveedorADO.GetProveedorId(value[0]);
         txtProveedor.setText(value[1]);
         cbRepresentante.getItems().clear();
-        PersonaADO.ListRepresentantes(idProveedor, "").forEach(e -> {
-            cbRepresentante.getItems().add(new PersonaTB(e.getNumeroDocumento().get(), (e.getApellidoPaterno() + " "
-                    + e.getApellidoMaterno() + " "
-                    + e.getPrimerNombre() + " "
-                    + e.getSegundoNombre())));
-        });
+//        PersonaADO.ListRepresentantes(idProveedor, "").forEach(e -> {
+//            cbRepresentante.getItems().add(new PersonaTB(e.getNumeroDocumento().get(), (e.getApellidoPaterno() + " "
+//                    + e.getApellidoMaterno() + " "
+//                    + e.getPrimerNombre() + " "
+//                    + e.getSegundoNombre())));
+//        });
     }
 
     public void setContent(AnchorPane content) {

@@ -1,14 +1,11 @@
 package model;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Collection;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleObjectProperty;
 
-public class PersonaTB extends FacturacionTB {
+public class PersonaTB {
 
     private SimpleLongProperty id;
     private SimpleStringProperty idPersona;
@@ -20,11 +17,7 @@ public class PersonaTB extends FacturacionTB {
     private String primerNombre;
     private String segundoNombre;
     private int sexo;
-    private Date fechaNacimiento;
-    private String usuarioRegistro;
-    private ObjectProperty<LocalDate> fechaRegistro;
-    private String usuarioActualizo;
-    private String fechaActualizo;
+    private Date fechaNacimiento;    
     private Collection<DirectorioTB> directorioTBCollection;
     private String datosCompletos;
 
@@ -127,48 +120,12 @@ public class PersonaTB extends FacturacionTB {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getUsuarioRegistro() {
-        return usuarioRegistro;
-    }
-
-    public void setUsuarioRegistro(String usuarioRegistro) {
-        this.usuarioRegistro = usuarioRegistro;
-    }
-
-    public LocalDate getFechaRegistro() {
-        return fechaRegistro.get();
-    }
-
-    public void setFechaRegistro(LocalDate fechaRegistro) {
-        this.fechaRegistro = new SimpleObjectProperty<>(fechaRegistro);
-    }
-
-    public String getUsuarioActualizo() {
-        return usuarioActualizo;
-    }
-
-    public void setUsuarioActualizo(String usuarioActualizo) {
-        this.usuarioActualizo = usuarioActualizo;
-    }
-
-    public String getFechaActualizo() {
-        return fechaActualizo;
-    }
-
-    public void setFechaActualizo(String fechaActualizo) {
-        this.fechaActualizo = fechaActualizo;
-    }
-
     public Collection<DirectorioTB> getDirectorioTBCollection() {
         return directorioTBCollection;
     }
 
     public void setDirectorioTBCollection(Collection<DirectorioTB> directorioTBCollection) {
         this.directorioTBCollection = directorioTBCollection;
-    }
-
-    public ObjectProperty<LocalDate> fechaRegistroProperty() {
-        return fechaRegistro;
     }
 
     public SimpleStringProperty getTipoDocumentoName() {

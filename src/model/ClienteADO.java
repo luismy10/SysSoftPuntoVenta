@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 public class ClienteADO {
 
     public static String CrudCliente(ClienteTB clienteTB) {
-        String selectStmt = "{call Sp_Crud_Persona_Cliente(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String selectStmt = "{call Sp_Crud_Persona_Cliente(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
             DBUtil.dbConnect();
@@ -25,22 +25,23 @@ public class ClienteADO {
             callableStatement.setString("SegundoNombre", clienteTB.getPersonaTB().getSegundoNombre());
             callableStatement.setInt("Sexo", clienteTB.getPersonaTB().getSexo());
             callableStatement.setDate("FechaNacimiento", clienteTB.getPersonaTB().getFechaNacimiento());
-            callableStatement.setString("UsuarioRegistro", clienteTB.getPersonaTB().getUsuarioRegistro());
             //cliente
+            callableStatement.setString("IdCliente", clienteTB.getIdCliente());
             callableStatement.setString("Telefono", clienteTB.getTelefono());
             callableStatement.setString("Celular", clienteTB.getCelular());
             callableStatement.setString("Email", clienteTB.getEmail());
             callableStatement.setString("Direccion", clienteTB.getDireccion());
             callableStatement.setInt("Estado", clienteTB.getEstado());
+            callableStatement.setString("UsuarioRegistro", clienteTB.getUsuarioRegistro());
             //facturación
-            callableStatement.setInt("TipoDocumentoFactura", clienteTB.getPersonaTB().getTipoDocumentoFacturacion());
-            callableStatement.setString("NumeroDocumentoFactura", clienteTB.getPersonaTB().getNumeroDocumentoFacturacion());
-            callableStatement.setString("RazonSocial", clienteTB.getPersonaTB().getRazonSocial());
-            callableStatement.setString("NombreComercial", clienteTB.getPersonaTB().getNombreComercial());
-            callableStatement.setString("Pais", clienteTB.getPersonaTB().getPais());
-            callableStatement.setInt("Ciudad", clienteTB.getPersonaTB().getDepartamento());
-            callableStatement.setInt("Provincia", clienteTB.getPersonaTB().getProvincia());
-            callableStatement.setInt("Distrito", clienteTB.getPersonaTB().getDistrito());
+            callableStatement.setInt("TipoDocumentoFactura", clienteTB.getFacturacionTB().getTipoDocumentoFacturacion());
+            callableStatement.setString("NumeroDocumentoFactura", clienteTB.getFacturacionTB().getNumeroDocumentoFacturacion());
+            callableStatement.setString("RazonSocial", clienteTB.getFacturacionTB().getRazonSocial());
+            callableStatement.setString("NombreComercial", clienteTB.getFacturacionTB().getNombreComercial());
+            callableStatement.setString("Pais", clienteTB.getFacturacionTB().getPais());
+            callableStatement.setInt("Ciudad", clienteTB.getFacturacionTB().getDepartamento());
+            callableStatement.setInt("Provincia", clienteTB.getFacturacionTB().getProvincia());
+            callableStatement.setInt("Distrito", clienteTB.getFacturacionTB().getDistrito());
             //
             callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
             callableStatement.execute();
@@ -80,7 +81,7 @@ public class ClienteADO {
                 personaTB.setApellidoMaterno(rsEmps.getString("ApellidoMaterno"));
                 personaTB.setPrimerNombre(rsEmps.getString("PrimerNombre"));
                 personaTB.setSegundoNombre(rsEmps.getString("SegundoNombre"));
-                personaTB.setFechaRegistro(rsEmps.getDate("FRegistro").toLocalDate());
+                clienteTB.setFechaRegistro(rsEmps.getDate("FRegistro").toLocalDate());
                 clienteTB.setTelefono(rsEmps.getString("Telefono"));
                 clienteTB.setCelular(rsEmps.getString("Celular"));
                 clienteTB.setEstadoName(rsEmps.getString("Estado"));
@@ -119,7 +120,7 @@ public class ClienteADO {
 
             if (rsEmps.next()) {
                 clienteTB = new ClienteTB();
-                clienteTB.setIdCliente(rsEmps.getLong("IdCliente"));
+                clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
                 clienteTB.setTelefono(rsEmps.getString("Telefono"));
                 clienteTB.setCelular(rsEmps.getString("Celular"));
                 clienteTB.setEmail(rsEmps.getString("Email"));
@@ -137,16 +138,17 @@ public class ClienteADO {
                 personaTB.setSexo(rsEmps.getInt("Sexo"));
                 personaTB.setFechaNacimiento(rsEmps.getDate("FechaNacimiento"));
                 //facturación
-                personaTB.setTipoDocumentoFacturacion(rsEmps.getInt("TipoFactura"));
-                personaTB.setNumeroDocumentoFacturacion(rsEmps.getString("NumeroFactura"));
-                personaTB.setRazonSocial(rsEmps.getString("RazonSocial"));
-                personaTB.setNombreComercial(rsEmps.getString("NombreComercial"));
-                personaTB.setPais(rsEmps.getString("Pais"));
-                personaTB.setDepartamento(rsEmps.getInt("Ciudad"));
-                personaTB.setProvincia(rsEmps.getInt("Provincia"));
-                personaTB.setDistrito(rsEmps.getInt("Distrito"));
+                FacturacionTB facturacionTB = new FacturacionTB();
+                facturacionTB.setTipoDocumentoFacturacion(rsEmps.getInt("TipoFactura"));
+                facturacionTB.setNumeroDocumentoFacturacion(rsEmps.getString("NumeroFactura"));
+                facturacionTB.setRazonSocial(rsEmps.getString("RazonSocial"));
+                facturacionTB.setNombreComercial(rsEmps.getString("NombreComercial"));
+                facturacionTB.setPais(rsEmps.getString("Pais"));
+                facturacionTB.setDepartamento(rsEmps.getInt("Ciudad"));
+                facturacionTB.setProvincia(rsEmps.getInt("Provincia"));
+                facturacionTB.setDistrito(rsEmps.getInt("Distrito"));
                 clienteTB.setPersonaTB(personaTB);
-
+                clienteTB.setFacturacionTB(facturacionTB);
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);

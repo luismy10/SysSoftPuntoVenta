@@ -64,7 +64,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <TextField fx:id="txtSearch" prefHeight="34.0" prefWidth="274.0" promptText="Buscar...." HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="txtSearch" onAction="#onActionSearch" prefHeight="34.0" prefWidth="274.0" promptText="Buscar...." HBox.hgrow="ALWAYS" />
                                           <Button mnemonicParsing="false" onAction="#onActionView" onKeyPressed="#onKeyPressedView" styleClass="buttonLight" text="Editar o Ver">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -92,10 +92,10 @@
                         <TableView fx:id="tvList" prefHeight="298.0" prefWidth="726.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                              <TableColumn fx:id="tcCodigo" prefWidth="114.0" text="Código" />
-                              <TableColumn fx:id="tcTipoDocumento" prefWidth="114.0" style="-fx-alignment: CENTER;" text="Tipo Documento" />
-                              <TableColumn fx:id="tcDocumento" prefWidth="156.0" text="Documento" />
-                              <TableColumn fx:id="tcPersona" prefWidth="529.0" text="Datos personales" />
+                              <TableColumn fx:id="tcCodigo" prefWidth="114.0" style="-fx-alignment: CENTER-LEFT;" text="Código" />
+                              <TableColumn fx:id="tcTipoDocumento" prefWidth="114.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo Documento" />
+                              <TableColumn fx:id="tcDocumento" prefWidth="156.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
+                              <TableColumn fx:id="tcPersona" prefWidth="529.0" style="-fx-alignment: CENTER-LEFT;" text="Datos personales" />
                            </columns>
                         </TableView>
                      </children>

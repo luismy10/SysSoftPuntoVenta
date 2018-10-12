@@ -3,6 +3,7 @@ package model;
 public class FacturacionTB {
 
     private Long idFacturacion;
+    private String idCliente;
     private int tipoDocumentoFacturacion;
     private String numeroDocumentoFacturacion;
     private String razonSocial;
@@ -23,6 +24,14 @@ public class FacturacionTB {
 
     public void setIdFacturacion(Long idFacturacion) {
         this.idFacturacion = idFacturacion;
+    }
+
+    public String getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
     }
 
 

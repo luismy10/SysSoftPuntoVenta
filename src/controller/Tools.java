@@ -38,7 +38,7 @@ public class Tools {
     static final String FX_FILE_MANTENIMIENTO = "/view/mantenimiento/FxMantenimiento.fxml";
     static final String FX_FILE_LOGIN = "/view/login/FxLogin.fxml";
     static final String FX_LOGO = "/view/icon.png";
-    static final String FX_FILE_PERSONA = "/view/persona/FxPersona.fxml";
+    static final String FX_FILE_CLIENTE_PROCESO = "/view/persona/FxClienteProceso.fxml";
     static final String FX_FILE_PERFIL = "/view/persona/FxPerfil.fxml";
     static final String FX_FILE_INICIO = "/view/inicio/FxInicio.fxml";
     static final String FX_FILE_OPERACIONES = "/view/inicio/FxOperaciones.fxml";
@@ -49,7 +49,6 @@ public class Tools {
     static final String FX_FILE_PROVEEDORES = "/view/proveedores/FxProveedores.fxml";
     static final String FX_FILE_PROVEEDOREPROCESO = "/view/proveedores/FxProveedorProceso.fxml";
     static final String FX_FILE_PROVEEDORLISTA = "/view/proveedores/FxProveedorLista.fxml";
-    static final String FX_FILE_REPRESENTANTELISTA = "/view/persona/FxRepresentanteLista.fxml";
     static final String FX_FILE_MIEMPRESA = "/view/miempresa/FxMiEmpresa.fxml";
     static final String FX_FILE_ARTICULO = "/view/articulo/FxArticulos.fxml";
     static final String FX_FILE_ARTICULOPROCESO = "/view/articulo/FxArticuloProceso.fxml";

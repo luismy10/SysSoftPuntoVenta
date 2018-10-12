@@ -1,27 +1,35 @@
 
 package model;
 
+import java.time.LocalDate;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 
 public class ClienteTB {
     
     private SimpleLongProperty id;
-    private long idCliente;
+    private String idCliente;
     private String telefono;
     private String celular;
     private String email;
     private String direccion;
     private int estado;
     private String estadoName;
+    private String usuarioRegistro;
+    private ObjectProperty<LocalDate> fechaRegistro;
+    private String usuarioActualizo;
+    private ObjectProperty<LocalDate> fechaActualizo;
     private String idPersona;
     private PersonaTB personaTB;
-
+    private long idFacturacion;
+    private FacturacionTB facturacionTB;
+    
     public ClienteTB() {
+        
     }
     
-    
-
     public SimpleLongProperty getId() {
         return id;
     }
@@ -30,11 +38,11 @@ public class ClienteTB {
         this.id = new SimpleLongProperty(id);
     }
 
-    public long getIdCliente() {
+    public String getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(long idCliente) {
+    public void setIdCliente(String idCliente) {
         this.idCliente = idCliente;
     }
 
@@ -86,6 +94,38 @@ public class ClienteTB {
         this.estadoName = estadoName;
     }
 
+    public String getUsuarioRegistro() {
+        return usuarioRegistro;
+    }
+
+    public void setUsuarioRegistro(String usuarioRegistro) {
+        this.usuarioRegistro = usuarioRegistro;
+    }
+
+    public ObjectProperty<LocalDate> getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDate fechaRegistro) {
+        this.fechaRegistro = new SimpleObjectProperty(fechaRegistro);
+    }
+
+    public String getUsuarioActualizo() {
+        return usuarioActualizo;
+    }
+
+    public void setUsuarioActualizo(String usuarioActualizo) {
+        this.usuarioActualizo = usuarioActualizo;
+    }
+
+    public ObjectProperty<LocalDate> getFechaActualizo() {
+        return fechaActualizo;
+    }
+
+    public void setFechaActualizo(LocalDate fechaActualizo) {
+        this.fechaActualizo = new SimpleObjectProperty(fechaActualizo);
+    }
+
     public String getIdPersona() {
         return idPersona;
     }
@@ -100,6 +140,22 @@ public class ClienteTB {
 
     public void setPersonaTB(PersonaTB personaTB) {
         this.personaTB = personaTB;
+    }
+
+    public long getIdFacturacion() {
+        return idFacturacion;
+    }
+
+    public void setIdFacturacion(long idFacturacion) {
+        this.idFacturacion = idFacturacion;
+    }
+
+    public FacturacionTB getFacturacionTB() {
+        return facturacionTB;
+    }
+
+    public void setFacturacionTB(FacturacionTB facturacionTB) {
+        this.facturacionTB = facturacionTB;
     }
     
     

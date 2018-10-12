@@ -70,7 +70,7 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         content.getChildren().add(node);
-        controller.fillEmployeeTable();
+        controller.fillEmployeeTable("");
 
     }
 

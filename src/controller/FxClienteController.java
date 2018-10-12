@@ -79,7 +79,7 @@ public class FxClienteController implements Initializable {
                 )
         );
         tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName()));
-        tcFechaRegistro.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getPersonaTB().getFechaRegistro().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))));
+        tcFechaRegistro.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaRegistro().get().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))));
 
     }
 
@@ -145,11 +145,11 @@ public class FxClienteController implements Initializable {
     @FXML
     private void onActionAdd(ActionEvent event) throws IOException {
         InitializationTransparentBackground();
-        URL url = getClass().getResource(Tools.FX_FILE_PERSONA);
+        URL url = getClass().getResource(Tools.FX_FILE_CLIENTE_PROCESO);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
-        FxPersonaController controller = fXMLLoader.getController();
+        FxClienteProcesoController controller = fXMLLoader.getController();
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Cliente", window.getScene().getWindow());
         stage.setResizable(false);
@@ -164,11 +164,11 @@ public class FxClienteController implements Initializable {
     private void onActionEdit(ActionEvent event) throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             InitializationTransparentBackground();
-            URL url = getClass().getResource(Tools.FX_FILE_PERSONA);
+            URL url = getClass().getResource(Tools.FX_FILE_CLIENTE_PROCESO);
             FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
-            FxPersonaController controller = fXMLLoader.getController();
+            FxClienteProcesoController controller = fXMLLoader.getController();
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Editar cliente", window.getScene().getWindow());
             stage.setResizable(false);

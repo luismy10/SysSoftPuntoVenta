@@ -2,19 +2,30 @@ package model;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class RepresentanteADO {
 
     public static String CrudRepresentante(RepresentanteTB representanteTB) {
-        String selectStmt = "{call Sp_Crud_Representante(?,?,?)}";
+        String selectStmt = "{call Sp_Crud_Representante(?,?,?,?,?,?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
             DBUtil.dbConnect();
             callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
+            callableStatement.setString("IdRepresentante", representanteTB.getIdRepresentante());
+            callableStatement.setString("TipoDocumento", representanteTB.getTipoDocumento());
+            callableStatement.setString("NumeroDocumento", representanteTB.getNumeroDocumento());
+            callableStatement.setString("Apellidos", representanteTB.getApellidos());
+            callableStatement.setString("Nombres", representanteTB.getNombres());
+            callableStatement.setString("Telefono", representanteTB.getTelefono());
+            callableStatement.setString("Celular", representanteTB.getCelular());
+            callableStatement.setString("Email", representanteTB.getEmail());
+            callableStatement.setString("Direccion", representanteTB.getDireccion());
+            callableStatement.setInt("Estado", representanteTB.getEstado());
             callableStatement.setString("IdProveedor", representanteTB.getIdProveedor());
-            callableStatement.setString("IdPersona", representanteTB.getIdPersona());
-
             callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
             callableStatement.execute();
             return callableStatement.getString("Message");
@@ -54,6 +65,48 @@ public class RepresentanteADO {
             }
         }
     }
-    
-    
+
+    public static ObservableList<RepresentanteTB> ListRepresentantes(String... value) {
+        String selectStmt = "{call Sp_Listar_Representantes(?,?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<RepresentanteTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value[0]);
+            preparedStatement.setString(2, value[1]);
+            rsEmps = preparedStatement.executeQuery();
+
+            while (rsEmps.next()) {
+                RepresentanteTB representanteTB = new RepresentanteTB();
+//                PersonaTB personaTB = new PersonaTB();
+//                personaTB.setId(rsEmps.getRow());
+//                personaTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
+//                personaTB.setApellidoPaterno(rsEmps.getString("ApellidoPaterno"));
+//                personaTB.setApellidoMaterno(rsEmps.getString("ApellidoMaterno"));
+//                personaTB.setPrimerNombre(rsEmps.getString("PrimerNombre"));
+//                personaTB.setSegundoNombre(rsEmps.getString("SegundoNombre"));
+//                personaTB.setEstadoName(rsEmps.getString("Estado")); 
+                empList.add(representanteTB);
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+
 }
