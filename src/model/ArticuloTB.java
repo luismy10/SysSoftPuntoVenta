@@ -41,6 +41,13 @@ public class ArticuloTB {
 
     }
 
+    public ArticuloTB(String clave, String nombre) {
+        this.clave = new SimpleStringProperty(clave);
+        this.nombre = new SimpleStringProperty(nombre);
+    }
+    
+    
+
     public SimpleIntegerProperty getId() {
         return id;
     }

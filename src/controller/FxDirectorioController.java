@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -25,7 +26,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import static model.DirectorioADO.*;
 import model.DirectorioTB;
-import model.PersonaADO;
 
 public class FxDirectorioController implements Initializable {
 
@@ -63,7 +63,7 @@ public class FxDirectorioController implements Initializable {
         tcCodigo.setCellValueFactory(cellData -> cellData.getValue().getPersona().getIdPersona());
         tcTipoDocumento.setCellValueFactory(cellData -> cellData.getValue().getPersona().getTipoDocumentoName());
         tcDocumento.setCellValueFactory(cellData -> cellData.getValue().getPersona().getNumeroDocumento());
-        tcPersona.setCellValueFactory(cellData -> cellData.getValue().getPersona().getApellidoPaterno());
+        tcPersona.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getPersona().getApellidoPaterno()));
 
     }
 
@@ -101,7 +101,7 @@ public class FxDirectorioController implements Initializable {
             stage.setResizable(false);
             stage.show();
             controller.setLoadView(tvList.getSelectionModel().getSelectedItem().getPersona().getIdPersona().get(),
-                    tvList.getSelectionModel().getSelectedItem().getPersona().getApellidoPaterno().get());
+                    tvList.getSelectionModel().getSelectedItem().getPersona().getApellidoPaterno());
 
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Directorio", "Seleccione un item para mostrar su datos", false);

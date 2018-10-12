@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,20 +68,20 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private TableColumn<CompraTB, Integer> tcId;
     @FXML
-    private TableColumn<CompraTB, LocalDate> tcFechaCompra;
+    private TableColumn<CompraTB, String> tcFechaCompra;
     @FXML
     private TableColumn<CompraTB, String> tcProveedor;
     @FXML
-    private TableColumn<CompraTB, Double> tcTotal;
+    private TableColumn<CompraTB, String> tcTotal;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
-        tcFechaCompra.setCellValueFactory(cellData -> cellData.getValue().getFechaCompra());
+        tcFechaCompra.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCompra().get().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))));
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getProveedorTB().getNumeroDocumento().get() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial().get()
         ));
-        tcTotal.setCellValueFactory(cellData -> cellData.getValue().getTotal().asObject());
+        tcTotal.setCellValueFactory(cellData -> Bindings.concat("S/. "+cellData.getValue().getTotal().get()));
     }
 
     public void fillPurchasesTable(String value) {

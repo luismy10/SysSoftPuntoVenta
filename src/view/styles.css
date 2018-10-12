@@ -18,6 +18,17 @@
     src: url('OpenSans-Regular.ttf'); 
 } 
 
+.splashbackground {
+    -fx-background-color:   #1a2226;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+}
+
+.splashtext{
+    -fx-text-fill: white;
+}
+
+
 .labelForm{ 
     -fx-font-size:14; 
     -fx-font-family:"Roboto";  
@@ -166,13 +177,13 @@
  ******************************************************************************/
 
 .scroll-bar > .thumb{
-    -fx-background-color: #cdcdcd;
+    -fx-background-color: rgb(193,193,193);
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
 
 .scroll-bar > .thumb:hover {
-    -fx-background-color: #dadada;
+    -fx-background-color: rgb(168,168,168);
 }
 
 .scroll-bar > .thumb:pressed {
@@ -180,18 +191,18 @@
 }
 
 .scroll-bar > .track {
-    -fx-background-color: #f0f0f0;
+    -fx-background-color: rgb(241,241,241);
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
 .scroll-bar > .track-background {
-    -fx-background-color: #f0f0f0;
+    -fx-background-color: rgb(241,241,241);
     -fx-background-insets: 0;
 }
 
 .scroll-bar > .increment-button,
 .scroll-bar > .decrement-button {
-    -fx-background-color: #f0f0f0;
+    -fx-background-color: rgb(241,241,241);
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 
@@ -212,13 +223,11 @@
 .scroll-bar > .increment-button > .increment-arrow{
     -fx-background-insets: 1 0 -1 0, 0;
     -fx-background-color: transparent, #606060;
-    -fx-effect: null;
 }
 
 .scroll-bar > .decrement-button:pressed > .decrement-arrow,
 .scroll-bar > .increment-button:pressed > .increment-arrow {
     -fx-background-color: transparent, white;
-    -fx-effect: null;
 }
 
 .scroll-bar:vertical > .increment-button > .increment-arrow,

@@ -115,13 +115,14 @@
                               </VBox>
                            </children>
                         </HBox>
-                        <TableView fx:id="tvList" prefHeight="298.0" prefWidth="726.0" styleClass="tableView" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tvList" prefHeight="298.0" prefWidth="961.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                               <TableColumn fx:id="tcDocumento" prefWidth="115.0" style="-fx-alignment: CENTER;" text="Documento" />
-                              <TableColumn fx:id="tcPersona" prefWidth="317.0" text="Datos Personales" />
-                              <TableColumn fx:id="tcEstado" prefWidth="102.0" style="-fx-alignment: CENTER;" text="Estado" />
-                              <TableColumn fx:id="tcFechaRegistro" prefWidth="131.0" style="-fx-alignment: CENTER;" text="Fecha de Registro" />
+                              <TableColumn fx:id="tcPersona" prefWidth="330.0" style="-fx-alignment: CENTER-LEFT;" text="Datos Personales" />
+                              <TableColumn fx:id="tcContacto" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Teléfono/Celular" />
+                              <TableColumn fx:id="tcEstado" prefWidth="112.0" style="-fx-alignment: CENTER;" text="Estado" />
+                              <TableColumn fx:id="tcFechaRegistro" prefWidth="134.0" style="-fx-alignment: CENTER;" text="Fecha de Registro" />
                            </columns>
                         </TableView>
                      </children>

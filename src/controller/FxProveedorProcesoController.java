@@ -118,10 +118,10 @@ public class FxProveedorProcesoController implements Initializable {
         tcNames.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getPrimerNombre() + " " + cellData.getValue().getSegundoNombre()
         ));
         tcLastName.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getApellidoPaterno().get() + " " + cellData.getValue().getApellidoMaterno()
+                cellData.getValue().getApellidoPaterno() + " " + cellData.getValue().getApellidoMaterno()
         ));
-        tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName()
-        );
+//        tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName()
+//        );
     }
 
     public void fillCustomersTable(String value) {
@@ -390,7 +390,7 @@ public class FxProveedorProcesoController implements Initializable {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             String idPersona = PersonaADO.GetPersonasId(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
             onViewPerfil(idPersona,
-                    tvList.getSelectionModel().getSelectedItem().getApellidoPaterno().get() + " "
+                    tvList.getSelectionModel().getSelectedItem().getApellidoPaterno() + " "
                     + tvList.getSelectionModel().getSelectedItem().getApellidoMaterno() + " "
                     + tvList.getSelectionModel().getSelectedItem().getPrimerNombre() + " "
                     + tvList.getSelectionModel().getSelectedItem().getSegundoNombre());

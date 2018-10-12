@@ -12,11 +12,11 @@ public class DBUtil {
 
     private static final String JDBC_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static Connection connection = null;
-    private static final String DIRECTION = "ALEXA";
+    private static final String DIRECTION = "ALEZA";
     private static final String PORT = "1433";
     private static final String DBNAME = "PuntoVentaSysSoftDB";
     private static final String USER = "sa";
-    private static final String PASSWORD = "123";
+    private static final String PASSWORD = "123456";
     private static final String URL = "jdbc:sqlserver://" + DIRECTION + ":" + PORT + ";databaseName=" + DBNAME + "";
 
     public static void dbConnect()  {

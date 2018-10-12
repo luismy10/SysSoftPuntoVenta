@@ -296,7 +296,7 @@ public class FxArticulosController implements Initializable {
                     ? Tools.roundingValue(articuloTB.getCantidad().get(), 0)
                     : Tools.roundingValue(articuloTB.getCantidad().get(), 2));
             if (detalleController != null) {
-                detalleController.getTvList().setItems(LoteADO.ListProveedor(tvList.getSelectionModel().getSelectedItem().getIdArticulo()));
+                detalleController.getTvList().setItems(LoteADO.ListByIdLote(tvList.getSelectionModel().getSelectedItem().getIdArticulo()));
             }
         }
     }

@@ -134,7 +134,7 @@ public class CompraADO {
 
             while (rsEmps.next()) {
                 CompraTB compraTB = new CompraTB();
-                compraTB.setId(rsEmps.getRow());
+                compraTB.setId(rsEmps.getInt("Filas"));
                 compraTB.setIdCompra(rsEmps.getString("IdCompra"));
                 compraTB.setFechaCompra(rsEmps.getDate("Fecha").toLocalDate());
                 compraTB.setProveedorTB(new ProveedorTB(rsEmps.getString("NumeroDocumento"), rsEmps.getString("RazonSocial")));

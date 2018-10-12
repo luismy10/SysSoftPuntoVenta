@@ -1,4 +1,3 @@
-
 package model;
 
 import java.sql.PreparedStatement;
@@ -8,7 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class CiudadADO {
-     public static ObservableList<CiudadTB> ListCiudad(String value) {
+
+    public static ObservableList<CiudadTB> ListCiudad(String value) {
         String selectStmt = "{call Sp_Listar_Ciudad(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -42,4 +42,6 @@ public class CiudadADO {
         }
         return empList;
     }
+
+  
 }

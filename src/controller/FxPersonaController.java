@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Optional;
 
 import java.util.ResourceBundle;
@@ -27,11 +26,20 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.CiudadADO;
+import model.CiudadTB;
+import model.ClienteADO;
+import model.ClienteTB;
 import model.DBUtil;
 import model.DetalleADO;
 import model.DetalleTB;
-import model.PersonaADO;
+import model.DistritoADO;
+import model.DistritoTB;
+import model.PaisADO;
+import model.PaisTB;
 import model.PersonaTB;
+import model.ProvinciaADO;
+import model.ProvinciaTB;
 
 public class FxPersonaController implements Initializable {
 
@@ -59,10 +67,6 @@ public class FxPersonaController implements Initializable {
     private Button btnRegister;
     @FXML
     private Button btnCancel;
-
-    private String idPersona;
-
-    private String information;
     @FXML
     private Label lblDirectory;
     @FXML
@@ -77,6 +81,26 @@ public class FxPersonaController implements Initializable {
     private TextField txtTradename;
     @FXML
     private ComboBox<DetalleTB> cbEstado;
+    @FXML
+    private ComboBox<PaisTB> cbPais;
+    @FXML
+    private ComboBox<CiudadTB> cbDepartamento;
+    @FXML
+    private ComboBox<ProvinciaTB> cbProvincia;
+    @FXML
+    private ComboBox<DistritoTB> cbDistrito;
+    @FXML
+    private TextField txtTelefono;
+    @FXML
+    private TextField txtCelular;
+    @FXML
+    private TextField txtEmail;
+    @FXML
+    private TextField txtDireccion;
+
+    private String idPersona;
+
+    private String information;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -95,6 +119,9 @@ public class FxPersonaController implements Initializable {
             DetalleADO.GetDetailIdName("2", "0001", "").forEach(e -> {
                 cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
             });
+            PaisADO.ListPais().forEach(e -> {
+                cbPais.getItems().add(new PaisTB(e.getPaisCodigo(), e.getPaisNombre()));
+            });
         }
 
     }
@@ -104,55 +131,112 @@ public class FxPersonaController implements Initializable {
         btnDirectory.setVisible(false);
     }
 
-    public void setValueUpdate(String... value) {
+    public void setValueUpdate(String value) {
         btnDesglosar.setVisible(false);
         btnRegister.setText("Actualizar");
         btnRegister.getStyleClass().add("buttonLightWarning");
-        ArrayList<PersonaTB> arrayList = PersonaADO.GetIdListPersona(value[0]);
-
-        if (!arrayList.isEmpty()) {
-            PersonaTB list = arrayList.get(0);
-            idPersona = list.getIdPersona().get();
+        ClienteTB clienteTB = ClienteADO.GetByIdCliente(value);
+        if (clienteTB != null) {
+            idPersona = clienteTB.getPersonaTB().getIdPersona().get();
             ObservableList<DetalleTB> lstype = cbDocumentType.getItems();
             for (int i = 0; i < lstype.size(); i++) {
-                if (list.getTipoDocumento() == lstype.get(i).getIdDetalle().get()) {
+                if (clienteTB.getPersonaTB().getTipoDocumento() == lstype.get(i).getIdDetalle().get()) {
                     cbDocumentType.getSelectionModel().select(i);
                     break;
                 }
             }
-            txtDocumentNumber.setText(list.getNumeroDocumento().get());
-            txtLastName.setText(list.getApellidoPaterno().get());
-            txtMotherLastName.setText(list.getApellidoMaterno());
-            txtFirstName.setText(list.getPrimerNombre());
-            txtSecondName.setText(list.getSegundoNombre());
-            information = list.getApellidoPaterno().get() + " " + list.getApellidoMaterno() + " " + list.getPrimerNombre() + " " + list.getSegundoNombre();
 
-            ObservableList<DetalleTB> lssex = cbSex.getItems();
-            for (int i = 0; i < lssex.size(); i++) {
-                if (list.getSexo() == lssex.get(i).getIdDetalle().get()) {
-                    cbSex.getSelectionModel().select(i);
-                    break;
-                }
-            }
+            txtDocumentNumber.setText(clienteTB.getPersonaTB().getNumeroDocumento().get());
+            txtLastName.setText(clienteTB.getPersonaTB().getApellidoPaterno());
+            txtMotherLastName.setText(clienteTB.getPersonaTB().getApellidoMaterno());
+            txtFirstName.setText(clienteTB.getPersonaTB().getPrimerNombre());
+            txtSecondName.setText(clienteTB.getPersonaTB().getSegundoNombre());
 
+            information = clienteTB.getPersonaTB().getApellidoPaterno() + " " + clienteTB.getPersonaTB().getApellidoMaterno() + " " + clienteTB.getPersonaTB().getPrimerNombre() + " " + clienteTB.getPersonaTB().getSegundoNombre();
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
             for (int i = 0; i < lsest.size(); i++) {
-                if (list.getEstado() == lsest.get(i).getIdDetalle().get()) {
+                if (clienteTB.getEstado() == lsest.get(i).getIdDetalle().get()) {
                     cbEstado.getSelectionModel().select(i);
                     break;
                 }
             }
 
+            ObservableList<DetalleTB> lssex = cbSex.getItems();
+            for (int i = 0; i < lssex.size(); i++) {
+                if (clienteTB.getPersonaTB().getSexo() == lssex.get(i).getIdDetalle().get()) {
+                    cbSex.getSelectionModel().select(i);
+                    break;
+                }
+            }
+            if (clienteTB.getPersonaTB().getFechaNacimiento() != null) {
+                Tools.actualDate(clienteTB.getPersonaTB().getFechaNacimiento().toString(), dpBirthdate);
+            }
+            txtTelefono.setText(clienteTB.getTelefono());
+            txtCelular.setText(clienteTB.getCelular());
+            txtEmail.setText(clienteTB.getEmail());
+            txtDireccion.setText(clienteTB.getDireccion());
+
             ObservableList<DetalleTB> lstypefacturacion = cbDocumentTypeFactura.getItems();
             for (int i = 0; i < lstypefacturacion.size(); i++) {
-                if (list.getTipoDocumentoFacturacion() == lstypefacturacion.get(i).getIdDetalle().get()) {
+                if (clienteTB.getPersonaTB().getTipoDocumentoFacturacion() == lstypefacturacion.get(i).getIdDetalle().get()) {
                     cbDocumentTypeFactura.getSelectionModel().select(i);
                     break;
                 }
             }
-            txtDocumentNumberFactura.setText(list.getNumeroDocumentoFacturacion());
-            txtBusinessName.setText(list.getRazonSocial());
-            txtTradename.setText(list.getNombreComercial());
+
+            txtDocumentNumberFactura.setText(clienteTB.getPersonaTB().getNumeroDocumentoFacturacion());
+            txtBusinessName.setText(clienteTB.getPersonaTB().getRazonSocial());
+            txtTradename.setText(clienteTB.getPersonaTB().getNombreComercial());
+
+            if (clienteTB.getPersonaTB().getPais() != null) {
+                ObservableList<PaisTB> lspais = cbPais.getItems();
+                for (int i = 0; i < lspais.size(); i++) {
+                    if (clienteTB.getPersonaTB().getPais().equals(lspais.get(i).getPaisCodigo())) {
+                        cbPais.getSelectionModel().select(i);
+                        CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
+                            cbDepartamento.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
+                        });
+                        break;
+                    }
+                }
+            }
+
+            if (clienteTB.getPersonaTB().getDepartamento() != 0) {
+                ObservableList<CiudadTB> lsciudad = cbDepartamento.getItems();
+                for (int i = 0; i < lsciudad.size(); i++) {
+                    if (clienteTB.getPersonaTB().getDepartamento() == lsciudad.get(i).getIdCiudad()) {
+                        cbDepartamento.getSelectionModel().select(i);
+                        ProvinciaADO.ListProvincia(cbDepartamento.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
+                            cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
+                        });
+                        break;
+                    }
+                }
+            }
+
+            if (clienteTB.getPersonaTB().getProvincia() != 0) {
+                ObservableList<ProvinciaTB> lsprovin = cbProvincia.getItems();
+                for (int i = 0; i < lsprovin.size(); i++) {
+                    if (clienteTB.getPersonaTB().getProvincia() == lsprovin.get(i).getIdProvincia()) {
+                        cbProvincia.getSelectionModel().select(i);
+                        DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
+                            cbDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
+                        });
+                        break;
+                    }
+                }
+            }
+
+            if (clienteTB.getPersonaTB().getDistrito() != 0) {
+                ObservableList<DistritoTB> lsdistrito = cbDistrito.getItems();
+                for (int i = 0; i < lsdistrito.size(); i++) {
+                    if (clienteTB.getPersonaTB().getDistrito() == lsdistrito.get(i).getIdDistrito()) {
+                        cbDistrito.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            }
+
         }
 
     }
@@ -210,6 +294,13 @@ public class FxPersonaController implements Initializable {
             if (DBUtil.StateConnection()) {
                 short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
                 if (confirmation == 1) {
+
+                    ClienteTB clienteTB = new ClienteTB();
+                    clienteTB.setTelefono(txtTelefono.getText().trim());
+                    clienteTB.setCelular(txtCelular.getText().trim());
+                    clienteTB.setEmail(txtEmail.getText().trim());
+                    clienteTB.setDireccion(txtDireccion.getText().trim());
+                    clienteTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
                     PersonaTB personaTB = new PersonaTB();
                     personaTB.setIdPersona(idPersona);
                     personaTB.setTipoDocumento(cbDocumentType.getSelectionModel().getSelectedItem().getIdDetalle().get());
@@ -227,18 +318,26 @@ public class FxPersonaController implements Initializable {
                     } else {
                         personaTB.setFechaNacimiento(null);
                     }
-                    personaTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+
                     personaTB.setUsuarioRegistro("76423388");
                     personaTB.setTipoDocumentoFacturacion(cbDocumentTypeFactura.getSelectionModel().getSelectedIndex() >= 0 ? cbDocumentTypeFactura.getSelectionModel().getSelectedItem().getIdDetalle().get()
                             : 0);
                     personaTB.setNumeroDocumentoFacturacion(txtDocumentNumberFactura.getText());
                     personaTB.setRazonSocial(txtBusinessName.getText().trim());
                     personaTB.setNombreComercial(txtTradename.getText().trim());
-                    String result = PersonaADO.CrudEntity(personaTB);
+                    personaTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0 ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo() : "");
+                    personaTB.setDepartamento(cbDepartamento.getSelectionModel().getSelectedIndex() >= 0 ? cbDepartamento.getSelectionModel().getSelectedItem().getIdCiudad() : 0);
+                    personaTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0 ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
+                    personaTB.setDistrito(cbDistrito.getSelectionModel().getSelectedIndex() >= 0 ? cbDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
+
+                    clienteTB.setPersonaTB(personaTB);
+
+                    String result = ClienteADO.CrudCliente(clienteTB);
 
                     switch (result) {
                         case "registered":
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Registrado correctamente.", false);
+                            Tools.Dispose(window);
                             break;
                         case "updated":
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Actualizado correctamente.", false);
@@ -318,6 +417,36 @@ public class FxPersonaController implements Initializable {
             }
         }
 
+    }
+
+    @FXML
+    private void onActionPais(ActionEvent event) {
+        if (cbPais.getSelectionModel().getSelectedIndex() >= 0) {
+            cbDepartamento.getItems().clear();
+            CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
+                cbDepartamento.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
+            });
+        }
+    }
+
+    @FXML
+    private void onActionDepartamento(ActionEvent event) {
+        if (cbDepartamento.getSelectionModel().getSelectedIndex() >= 0) {
+            cbProvincia.getItems().clear();
+            ProvinciaADO.ListProvincia(cbDepartamento.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
+                cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
+            });
+        }
+    }
+
+    @FXML
+    private void onActionProvincia(ActionEvent event) {
+        if (cbProvincia.getSelectionModel().getSelectedIndex() >= 0) {
+            cbDistrito.getItems().clear();
+            DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
+                cbDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
+            });
+        }
     }
 
 }

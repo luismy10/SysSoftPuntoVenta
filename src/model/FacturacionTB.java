@@ -7,8 +7,8 @@ public class FacturacionTB {
     private String numeroDocumentoFacturacion;
     private String razonSocial;
     private String nombreComercial;
-    private int pais;
-    private int region;
+    private String pais;
+    private int departamento;
     private int provincia;
     private int distrito;
     private int modena;
@@ -58,20 +58,20 @@ public class FacturacionTB {
         this.nombreComercial = nombreComercial;
     }
 
-    public int getPais() {
+    public String getPais() {
         return pais;
     }
 
-    public void setPais(int pais) {
+    public void setPais(String pais) {
         this.pais = pais;
     }
 
-    public int getRegion() {
-        return region;
+    public int getDepartamento() {
+        return departamento;
     }
 
-    public void setRegion(int region) {
-        this.region = region;
+    public void setDepartamento(int departamento) {
+        this.departamento = departamento;
     }
 
     public int getProvincia() {

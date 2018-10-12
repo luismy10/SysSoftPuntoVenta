@@ -54,7 +54,7 @@ public class FxRepresentanteListaController implements Initializable {
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocument.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
         tcRepresentative.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getApellidoPaterno().get() + " " + cellData.getValue().getApellidoMaterno() + " "
+                cellData.getValue().getApellidoPaterno() + " " + cellData.getValue().getApellidoMaterno() + " "
                 + cellData.getValue().getPrimerNombre() + " " + cellData.getValue().getSegundoNombre()
         ));
     }

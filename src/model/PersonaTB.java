@@ -15,14 +15,12 @@ public class PersonaTB extends FacturacionTB {
     private int tipoDocumento;
     private SimpleStringProperty tipoDocumentoName;
     private SimpleStringProperty numeroDocumento;
-    private SimpleStringProperty apellidoPaterno;
+    private String apellidoPaterno;
     private String apellidoMaterno;
     private String primerNombre;
     private String segundoNombre;
     private int sexo;
     private Date fechaNacimiento;
-    private int estado;
-    private SimpleStringProperty estadoName;
     private String usuarioRegistro;
     private ObjectProperty<LocalDate> fechaRegistro;
     private String usuarioActualizo;
@@ -34,7 +32,7 @@ public class PersonaTB extends FacturacionTB {
     }
 
     public PersonaTB(String apellidoPaterno) {
-        this.apellidoPaterno = new SimpleStringProperty(apellidoPaterno);
+        this.apellidoPaterno = apellidoPaterno;
     }
 
     public PersonaTB(String numeroDocumento, String datosCompletos) {
@@ -46,7 +44,7 @@ public class PersonaTB extends FacturacionTB {
         this.idPersona = new SimpleStringProperty(idPersona);
         this.tipoDocumentoName = new SimpleStringProperty(tipoDocumentoName);
         this.numeroDocumento = new SimpleStringProperty(numeroDocumento);
-        this.apellidoPaterno = new SimpleStringProperty(apellidoPaterno);
+        this.apellidoPaterno = apellidoPaterno;
     }
 
     public SimpleLongProperty getId() {
@@ -81,12 +79,12 @@ public class PersonaTB extends FacturacionTB {
         this.numeroDocumento = new SimpleStringProperty(numeroDocumento);
     }
 
-    public SimpleStringProperty getApellidoPaterno() {
+    public String getApellidoPaterno() {
         return apellidoPaterno;
     }
 
     public void setApellidoPaterno(String apellidoPaterno) {
-        this.apellidoPaterno = new SimpleStringProperty(apellidoPaterno);
+        this.apellidoPaterno = apellidoPaterno;
     }
 
     public String getApellidoMaterno() {
@@ -167,22 +165,6 @@ public class PersonaTB extends FacturacionTB {
 
     public void setDirectorioTBCollection(Collection<DirectorioTB> directorioTBCollection) {
         this.directorioTBCollection = directorioTBCollection;
-    }
-
-    public int getEstado() {
-        return estado;
-    }
-
-    public void setEstado(int estado) {
-        this.estado = estado;
-    }
-
-    public SimpleStringProperty getEstadoName() {
-        return estadoName;
-    }
-
-    public void setEstadoName(String estadoName) {
-        this.estadoName = new SimpleStringProperty(estadoName);
     }
 
     public ObjectProperty<LocalDate> fechaRegistroProperty() {

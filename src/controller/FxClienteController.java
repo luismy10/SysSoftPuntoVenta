@@ -2,11 +2,13 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -24,9 +26,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.ClienteADO;
+import model.ClienteTB;
 import model.DBUtil;
-import model.PersonaADO;
-import model.PersonaTB;
 
 public class FxClienteController implements Initializable {
 
@@ -35,17 +37,19 @@ public class FxClienteController implements Initializable {
     @FXML
     private TextField txtSearch;
     @FXML
-    private TableView<PersonaTB> tvList;
+    private TableView<ClienteTB> tvList;
     @FXML
-    private TableColumn<PersonaTB, Long> tcId;
+    private TableColumn<ClienteTB, Long> tcId;
     @FXML
-    private TableColumn<PersonaTB, String> tcDocumento;
+    private TableColumn<ClienteTB, String> tcDocumento;
     @FXML
-    private TableColumn<PersonaTB, String> tcPersona;
+    private TableColumn<ClienteTB, String> tcPersona;
     @FXML
-    private TableColumn<PersonaTB, String> tcEstado;
+    private TableColumn<ClienteTB, String> tcContacto;
     @FXML
-    private TableColumn<PersonaTB, LocalDate> tcFechaRegistro;
+    private TableColumn<ClienteTB, String> tcEstado;
+    @FXML
+    private TableColumn<ClienteTB, String> tcFechaRegistro;
     @FXML
     private Label lblLoad;
 
@@ -58,10 +62,24 @@ public class FxClienteController implements Initializable {
         proccess = false;
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
-        tcDocumento.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
-        tcPersona.setCellValueFactory(cellData -> cellData.getValue().getApellidoPaterno());
-        tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
-        tcFechaRegistro.setCellValueFactory(cellData -> cellData.getValue().fechaRegistroProperty());
+        tcDocumento.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getPersonaTB().getNumeroDocumento().get()));
+        tcPersona.setCellValueFactory(cellData
+                -> Bindings.concat(
+                        cellData.getValue().getPersonaTB().getApellidoPaterno() + " ",
+                        cellData.getValue().getPersonaTB().getApellidoMaterno() + " ",
+                        cellData.getValue().getPersonaTB().getPrimerNombre() + " ",
+                        cellData.getValue().getPersonaTB().getSegundoNombre()
+                )
+        );
+        tcContacto.setCellValueFactory(cellData
+                -> Bindings.concat(
+                        !Tools.isText(cellData.getValue().getTelefono())
+                        ? "TEL: "+cellData.getValue().getTelefono() + "\n" + "CEL: "+cellData.getValue().getCelular()
+                        : "CEL: "+cellData.getValue().getCelular()
+                )
+        );
+        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName()));
+        tcFechaRegistro.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getPersonaTB().getFechaRegistro().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))));
 
     }
 
@@ -84,15 +102,15 @@ public class FxClienteController implements Initializable {
                 return t;
             });
 
-            Task<List<PersonaTB>> task = new Task<List<PersonaTB>>() {
+            Task<List<ClienteTB>> task = new Task<List<ClienteTB>>() {
                 @Override
-                public ObservableList<PersonaTB> call() {
-                    return PersonaADO.ListPersonas(value);
+                public ObservableList<ClienteTB> call() {
+                    return ClienteADO.ListCliente(value);
                 }
             };
 
             task.setOnSucceeded((WorkerStateEvent e) -> {
-                tvList.setItems((ObservableList<PersonaTB>) task.getValue());
+                tvList.setItems((ObservableList<ClienteTB>) task.getValue());
                 proccess = true;
                 lblLoad.setVisible(false);
             });
@@ -158,7 +176,7 @@ public class FxClienteController implements Initializable {
                 content.getChildren().remove(SysSoft.pane);
             });
             stage.show();
-            controller.setValueUpdate(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
+            controller.setValueUpdate(tvList.getSelectionModel().getSelectedItem().getPersonaTB().getNumeroDocumento().get());
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Clientes", "Seleccione un cliente para actualizar.", false);
             tvList.requestFocus();

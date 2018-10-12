@@ -150,7 +150,7 @@ public class FxCompraDetalleController implements Initializable {
         if (!personaTBs.isEmpty()) {
             PersonaTB personaTB = personaTBs.get(0);
             lblRepresentante.setText(
-                    personaTB.getApellidoPaterno().get() + " " + personaTB.getApellidoMaterno() + " "
+                    personaTB.getApellidoPaterno() + " " + personaTB.getApellidoMaterno() + " "
                     + personaTB.getPrimerNombre() + " " + personaTB.getSegundoNombre()
             );
         }

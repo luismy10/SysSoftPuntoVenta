@@ -2,13 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,11 +16,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
-import model.DBUtil;
-import model.DetalleADO;
-import model.EmpresaADO;
-import model.EmpresaTB;
 
 public class FxInicioController implements Initializable {
 
@@ -60,19 +50,19 @@ public class FxInicioController implements Initializable {
 
     private HBox configuracion;
 
-    private boolean stateconnect;
-
     private boolean isExpand = true;
 
     private double width_siderbar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            stateconnect = DBUtil.StateConnection();
-            lblEstado.setText(stateconnect == true ? "Conectado" : "Desconectado");
 
-            imState.setImage(stateconnect == true ? new Image("/view/connected.png")
+    }
+
+    public void initInicioController() {
+        try {
+            lblEstado.setText(Session.CONNECTION_SESSION == true ? "Conectado" : "Desconectado");
+            imState.setImage(Session.CONNECTION_SESSION == true ? new Image("/view/connected.png")
                     : new Image("/view/disconnected.png"));
 
             FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_PRINCIPAL));
@@ -96,32 +86,6 @@ public class FxInicioController implements Initializable {
             setNode(principal);
             btnInicio.getStyleClass().add("buttonContainerActivate");
             width_siderbar = vbSiderBar.getPrefWidth();
-
-            TimerService service = new TimerService();
-            service.setPeriod(Duration.seconds(59));
-            service.setOnSucceeded((WorkerStateEvent t) -> {
-                try {
-                    DBUtil.dbConnect();
-                    DBUtil.dbDisconnect();
-                } catch (SQLException ex) {
-                    Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-            service.start();
-
-            ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
-            if (!list.isEmpty()) {
-                Session.EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();
-                Session.TELEFONO = list.get(0).getTelefono();
-                Session.CELULAR = list.get(0).getCelular();
-                Session.PAGINAWEB = list.get(0).getPaginaWeb();
-                Session.EMAIL = list.get(0).getEmail();
-                Session.DIRECCION = list.get(0).getDomicilio();
-            }
-
-            DetalleADO.GetDetailIdName("3", "0010", "").forEach(e -> {
-                Session.IMPUESTO = Double.parseDouble(e.getDescripcion().get());
-            });
 
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
