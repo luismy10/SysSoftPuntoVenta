@@ -9,13 +9,12 @@ import javafx.collections.ObservableList;
 
 public class RepresentanteADO {
 
-    public static String CrudRepresentante(RepresentanteTB representanteTB) {
-        String selectStmt = "{call Sp_Crud_Representante(?,?,?,?,?,?,?,?,?,?,?)}";
+    public static String InsertRepresentante(RepresentanteTB representanteTB) {
+        String selectStmt = "{call Sp_Insert_Representante(?,?,?,?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
             DBUtil.dbConnect();
             callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
-            callableStatement.setString("IdRepresentante", representanteTB.getIdRepresentante());
             callableStatement.setInt("TipoDocumento", representanteTB.getTipoDocumento());
             callableStatement.setString("NumeroDocumento", representanteTB.getNumeroDocumento());
             callableStatement.setString("Apellidos", representanteTB.getApellidos());
@@ -65,8 +64,8 @@ public class RepresentanteADO {
         }
     }
 
-    public static ObservableList<RepresentanteTB> ListRepresentantes(String... value) {
-        String selectStmt = "{call Sp_Listar_Representante(?,?)}";
+    public static ObservableList<RepresentanteTB> ListRepresentantes_By_Id(String... value) {
+        String selectStmt = "{call Sp_Listar_Representantes_By_IdProveedor(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<RepresentanteTB> empList = FXCollections.observableArrayList();
@@ -80,7 +79,47 @@ public class RepresentanteADO {
             while (rsEmps.next()) {
                 RepresentanteTB representanteTB = new RepresentanteTB();
                 representanteTB.setId(rsEmps.getInt("Filas"));
-                representanteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento")); 
+                representanteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
+                representanteTB.setApellidos(rsEmps.getString("Apellidos"));
+                representanteTB.setNombres(rsEmps.getString("Nombres"));
+                representanteTB.setTelefono(rsEmps.getString("Telefono"));
+                representanteTB.setCelular(rsEmps.getString("Celular"));
+                empList.add(representanteTB);
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+
+    public static ObservableList<RepresentanteTB> ListRepresentantes(String value) {
+        String selectStmt = "{call Sp_Listar_Representantes(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<RepresentanteTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            rsEmps = preparedStatement.executeQuery();
+
+            while (rsEmps.next()) {
+                RepresentanteTB representanteTB = new RepresentanteTB();
+                representanteTB.setId(rsEmps.getInt("Filas"));
+                representanteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 representanteTB.setApellidos(rsEmps.getString("Apellidos"));
                 representanteTB.setNombres(rsEmps.getString("Nombres"));
                 representanteTB.setTelefono(rsEmps.getString("Telefono"));

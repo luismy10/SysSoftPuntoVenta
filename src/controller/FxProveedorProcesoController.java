@@ -169,7 +169,7 @@ public class FxProveedorProcesoController implements Initializable {
             Task<List<RepresentanteTB>> task = new Task<List<RepresentanteTB>>() {
                 @Override
                 public ObservableList<RepresentanteTB> call() {
-                    return RepresentanteADO.ListRepresentantes(idProveedor, value);
+                    return RepresentanteADO.ListRepresentantes_By_Id(idProveedor, value);
                 }
             };
             task.setOnSucceeded((WorkerStateEvent e) -> {
@@ -281,7 +281,7 @@ public class FxProveedorProcesoController implements Initializable {
         }
     }
 
-    private void onViewRepresentante() throws IOException {
+    private void toRegisterRepresentative() throws IOException {
         if (cbDocumentoRepresentante.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "Seleccione el tipo de documento", false);
             cbDocumentoRepresentante.requestFocus();
@@ -307,14 +307,23 @@ public class FxProveedorProcesoController implements Initializable {
             representanteTB.setDireccion(txtDireccionRepresentante.getText().trim());
             representanteTB.setIdProveedor(idProveedor);
             if (!idProveedor.equalsIgnoreCase("")) {
-                String result = RepresentanteADO.CrudRepresentante(representanteTB);
+                String result = RepresentanteADO.InsertRepresentante(representanteTB);
                 switch (result) {
                     case "registered":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Agregado correctamente el representante.", false);
+                        cbDocumentoRepresentante.getSelectionModel().select(0);
+                        txtNunDocumentoRepresentante.clear();
+                        txtApellidosRepresentante.clear();
+                        txtNombresRepresentante.clear();
+                        txtTelefonoRepresentante.clear();
+                        txtCelularRepresentante.clear();
+                        txtEmailRepresentante.clear();
+                        txtDireccionRepresentante.clear();
                         fillCustomersTable("");
                         break;
                     case "duplicate":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "No puede haber 2 representantes con los mismos datos.", false);
+                        showViewRepresentante(txtNunDocumentoRepresentante.getText());                        
                         break;
                     case "error":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "No se puedo agregar el representante.", false);
@@ -329,7 +338,7 @@ public class FxProveedorProcesoController implements Initializable {
 
     }
 
-    private void aValidityProcess() {
+    private void toCrudProvider() {
         if (cbDocumentTypeFactura.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Proveedor", "Seleccione el tipo de documento, por favor.", false);
 
@@ -417,6 +426,20 @@ public class FxProveedorProcesoController implements Initializable {
         controller.setLoadView(id, value);
     }
 
+    private void showViewRepresentante(String value) throws IOException {
+        URL url = getClass().getResource(Tools.FX_FILE_REPRESENTANTE);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxRepresentanteController controller = fXMLLoader.getController();
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Representantens", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.show();
+        if(!value.equalsIgnoreCase(""))controller.getTxtSearch().setText(value);
+        controller.fillCustomersTable(value);
+    }
+
     private void removerRepresentante() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Proveedor", "¿Esta seguro de continuar?", true);
@@ -446,13 +469,13 @@ public class FxProveedorProcesoController implements Initializable {
 
     @FXML
     private void onActionToRegister(ActionEvent event) {
-        aValidityProcess();
+        toCrudProvider();
     }
 
     @FXML
     private void onKeyPressedToRegister(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            aValidityProcess();
+            toCrudProvider();
         }
     }
 
@@ -511,20 +534,39 @@ public class FxProveedorProcesoController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedSeach(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            tvList.requestFocus();
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedSeach(KeyEvent event) {
+        fillCustomersTable(txtSearch.getText());
+    }
+
+    @FXML
     private void onActionToRepresentanteRegister(ActionEvent event) throws IOException {
-        onViewRepresentante();
+        toRegisterRepresentative();
     }
 
     @FXML
     private void onKeyPressedToRepresentanteRegister(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            onViewRepresentante();
+            toRegisterRepresentative();
         }
     }
 
     @FXML
-    private void onKeyPressedSeach(KeyEvent event) {
-        fillCustomersTable(txtSearch.getText());
+    private void onKeyPressedToRepresentanteEdit(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActionToRepresentanteEdit(ActionEvent event) {
+
     }
 
     @FXML
@@ -540,20 +582,15 @@ public class FxProveedorProcesoController implements Initializable {
     }
 
     @FXML
-    private void onActionHelp(ActionEvent event) {
-
-    }
-
-    @FXML
-    private void onKeyPressedLista(KeyEvent event) {
+    private void onKeyPressedLista(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-
+            showViewRepresentante("");
         }
     }
 
     @FXML
-    private void onActionLista(ActionEvent event) {
-
+    private void onActionLista(ActionEvent event) throws IOException {
+        showViewRepresentante("");
     }
 
 }

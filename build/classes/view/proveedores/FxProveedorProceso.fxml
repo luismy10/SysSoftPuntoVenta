@@ -44,7 +44,7 @@
                               </HBox>
                               <HBox alignment="CENTER">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#onActionHelp" styleClass="buttonTransparent">
+                                    <Button mnemonicParsing="false" styleClass="buttonTransparent">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -385,12 +385,21 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                                    <children>
-                                                      <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSeach" promptText="Buscar...." HBox.hgrow="ALWAYS" />
+                                                      <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSeach" onKeyReleased="#onKeyReleasedSeach" promptText="Buscar...." HBox.hgrow="ALWAYS" />
                                                       <Button mnemonicParsing="false" onAction="#onActionToRepresentanteRegister" onKeyPressed="#onKeyPressedToRepresentanteRegister" styleClass="buttonLight">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
                                                                   <Image url="@../plus.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                      <Button mnemonicParsing="false" onAction="#onActionToRepresentanteEdit" onKeyPressed="#onKeyPressedToRepresentanteEdit" styleClass="buttonLight">
+                                                         <graphic>
+                                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../edit.png" />
                                                                </image>
                                                             </ImageView>
                                                          </graphic>

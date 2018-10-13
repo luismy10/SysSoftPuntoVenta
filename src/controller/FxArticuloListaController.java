@@ -87,13 +87,6 @@ public class FxArticuloListaController implements Initializable {
         }
     }
 
-    @FXML
-    private void onKeyPressedToSearh(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            tvList.requestFocus();
-        }
-    }
-
     private void openWindowAddArticulo() throws IOException {
         URL url = getClass().getResource(Tools.FX_FILE_ARTICULOPROCESO);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -123,7 +116,7 @@ public class FxArticuloListaController implements Initializable {
             controller.setLoadData(new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
                 tvList.getSelectionModel().getSelectedItem().getClave().get(),
                 tvList.getSelectionModel().getSelectedItem().getNombre().get()},
-                     tvList.getSelectionModel().getSelectedItem().isLote()
+                    tvList.getSelectionModel().getSelectedItem().isLote()
             );
 
         }
@@ -161,9 +154,12 @@ public class FxArticuloListaController implements Initializable {
     }
 
     @FXML
-    private void onActionToSearch(ActionEvent event) {
-
+    private void onKeyPressedToSearh(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            tvList.requestFocus();
+        }
     }
+
 
     @FXML
     private void onKeyPressedReload(KeyEvent event) {
