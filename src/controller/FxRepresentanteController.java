@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -9,7 +10,6 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -36,6 +36,8 @@ public class FxRepresentanteController implements Initializable {
     private TableColumn<RepresentanteTB, String> tcDocument;
     @FXML
     private TableColumn<RepresentanteTB, String> tcRepresentative;
+
+    private FxProveedorProcesoController procesoController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -84,14 +86,21 @@ public class FxRepresentanteController implements Initializable {
     }
 
     @FXML
-    private void onMouseClickedList(MouseEvent event) {
-
+    private void onMouseClickedList(MouseEvent event) throws IOException {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            if (event.getClickCount() == 2) {
+                procesoController.toRegisterRepresentativeUnitario(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento());
+                Tools.Dispose(window);
+            }
+        }
     }
 
     public TextField getTxtSearch() {
         return txtSearch;
     }
-    
-    
+
+    void setControllerProveedor(FxProveedorProcesoController procesoController) {
+        this.procesoController = procesoController;
+    }
 
 }

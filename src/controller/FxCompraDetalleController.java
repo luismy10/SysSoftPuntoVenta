@@ -36,6 +36,7 @@ import model.CompraTB;
 import model.DBUtil;
 import model.PersonaTB;
 import model.ProveedorTB;
+import model.RepresentanteTB;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -55,6 +56,8 @@ public class FxCompraDetalleController implements Initializable {
     private Text lblProveedor;
     @FXML
     private Text lblDomicilio;
+    @FXML
+    private Text lblContacto;
     @FXML
     private Text lblRepresentante;
     @FXML
@@ -132,7 +135,7 @@ public class FxCompraDetalleController implements Initializable {
         ArrayList<CompraTB> compraTBs = CompraADO.ListCompra(idCompra);
         if (!compraTBs.isEmpty()) {
             CompraTB compraTB = compraTBs.get(0);
-            lblFechaCompra.setText(compraTB.getFechaCompra().get().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
+            lblFechaCompra.setText(compraTB.getFechaCompra().get().format(DateTimeFormatter.ofPattern("EEEE d 'de' MMMM 'de' yyyy")));
             lblComprobante.setText(compraTB.getComprobanteName());
             lblNumeracion.setText(compraTB.getNumeracion());
             lblTotal.setText("S/. " + Tools.roundingValue(compraTB.getTotal().get(), 2));
@@ -144,14 +147,18 @@ public class FxCompraDetalleController implements Initializable {
             ProveedorTB proveedorTB = proveedorTBs.get(0);
             lblDocumento.setText(proveedorTB.getNumeroDocumento().get());
             lblProveedor.setText(proveedorTB.getRazonSocial().get());
+            lblDomicilio.setText(proveedorTB.getDireccion().equalsIgnoreCase("")
+                    ? "No tiene un domicilio registrado"
+                    : proveedorTB.getDireccion());
+            lblContacto.setText("Tel: " + proveedorTB.getTelefono() + " Cel: " + proveedorTB.getCelular());
         }
 
-        ArrayList<PersonaTB> personaTBs = CompraADO.ListCompraRepresentante(idCompra);
-        if (!personaTBs.isEmpty()) {
-            PersonaTB personaTB = personaTBs.get(0);
+        ArrayList<RepresentanteTB> representanteTBs = CompraADO.ListCompraRepresentante(idCompra);
+        if (!representanteTBs.isEmpty()) {
+            RepresentanteTB representanteTB = representanteTBs.get(0);
             lblRepresentante.setText(
-                    personaTB.getApellidoPaterno() + " " + personaTB.getApellidoMaterno() + " "
-                    + personaTB.getPrimerNombre() + " " + personaTB.getSegundoNombre()
+                    representanteTB.getApellidos() + " " + representanteTB.getNombres() + " - "
+                    + representanteTB.getTelefono() + " " + representanteTB.getCelular()
             );
         }
 
@@ -166,28 +173,26 @@ public class FxCompraDetalleController implements Initializable {
             InputStream imgInputStream
                     = getClass().getResourceAsStream("/view/logo.png");
 
-            InputStream icon
-                    = getClass().getResourceAsStream("/view/logo.png");
-
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
             Map map = new HashMap();
             map.put("IDCOMPRA", idCompra);
             map.put("EMPRESA", Session.EMPRESA);
             map.put("LOGO", imgInputStream);
-            map.put("ICON", icon);
-            map.put("CONTELECTRONICO", "URL:"+Session.PAGINAWEB+" Email"+Session.EMAIL);
-            map.put("CONTELEFONICO", "TEL:"+Session.TELEFONO+" CEL:"+Session.CELULAR);
-            map.put("DIRECCION", Session.DIRECCION+" DISTRITO(FISCAL), PROVINCIA(FISCAL), DEPARTAMENTO(FISCAL), PAIS(FISCAL)");
-            
-            map.put("FECHACOMPRA", "FECHA DE COMPRA: "+lblFechaCompra.getText());
+            map.put("EMAIL","EMAIL" + Session.EMAIL);
+            map.put("TELEFONOCELULAR", "TEL:" + Session.TELEFONO + " CEL:" + Session.CELULAR);
+            map.put("DIRECCION", Session.DIRECCION);
+
+            map.put("FECHACOMPRA", lblFechaCompra.getText());
             map.put("PROVEEDOR", lblProveedor.getText());
             map.put("PRODIRECCION", lblDomicilio.getText());
-            
+            map.put("PROTELEFONOCELULAR", lblContacto.getText());
+            map.put("PROEMAIL", "");
+
 //            map.put("TOTAL", lblTotal.getText());
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, DBUtil.getConnection());
 
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            
+
             JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
             jasperViewer.setIconImage(new ImageIcon(getClass().getResource(Tools.FX_LOGO)).getImage());
             jasperViewer.setTitle("Detalle de compra");

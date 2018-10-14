@@ -74,7 +74,7 @@ public class CompraADO {
 
             for (int i = 0; i < loteTBs.size(); i++) {
                 lote_compra.setObject(1, loteTBs.get(i).getTipoLote());
-                lote_compra.setString(2, loteTBs.get(i).getTipoLote() ? (loteTBs.get(i).getIdArticulo()+id_compra) : loteTBs.get(i).getNumeroLote());
+                lote_compra.setString(2, loteTBs.get(i).getTipoLote() ? (loteTBs.get(i).getIdArticulo() + id_compra) : loteTBs.get(i).getNumeroLote());
                 lote_compra.setDate(3, Date.valueOf(loteTBs.get(i).getFechaFabricacion()));
                 lote_compra.setDate(4, Date.valueOf(loteTBs.get(i).getFechaCaducidad()));
                 lote_compra.setDouble(5, loteTBs.get(i).getExistenciaInicial());
@@ -205,7 +205,7 @@ public class CompraADO {
 
     public static ArrayList<ProveedorTB> ListCompraProveedor(String value) {
 
-        String selectStmtProveedor = "select p.NumeroDocumento,p.RazonSocial as Proveedor from CompraTB as c inner join ProveedorTB as p\n"
+        String selectStmtProveedor = "select p.NumeroDocumento,p.RazonSocial as Proveedor,p.Telefono,p.Celular,p.Direccion from CompraTB as c inner join ProveedorTB as p\n"
                 + "on c.Proveedor = p.IdProveedor\n"
                 + "where c.IdCompra = ?";
 
@@ -226,6 +226,9 @@ public class CompraADO {
                 ProveedorTB proveedorTB = new ProveedorTB();
                 proveedorTB.setNumeroDocumento(rsEmpsProveedor.getString("NumeroDocumento"));
                 proveedorTB.setRazonSocial(rsEmpsProveedor.getString("Proveedor"));
+                proveedorTB.setTelefono(rsEmpsProveedor.getString("Telefono"));
+                proveedorTB.setCelular(rsEmpsProveedor.getString("Celular"));
+                proveedorTB.setDireccion(rsEmpsProveedor.getString("Direccion"));
                 listProveedor.add(proveedorTB);
             }
 
@@ -248,16 +251,17 @@ public class CompraADO {
         return listProveedor;
     }
 
-    public static ArrayList<PersonaTB> ListCompraRepresentante(String value) {
+    public static ArrayList<RepresentanteTB> ListCompraRepresentante(String value) {
 
-        String selectStmtRepresentante = "select p.ApellidoPaterno,p.ApellidoMaterno,p.PrimerNombre,P.SegundoNombre from CompraTB as c inner join PersonaTB as p\n"
-                + "on c.Representante = p.IdPersona\n"
-                + "where c.IdCompra = ? ";
+        String selectStmtRepresentante = "select r.Apellidos,r.Nombres,r.Telefono,r.Celular\n"
+                + " from CompraTB as c inner join RepresentanteTB as r\n"
+                + "     on c.Representante = r.IdRepresentante\n"
+                + "          where c.IdCompra = ? ";
 
         PreparedStatement preparedStatementRepresentante = null;
         ResultSet rsEmpsRepresentante = null;
 
-        ArrayList<PersonaTB> listRepresentante = new ArrayList();
+        ArrayList<RepresentanteTB> listRepresentante = new ArrayList();
 
         try {
             DBUtil.dbConnect();
@@ -267,12 +271,12 @@ public class CompraADO {
             rsEmpsRepresentante = preparedStatementRepresentante.executeQuery();
 
             while (rsEmpsRepresentante.next()) {
-                PersonaTB personaTB = new PersonaTB();
-                personaTB.setApellidoPaterno(rsEmpsRepresentante.getString("ApellidoPaterno"));
-                personaTB.setApellidoMaterno(rsEmpsRepresentante.getString("ApellidoMaterno"));
-                personaTB.setPrimerNombre(rsEmpsRepresentante.getString("PrimerNombre"));
-                personaTB.setSegundoNombre(rsEmpsRepresentante.getString("SegundoNombre"));
-                listRepresentante.add(personaTB);
+                RepresentanteTB representanteTB = new RepresentanteTB();
+                representanteTB.setApellidos(rsEmpsRepresentante.getString("Apellidos"));
+                representanteTB.setNombres(rsEmpsRepresentante.getString("Nombres"));
+                representanteTB.setTelefono(rsEmpsRepresentante.getString("Telefono"));
+                representanteTB.setCelular(rsEmpsRepresentante.getString("Celular"));
+                listRepresentante.add(representanteTB);
             }
 
         } catch (SQLException e) {

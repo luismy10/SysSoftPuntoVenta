@@ -62,7 +62,7 @@ public class Tools {
     static final String FX_FILE_LOTECAMBIAR = "/view/lote/FxLoteCambiar.fxml";
     static final String FX_FILE_LOTEPROCESO = "/view/lote/FxLoteProceso.fxml";
     static final String FX_FILE_REPRESENTANTE = "/view/persona/FxRepresentante.fxml";
-    
+
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);
@@ -199,6 +199,12 @@ public class Tools {
     public static String getDate() {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
+    }
+
+    public static String getDate(String format) {
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
         return dateFormat.format(date);
     }
 

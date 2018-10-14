@@ -10,7 +10,6 @@ import java.sql.Statement;
 
 public class DBUtil {
 
-    private static final String JDBC_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static Connection connection = null;
     private static final String DIRECTION = "ALEZA";
     private static final String PORT = "1433";
@@ -20,10 +19,9 @@ public class DBUtil {
     private static final String URL = "jdbc:sqlserver://" + DIRECTION + ":" + PORT + ";databaseName=" + DBNAME + "";
 
     public static void dbConnect()  {
-        try {
-            Class.forName(JDBC_DRIVER);
+        try {   
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             System.out.println("Connection Failed! Check output console" + e);
         }
     }

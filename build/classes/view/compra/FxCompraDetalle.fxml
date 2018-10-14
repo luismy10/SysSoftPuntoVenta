@@ -48,7 +48,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                            <children>
-                              <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="Fecha compra:" />
+                              <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="Fecha de compra:" />
                               <Text fx:id="lblFechaCompra" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="20/10/2018" />
                            </children>
                         </HBox>
@@ -63,7 +63,7 @@
                                        <children>
                                           <HBox spacing="10.0">
                                              <children>
-                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Documento:" textAlignment="RIGHT" wrappingWidth="80.0" />
+                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Documento:" textAlignment="RIGHT" wrappingWidth="100.0" />
                                                 <Text fx:id="lblDocumento" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="280.0" />
                                              </children>
                                           </HBox>
@@ -79,7 +79,7 @@
                                        <children>
                                           <HBox spacing="10.0">
                                              <children>
-                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Proveedor:" textAlignment="RIGHT" wrappingWidth="80.0" />
+                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Proveedor:" textAlignment="RIGHT" wrappingWidth="100.0" />
                                                 <Text fx:id="lblProveedor" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="280.0" />
                                              </children>
                                           </HBox>
@@ -95,14 +95,24 @@
                                        <children>
                                           <HBox spacing="10.0">
                                              <children>
-                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Domicilio:" textAlignment="RIGHT" wrappingWidth="80.0" />
+                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Domicilio:" textAlignment="RIGHT" wrappingWidth="100.0" />
                                                 <Text fx:id="lblDomicilio" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="280.0" />
                                              </children>
                                           </HBox>
                                           <HBox spacing="10.0">
                                              <children>
+                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Contacto:" textAlignment="RIGHT" wrappingWidth="100.0" />
+                                                <Text fx:id="lblContacto" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="220.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox spacing="10.0">
+                                       <children>
+                                          <HBox spacing="10.0">
+                                             <children>
                                                 <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Representante:" textAlignment="RIGHT" wrappingWidth="100.0" />
-                                                <Text fx:id="lblRepresentante" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="220.0" />
+                                                <Text fx:id="lblRepresentante" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="618.0" />
                                              </children>
                                           </HBox>
                                        </children>

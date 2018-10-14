@@ -8,6 +8,7 @@ public class RepresentanteTB {
     private String idRepresentante;
     private int tipoDocumento;
     private String numeroDocumento;
+    private String informacion;
     private String apellidos;
     private String nombres;
     private String telefono;
@@ -18,6 +19,11 @@ public class RepresentanteTB {
 
     public RepresentanteTB() {
 
+    }
+
+    public RepresentanteTB(String numeroDocumento, String datos) {
+        this.numeroDocumento=numeroDocumento;
+        this.informacion=datos;
     }
 
     public SimpleIntegerProperty getId() {
@@ -50,6 +56,14 @@ public class RepresentanteTB {
 
     public void setNumeroDocumento(String numeroDocumento) {
         this.numeroDocumento = numeroDocumento;
+    }
+
+    public String getInformacion() {
+        return informacion;
+    }
+
+    public void setInformacion(String informacion) {
+        this.informacion = informacion;
     }
 
     public String getApellidos() {

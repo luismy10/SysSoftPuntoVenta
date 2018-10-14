@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="SysSoftProcess.jar" size="875177" download="eager" />
+    <jar href="SysSoftProcess.jar" size="881212" download="eager" />
     <jar href="lib\commons-beanutils-1.8.2.jar" size="231891" download="eager" />
     <jar href="lib\commons-collections-3.2.1.jar" size="575389" download="eager" />
     <jar href="lib\commons-digester-2.1.jar" size="196768" download="eager" />
@@ -18,9 +18,9 @@
     <jar href="lib\iText-2.1.7.jar" size="1130070" download="eager" />
     <jar href="lib\jasperreports-4.7.1.jar" size="3998149" download="eager" />
     <jar href="lib\jasperreports-javaflow-4.7.1.jar" size="4041522" download="eager" />
+    <jar href="lib\mssql-jdbc-7.0.0.jre8.jar" size="1166239" download="eager" />
     <jar href="lib\png-encoder-1.5.jar" size="18117" download="eager" />
     <jar href="lib\poi-3.7.jar" size="1675036" download="eager" />
-    <jar href="lib\sqljdbc4.jar" size="584207" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="SysSoftProcess" >
     <param name="requiredFXVersion" value="8.0+"/>
