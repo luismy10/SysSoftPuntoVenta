@@ -400,6 +400,11 @@
     -fx-font-family:"Roboto Bold"; 
 }
 
+.labelRobotoBold30{
+    -fx-font-size:30; 
+    -fx-font-family:"Roboto Bold"; 
+}
+
 /*******************************************************************************
  *                                                                             *
  * Label open sans regular sizes                                                  *
