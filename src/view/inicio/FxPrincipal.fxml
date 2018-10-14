@@ -24,7 +24,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="66.0" style="-fx-border-color: #cccccc; -fx-border-width: 0  0 1px 0; -fx-background-color: white;">
                <children>
-                  <Text fill="#514f4f" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Jueves 12 de Enero del 2018">
+                  <Text fx:id="lblFechaActual" fill="#514f4f" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Jueves 12 de Enero del 2018">
                      <font>
                         <Font name="Roboto" size="16.0" />
                      </font>

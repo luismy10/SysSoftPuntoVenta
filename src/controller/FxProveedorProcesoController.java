@@ -25,6 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.CiudadADO;
@@ -36,7 +37,6 @@ import model.DistritoADO;
 import model.DistritoTB;
 import model.PaisADO;
 import model.PaisTB;
-import model.PersonaADO;
 import model.ProveedorADO;
 import model.ProveedorTB;
 import model.ProvinciaADO;
@@ -281,7 +281,64 @@ public class FxProveedorProcesoController implements Initializable {
         }
     }
 
-    private void toRegisterRepresentative() throws IOException {
+    public void toRegisterRepresentative() throws IOException {
+        if (cbDocumentoRepresentante.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "Seleccione el tipo de documento", false);
+            cbDocumentoRepresentante.requestFocus();
+        } else if (txtNunDocumentoRepresentante.getText().isEmpty()) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "Ingrese el número del documento", false);
+            txtNunDocumentoRepresentante.requestFocus();
+        } else if (txtApellidosRepresentante.getText().isEmpty()) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "Ingrese los apellidos", false);
+            txtApellidosRepresentante.requestFocus();
+        } else if (txtNombresRepresentante.getText().isEmpty()) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "Ingrese los nombres", false);
+            txtNombresRepresentante.requestFocus();
+        } else {
+            RepresentanteTB representanteTB = new RepresentanteTB();
+            representanteTB.setTipoDocumento(cbDocumentoRepresentante.getSelectionModel().getSelectedItem().getIdDetalle().get());
+            representanteTB.setNumeroDocumento(txtNunDocumentoRepresentante.getText().trim());
+            representanteTB.setApellidos(txtApellidosRepresentante.getText().toUpperCase().trim());
+            representanteTB.setNombres(txtNombresRepresentante.getText().toUpperCase().trim());
+            representanteTB.setTelefono(txtTelefonoRepresentante.getText().trim());
+            representanteTB.setCelular(txtCelularRepresentante.getText().trim());
+            representanteTB.setEmail(txtEmailRepresentante.getText().trim());
+            representanteTB.setDireccion(txtDireccionRepresentante.getText().trim());
+            representanteTB.setIdProveedor(idProveedor);
+            if (!idProveedor.equalsIgnoreCase("")) {
+                String result = RepresentanteADO.InsertRepresentante(representanteTB);
+                switch (result) {
+                    case "registered":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Agregado correctamente el representante.", false);
+                        idProveedor = "";
+                        cbDocumentoRepresentante.getSelectionModel().select(0);
+                        txtNunDocumentoRepresentante.clear();
+                        txtApellidosRepresentante.clear();
+                        txtNombresRepresentante.clear();
+                        txtTelefonoRepresentante.clear();
+                        txtCelularRepresentante.clear();
+                        txtEmailRepresentante.clear();
+                        txtDireccionRepresentante.clear();
+                        fillCustomersTable("");
+                        break;
+                    case "duplicate":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "No puede haber 2 representantes con los mismos datos.", false);
+                        showViewRepresentante(txtNunDocumentoRepresentante.getText());
+                        break;
+                    case "error":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "No se puedo agregar el representante.", false);
+                        break;
+                    default:
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Representante", result, false);
+                        break;
+                }
+            }
+
+        }
+
+    }
+
+    public void toUpdateRepresentative() throws IOException {
         if (cbDocumentoRepresentante.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "Seleccione el tipo de documento", false);
             cbDocumentoRepresentante.requestFocus();
@@ -305,12 +362,12 @@ public class FxProveedorProcesoController implements Initializable {
             representanteTB.setCelular(txtCelularRepresentante.getText().trim());
             representanteTB.setEmail(txtEmailRepresentante.getText().trim());
             representanteTB.setDireccion(txtDireccionRepresentante.getText().trim());
-            representanteTB.setIdProveedor(idProveedor);
-            if (!idProveedor.equalsIgnoreCase("")) {
-                String result = RepresentanteADO.InsertRepresentante(representanteTB);
+            if (!idRepresentante.equalsIgnoreCase("")) {
+                String result = RepresentanteADO.UpdateRepresentante(representanteTB);
                 switch (result) {
-                    case "registered":
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Agregado correctamente el representante.", false);
+                    case "updated":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Actualizado correctamente el representante.", false);
+                        idRepresentante = "";
                         cbDocumentoRepresentante.getSelectionModel().select(0);
                         txtNunDocumentoRepresentante.clear();
                         txtApellidosRepresentante.clear();
@@ -323,7 +380,7 @@ public class FxProveedorProcesoController implements Initializable {
                         break;
                     case "duplicate":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "No puede haber 2 representantes con los mismos datos.", false);
-                        showViewRepresentante(txtNunDocumentoRepresentante.getText());                        
+                        showViewRepresentante(txtNunDocumentoRepresentante.getText());
                         break;
                     case "error":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "No se puedo agregar el representante.", false);
@@ -334,6 +391,31 @@ public class FxProveedorProcesoController implements Initializable {
                 }
             }
 
+        }
+
+    }
+
+    public void toRegisterRepresentativeUnitario(String value) {
+        RepresentanteTB representanteTB = new RepresentanteTB();
+        representanteTB.setNumeroDocumento(value);
+        representanteTB.setIdProveedor(idProveedor);
+        if (!idProveedor.equalsIgnoreCase("")) {
+            String result = RepresentanteADO.InsertRepresentante(representanteTB);
+            switch (result) {
+                case "registered":
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Agregado correctamente el representante.", false);
+                    fillCustomersTable("");
+                    break;
+                case "duplicate":
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "No puede haber 2 representantes con los mismos datos.", false);
+                    break;
+                case "error":
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Representante", "No se puedo agregar el representante.", false);
+                    break;
+                default:
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Representante", result, false);
+                    break;
+            }
         }
 
     }
@@ -432,11 +514,14 @@ public class FxProveedorProcesoController implements Initializable {
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
         FxRepresentanteController controller = fXMLLoader.getController();
+        controller.setControllerProveedor(this);
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Representantens", window.getScene().getWindow());
         stage.setResizable(false);
         stage.show();
-        if(!value.equalsIgnoreCase(""))controller.getTxtSearch().setText(value);
+        if (!value.equalsIgnoreCase("")) {
+            controller.getTxtSearch().setText(value);
+        }
         controller.fillCustomersTable(value);
     }
 
@@ -444,7 +529,7 @@ public class FxProveedorProcesoController implements Initializable {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Proveedor", "¿Esta seguro de continuar?", true);
             if (confirmation == 1) {
-                String idPersona = PersonaADO.GetPersonasId(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento());
+                String idPersona = RepresentanteADO.GetRepresentanteId(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento());
                 String result = RepresentanteADO.DeleteRepresentante(idProveedor, idPersona);
                 switch (result) {
                     case "eliminado":
@@ -558,15 +643,15 @@ public class FxProveedorProcesoController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedToRepresentanteEdit(KeyEvent event) {
+    private void onKeyPressedToRepresentanteEdit(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-
+            toUpdateRepresentative();
         }
     }
 
     @FXML
-    private void onActionToRepresentanteEdit(ActionEvent event) {
-
+    private void onActionToRepresentanteEdit(ActionEvent event) throws IOException {
+        toUpdateRepresentative();
     }
 
     @FXML
@@ -591,6 +676,32 @@ public class FxProveedorProcesoController implements Initializable {
     @FXML
     private void onActionLista(ActionEvent event) throws IOException {
         showViewRepresentante("");
+    }
+
+    @FXML
+    private void onMouseClicked(MouseEvent event) {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            RepresentanteTB representanteTB = RepresentanteADO.Get_By_Documento_Representante(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento());
+            if (representanteTB != null) {
+                idRepresentante = representanteTB.getIdRepresentante();
+                if (representanteTB.getTipoDocumento() != 0) {
+                    ObservableList<DetalleTB> lsest = cbDocumentoRepresentante.getItems();
+                    for (int i = 0; i < lsest.size(); i++) {
+                        if (representanteTB.getTipoDocumento() == lsest.get(i).getIdDetalle().get()) {
+                            cbDocumentoRepresentante.getSelectionModel().select(i);
+                            break;
+                        }
+                    }
+                }
+                txtNunDocumentoRepresentante.setText(representanteTB.getNumeroDocumento());
+                txtApellidosRepresentante.setText(representanteTB.getApellidos());
+                txtNombresRepresentante.setText(representanteTB.getNombres());
+                txtTelefonoRepresentante.setText(representanteTB.getTelefono());
+                txtCelularRepresentante.setText(representanteTB.getCelular());
+                txtEmailRepresentante.setText(representanteTB.getEmail());
+                txtDireccionRepresentante.setText(representanteTB.getDireccion());
+            }
+        }
     }
 
 }

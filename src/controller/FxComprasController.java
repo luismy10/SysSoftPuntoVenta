@@ -35,8 +35,9 @@ import model.DetalleADO;
 import model.DetalleTB;
 import model.LoteTB;
 import model.PersonaADO;
-import model.PersonaTB;
 import model.ProveedorADO;
+import model.RepresentanteADO;
+import model.RepresentanteTB;
 
 public class FxComprasController implements Initializable {
 
@@ -45,7 +46,7 @@ public class FxComprasController implements Initializable {
     @FXML
     private TextField txtProveedor;
     @FXML
-    private ComboBox<PersonaTB> cbRepresentante;
+    private ComboBox<RepresentanteTB> cbRepresentante;
     @FXML
     private ComboBox<DetalleTB> cbComprobante;
     @FXML
@@ -98,6 +99,17 @@ public class FxComprasController implements Initializable {
             cbComprobante.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
         cbComprobante.getSelectionModel().select(0);
+        cbRepresentante.setConverter(new javafx.util.StringConverter<RepresentanteTB>() {
+            @Override
+            public String toString(RepresentanteTB object) {
+                return object.getInformacion();
+            }
+
+            @Override
+            public RepresentanteTB fromString(String string) {
+                return cbRepresentante.getItems().stream().filter(p->p.getInformacion().equals(string)).findFirst().orElse(null);
+            }
+        });
         initTable();
     }
 
@@ -153,7 +165,7 @@ public class FxComprasController implements Initializable {
             compraTB.setGravada(Double.parseDouble(lblGravada.getText()));
             compraTB.setIgv(Double.parseDouble(lblIgv.getText()));
             compraTB.setTotal(Double.parseDouble(lblTotal.getText()));
-            String result = CompraADO.CrudEntity(compraTB, tvList,loteTBs);
+            String result = CompraADO.CrudEntity(compraTB, tvList, loteTBs);
             if (result.equalsIgnoreCase("register")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Compras", "Registrado correctamente la compra.", false);
                 idProveedor = idRepresentante = "";
@@ -241,8 +253,8 @@ public class FxComprasController implements Initializable {
                 ObservableList<ArticuloTB> observableList, articuloTBs;
                 observableList = tvList.getItems();
                 articuloTBs = tvList.getSelectionModel().getSelectedItems();
-                
-                articuloTBs.forEach(e -> {                    
+
+                articuloTBs.forEach(e -> {
                     for (int i = 0; i < loteTBs.size(); i++) {
                         if (loteTBs.get(i).getIdArticulo().equals(e.getIdArticulo())) {
                             loteTBs.remove(i);
@@ -252,7 +264,6 @@ public class FxComprasController implements Initializable {
                     observableList.remove(e);
                 });
                 setCalculateTotals();
-
 
             }
 
@@ -343,12 +354,11 @@ public class FxComprasController implements Initializable {
         idProveedor = ProveedorADO.GetProveedorId(value[0]);
         txtProveedor.setText(value[1]);
         cbRepresentante.getItems().clear();
-//        PersonaADO.ListRepresentantes(idProveedor, "").forEach(e -> {
-//            cbRepresentante.getItems().add(new PersonaTB(e.getNumeroDocumento().get(), (e.getApellidoPaterno() + " "
-//                    + e.getApellidoMaterno() + " "
-//                    + e.getPrimerNombre() + " "
-//                    + e.getSegundoNombre())));
-//        });
+        RepresentanteADO.ListRepresentantes_By_Id(idProveedor, "").forEach(e -> {
+            cbRepresentante.getItems().add(new RepresentanteTB(e.getNumeroDocumento(), e.getApellidos() + " "
+                    + e.getNombres()));
+        });
+
     }
 
     public void setContent(AnchorPane content) {
@@ -367,8 +377,9 @@ public class FxComprasController implements Initializable {
     @FXML
     private void onActionRepresentante(ActionEvent event) {
         if (cbRepresentante.getSelectionModel().getSelectedIndex() >= 0) {
-            idRepresentante = PersonaADO.GetPersonasId(cbRepresentante.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
+            idRepresentante = RepresentanteADO.GetRepresentanteId(cbRepresentante.getSelectionModel().getSelectedItem().getNumeroDocumento());
         }
+       
     }
 
     public TableView<ArticuloTB> getTvList() {

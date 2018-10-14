@@ -22,7 +22,7 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ScrollPane fitToWidth="true" prefHeight="420.0">
+            <ScrollPane fitToWidth="true" prefHeight="430.0">
                <content>
                   <VBox>
                      <children>
@@ -429,7 +429,7 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
                                                    <children>
-                                                      <TableView fx:id="tvList" prefHeight="200.0" prefWidth="685.0" styleClass="tableView" HBox.hgrow="ALWAYS">
+                                                      <TableView fx:id="tvList" onMouseClicked="#onMouseClicked" prefHeight="200.0" prefWidth="685.0" styleClass="tableView" HBox.hgrow="ALWAYS">
                                                         <columns>
                                                           <TableColumn fx:id="tcId" prefWidth="64.0" style="-fx-alignment: CENTER;" text="N°" />
                                                           <TableColumn fx:id="tcDocument" prefWidth="114.0" style="-fx-alignment: CENTER;" text="Documento" />

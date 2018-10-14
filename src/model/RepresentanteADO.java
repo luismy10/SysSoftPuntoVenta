@@ -41,8 +41,40 @@ public class RepresentanteADO {
         }
     }
 
+    public static String UpdateRepresentante(RepresentanteTB representanteTB) {
+        String selectStmt = "{call Sp_Update_Representante(?,?,?,?,?,?,?,?,?,?)}";
+        CallableStatement callableStatement = null;
+        try {
+            DBUtil.dbConnect();
+            callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
+            callableStatement.setString("IdRepresentante", representanteTB.getIdRepresentante());
+            callableStatement.setInt("TipoDocumento", representanteTB.getTipoDocumento());
+            callableStatement.setString("NumeroDocumento", representanteTB.getNumeroDocumento());
+            callableStatement.setString("Apellidos", representanteTB.getApellidos());
+            callableStatement.setString("Nombres", representanteTB.getNombres());
+            callableStatement.setString("Telefono", representanteTB.getTelefono());
+            callableStatement.setString("Celular", representanteTB.getCelular());
+            callableStatement.setString("Email", representanteTB.getEmail());
+            callableStatement.setString("Direccion", representanteTB.getDireccion());
+            callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
+            callableStatement.execute();
+            return callableStatement.getString("Message");
+        } catch (SQLException e) {
+            return e.getLocalizedMessage();
+        } finally {
+            try {
+                if (callableStatement != null) {
+                    callableStatement.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+                return ex.getLocalizedMessage();
+            }
+        }
+    }
+
     public static String DeleteRepresentante(String idProveedor, String idPersona) {
-        String selectStmt = "delete from ProveedorPersonaTB where IdProveedor = ? and IdPersona = ?";
+        String selectStmt = "delete from ProveedorPersonaTB where IdProveedor = ? and IdRepresentante = ?";
         PreparedStatement preparedStatement = null;
         try {
             DBUtil.dbConnect();
@@ -143,6 +175,79 @@ public class RepresentanteADO {
             }
         }
         return empList;
+    }
+
+    public static String GetRepresentanteId(String value) {
+        String selectStmt = "SELECT IdRepresentante FROM RepresentanteTB WHERE NumeroDocumento = ?";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        String IdPersona = "";
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+                IdPersona = rsEmps.getString("IdRepresentante");
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return IdPersona;
+    }
+
+    public static RepresentanteTB Get_By_Documento_Representante(String value) {
+        String selectStmt = "SELECT * FROM RepresentanteTB WHERE NumeroDocumento = ?";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        RepresentanteTB representanteTB = null;
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+                representanteTB = new RepresentanteTB();
+                representanteTB.setIdRepresentante(rsEmps.getString("IdRepresentante"));
+                representanteTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
+                representanteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
+                representanteTB.setApellidos(rsEmps.getString("Apellidos"));
+                representanteTB.setNombres(rsEmps.getString("Nombres"));
+                representanteTB.setTelefono(rsEmps.getString("Telefono"));
+                representanteTB.setCelular(rsEmps.getString("Celular"));
+                representanteTB.setEmail(rsEmps.getString("Email"));
+                representanteTB.setDireccion(rsEmps.getString("Direccion"));
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return representanteTB;
     }
 
 }
