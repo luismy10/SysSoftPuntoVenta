@@ -504,6 +504,7 @@ public class FxProveedorProcesoController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Perfil", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         controller.setLoadView(id, value);
     }
@@ -518,6 +519,7 @@ public class FxProveedorProcesoController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Representantens", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         if (!value.equalsIgnoreCase("")) {
             controller.getTxtSearch().setText(value);

@@ -153,6 +153,7 @@ public class FxClienteController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Cliente", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
             content.getChildren().remove(SysSoft.pane);
         });
@@ -172,6 +173,7 @@ public class FxClienteController implements Initializable {
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Editar cliente", window.getScene().getWindow());
             stage.setResizable(false);
+            stage.sizeToScene();
             stage.setOnHiding((WindowEvent WindowEvent) -> {
                 content.getChildren().remove(SysSoft.pane);
             });

@@ -101,6 +101,7 @@ public class FxDirectorioController implements Initializable {
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Perfil", window.getScene().getWindow());
             stage.setResizable(false);
+            stage.sizeToScene();
             stage.show();
             controller.setLoadView(tvList.getSelectionModel().getSelectedItem().getPersona().getIdPersona().get(),
                     tvList.getSelectionModel().getSelectedItem().getPersona().getApellidoPaterno());

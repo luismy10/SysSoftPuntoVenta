@@ -29,9 +29,10 @@
     -fx-border-color:white;
     -fx-border-width:1px;
     -fx-background-color:white;
-    -fx-font-size:14px;
+    -fx-font-size:1.1666666666666667em;
     -fx-font-family:"Roboto";
     -fx-text-fill:#111;
+    -fx-font-smoothing-type: lcd;
 }
 
 .dialog-pane .text-field{
@@ -50,8 +51,9 @@
     -fx-border-width:1;
     -fx-border-color: #999999;
 
-    -fx-font-size:14; 
+    -fx-font-size:1.1666666666666667em; 
     -fx-font-family:"Roboto"; 
+    -fx-font-smoothing-type: lcd;
 }
 
 .dialog-pane .text-field:hover{
@@ -74,7 +76,8 @@
     -fx-font-family:"Roboto";
     -fx-background-color: white;
     -fx-text-fill:#111;
-    -fx-font-size:15px;
+    -fx-font-size:1.1666666666666667em;
+    -fx-font-smoothing-type: lcd;
 }
 
 /**Costumization of DialogPane Header**/
@@ -86,7 +89,8 @@
     -fx-background-color: white;
     -fx-background-radius:10px;
     -fx-text-fill:black;
-    -fx-font-size:15.0px;
+    -fx-font-size:1.1666666666666667em;
+    -fx-font-smoothing-type: lcd;
 }
 
 /**Costumization of Buttons**/
@@ -104,24 +108,25 @@
     -fx-background-color: #cccccc;
 
     -fx-font-family:"Roboto";
-    -fx-font-size: 14;
+    -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: #111;
+    -fx-font-smoothing-type: lcd;
 }
 
 .dialog-pane .button:hover{     
     -fx-border-color: #7a7a7a;
-    -fx-border-width: 1;
+    -fx-border-width: 1px;
 }
 
 .dialog-pane .button:pressed{
     -fx-border-color: #999999;
     -fx-background-color: #999999;
-    -fx-border-width: 1;
+    -fx-border-width: 1px;
 }
 .dialog-pane .button:focused{
     -fx-border-color: transparent, #00aff0;
     -fx-border-radius: 0, 0;
-    -fx-border-width: 1;
+    -fx-border-width: 1px;
 }
 
 .alert.confirmation.dialog-pane,

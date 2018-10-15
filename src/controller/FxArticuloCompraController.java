@@ -85,6 +85,7 @@ public class FxArticuloCompraController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Lote", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         if (!loteedit) {
             controller.setLoadData(articuloTB.getIdArticulo(), articuloTB.getClave().get(),

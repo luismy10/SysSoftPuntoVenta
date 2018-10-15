@@ -96,6 +96,7 @@ public class FxArticuloListaController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Artículo", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         controller.setInitArticulo();
     }
@@ -112,6 +113,7 @@ public class FxArticuloListaController implements Initializable {
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Agregar artículo", window.getScene().getWindow());
             stage.setResizable(false);
+            stage.sizeToScene();
             stage.show();
             controller.setLoadData(new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
                 tvList.getSelectionModel().getSelectedItem().getClave().get(),

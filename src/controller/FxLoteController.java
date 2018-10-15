@@ -3,7 +3,6 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -25,9 +24,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import model.ArticuloADO;
-import model.ArticuloTB;
-import model.DBUtil;
 import model.LoteADO;
 import model.LoteTB;
 
@@ -96,6 +92,7 @@ public class FxLoteController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Editar lote", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
             content.getChildren().remove(SysSoft.pane);
         });

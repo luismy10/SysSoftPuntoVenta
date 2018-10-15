@@ -139,6 +139,7 @@ public class FxProveedoresController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Proveedor", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
             content.getChildren().remove(SysSoft.pane);
         });
@@ -158,6 +159,7 @@ public class FxProveedoresController implements Initializable {
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Editr Proveedor", window.getScene().getWindow());
             stage.setResizable(false);
+            stage.sizeToScene();
             stage.setOnHiding((WindowEvent WindowEvent) -> {
                 content.getChildren().remove(SysSoft.pane);
             });
