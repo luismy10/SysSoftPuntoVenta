@@ -69,8 +69,8 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     private boolean onAnimationStart, onAnimationFinished;
 
-    private boolean stateconnect;    
-    
+    private boolean stateconnect;
+
     private AnchorPane content;
 
     @Override
@@ -129,6 +129,7 @@ public class FxDetalleMantenimientoController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar item de mantenimiento", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         controller.initWindow();
     }
@@ -180,7 +181,6 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     }
 
-  
     public void reloadListView() {
         if (DBUtil.StateConnection()) {
             initMaintenance("");
@@ -218,6 +218,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(window.getScene().getWindow());
             stage.setResizable(false);
+            stage.sizeToScene();
             stage.show();
             controller.setValueUpdate(lvMaintenance.getSelectionModel().getSelectedItem().getNombre(),
                     lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(),
@@ -302,6 +303,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(window.getScene().getWindow());
             stage.setResizable(false);
+            stage.sizeToScene();
             stage.show();
             controller.setValueAdd(lvMaintenance.getSelectionModel().getSelectedItem().getNombre(),
                     lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(),
@@ -350,7 +352,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             }
         }
     }
-    
+
     void setContent(AnchorPane content) {
         this.content = content;
     }

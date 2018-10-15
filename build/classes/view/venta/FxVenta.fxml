@@ -1,8 +1,215 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="controller.FxVentaController">
-    
-</AnchorPane>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentaController">
+   <children>
+      <HBox VBox.vgrow="ALWAYS">
+         <children>
+            <VBox HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" spacing="10.0" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../purchases.png" />
+                           </image>
+                        </ImageView>
+                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Ventas" />
+                     </children>
+                  </HBox>
+                  <VBox minHeight="-Infinity" minWidth="-Infinity">
+                     <children>
+                        <HBox spacing="10.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onActionRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightDefault" text="Registrar">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../save.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="btnArticulo" mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Artículo">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../articles.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../edit.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionRemover" onKeyPressed="#onKeyPressedRemover" styleClass="buttonLight" text="Quitar">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../close.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionProviders" onKeyPressed="#onKeyPressedProviders" styleClass="buttonLight" text="Proveedor">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../providers.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <HBox style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc;" VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                             <children>
+                                                <Label prefWidth="90.0" styleClass="labelRoboto14" text="Producto:" textFill="#1a2226" />
+                                                <TextField fx:id="txtProveedor" prefHeight="30.0" prefWidth="330.0" promptText="Buscar...." />
+                                                <Label prefWidth="112.0" styleClass="labelRoboto14" text="Fecha de venta:" textFill="#1a2226" />
+                                                <DatePicker fx:id="tpFechaCompra" editable="false" prefHeight="30.0" prefWidth="207.0" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                             <children>
+                                                <Label styleClass="labelRoboto14" text="Comprobante:" textFill="#1a2226" />
+                                                <ComboBox fx:id="cbComprobante" maxWidth="-Infinity" prefHeight="30.0" prefWidth="330.0" />
+                                                <Label styleClass="labelRoboto14" text="Moneda:" textFill="#1a2226" HBox.hgrow="ALWAYS" />
+                                                <ComboBox prefHeight="30.0" prefWidth="264.0" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                             <children>
+                                                <Label prefWidth="90.0" styleClass="labelRoboto14" text="Cliente:" textFill="#1a2226" />
+                                                <TextField fx:id="txtProveedor1" prefHeight="30.0" prefWidth="330.0" promptText="Buscar...." />
+                                                <Label styleClass="labelRoboto14" text="Monto:" textFill="#1a2226" HBox.hgrow="ALWAYS" />
+                                                <TextField prefHeight="30.0" prefWidth="275.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="320.0" prefWidth="823.0" VBox.vgrow="ALWAYS">
+                                 <columns>
+                                    <TableColumn fx:id="tcArticulo" prefWidth="81.0" style="-fx-alignment: CENTER-LEFT;" text="Cantidad" />
+                                    <TableColumn fx:id="tcCantidad" prefWidth="424.0" style="-fx-alignment: CENTER;" text="Descripcion" />
+                                    <TableColumn fx:id="tcPrecio" prefWidth="117.0" style="-fx-alignment: CENTER;" text="Precio U.N" />
+                                    <TableColumn fx:id="tcDescuento" prefWidth="109.0" style="-fx-alignment: CENTER;" text="Descuento" />
+                                    <TableColumn fx:id="tcImporte" minWidth="0.0" prefWidth="91.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" spacing="10.0" style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc;">
+                     <children>
+                        <HBox alignment="CENTER_RIGHT" spacing="16.0">
+                           <children>
+                              <VBox spacing="10.0">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Sub Total" textFill="#1a2226" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox spacing="10.0">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Descuento" textFill="#1a2226" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/. -" />
+                                          <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox spacing="10.0">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Op. Gravada" textFill="#1a2226" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblGravada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox spacing="10.0">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="IGV" textFill="#1a2226" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblIgv" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox spacing="10.0">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Total" textFill="#1a2226" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

@@ -34,7 +34,6 @@ import model.CompraTB;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.LoteTB;
-import model.PersonaADO;
 import model.ProveedorADO;
 import model.RepresentanteADO;
 import model.RepresentanteTB;
@@ -199,6 +198,7 @@ public class FxComprasController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Seleccione un Artículo", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
             content.getChildren().remove(SysSoft.pane);
         });
@@ -283,6 +283,7 @@ public class FxComprasController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Seleccione un Proveedor", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
             content.getChildren().remove(SysSoft.pane);
         });

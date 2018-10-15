@@ -43,6 +43,7 @@ public class FxCardController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Editar información", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         controller.setViewUpdate(idDirectorio, idAtributo, lblTitle.getText());
 

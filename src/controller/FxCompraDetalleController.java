@@ -34,7 +34,6 @@ import model.ArticuloTB;
 import model.CompraADO;
 import model.CompraTB;
 import model.DBUtil;
-import model.PersonaTB;
 import model.ProveedorTB;
 import model.RepresentanteTB;
 import net.sf.jasperreports.engine.JRException;

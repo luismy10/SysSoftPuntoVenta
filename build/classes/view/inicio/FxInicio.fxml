@@ -155,7 +155,7 @@
                                           <Image url="@../configuration.png" />
                                        </image>
                                     </ImageView>
-                                    <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Configuracón" />
+                                    <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Configuración" />
                                  </children>
                               </HBox>
                            </children>

@@ -257,6 +257,7 @@ public class FxClienteProcesoController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Perfil", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         controller.setLoadView(idPersona, information);
     }

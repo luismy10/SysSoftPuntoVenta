@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.HashMap;
@@ -136,6 +135,7 @@ public class FxComprasRealizadasController implements Initializable {
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Detalle de compra", window.getScene().getWindow());
             stage.setResizable(false);
+            stage.sizeToScene();
             stage.setOnHiding((WindowEvent WindowEvent) -> {
                 content.getChildren().remove(SysSoft.pane);
             });
