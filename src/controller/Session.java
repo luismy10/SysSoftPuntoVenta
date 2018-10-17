@@ -15,5 +15,8 @@ public class Session {
     public static String PAGINAWEB;
     public static String EMAIL;
     public static boolean CONNECTION_SESSION;
+    public static String IDCLIENTE;
+    public static String DATOSCLIENTE;
+    
 
 }

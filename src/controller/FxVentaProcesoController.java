@@ -16,12 +16,15 @@ import javafx.fxml.Initializable;
  */
 public class FxVentaProcesoController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
+    private FxVentaController ventaController;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+
+    }
+
+    void setInitVentasController(FxVentaController ventaController) {
+        this.ventaController = ventaController;
+    }
+
 }

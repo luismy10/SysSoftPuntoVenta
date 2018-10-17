@@ -62,7 +62,12 @@ public class Tools {
     static final String FX_FILE_LOTECAMBIAR = "/view/lote/FxLoteCambiar.fxml";
     static final String FX_FILE_LOTEPROCESO = "/view/lote/FxLoteProceso.fxml";
     static final String FX_FILE_REPRESENTANTE = "/view/persona/FxRepresentante.fxml";
-
+    static final String FX_FILE_VENTA = "/view/venta/FxVenta.fxml";
+    static final String FX_FILE_VENTAPROCESO = "/view/venta/FxVentaProceso.fxml";
+    static final String FX_FILE_VENTAREALIZADA = "/view/venta/FxVentaRealizadas.fxml";
+    static final String FX_FILE_VENTADETALLE = "/view/venta/FxVentaDetalle.fxml";
+    static final String FX_FILE_CLIENTELISTA = "/view/persona/FxClienteLista.fxml";
+    
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);

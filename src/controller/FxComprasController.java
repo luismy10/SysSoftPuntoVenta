@@ -187,7 +187,7 @@ public class FxComprasController implements Initializable {
         }
     }
 
-    private void onViewAdd() throws IOException {
+    private void openWindowArticulos() throws IOException {
         InitializationTransparentBackground();
         URL url = getClass().getResource(Tools.FX_FILE_ARTICULOLISTA);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -272,7 +272,7 @@ public class FxComprasController implements Initializable {
         }
     }
 
-    private void onViewProviders() throws IOException {
+    private void openWindowProvedores() throws IOException {
         InitializationTransparentBackground();
         URL url = getClass().getResource(Tools.FX_FILE_PROVEEDORLISTA);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -306,13 +306,13 @@ public class FxComprasController implements Initializable {
     @FXML
     private void onKeyPressedAdd(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            onViewAdd();
+            openWindowArticulos();
         }
     }
 
     @FXML
     private void onActionAdd(ActionEvent event) throws IOException {
-        onViewAdd();
+        openWindowArticulos();
     }
 
     @FXML
@@ -342,13 +342,13 @@ public class FxComprasController implements Initializable {
     @FXML
     private void onKeyPressedProviders(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            onViewProviders();
+            openWindowProvedores();
         }
     }
 
     @FXML
     private void onActionProviders(ActionEvent event) throws IOException {
-        onViewProviders();
+        openWindowProvedores();
     }
 
     public void setInitComprasValue(String... value) {
