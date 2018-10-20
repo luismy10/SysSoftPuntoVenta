@@ -310,7 +310,7 @@ public class FxClienteProcesoController implements Initializable {
                     clienteTB.setEmail(txtEmail.getText().trim());
                     clienteTB.setDireccion(txtDireccion.getText().trim());
                     clienteTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                    clienteTB.setUsuarioRegistro("76423388");
+                    clienteTB.setUsuarioRegistro(Session.USER_ID);
 
                     PersonaTB personaTB = new PersonaTB();
                     personaTB.setIdPersona(idPersona);
@@ -323,9 +323,8 @@ public class FxClienteProcesoController implements Initializable {
                     personaTB.setSexo(cbSex.getSelectionModel().getSelectedIndex() >= 0
                             ? cbSex.getSelectionModel().getSelectedItem().getIdDetalle().get()
                             : 0);
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     if (dpBirthdate.getValue() != null) {
-                        personaTB.setFechaNacimiento(new java.sql.Date(dateFormat.parse(Tools.getDatePicker(dpBirthdate)).getTime()));
+                        personaTB.setFechaNacimiento(new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(Tools.getDatePicker(dpBirthdate)).getTime()));
                     } else {
                         personaTB.setFechaNacimiento(null);
                     }

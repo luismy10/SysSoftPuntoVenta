@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,6 +18,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class FxInicioController implements Initializable {
 
@@ -41,6 +45,10 @@ public class FxInicioController implements Initializable {
     private HBox btnConfiguracion;
     @FXML
     private VBox vbSiderBar;
+    @FXML
+    private Text lblDatos;
+    @FXML
+    private Text lblPuesto;
 
     private ScrollPane principal;
 
@@ -53,6 +61,8 @@ public class FxInicioController implements Initializable {
     private boolean isExpand = true;
 
     private double width_siderbar;
+    @FXML
+    private Text lblDatos1;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -102,6 +112,11 @@ public class FxInicioController implements Initializable {
             Session.HEIGHT_WINDOW = (double) newValue;
             SysSoft.pane.setPrefHeight(Session.HEIGHT_WINDOW);
         });
+    }
+
+    public void initUserSession(String value) {
+        lblPuesto.setText(value);
+        lblDatos.setText(Session.USER_NAME);
     }
 
     //Set selected node to a content holder
@@ -195,6 +210,25 @@ public class FxInicioController implements Initializable {
         btnGraficos.getStyleClass().remove("buttonContainerActivate");
         btnConfiguracion.getStyleClass().remove("buttonContainerActivate");
         btnConfiguracion.getStyleClass().add("buttonContainerActivate");
+
+    }
+
+    @FXML
+    private void onMouseClickedCerrar(MouseEvent event) throws IOException {
+        Tools.Dispose(window);
+        URL urllogin = getClass().getResource(Tools.FX_FILE_LOGIN);
+        FXMLLoader fXMLLoaderLogin = FxWindow.LoaderWindow(urllogin);
+        Parent parent = fXMLLoaderLogin.load(urllogin.openStream());
+        Scene scene = new Scene(parent);
+        Stage primaryStage = new Stage();
+        primaryStage.getIcons().add(new Image(Tools.FX_LOGO));
+        primaryStage.setScene(scene);
+        primaryStage.initStyle(StageStyle.DECORATED);
+        primaryStage.setTitle("Sys Soft");
+        primaryStage.centerOnScreen();
+        primaryStage.setMaximized(true);
+        primaryStage.show();
+        primaryStage.requestFocus();
 
     }
 

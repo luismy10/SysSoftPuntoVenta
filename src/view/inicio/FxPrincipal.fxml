@@ -284,7 +284,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </HBox>
-            <HBox>
+            <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
@@ -308,7 +308,7 @@
                   </StackedAreaChart>
                </children>
             </HBox>
-            <HBox>
+            <HBox alignment="CENTER">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>

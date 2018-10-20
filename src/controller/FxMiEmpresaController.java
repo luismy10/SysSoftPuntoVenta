@@ -285,8 +285,7 @@ public class FxMiEmpresaController implements Initializable {
         }
     }
 
-    void setContent(AnchorPane content
-    ) {
+    void setContent(AnchorPane content) {
         this.content = content;
     }
 
