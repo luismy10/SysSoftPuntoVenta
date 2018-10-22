@@ -6,12 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import model.LoteADO;
 import model.LoteTB;
 
 public class FxLoteCambiarController implements Initializable {
@@ -28,12 +28,16 @@ public class FxLoteCambiarController implements Initializable {
     private DatePicker dtFabricacion;
     @FXML
     private DatePicker dtCaducidad;
+    @FXML
+    private Button btnProcess;
 
     private FxLoteProcesoController procesoController;
 
     private boolean statebatch;
 
     private boolean typebatch;
+
+    private boolean updatebatch;
 
     private int indexbatch;
 
@@ -42,7 +46,20 @@ public class FxLoteCambiarController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         statebatch = false;
         typebatch = false;
+        updatebatch = false;
         indexbatch = 0;
+    }
+
+    public void setEditBatchRealizado(String[] value) {
+        updatebatch = true;
+        txtArticulo.setText(value[1] + " " + value[2]);
+        txtLote.setText(value[0]);
+        txtCantidad.setText(value[3]);
+        Tools.actualDate(value[4], dtCaducidad);
+        Tools.actualDate(value[5], dtFabricacion);
+        txtLote.setDisable(true);
+        txtCantidad.setDisable(true);
+        btnProcess.setText("Guardar");
     }
 
     public void generateBatch(String descripcion) {
@@ -96,6 +113,8 @@ public class FxLoteCambiarController implements Initializable {
                             if (!statebatch) {
                                 procesoController.getListLote().add(loteTB);
                                 procesoController.calculateBatch();
+                            } else if (updatebatch) {
+                                System.out.println("dentro");
                             } else {
                                 procesoController.getListLote().set(indexbatch, loteTB);
                                 procesoController.calculateBatch();

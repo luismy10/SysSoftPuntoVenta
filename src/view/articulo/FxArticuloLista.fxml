@@ -31,7 +31,7 @@
                         <Font name="Roboto" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtSearch" onAction="#onActionToSearch" onKeyPressed="#onKeyPressedToSearh" onKeyReleased="#onKeyReleasedToSearch" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedToSearh" onKeyReleased="#onKeyReleasedToSearch" HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">

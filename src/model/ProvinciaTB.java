@@ -5,6 +5,7 @@ public class ProvinciaTB {
     private int idProvincia;
     private String provincia;
     private String idCiudad;
+    private DistritoTB distritoTB;
 
     public ProvinciaTB() {
     }
@@ -44,5 +45,15 @@ public class ProvinciaTB {
     public String toString() {
         return provincia;
     }
+
+    public DistritoTB getDistritoTB() {
+        return distritoTB;
+    }
+
+    public void setDistritoTB(DistritoTB distritoTB) {
+        this.distritoTB = distritoTB;
+    }
+    
+    
     
 }

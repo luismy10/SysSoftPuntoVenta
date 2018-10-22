@@ -34,9 +34,9 @@ import model.CompraTB;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.LoteTB;
-import model.PersonaADO;
-import model.PersonaTB;
 import model.ProveedorADO;
+import model.RepresentanteADO;
+import model.RepresentanteTB;
 
 public class FxComprasController implements Initializable {
 
@@ -45,7 +45,7 @@ public class FxComprasController implements Initializable {
     @FXML
     private TextField txtProveedor;
     @FXML
-    private ComboBox<PersonaTB> cbRepresentante;
+    private ComboBox<RepresentanteTB> cbRepresentante;
     @FXML
     private ComboBox<DetalleTB> cbComprobante;
     @FXML
@@ -98,6 +98,17 @@ public class FxComprasController implements Initializable {
             cbComprobante.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
         cbComprobante.getSelectionModel().select(0);
+        cbRepresentante.setConverter(new javafx.util.StringConverter<RepresentanteTB>() {
+            @Override
+            public String toString(RepresentanteTB object) {
+                return object.getInformacion();
+            }
+
+            @Override
+            public RepresentanteTB fromString(String string) {
+                return cbRepresentante.getItems().stream().filter(p->p.getInformacion().equals(string)).findFirst().orElse(null);
+            }
+        });
         initTable();
     }
 
@@ -153,7 +164,7 @@ public class FxComprasController implements Initializable {
             compraTB.setGravada(Double.parseDouble(lblGravada.getText()));
             compraTB.setIgv(Double.parseDouble(lblIgv.getText()));
             compraTB.setTotal(Double.parseDouble(lblTotal.getText()));
-            String result = CompraADO.CrudEntity(compraTB, tvList,loteTBs);
+            String result = CompraADO.CrudEntity(compraTB, tvList, loteTBs);
             if (result.equalsIgnoreCase("register")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Compras", "Registrado correctamente la compra.", false);
                 idProveedor = idRepresentante = "";
@@ -176,7 +187,7 @@ public class FxComprasController implements Initializable {
         }
     }
 
-    private void onViewAdd() throws IOException {
+    private void openWindowArticulos() throws IOException {
         InitializationTransparentBackground();
         URL url = getClass().getResource(Tools.FX_FILE_ARTICULOLISTA);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -187,6 +198,7 @@ public class FxComprasController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Seleccione un Artículo", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
             content.getChildren().remove(SysSoft.pane);
         });
@@ -241,8 +253,8 @@ public class FxComprasController implements Initializable {
                 ObservableList<ArticuloTB> observableList, articuloTBs;
                 observableList = tvList.getItems();
                 articuloTBs = tvList.getSelectionModel().getSelectedItems();
-                
-                articuloTBs.forEach(e -> {                    
+
+                articuloTBs.forEach(e -> {
                     for (int i = 0; i < loteTBs.size(); i++) {
                         if (loteTBs.get(i).getIdArticulo().equals(e.getIdArticulo())) {
                             loteTBs.remove(i);
@@ -253,7 +265,6 @@ public class FxComprasController implements Initializable {
                 });
                 setCalculateTotals();
 
-
             }
 
         } else {
@@ -261,7 +272,7 @@ public class FxComprasController implements Initializable {
         }
     }
 
-    private void onViewProviders() throws IOException {
+    private void openWindowProvedores() throws IOException {
         InitializationTransparentBackground();
         URL url = getClass().getResource(Tools.FX_FILE_PROVEEDORLISTA);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -272,6 +283,7 @@ public class FxComprasController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Seleccione un Proveedor", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
             content.getChildren().remove(SysSoft.pane);
         });
@@ -294,13 +306,13 @@ public class FxComprasController implements Initializable {
     @FXML
     private void onKeyPressedAdd(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            onViewAdd();
+            openWindowArticulos();
         }
     }
 
     @FXML
     private void onActionAdd(ActionEvent event) throws IOException {
-        onViewAdd();
+        openWindowArticulos();
     }
 
     @FXML
@@ -330,25 +342,24 @@ public class FxComprasController implements Initializable {
     @FXML
     private void onKeyPressedProviders(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            onViewProviders();
+            openWindowProvedores();
         }
     }
 
     @FXML
     private void onActionProviders(ActionEvent event) throws IOException {
-        onViewProviders();
+        openWindowProvedores();
     }
 
     public void setInitComprasValue(String... value) {
         idProveedor = ProveedorADO.GetProveedorId(value[0]);
         txtProveedor.setText(value[1]);
         cbRepresentante.getItems().clear();
-        PersonaADO.ListRepresentantes(idProveedor, "").forEach(e -> {
-            cbRepresentante.getItems().add(new PersonaTB(e.getNumeroDocumento().get(), (e.getApellidoPaterno().get() + " "
-                    + e.getApellidoMaterno() + " "
-                    + e.getPrimerNombre() + " "
-                    + e.getSegundoNombre())));
+        RepresentanteADO.ListRepresentantes_By_Id(idProveedor, "").forEach(e -> {
+            cbRepresentante.getItems().add(new RepresentanteTB(e.getNumeroDocumento(), e.getApellidos() + " "
+                    + e.getNombres()));
         });
+
     }
 
     public void setContent(AnchorPane content) {
@@ -367,8 +378,9 @@ public class FxComprasController implements Initializable {
     @FXML
     private void onActionRepresentante(ActionEvent event) {
         if (cbRepresentante.getSelectionModel().getSelectedIndex() >= 0) {
-            idRepresentante = PersonaADO.GetPersonasId(cbRepresentante.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
+            idRepresentante = RepresentanteADO.GetRepresentanteId(cbRepresentante.getSelectionModel().getSelectedItem().getNumeroDocumento());
         }
+       
     }
 
     public TableView<ArticuloTB> getTvList() {

@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -25,7 +26,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import static model.DirectorioADO.*;
 import model.DirectorioTB;
-import model.PersonaADO;
 
 public class FxDirectorioController implements Initializable {
 
@@ -45,33 +45,31 @@ public class FxDirectorioController implements Initializable {
     private TableColumn<DirectorioTB, String> tcDocumento;
     @FXML
     private TableColumn<DirectorioTB, String> tcPersona;
-
-    private Executor exec;
     @FXML
     private Label lblLoad;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
+        tcCodigo.setCellValueFactory(cellData -> cellData.getValue().getPersona().getIdPersona());
+        tcTipoDocumento.setCellValueFactory(cellData -> cellData.getValue().getPersona().getTipoDocumentoName());
+        tcDocumento.setCellValueFactory(cellData -> cellData.getValue().getPersona().getNumeroDocumento());
+        tcPersona.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getPersona().getApellidoPaterno()));
 
-        exec = Executors.newCachedThreadPool((runnable) -> {
+    }
+
+    public void fillEmployeeTable(String value) {
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
             return t;
         });
 
-        tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
-        tcCodigo.setCellValueFactory(cellData -> cellData.getValue().getPersona().getIdPersona());
-        tcTipoDocumento.setCellValueFactory(cellData -> cellData.getValue().getPersona().getTipoDocumentoName());
-        tcDocumento.setCellValueFactory(cellData -> cellData.getValue().getPersona().getNumeroDocumento());
-        tcPersona.setCellValueFactory(cellData -> cellData.getValue().getPersona().getApellidoPaterno());
-
-    }
-
-    public void fillEmployeeTable() {
         Task<List<DirectorioTB>> task = new Task<List<DirectorioTB>>() {
             @Override
             public ObservableList<DirectorioTB> call() {
-                return ListDirectory();
+                return ListDirectory(value);
             }
         };
 
@@ -87,6 +85,10 @@ public class FxDirectorioController implements Initializable {
             lblLoad.setVisible(true);
         });
         exec.execute(task);
+
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
     }
 
     private void onViewPerfil() throws IOException {
@@ -99,9 +101,10 @@ public class FxDirectorioController implements Initializable {
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Perfil", window.getScene().getWindow());
             stage.setResizable(false);
+            stage.sizeToScene();
             stage.show();
             controller.setLoadView(tvList.getSelectionModel().getSelectedItem().getPersona().getIdPersona().get(),
-                    tvList.getSelectionModel().getSelectedItem().getPersona().getApellidoPaterno().get());
+                    tvList.getSelectionModel().getSelectedItem().getPersona().getApellidoPaterno());
 
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Directorio", "Seleccione un item para mostrar su datos", false);
@@ -123,13 +126,18 @@ public class FxDirectorioController implements Initializable {
     @FXML
     private void onKeyPressedReload(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            fillEmployeeTable();
+            fillEmployeeTable("");
         }
     }
 
     @FXML
     private void onActionReload(ActionEvent event) {
-        fillEmployeeTable();
+         fillEmployeeTable("");
+    }
+
+    @FXML
+    private void onActionSearch(ActionEvent event) {
+        fillEmployeeTable(txtSearch.getText());
     }
 
 }

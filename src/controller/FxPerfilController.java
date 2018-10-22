@@ -62,6 +62,7 @@ public class FxPerfilController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Asignar información", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         controller.setViewAdd(idPersona);
     }

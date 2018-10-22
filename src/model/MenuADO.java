@@ -1,0 +1,84 @@
+package model;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+public class MenuADO {
+
+    public static ObservableList<MenuTB> GetMenus() {
+        String selectStmt = "SELECT * FROM MenuTB";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ObservableList<MenuTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                MenuTB menuTB = new MenuTB();
+                menuTB.setIdMenu(resultSet.getInt("IdMenu"));
+                menuTB.setNombre(resultSet.getString("Nombre"));
+                menuTB.setEstado(resultSet.getBoolean("Estado")); 
+                empList.add(menuTB);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+    
+    public static ObservableList<SubMenusTB> GetSubMenus(int menu) {
+        String selectStmt = "SELECT IdSubmenu,Nombre,Estado FROM SubmenuTB where IdMenu = ?";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ObservableList<SubMenusTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setInt(1, menu);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                SubMenusTB menuTB = new SubMenusTB();
+                menuTB.setIdSubMenu(resultSet.getInt("IdSubmenu"));
+                menuTB.setNombre(resultSet.getString("Nombre"));
+                menuTB.setEstado(resultSet.getBoolean("Estado")); 
+                empList.add(menuTB);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+
+}

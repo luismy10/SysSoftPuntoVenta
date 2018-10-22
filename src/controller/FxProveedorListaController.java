@@ -3,7 +3,7 @@ package controller;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -39,18 +39,9 @@ public class FxProveedorListaController implements Initializable {
 
     private FxComprasController comprasController;
 
-    private Executor exec;
-    
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
-
-        exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocument.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
@@ -61,6 +52,12 @@ public class FxProveedorListaController implements Initializable {
 
     public void fillCustomersTable(String value) {
         if (DBUtil.StateConnection()) {
+            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+                Thread t = new Thread(runnable);
+                t.setDaemon(true);
+                return t;
+            });
+
             Task<List<ProveedorTB>> task = new Task<List<ProveedorTB>>() {
                 @Override
                 public ObservableList<ProveedorTB> call() {
@@ -72,6 +69,10 @@ public class FxProveedorListaController implements Initializable {
                 tvList.setItems((ObservableList<ProveedorTB>) task.getValue());
             });
             exec.execute(task);
+
+            if (!exec.isShutdown()) {
+                exec.shutdown();
+            }
         }
 
     }

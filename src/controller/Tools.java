@@ -38,7 +38,7 @@ public class Tools {
     static final String FX_FILE_MANTENIMIENTO = "/view/mantenimiento/FxMantenimiento.fxml";
     static final String FX_FILE_LOGIN = "/view/login/FxLogin.fxml";
     static final String FX_LOGO = "/view/icon.png";
-    static final String FX_FILE_PERSONA = "/view/persona/FxPersona.fxml";
+    static final String FX_FILE_CLIENTE_PROCESO = "/view/persona/FxClienteProceso.fxml";
     static final String FX_FILE_PERFIL = "/view/persona/FxPerfil.fxml";
     static final String FX_FILE_INICIO = "/view/inicio/FxInicio.fxml";
     static final String FX_FILE_OPERACIONES = "/view/inicio/FxOperaciones.fxml";
@@ -49,7 +49,6 @@ public class Tools {
     static final String FX_FILE_PROVEEDORES = "/view/proveedores/FxProveedores.fxml";
     static final String FX_FILE_PROVEEDOREPROCESO = "/view/proveedores/FxProveedorProceso.fxml";
     static final String FX_FILE_PROVEEDORLISTA = "/view/proveedores/FxProveedorLista.fxml";
-    static final String FX_FILE_REPRESENTANTELISTA = "/view/persona/FxRepresentanteLista.fxml";
     static final String FX_FILE_MIEMPRESA = "/view/miempresa/FxMiEmpresa.fxml";
     static final String FX_FILE_ARTICULO = "/view/articulo/FxArticulos.fxml";
     static final String FX_FILE_ARTICULOPROCESO = "/view/articulo/FxArticuloProceso.fxml";
@@ -62,19 +61,28 @@ public class Tools {
     static final String FX_FILE_LOTE = "/view/lote/FxLote.fxml";
     static final String FX_FILE_LOTECAMBIAR = "/view/lote/FxLoteCambiar.fxml";
     static final String FX_FILE_LOTEPROCESO = "/view/lote/FxLoteProceso.fxml";
+    static final String FX_FILE_REPRESENTANTE = "/view/persona/FxRepresentante.fxml";
+    static final String FX_FILE_VENTA = "/view/venta/FxVenta.fxml";
+    static final String FX_FILE_VENTAPROCESO = "/view/venta/FxVentaProceso.fxml";
+    static final String FX_FILE_VENTAREALIZADA = "/view/venta/FxVentaRealizadas.fxml";
+    static final String FX_FILE_VENTADETALLE = "/view/venta/FxVentaDetalle.fxml";
+    static final String FX_FILE_CLIENTELISTA = "/view/persona/FxClienteLista.fxml";
+    static final String FX_FILE_ROLES = "/view/login/FxRoles.fxml";
+    static final String FX_FILE_EMPLEADOS = "/view/login/FxEmpleados.fxml";
+    static final String FX_FILE_EMPLEADOSPROCESO = "/view/login/FxEmpleadosProceso.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("/view/icon.png"));
-        alert.setTitle(title);        
+        alert.setTitle(title);
         alert.initModality(Modality.WINDOW_MODAL);
         alert.initOwner(window);
         alert.setHeaderText(null);
         alert.setContentText(value);
         alert.getDialogPane().getStylesheets().add(url.toExternalForm());
-        
+
         ButtonType buttonTypeOne = new ButtonType("Aceptar", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeTwo = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
         ButtonType buttonTypeClose = new ButtonType("Aceptar", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -187,6 +195,10 @@ public class Tools {
         return resultado;
     }
 
+    public static boolean isText(String cadena) {
+        return (cadena == null || cadena.isEmpty());
+    }
+
     public static String getDatePicker(DatePicker datePicker) {
         LocalDate localDate = datePicker.getValue();
         return localDate.toString();
@@ -195,6 +207,12 @@ public class Tools {
     public static String getDate() {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
+    }
+
+    public static String getDate(String format) {
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
         return dateFormat.format(date);
     }
 

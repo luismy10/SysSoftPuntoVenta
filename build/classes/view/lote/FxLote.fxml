@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxLoteController">
+<VBox id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxLoteController">
    <children>
       <VBox VBox.vgrow="ALWAYS">
          <children>
@@ -44,7 +45,7 @@
                <children>
                   <HBox spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" styleClass="buttonLight" text="Editar">
+                        <Button mnemonicParsing="false" onAction="#onActionEdit" styleClass="buttonLight" text="Editar">
                            <graphic>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -62,7 +63,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" styleClass="buttonLight" text="Recargar">
+                        <Button mnemonicParsing="false" onAction="#onActionReload" styleClass="buttonLight" text="Recargar">
                            <graphic>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -90,6 +91,8 @@
                                     <DatePicker prefHeight="30.0" prefWidth="160.0" />
                                     <Label styleClass="labelRoboto14" text="Fecha final:" textFill="#1a2226" />
                                     <DatePicker prefHeight="30.0" prefWidth="160.0" />
+                                    <Label styleClass="labelRoboto14" text="Mostrar:" textFill="#1a2226" />
+                                    <ComboBox prefHeight="30.0" prefWidth="161.0" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -99,7 +102,7 @@
                                           <Font name="Calibri" size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField prefHeight="30.0" prefWidth="520.0" promptText="Buscar...." HBox.hgrow="ALWAYS" />
+                                    <TextField fx:id="txtSearch" onAction="#onActionSearch" prefHeight="30.0" prefWidth="763.0" promptText="Buscar...." HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                            </children>
@@ -111,13 +114,13 @@
                   </HBox>
                   <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="290.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                        <TableColumn prefWidth="109.0" style="-fx-alignment: CENTER;" text="N° Lote" />
-                        <TableColumn prefWidth="263.0" style="-fx-alignment: CENTER;" text="Artículo" />
-                        <TableColumn prefWidth="130.0" text="Fch. de fabricación" />
-                        <TableColumn prefWidth="130.0" style="-fx-alignment: CENTER;" text="Fch. de Caducidad" />
-                        <TableColumn prefWidth="100.0" style="-fx-alignment: CENTER;" text="Exis. Inicial" />
-                        <TableColumn prefWidth="100.0" style="-fx-alignment: CENTER;" text="Exis. Actual" />
+                        <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
+                        <TableColumn fx:id="tcNumeroLote" prefWidth="109.0" style="-fx-alignment: CENTER-LEFT;" text="N° Lote" />
+                        <TableColumn fx:id="tcArticulo" prefWidth="280.0" style="-fx-alignment: CENTER-LEFT;" text="Artículo" />
+                        <TableColumn fx:id="tcFabricacion" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Fch. de fabricación" />
+                        <TableColumn fx:id="tcCaducidad" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Fch. de Caducidad" />
+                        <TableColumn fx:id="tcInicial" prefWidth="114.0" style="-fx-alignment: CENTER;" text="Exis. Inicial" />
+                        <TableColumn fx:id="tcActual" prefWidth="105.0" style="-fx-alignment: CENTER;" text="Exis. Actual" />
                      </columns>
                   </TableView>
                </children>

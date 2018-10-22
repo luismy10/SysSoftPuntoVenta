@@ -127,6 +127,7 @@ public class FxLoteProcesoController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Lote", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         if (generate) {
             controller.generateBatch(lblDescripcion.getText());
@@ -144,6 +145,7 @@ public class FxLoteProcesoController implements Initializable {
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Lote", window.getScene().getWindow());
             stage.setResizable(false);
+            stage.sizeToScene();
             stage.show();
             controller.setEditBatch(new String[]{
                 String.valueOf(tvList.getSelectionModel().getSelectedIndex()),

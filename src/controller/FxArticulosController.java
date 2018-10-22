@@ -68,6 +68,7 @@ public class FxArticulosController implements Initializable {
     private FxArticuloSeleccionadoController seleccionadoController;
 
     private FxArticuloDetalleController detalleController;
+    private TextField txtSearchArticulo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -122,7 +123,7 @@ public class FxArticulosController implements Initializable {
     }
 
     private void loadViewImage(String idRepresentante) {
-        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante,false);
+        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante, false);
         seleccionadoController.getIvPrincipal().setImage(imagenTB.getImagen());
     }
 
@@ -146,6 +147,7 @@ public class FxArticulosController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Artículo", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
             content.getChildren().remove(SysSoft.pane);
         });
@@ -164,6 +166,7 @@ public class FxArticulosController implements Initializable {
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Artículo", window.getScene().getWindow());
             stage.setResizable(false);
+            stage.sizeToScene();
             stage.setOnHiding((WindowEvent WindowEvent) -> {
                 content.getChildren().remove(SysSoft.pane);
             });
@@ -188,6 +191,7 @@ public class FxArticulosController implements Initializable {
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Artículo", window.getScene().getWindow());
             stage.setResizable(false);
+            stage.sizeToScene();
             stage.setOnHiding((WindowEvent WindowEvent) -> {
                 content.getChildren().remove(SysSoft.pane);
             });
@@ -268,9 +272,17 @@ public class FxArticulosController implements Initializable {
     }
 
     @FXML
-    private void onActionSearch(ActionEvent event) {
+    private void onKerPressedSearch(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            tvList.requestFocus();
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedSearch(KeyEvent event) {
         fillArticlesTable(txtSearch.getText());
     }
+
 
     @FXML
     private void onKeyPressedClone(KeyEvent event) throws IOException {
@@ -296,7 +308,7 @@ public class FxArticulosController implements Initializable {
                     ? Tools.roundingValue(articuloTB.getCantidad().get(), 0)
                     : Tools.roundingValue(articuloTB.getCantidad().get(), 2));
             if (detalleController != null) {
-                detalleController.getTvList().setItems(LoteADO.ListProveedor(tvList.getSelectionModel().getSelectedItem().getIdArticulo()));
+                detalleController.getTvList().setItems(LoteADO.ListByIdLote(tvList.getSelectionModel().getSelectedItem().getIdArticulo()));
             }
         }
     }
@@ -327,7 +339,7 @@ public class FxArticulosController implements Initializable {
     public TableView<ArticuloTB> getTvList() {
         return tvList;
     }
-    
+
     void setContent(AnchorPane content) {
         this.content = content;
     }

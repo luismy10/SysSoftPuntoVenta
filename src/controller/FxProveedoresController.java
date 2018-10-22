@@ -48,24 +48,29 @@ public class FxProveedoresController implements Initializable {
     @FXML
     private TableColumn<ProveedorTB, String> tcBusinessName;
     @FXML
+    private TableColumn<ProveedorTB, String> tcContacto;
+    @FXML
     private TableColumn<ProveedorTB, String> tcState;
     @FXML
     private TableColumn<ProveedorTB, LocalDate> tcFechaRegistro;
-
-    private boolean proccess;
 
     private AnchorPane content;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        proccess = false;
-
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocumentType.setCellValueFactory(cellData -> cellData.getValue().getTipoDocumentoName());
         tcDocument.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
         tcBusinessName.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getRazonSocial().get() + "\n" + cellData.getValue().getNombreComercial().get()
         )
+        );
+        tcContacto.setCellValueFactory(cellData
+                -> Bindings.concat(
+                        !Tools.isText(cellData.getValue().getTelefono())
+                        ? "TEL: " + cellData.getValue().getTelefono() + "\n" + "CEL: " + cellData.getValue().getCelular()
+                        : "CEL: " + cellData.getValue().getCelular()
+                )
         );
         tcState.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
         tcFechaRegistro.setCellValueFactory(cellData -> cellData.getValue().fechaRegistroProperty());
@@ -100,11 +105,9 @@ public class FxProveedoresController implements Initializable {
 
             task.setOnSucceeded((WorkerStateEvent e) -> {
                 tvList.setItems((ObservableList<ProveedorTB>) task.getValue());
-                proccess = true;
                 lblLoad.setVisible(false);
             });
             task.setOnFailed((WorkerStateEvent event) -> {
-                proccess = true;
                 lblLoad.setVisible(false);
             });
 
@@ -136,6 +139,7 @@ public class FxProveedoresController implements Initializable {
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Proveedor", window.getScene().getWindow());
         stage.setResizable(false);
+        stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
             content.getChildren().remove(SysSoft.pane);
         });
@@ -155,6 +159,7 @@ public class FxProveedoresController implements Initializable {
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Editr Proveedor", window.getScene().getWindow());
             stage.setResizable(false);
+            stage.sizeToScene();
             stage.setOnHiding((WindowEvent WindowEvent) -> {
                 content.getChildren().remove(SysSoft.pane);
             });

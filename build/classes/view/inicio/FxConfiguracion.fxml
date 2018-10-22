@@ -68,6 +68,24 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionTablasBasicas" onKeyPressed="#onKeyPressedTablasBasicas" styleClass="buttonTransparent" text="Tablas básicas">
+                           <graphic>
+                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../table.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Ajustes">
+                           <font>
+                              <Font name="Roboto" size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER">
+                     <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionPrivileges" onKeyPressed="#onKeyPressedPrivileges" styleClass="buttonTransparent" text="Roles">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
@@ -86,16 +104,16 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionTablasBasicas" onKeyPressed="#onKeyPressedTablasBasicas" styleClass="buttonTransparent" text="Tablas básicas">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionEmployes" onKeyPressed="#onKeyPressedEmployes" styleClass="buttonTransparent" text="Empleados">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../table.png" />
+                                    <Image url="@../employees.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Ajustes">
+                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Accesos">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>

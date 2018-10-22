@@ -2,10 +2,12 @@ package model;
 
 import java.time.LocalDate;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 public class LoteTB {
-
+    
+    private SimpleIntegerProperty id;
     private long idLote;
     private boolean tipoLote;
     private String numeroLote;
@@ -15,9 +17,18 @@ public class LoteTB {
     private double existenciaActual;
     private String idArticulo;
     private String idCompra;
-
+    private ArticuloTB articuloTB;
+    
     public LoteTB() {
 
+    }
+
+    public SimpleIntegerProperty getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = new SimpleIntegerProperty(id);
     }
 
     public long getIdLote() {
@@ -90,6 +101,14 @@ public class LoteTB {
 
     public void setIdCompra(String idCompra) {
         this.idCompra = idCompra;
+    }
+
+    public ArticuloTB getArticuloTB() {
+        return articuloTB;
+    }
+
+    public void setArticuloTB(ArticuloTB articuloTB) {
+        this.articuloTB = articuloTB;
     }
     
 

@@ -7,6 +7,7 @@ public class CiudadTB {
     private String paisCodigo;
     private String ciudadDistrito;
     private int iudadPoblacion;
+    private ProvinciaTB provinciaTB;
 
     public CiudadTB() {
     }
@@ -57,6 +58,15 @@ public class CiudadTB {
         this.iudadPoblacion = iudadPoblacion;
     }
 
+    public ProvinciaTB getProvinciaTB() {
+        return provinciaTB;
+    }
+
+    public void setProvinciaTB(ProvinciaTB provinciaTB) {
+        this.provinciaTB = provinciaTB;
+    }
+    
+    
     @Override
     public String toString() {
         return ciudadDistrito;

@@ -18,8 +18,15 @@ public class ProveedorTB {
     private SimpleStringProperty nombreComercial;
     private String pais;
     private int ciudad;
+    private int provincia;
+    private int distrito;
     private int ambito;
     private int estado;
+    private String telefono;
+    private String celular;
+    private String email;
+    private String paginaWeb;
+    private String direccion;
     private SimpleStringProperty estadoName;
     private String usuarioRegistro;
     private ObjectProperty<LocalDate> fechaRegistro;
@@ -101,6 +108,22 @@ public class ProveedorTB {
         this.ciudad = ciudad;
     }
 
+    public int getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(int provincia) {
+        this.provincia = provincia;
+    }
+
+    public int getDistrito() {
+        return distrito;
+    }
+
+    public void setDistrito(int distrito) {
+        this.distrito = distrito;
+    }
+
     public int getAmbito() {
         return ambito;
     }
@@ -115,6 +138,46 @@ public class ProveedorTB {
 
     public void setEstado(int estado) {
         this.estado = estado;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPaginaWeb() {
+        return paginaWeb;
+    }
+
+    public void setPaginaWeb(String paginaWeb) {
+        this.paginaWeb = paginaWeb;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     public String getUsuarioRegistro() {

@@ -3,12 +3,13 @@ package model;
 public class FacturacionTB {
 
     private Long idFacturacion;
+    private String idCliente;
     private int tipoDocumentoFacturacion;
     private String numeroDocumentoFacturacion;
     private String razonSocial;
     private String nombreComercial;
-    private int pais;
-    private int region;
+    private String pais;
+    private int departamento;
     private int provincia;
     private int distrito;
     private int modena;
@@ -23,6 +24,14 @@ public class FacturacionTB {
 
     public void setIdFacturacion(Long idFacturacion) {
         this.idFacturacion = idFacturacion;
+    }
+
+    public String getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
     }
 
 
@@ -58,20 +67,20 @@ public class FacturacionTB {
         this.nombreComercial = nombreComercial;
     }
 
-    public int getPais() {
+    public String getPais() {
         return pais;
     }
 
-    public void setPais(int pais) {
+    public void setPais(String pais) {
         this.pais = pais;
     }
 
-    public int getRegion() {
-        return region;
+    public int getDepartamento() {
+        return departamento;
     }
 
-    public void setRegion(int region) {
-        this.region = region;
+    public void setDepartamento(int departamento) {
+        this.departamento = departamento;
     }
 
     public int getProvincia() {

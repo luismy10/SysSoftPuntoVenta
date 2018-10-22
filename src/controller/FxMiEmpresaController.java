@@ -74,112 +74,104 @@ public class FxMiEmpresaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (DBUtil.StateConnection()) {
-            DetalleADO.GetDetailIdName("3", "0011", "").forEach(e -> {
-                cbGiroComercial.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-            });
-            PaisADO.ListPais().forEach(e -> {
-                cbPais.getItems().add(new PaisTB(e.getPaisCodigo(), e.getPaisNombre()));
-            });
-            DetalleADO.GetDetailIdName("0", "0003", "RUC").forEach(e -> {
-                cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-            });
-            ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
-            if (!list.isEmpty()) {
-                validate = true;
-                idEmpresa = list.get(0).getIdEmpresa();
+        DetalleADO.GetDetailIdName("3", "0011", "").forEach(e -> {
+            cbGiroComercial.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
+        PaisADO.ListPais().forEach(e -> {
+            cbPais.getItems().add(new PaisTB(e.getPaisCodigo(), e.getPaisNombre()));
+        });
+        DetalleADO.GetDetailIdName("0", "0003", "RUC").forEach(e -> {
+            cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
+        ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
+        if (!list.isEmpty()) {
+            validate = true;
+            idEmpresa = list.get(0).getIdEmpresa();
 
-                ObservableList<DetalleTB> lsgiro = cbGiroComercial.getItems();
-                if (list.get(0).getGiroComerial() != 0) {
-                    for (int i = 0; i < lsgiro.size(); i++) {
-                        if (list.get(0).getGiroComerial() == lsgiro.get(i).getIdDetalle().get()) {
-                            cbGiroComercial.getSelectionModel().select(i);
-                            break;
-                        }
+            ObservableList<DetalleTB> lsgiro = cbGiroComercial.getItems();
+            if (list.get(0).getGiroComerial() != 0) {
+                for (int i = 0; i < lsgiro.size(); i++) {
+                    if (list.get(0).getGiroComerial() == lsgiro.get(i).getIdDetalle().get()) {
+                        cbGiroComercial.getSelectionModel().select(i);
+                        break;
                     }
                 }
-
-                txtNombre.setText(list.get(0).getNombre());
-                txtTelefono.setText(list.get(0).getTelefono());
-                txtCelular.setText(list.get(0).getCelular());
-                txtPaginasWeb.setText(list.get(0).getPaginaWeb());
-                txtEmail.setText(list.get(0).getEmail());
-                txtDomicilio.setText(list.get(0).getDomicilio());
-
-                ObservableList<DetalleTB> lsdoc = cbTipoDocumento.getItems();
-                if (list.get(0).getTipoDocumento() != 0) {
-                    for (int i = 0; i < lsdoc.size(); i++) {
-                        if (list.get(0).getTipoDocumento() == lsdoc.get(i).getIdDetalle().get()) {
-                            cbTipoDocumento.getSelectionModel().select(i);
-                            break;
-                        }
-                    }
-                }
-
-                txtNumeroDocumento.setText(list.get(0).getNumeroDocumento());
-                txtRazonSocial.setText(list.get(0).getRazonSocial());
-                txtNombreComercial.setText(list.get(0).getNombreComercial());
-
-                ObservableList<PaisTB> lspais = cbPais.getItems();
-                if (list.get(0).getPais() != null || !list.get(0).getPais().equals("")) {
-                    for (int i = 0; i < lspais.size(); i++) {
-                        if (list.get(0).getPais().equals(lspais.get(i).getPaisCodigo())) {
-                            cbPais.getSelectionModel().select(i);
-                            CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-                                cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
-                            });
-                            break;
-                        }
-                    }
-                }
-
-                ObservableList<CiudadTB> lsciudad = cbCiudad.getItems();
-                if (list.get(0).getCiudad() != 0) {
-                    for (int i = 0; i < lsciudad.size(); i++) {
-                        if (list.get(0).getCiudad() == lsciudad.get(i).getIdCiudad()) {
-                            cbCiudad.getSelectionModel().select(i);
-                            ProvinciaADO.ListProvincia(cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
-                                cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
-                            });
-                            break;
-                        }
-                    }
-                }
-
-                ObservableList<ProvinciaTB> lsprovin = cbProvincia.getItems();
-                if (list.get(0).getProvincia() != 0) {
-                    for (int i = 0; i < lsprovin.size(); i++) {
-                        if (list.get(0).getProvincia() == lsprovin.get(i).getIdProvincia()) {
-                            cbProvincia.getSelectionModel().select(i);
-                            DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
-                                cbCiudadDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
-                            });
-                            break;
-                        }
-                    }
-                }
-
-                ObservableList<DistritoTB> lsdistrito = cbCiudadDistrito.getItems();
-                if (list.get(0).getDistrito() != 0) {
-                    for (int i = 0; i < lsdistrito.size(); i++) {
-                        if (list.get(0).getDistrito() == lsdistrito.get(i).getIdDistrito()) {
-                            cbCiudadDistrito.getSelectionModel().select(i);
-                            break;
-                        }
-                    }
-                }
-                Session.EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();
-                Session.TELEFONO = list.get(0).getTelefono();
-                Session.CELULAR = list.get(0).getCelular();
-                Session.PAGINAWEB = list.get(0).getPaginaWeb();
-                Session.EMAIL = list.get(0).getEmail();
-                Session.DIRECCION = list.get(0).getDomicilio();
-
-            } else {
-                validate = false;
             }
 
+            txtNombre.setText(list.get(0).getNombre());
+            txtTelefono.setText(list.get(0).getTelefono());
+            txtCelular.setText(list.get(0).getCelular());
+            txtPaginasWeb.setText(list.get(0).getPaginaWeb());
+            txtEmail.setText(list.get(0).getEmail());
+            txtDomicilio.setText(list.get(0).getDomicilio());
+
+            ObservableList<DetalleTB> lsdoc = cbTipoDocumento.getItems();
+            if (list.get(0).getTipoDocumento() != 0) {
+                for (int i = 0; i < lsdoc.size(); i++) {
+                    if (list.get(0).getTipoDocumento() == lsdoc.get(i).getIdDetalle().get()) {
+                        cbTipoDocumento.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            }
+
+            txtNumeroDocumento.setText(list.get(0).getNumeroDocumento());
+            txtRazonSocial.setText(list.get(0).getRazonSocial());
+            txtNombreComercial.setText(list.get(0).getNombreComercial());
+
+            ObservableList<PaisTB> lspais = cbPais.getItems();
+            if (list.get(0).getPais() != null || !list.get(0).getPais().equals("")) {
+                for (int i = 0; i < lspais.size(); i++) {
+                    if (list.get(0).getPais().equals(lspais.get(i).getPaisCodigo())) {
+                        cbPais.getSelectionModel().select(i);
+                        CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
+                            cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
+                        });
+                        break;
+                    }
+                }
+            }
+
+            ObservableList<CiudadTB> lsciudad = cbCiudad.getItems();
+            if (list.get(0).getCiudad() != 0) {
+                for (int i = 0; i < lsciudad.size(); i++) {
+                    if (list.get(0).getCiudad() == lsciudad.get(i).getIdCiudad()) {
+                        cbCiudad.getSelectionModel().select(i);
+                        ProvinciaADO.ListProvincia(cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
+                            cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
+                        });
+                        break;
+                    }
+                }
+            }
+
+            ObservableList<ProvinciaTB> lsprovin = cbProvincia.getItems();
+            if (list.get(0).getProvincia() != 0) {
+                for (int i = 0; i < lsprovin.size(); i++) {
+                    if (list.get(0).getProvincia() == lsprovin.get(i).getIdProvincia()) {
+                        cbProvincia.getSelectionModel().select(i);
+                        DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
+                            cbCiudadDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
+                        });
+                        break;
+                    }
+                }
+            }
+
+            ObservableList<DistritoTB> lsdistrito = cbCiudadDistrito.getItems();
+            if (list.get(0).getDistrito() != 0) {
+                for (int i = 0; i < lsdistrito.size(); i++) {
+                    if (list.get(0).getDistrito() == lsdistrito.get(i).getIdDistrito()) {
+                        cbCiudadDistrito.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            }
+
+        } else {
+            validate = false;
         }
+
     }
 
     private void aValidityProcess() {
@@ -293,8 +285,7 @@ public class FxMiEmpresaController implements Initializable {
         }
     }
 
-    void setContent(AnchorPane content
-    ) {
+    void setContent(AnchorPane content) {
         this.content = content;
     }
 
