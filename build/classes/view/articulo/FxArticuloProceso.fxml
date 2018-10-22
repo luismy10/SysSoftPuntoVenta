@@ -26,22 +26,42 @@
                <content>
                   <VBox>
                      <children>
-                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" style="-fx-background-color: #1a2226;">
+                        <HBox style="-fx-background-color: #1a2226;">
                            <children>
-                              <ImageView fitHeight="66.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../logo.png" />
-                                 </image>
-                              </ImageView>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Datos del artículo">
-                                 <font>
-                                    <Font name="Roboto" size="18.0" />
-                                 </font>
-                              </Text>
+                              <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <ImageView fitHeight="66.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../logo.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Datos del artículo">
+                                       <font>
+                                          <Font name="Roboto" size="18.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <Button mnemonicParsing="false" styleClass="buttonTransparent">
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../confirmation.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
                         </HBox>
                         <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                            <tabs>
@@ -56,7 +76,7 @@
                                                       <Insets />
                                                    </VBox.margin>
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="120.0" styleClass="labelRoboto14" text="Clave:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" prefWidth="126.0" styleClass="labelRoboto14" text="Clave:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -81,7 +101,7 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="120.0" styleClass="labelRoboto14" text="Nombre de marca:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" prefWidth="126.0" styleClass="labelRoboto14" text="Descripción:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -94,7 +114,7 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="120.0" styleClass="labelRoboto14" text="Nombre genérico:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" prefWidth="126.0" styleClass="labelRoboto14" text="Descripción alterna:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -107,7 +127,7 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="120.0" styleClass="labelRoboto14" text="Categoría:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" prefWidth="126.0" styleClass="labelRoboto14" text="Categoría:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -129,7 +149,7 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="120.0" styleClass="labelRoboto14" text="Presentación:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" prefWidth="126.0" styleClass="labelRoboto14" text="Presentación:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -172,7 +192,7 @@
                                              <children>
                                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="120.0" styleClass="labelRoboto14" text="Inventario mínimo:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" prefWidth="126.0" styleClass="labelRoboto14" text="Inventario mínimo:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -197,7 +217,7 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" spacing="5.0">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="120.0" styleClass="labelRoboto14" text="Cantidad:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" prefWidth="126.0" styleClass="labelRoboto14" text="Cantidad:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -213,7 +233,7 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="120.0" styleClass="labelRoboto14" text="Precio compra:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" prefWidth="126.0" styleClass="labelRoboto14" text="Precio compra:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -238,7 +258,7 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="120.0" styleClass="labelRoboto14" text="Precio de venta:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" prefWidth="126.0" styleClass="labelRoboto14" text="Precio de venta:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -345,7 +365,7 @@
                                                    <children>
                                                       <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                                                          <children>
-                                                            <Label styleClass="labelRoboto14" text="Descripción" textFill="#23283a">
+                                                            <Label styleClass="labelRoboto14" text="Características" textFill="#23283a">
                                                                <font>
                                                                   <Font name="Roboto" size="14.0" />
                                                                </font>

@@ -88,6 +88,7 @@ public class FxArticuloProcesoController implements Initializable {
 
     public void setInitArticulo() {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
+        txtClave.requestFocus();
         DetalleADO.GetDetailIdName("2", "0006", "").forEach(e -> {
             cbCategoria.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
@@ -97,9 +98,10 @@ public class FxArticuloProcesoController implements Initializable {
         DetalleADO.GetDetailIdName("2", "0001", "").forEach(e -> {
             cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
+        cbEstado.getSelectionModel().select(0);
         DetalleADO.GetDetailIdName("2", "0008", "").forEach(e -> {
             cbPresentacion.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-        });
+        });        
     }
 
     public void setValueClone(String value) {

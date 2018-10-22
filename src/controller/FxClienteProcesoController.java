@@ -121,6 +121,7 @@ public class FxClienteProcesoController implements Initializable {
         DetalleADO.GetDetailIdName("2", "0001", "").forEach(e -> {
             cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
+        cbEstado.getSelectionModel().select(0);
         PaisADO.ListPais().forEach(e -> {
             cbPais.getItems().add(new PaisTB(e.getPaisCodigo(), e.getPaisNombre()));
         });
@@ -130,12 +131,14 @@ public class FxClienteProcesoController implements Initializable {
     public void setValueAdd() {
         lblDirectory.setVisible(false);
         btnDirectory.setVisible(false);
+        cbDocumentType.requestFocus();
     }
 
     public void setValueUpdate(String value) {
         btnDesglosar.setVisible(false);
         btnRegister.setText("Actualizar");
         btnRegister.getStyleClass().add("buttonLightWarning");
+        cbDocumentType.requestFocus();
         ClienteTB clienteTB = ClienteADO.GetByIdCliente(value);
         if (clienteTB != null) {
             idCliente = clienteTB.getIdCliente();
