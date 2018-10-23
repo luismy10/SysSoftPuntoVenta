@@ -81,6 +81,15 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionCantidad" onKeyPressed="#onKeyPressedCantidad" styleClass="buttonLight" text="Cantidad">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../cantidad.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                               <Button mnemonicParsing="false" onAction="#onActionClone" onKeyPressed="#onKeyPressedClone" styleClass="buttonLight" text="Clonar">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">

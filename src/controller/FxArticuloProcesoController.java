@@ -62,8 +62,6 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private TextField txtStockMaximo;
     @FXML
-    private TextField txtCantidad;
-    @FXML
     private TextField txtPrecioCompra;
     @FXML
     private TextField txtImpuestoCompra;
@@ -154,7 +152,6 @@ public class FxArticuloProcesoController implements Initializable {
 
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
-            txtCantidad.setText(Tools.roundingValue(articuloTB.getCantidad().get(), 2));
             txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
             txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
 
@@ -218,7 +215,6 @@ public class FxArticuloProcesoController implements Initializable {
 
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
-            txtCantidad.setText(Tools.roundingValue(articuloTB.getCantidad().get(), 2));
             txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
             txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
 
@@ -282,10 +278,6 @@ public class FxArticuloProcesoController implements Initializable {
 
                 articuloTB.setPrecioVenta(Tools.isNumeric(txtPrecioVenta.getText())
                         ? Double.parseDouble(txtPrecioVenta.getText())
-                        : 0);
-
-                articuloTB.setCantidad(Tools.isNumeric(txtCantidad.getText())
-                        ? Double.parseDouble(txtCantidad.getText())
                         : 0);
 
                 articuloTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
@@ -412,17 +404,6 @@ public class FxArticuloProcesoController implements Initializable {
     private void onKeyTypedClaveAlterna(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z')) {
-            event.consume();
-        }
-    }
-
-    @FXML
-    private void onKeyTypedCantidad(KeyEvent event) {
-        char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
-            event.consume();
-        }
-        if (c == '.' && txtCantidad.getText().contains(".") || c == '-' && txtCantidad.getText().contains("-")) {
             event.consume();
         }
     }

@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -17,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.EmpleadoADO;
 import model.EmpleadoTB;
+import model.MenuADO;
 
 public class FxLoginController implements Initializable {
 
@@ -62,12 +64,12 @@ public class FxLoginController implements Initializable {
                 stage.centerOnScreen();
                 stage.setMaximized(true);
                 stage.show();
-                stage.requestFocus();
-                controller.initInicioController();
+                stage.requestFocus();                
+                controller.initInicioController(empleadoTB.getRol());
                 controller.initWindowSize();
                 Session.USER_ID = empleadoTB.getIdEmpleado();
                 Session.USER_NAME = empleadoTB.getApellidos() + " " + empleadoTB.getNombres();
-                controller.initUserSession(empleadoTB.getPuestoName());                
+                controller.initUserSession(empleadoTB.getPuestoName());
 
                 Session.WIDTH_WINDOW = scene.getWidth();
                 Session.HEIGHT_WINDOW = scene.getHeight();

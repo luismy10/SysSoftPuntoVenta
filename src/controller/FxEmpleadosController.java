@@ -54,6 +54,7 @@ public class FxEmpleadosController implements Initializable {
     private TableColumn<EmpleadoTB, String> tcState;
 
     private AnchorPane content;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

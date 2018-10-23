@@ -22,8 +22,8 @@ public class EmpleadoADO {
             codigo_empleado.execute();
             String id_empleado = codigo_empleado.getString(1);
 
-            empleado = DBUtil.getConnection().prepareStatement("INSERT INTO EmpleadoTB(IdEmpleado,TipoDocumento,NumeroDocumento,Apellidos,Nombres,Sexo,FechaNacimiento,Puesto,Estado,Telefono,Celular,Email,Direccion,Pais,Ciudad,Provincia,Distrito,Usuario,Clave)\n"
-                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            empleado = DBUtil.getConnection().prepareStatement("INSERT INTO EmpleadoTB(IdEmpleado,TipoDocumento,NumeroDocumento,Apellidos,Nombres,Sexo,FechaNacimiento,Puesto,Rol,Estado,Telefono,Celular,Email,Direccion,Pais,Ciudad,Provincia,Distrito,Usuario,Clave)\n"
+                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             empleado.setString(1, id_empleado);
             empleado.setInt(2, empleadoTB.getTipoDocumento());
@@ -33,17 +33,18 @@ public class EmpleadoADO {
             empleado.setInt(6, empleadoTB.getSexo());
             empleado.setDate(7, empleadoTB.getFechaNacimiento());
             empleado.setInt(8, empleadoTB.getPuesto());
-            empleado.setInt(9, empleadoTB.getEstado());
-            empleado.setString(10, empleadoTB.getTelefono());
-            empleado.setString(11, empleadoTB.getCelular());
-            empleado.setString(12, empleadoTB.getEmail());
-            empleado.setString(13, empleadoTB.getDireccion());
-            empleado.setString(14, empleadoTB.getPais());
-            empleado.setInt(15, empleadoTB.getCiudad());
-            empleado.setInt(16, empleadoTB.getProvincia());
-            empleado.setInt(17, empleadoTB.getDistrito());
-            empleado.setString(18, empleadoTB.getUsuario());
-            empleado.setString(19, empleadoTB.getClave());
+            empleado.setInt(9, empleadoTB.getRol());
+            empleado.setInt(10, empleadoTB.getEstado());
+            empleado.setString(11, empleadoTB.getTelefono());
+            empleado.setString(12, empleadoTB.getCelular());
+            empleado.setString(13, empleadoTB.getEmail());
+            empleado.setString(14, empleadoTB.getDireccion());
+            empleado.setString(15, empleadoTB.getPais());
+            empleado.setInt(16, empleadoTB.getCiudad());
+            empleado.setInt(17, empleadoTB.getProvincia());
+            empleado.setInt(18, empleadoTB.getDistrito());
+            empleado.setString(19, empleadoTB.getUsuario());
+            empleado.setString(20, empleadoTB.getClave());            
             empleado.addBatch();
 
             empleado.executeBatch();
@@ -79,7 +80,7 @@ public class EmpleadoADO {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
 
-            empleado = DBUtil.getConnection().prepareStatement("UPDATE EmpleadoTB SET TipoDocumento = ?,NumeroDocumento = ?,Apellidos = ?,Nombres = ?,Sexo = ?,FechaNacimiento = ?,Puesto = ?,Estado = ?,Telefono = ?,Celular = ?,Email = ?,Direccion = ?,Pais = ?,Ciudad = ?,Provincia = ?,Distrito = ?,Usuario = ?,Clave  = ? WHERE IdEmpleado = ?");
+            empleado = DBUtil.getConnection().prepareStatement("UPDATE EmpleadoTB SET TipoDocumento = ?,NumeroDocumento = ?,Apellidos = ?,Nombres = ?,Sexo = ?,FechaNacimiento = ?,Puesto = ?,Rol = ?,Estado = ?,Telefono = ?,Celular = ?,Email = ?,Direccion = ?,Pais = ?,Ciudad = ?,Provincia = ?,Distrito = ?,Usuario = ?,Clave  = ? WHERE IdEmpleado = ?");
 
             empleado.setInt(1, empleadoTB.getTipoDocumento());
             empleado.setString(2, empleadoTB.getNumeroDocumento());
@@ -88,18 +89,19 @@ public class EmpleadoADO {
             empleado.setInt(5, empleadoTB.getSexo());
             empleado.setDate(6, empleadoTB.getFechaNacimiento());
             empleado.setInt(7, empleadoTB.getPuesto());
-            empleado.setInt(8, empleadoTB.getEstado());
-            empleado.setString(9, empleadoTB.getTelefono());
-            empleado.setString(10, empleadoTB.getCelular());
-            empleado.setString(11, empleadoTB.getEmail());
-            empleado.setString(12, empleadoTB.getDireccion());
-            empleado.setString(13, empleadoTB.getPais());
-            empleado.setInt(14, empleadoTB.getCiudad());
-            empleado.setInt(15, empleadoTB.getProvincia());
-            empleado.setInt(16, empleadoTB.getDistrito());
-            empleado.setString(17, empleadoTB.getUsuario());
-            empleado.setString(18, empleadoTB.getClave());
-            empleado.setString(19, empleadoTB.getIdEmpleado());
+            empleado.setInt(8, empleadoTB.getRol());
+            empleado.setInt(9, empleadoTB.getEstado());
+            empleado.setString(10, empleadoTB.getTelefono());
+            empleado.setString(11, empleadoTB.getCelular());
+            empleado.setString(12, empleadoTB.getEmail());
+            empleado.setString(13, empleadoTB.getDireccion());
+            empleado.setString(14, empleadoTB.getPais());
+            empleado.setInt(15, empleadoTB.getCiudad());
+            empleado.setInt(16, empleadoTB.getProvincia());
+            empleado.setInt(17, empleadoTB.getDistrito());
+            empleado.setString(18, empleadoTB.getUsuario());
+            empleado.setString(19, empleadoTB.getClave());
+            empleado.setString(20, empleadoTB.getIdEmpleado());
             empleado.addBatch();
 
             empleado.executeBatch();
@@ -201,6 +203,7 @@ public class EmpleadoADO {
                 empleadoTB.setDistrito(rsEmps.getInt("Distrito"));
                 empleadoTB.setUsuario(rsEmps.getString("Usuario"));
                 empleadoTB.setClave(rsEmps.getString("Clave"));
+                empleadoTB.setRol(rsEmps.getInt("Rol"));
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
@@ -222,7 +225,7 @@ public class EmpleadoADO {
     }
 
     public static EmpleadoTB GetValidateUser(String user, String clave) {
-        String selectStmt = "SELECT IdEmpleado,Apellidos,Nombres,dbo.Fc_Obtener_Nombre_Detalle(Puesto,'0012') as Puesto,Estado FROM EmpleadoTB\n"
+        String selectStmt = "SELECT IdEmpleado,Apellidos,Nombres,dbo.Fc_Obtener_Nombre_Detalle(Puesto,'0012') as Puesto,Estado,Rol FROM EmpleadoTB\n"
                 + "WHERE Usuario = ? and Clave = ?";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -240,6 +243,7 @@ public class EmpleadoADO {
                 empleadoTB.setNombres(rsEmps.getString("Nombres"));
                 empleadoTB.setPuestoName(rsEmps.getString("Puesto"));
                 empleadoTB.setEstado(rsEmps.getInt("Estado"));
+                empleadoTB.setRol(rsEmps.getInt("Rol"));
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);

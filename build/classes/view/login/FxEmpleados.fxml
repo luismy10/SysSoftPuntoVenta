@@ -114,7 +114,7 @@
                   <TableColumn fx:id="tcDocument" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Documento" />
                   <TableColumn fx:id="tcCompleteData" prefWidth="270.0" style="-fx-alignment: CENTER-LEFT;" text="Datos completos" />
                   <TableColumn fx:id="tcContact" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Teléfono/Celular" />
-                  <TableColumn fx:id="tcMarketStall" prefWidth="140.0" style="-fx-alignment: CENTER;" text="Puesto" />
+                  <TableColumn fx:id="tcMarketStall" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Puesto" />
                   <TableColumn fx:id="tcState" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Estado" />
                </columns>
             </TableView>

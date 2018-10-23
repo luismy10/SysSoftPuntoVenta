@@ -28,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import model.DBUtil;
 import model.DetalleADO;
@@ -83,6 +84,16 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     }
 
+    private void InitializationTransparentBackground() {
+        SysSoft.pane.setStyle("-fx-background-color: black");
+        SysSoft.pane.setTranslateX(0);
+        SysSoft.pane.setTranslateY(0);
+        SysSoft.pane.setPrefWidth(Session.WIDTH_WINDOW);
+        SysSoft.pane.setPrefHeight(Session.HEIGHT_WINDOW);
+        SysSoft.pane.setOpacity(0.7f);
+        content.getChildren().add(SysSoft.pane);
+    }
+
     public void initWindow() {
         stateconnect = DBUtil.StateConnection();
         if (stateconnect) {
@@ -121,6 +132,7 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     @FXML
     private void onMouseClickedAgregar(MouseEvent event) throws IOException {
+        InitializationTransparentBackground();
         URL url = getClass().getResource(Tools.FX_FILE_MANTENIMIENTO);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
@@ -130,6 +142,9 @@ public class FxDetalleMantenimientoController implements Initializable {
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar item de mantenimiento", window.getScene().getWindow());
         stage.setResizable(false);
         stage.sizeToScene();
+        stage.setOnHiding((WindowEvent WindowEvent) -> {
+            content.getChildren().remove(SysSoft.pane);
+        });
         stage.show();
         controller.initWindow();
     }
@@ -137,6 +152,7 @@ public class FxDetalleMantenimientoController implements Initializable {
     @FXML
     private void onMouseClickedEditar(MouseEvent event) throws IOException {
         if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0 && lvMaintenance.isFocused()) {
+            InitializationTransparentBackground();
             URL url = getClass().getResource(Tools.FX_FILE_MANTENIMIENTO);
             FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -145,6 +161,9 @@ public class FxDetalleMantenimientoController implements Initializable {
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Editar item de mantenimiento", window.getScene().getWindow());
             stage.setResizable(false);
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(SysSoft.pane);
+            });
             stage.show();
             controller.setValues(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(), lvMaintenance.getSelectionModel().getSelectedItem().getNombre());
         }
@@ -203,6 +222,7 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     private void onActionEditDetail() throws IOException {
         if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0 && tvDetail.getSelectionModel().getSelectedIndex() >= 0) {
+            InitializationTransparentBackground();
             URL url = getClass().getResource(Tools.FX_FILE_DETALLE);
             FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -219,6 +239,9 @@ public class FxDetalleMantenimientoController implements Initializable {
             stage.initOwner(window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(SysSoft.pane);
+            });
             stage.show();
             controller.setValueUpdate(lvMaintenance.getSelectionModel().getSelectedItem().getNombre(),
                     lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(),
@@ -289,6 +312,7 @@ public class FxDetalleMantenimientoController implements Initializable {
     @FXML
     private void onActionAdd(ActionEvent event) throws IOException {
         if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0) {
+            InitializationTransparentBackground();
             URL url = getClass().getResource(Tools.FX_FILE_DETALLE);
             FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -304,6 +328,9 @@ public class FxDetalleMantenimientoController implements Initializable {
             stage.initOwner(window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(SysSoft.pane);
+            });
             stage.show();
             controller.setValueAdd(lvMaintenance.getSelectionModel().getSelectedItem().getNombre(),
                     lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(),

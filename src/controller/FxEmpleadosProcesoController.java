@@ -33,6 +33,8 @@ import model.PaisADO;
 import model.PaisTB;
 import model.ProvinciaADO;
 import model.ProvinciaTB;
+import model.RolADO;
+import model.RolTB;
 
 public class FxEmpleadosProcesoController implements Initializable {
 
@@ -75,6 +77,8 @@ public class FxEmpleadosProcesoController implements Initializable {
     @FXML
     private TextField txtClave;
     @FXML
+    private ComboBox<RolTB> cbRol;
+    @FXML
     private ImageView ivPerfil;
     @FXML
     private Button btnRegister;
@@ -93,9 +97,13 @@ public class FxEmpleadosProcesoController implements Initializable {
         DetalleADO.GetDetailIdName("2", "0012", "").forEach(e -> {
             cbPuesto.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
+        RolADO.RolList().forEach(e -> {
+            cbRol.getItems().add(new RolTB(e.getIdRol(), e.getNombre()));
+        });
         DetalleADO.GetDetailIdName("2", "0001", "").forEach(e -> {
             cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
+        cbEstado.getSelectionModel().select(0);
         PaisADO.ListPais().forEach(e -> {
             cbPais.getItems().add(new PaisTB(e.getPaisCodigo(), e.getPaisNombre()));
         });
@@ -212,6 +220,16 @@ public class FxEmpleadosProcesoController implements Initializable {
 
             txtUsuario.setText(empleadoTB.getUsuario());
             txtClave.setText(empleadoTB.getClave());
+
+            if (empleadoTB.getRol() != 0) {
+                ObservableList<RolTB> lsrol = cbRol.getItems();
+                for (int i = 0; i < lsrol.size(); i++) {
+                    if (empleadoTB.getRol() == lsrol.get(i).getIdRol()) {
+                        cbRol.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -279,6 +297,9 @@ public class FxEmpleadosProcesoController implements Initializable {
                         : 0);
                 empleadoTB.setUsuario(txtUsuario.getText().trim());
                 empleadoTB.setClave(txtClave.getText().trim());
+                empleadoTB.setRol(cbRol.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbRol.getSelectionModel().getSelectedItem().getIdRol()
+                        : 0);
                 if (idEmpleado.equalsIgnoreCase("")) {
                     String result = EmpleadoADO.InsertEmpleado(empleadoTB);
                     switch (result) {
@@ -292,7 +313,7 @@ public class FxEmpleadosProcesoController implements Initializable {
                     }
                 } else {
                     String result = EmpleadoADO.UpdateEmpleado(empleadoTB);
-                    switch (result) {                        
+                    switch (result) {
                         case "update":
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Empleado", "Actualizado correctamente el empleado.", false);
                             break;

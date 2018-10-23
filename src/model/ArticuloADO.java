@@ -13,7 +13,7 @@ import javafx.scene.image.ImageView;
 public class ArticuloADO {
 
     public static String CrudEntity(ArticuloTB articuloTB) {
-        String selectStmt = "{call Sp_Crud_Articulo(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String selectStmt = "{call Sp_Crud_Articulo(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
             DBUtil.dbConnect();
@@ -31,7 +31,6 @@ public class ArticuloADO {
             callableStatement.setDouble("StockMaximo", articuloTB.getStockMaximo());
             callableStatement.setDouble("PrecioCompra", articuloTB.getPrecioCompra());
             callableStatement.setDouble("PrecioVenta", articuloTB.getPrecioVenta().get());
-            callableStatement.setDouble("Cantidad", articuloTB.getCantidad().get());
             callableStatement.setInt("Estado", articuloTB.getEstado());
             callableStatement.setObject("Lote", articuloTB.isLote());
             //--------------------------------------------------------------------------
