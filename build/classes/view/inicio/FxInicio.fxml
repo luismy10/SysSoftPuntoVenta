@@ -59,11 +59,6 @@
                               <Image url="@../close-session.png" />
                            </image>
                         </ImageView>
-                        <Text fx:id="lblDatos1" fill="#2f1d1d" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Cerrar">
-                           <font>
-                              <Font name="Roboto" size="14.0" />
-                           </font>
-                        </Text>
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -115,66 +110,7 @@
                                     <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
                                  </padding>
                               </HBox>
-                              <HBox fx:id="btnInicio" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onMouseClickedInicio" styleClass="buttonContainer">
-                                 <children>
-                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../home.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Inicio" />
-                                 </children>
-                              </HBox>
-                              <HBox fx:id="btnOperacion" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onMouseClickedOperaciones" styleClass="buttonContainer">
-                                 <children>
-                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../bag.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Operaciones" />
-                                 </children>
-                              </HBox>
-                              <HBox fx:id="btnConsultas" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onMouseClickedConsultas" styleClass="buttonContainer">
-                                 <children>
-                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../consultas.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Consultas" />
-                                 </children>
-                              </HBox>
-                              <HBox fx:id="btnReportes" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onMouseClickedReportes" styleClass="buttonContainer">
-                                 <children>
-                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../reports.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Reportes" />
-                                 </children>
-                              </HBox>
-                              <HBox fx:id="btnGraficos" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onMouseClickedGraficos" styleClass="buttonContainer">
-                                 <children>
-                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../charts.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Gráficos" />
-                                 </children>
-                              </HBox>
-                              <HBox fx:id="btnConfiguracion" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onMouseClickedConfiguracion" spacing="10.0" styleClass="buttonContainer">
-                                 <children>
-                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../configuration.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Configuración" />
-                                 </children>
-                              </HBox>
+                              <VBox fx:id="vbMenus" />
                            </children>
                         </VBox>
                      </children>

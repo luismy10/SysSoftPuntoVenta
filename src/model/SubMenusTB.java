@@ -6,7 +6,6 @@ public class SubMenusTB {
 
     private int idSubMenu;
     private String nombre;
-    private boolean estado;
     private int menu;
 
     public SubMenusTB() {
@@ -26,14 +25,6 @@ public class SubMenusTB {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public boolean isEstado() {
-        return estado;
-    }
-
-    public void setEstado(boolean estado) {
-        this.estado = estado;
     }
 
     public int getMenu() {

@@ -8,14 +8,20 @@ import javafx.collections.ObservableList;
 
 public class MenuADO {
 
-    public static ObservableList<MenuTB> GetMenus() {
-        String selectStmt = "SELECT * FROM MenuTB";
+    public static ObservableList<MenuTB> GetMenus(int idRol) {
+        String selectStmt = "select m.IdMenu,m.Nombre,pm.Estado from \n"
+                + "PermisoMenusTB as pm inner join RolTB as r \n"
+                + "on pm.IdRol = r.IdRol\n"
+                + "inner join MenuTB as m \n"
+                + "on pm.IdMenus = m.IdMenu\n"
+                + "where pm.IdRol = ? ";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         ObservableList<MenuTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setInt(1, idRol);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -43,9 +49,9 @@ public class MenuADO {
         }
         return empList;
     }
-    
+
     public static ObservableList<SubMenusTB> GetSubMenus(int menu) {
-        String selectStmt = "SELECT IdSubmenu,Nombre,Estado FROM SubmenuTB where IdMenu = ?";
+        String selectStmt = "SELECT IdSubmenu,Nombre FROM SubmenuTB where IdMenu = ?";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         ObservableList<SubMenusTB> empList = FXCollections.observableArrayList();
@@ -59,7 +65,6 @@ public class MenuADO {
                 SubMenusTB menuTB = new SubMenusTB();
                 menuTB.setIdSubMenu(resultSet.getInt("IdSubmenu"));
                 menuTB.setNombre(resultSet.getString("Nombre"));
-                menuTB.setEstado(resultSet.getBoolean("Estado")); 
                 empList.add(menuTB);
             }
 

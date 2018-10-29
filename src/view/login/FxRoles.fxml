@@ -28,7 +28,16 @@
          <children>
             <HBox spacing="10.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onActionRegister" styleClass="buttonLight" text="Guardar">
+                  <Button mnemonicParsing="false" styleClass="buttonLightDefault" text="Agregar">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../plus.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" styleClass="buttonLight" text="Guardar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -59,12 +68,12 @@
                <children>
                   <VBox alignment="TOP_CENTER" style="-fx-background-color: #666666;" HBox.hgrow="SOMETIMES">
                      <children>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Usuarios">
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Rol">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Text>
-                        <ListView fx:id="lvUsuarios" prefHeight="260.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                        <ListView fx:id="lvRol" onMouseClicked="#onMouseClickedRoles" prefHeight="260.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                      </children>
                      <HBox.margin>
                         <Insets />

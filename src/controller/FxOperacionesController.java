@@ -117,6 +117,20 @@ public class FxOperacionesController implements Initializable {
         controller.loadWindow();
     }
 
+    private void openWindowInventario() throws IOException {
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_INVENTARIOINICIAL));
+        VBox node = fXMLPrincipal.load();
+        FxInventarioInicialController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        content.getChildren().add(node);
+        
+    }
+
     @FXML
     private void onKeyPressedCustomers(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
@@ -193,6 +207,18 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private void onActionVentas(ActionEvent event) throws IOException {
         openWindowVenta();
+    }
+
+    @FXML
+    private void onKeyPressedInventario(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowInventario();
+        }
+    }
+
+    @FXML
+    private void onActionInventario(ActionEvent event) throws IOException {
+        openWindowInventario();
     }
 
 }

@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -34,11 +33,6 @@ public class SysSoft extends Application {
 
     @Override
     public void init() throws Exception {
-
-        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_INICIO));
-        AnchorPane principal = fXMLPrincipal.load();
-        FxInicioController controllerOperaciones = fXMLPrincipal.getController();
-        controllerOperaciones.initInicioController();
 
         URL urllogin = getClass().getResource(Tools.FX_FILE_LOGIN);
         FXMLLoader fXMLLoaderLogin = FxWindow.LoaderWindow(urllogin);

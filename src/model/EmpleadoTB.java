@@ -53,6 +53,9 @@ public class EmpleadoTB implements Serializable {
     private String usuario;
   
     private String clave;
+    
+    private int rol;
+    
 
     public EmpleadoTB() {
     }
@@ -244,6 +247,14 @@ public class EmpleadoTB implements Serializable {
 
     public void setClave(String clave) {
         this.clave = clave;
+    }
+
+    public int getRol() {
+        return rol;
+    }
+
+    public void setRol(int rol) {
+        this.rol = rol;
     }
 
 

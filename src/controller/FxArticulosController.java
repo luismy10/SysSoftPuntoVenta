@@ -68,7 +68,7 @@ public class FxArticulosController implements Initializable {
     private FxArticuloSeleccionadoController seleccionadoController;
 
     private FxArticuloDetalleController detalleController;
-    private TextField txtSearchArticulo;
+   
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -335,6 +335,18 @@ public class FxArticulosController implements Initializable {
             }
         }
     }
+    
+    @FXML
+    private void onKeyPressedCantidad(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            
+        }
+    }
+
+    @FXML
+    private void onActionCantidad(ActionEvent event) {
+        
+    }
 
     public TableView<ArticuloTB> getTvList() {
         return tvList;
@@ -343,5 +355,7 @@ public class FxArticulosController implements Initializable {
     void setContent(AnchorPane content) {
         this.content = content;
     }
+
+    
 
 }
