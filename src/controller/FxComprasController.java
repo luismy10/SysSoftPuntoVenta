@@ -59,7 +59,7 @@ public class FxComprasController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcCantidad;
     @FXML
-    private TableColumn<ArticuloTB, String> tcPrecio;
+    private TableColumn<ArticuloTB, String> tcCosto;
     @FXML
     private TableColumn<ArticuloTB, String> tcDescuento;
     @FXML
@@ -106,7 +106,7 @@ public class FxComprasController implements Initializable {
 
             @Override
             public RepresentanteTB fromString(String string) {
-                return cbRepresentante.getItems().stream().filter(p->p.getInformacion().equals(string)).findFirst().orElse(null);
+                return cbRepresentante.getItems().stream().filter(p -> p.getInformacion().equals(string)).findFirst().orElse(null);
             }
         });
         initTable();
@@ -118,7 +118,7 @@ public class FxComprasController implements Initializable {
         ));
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getCantidad().get(), 2)));
-        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(
+        tcCosto.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getDescuento().get(), 2)));
@@ -362,10 +362,6 @@ public class FxComprasController implements Initializable {
 
     }
 
-    public void setContent(AnchorPane content) {
-        this.content = content;
-    }
-
     @FXML
     private void onKeyTypedNumeracion(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
@@ -380,7 +376,7 @@ public class FxComprasController implements Initializable {
         if (cbRepresentante.getSelectionModel().getSelectedIndex() >= 0) {
             idRepresentante = RepresentanteADO.GetRepresentanteId(cbRepresentante.getSelectionModel().getSelectedItem().getNumeroDocumento());
         }
-       
+
     }
 
     public TableView<ArticuloTB> getTvList() {
@@ -414,6 +410,10 @@ public class FxComprasController implements Initializable {
 
     public ObservableList<LoteTB> getLoteTBs() {
         return loteTBs;
+    }
+
+    public void setContent(AnchorPane content) {
+        this.content = content;
     }
 
 }

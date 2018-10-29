@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="SysSoftProcess.jar" size="963683" download="eager" />
+    <jar href="SysSoftProcess.jar" size="992978" download="eager" />
     <jar href="lib\commons-beanutils-1.8.2.jar" size="231891" download="eager" />
     <jar href="lib\commons-collections-3.2.1.jar" size="575389" download="eager" />
     <jar href="lib\commons-digester-2.1.jar" size="196768" download="eager" />
@@ -20,7 +20,13 @@
     <jar href="lib\jasperreports-javaflow-4.7.1.jar" size="4041522" download="eager" />
     <jar href="lib\mssql-jdbc-7.0.0.jre8.jar" size="1166239" download="eager" />
     <jar href="lib\png-encoder-1.5.jar" size="18117" download="eager" />
+    <jar href="lib\poi-3.12-20150511.jar" size="2136557" download="eager" />
     <jar href="lib\poi-3.7.jar" size="1675036" download="eager" />
+    <jar href="lib\poi-excelant-3.12-20150511.jar" size="30462" download="eager" />
+    <jar href="lib\poi-ooxml-3.12-20150511.jar" size="1222491" download="eager" />
+    <jar href="lib\poi-ooxml-schemas-3.12-20150511.jar" size="5617718" download="eager" />
+    <jar href="lib\poi-scratchpad-3.12-20150511.jar" size="1303692" download="eager" />
+    <jar href="lib\xmlbeans-2.6.0.jar" size="2730866" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="SysSoftProcess" >
     <param name="requiredFXVersion" value="8.0+"/>

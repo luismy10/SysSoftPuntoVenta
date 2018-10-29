@@ -32,8 +32,6 @@ public class FxDetalleController implements Initializable {
     @FXML
     private Button btnToAction;
     
-    private boolean stateconnect;
-
     private int idDetalle;
     
      private FxDetalleMantenimientoController detalleMantenimientoController;
@@ -84,8 +82,8 @@ public class FxDetalleController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "Ingrese el nombre, por favor.", false);
             txtName.requestFocus();
         } else {
-            stateconnect = DBUtil.StateConnection();
-            if (stateconnect) {
+       
+            if (DBUtil.StateConnection()) {
                 short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
                 if (confirmation == 1) {
                     DetalleTB detalleTB = new DetalleTB();
@@ -94,7 +92,7 @@ public class FxDetalleController implements Initializable {
                     detalleTB.setNombre(txtName.getText().trim());
                     detalleTB.setDescripcion(txtDescripcion.getText().trim());
                     detalleTB.setEstado(cbEstado.getValue().getId());
-                    detalleTB.setUsuarioRegistro("76423388");
+                    detalleTB.setUsuarioRegistro(Session.USER_ID);
                     String result = DetalleADO.CrudEntity(detalleTB);
                     if (result.equalsIgnoreCase("registered")) {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Registrado correctamente.", false);

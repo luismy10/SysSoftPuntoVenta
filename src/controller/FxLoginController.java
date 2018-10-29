@@ -10,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -18,7 +17,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.EmpleadoADO;
 import model.EmpleadoTB;
-import model.MenuADO;
 
 public class FxLoginController implements Initializable {
 
@@ -36,6 +34,7 @@ public class FxLoginController implements Initializable {
 
     @FXML
     private void onActionContactenos(ActionEvent event) {
+        
     }
 
     @FXML
@@ -68,8 +67,10 @@ public class FxLoginController implements Initializable {
                 controller.initInicioController(empleadoTB.getRol());
                 controller.initWindowSize();
                 Session.USER_ID = empleadoTB.getIdEmpleado();
-                Session.USER_NAME = empleadoTB.getApellidos() + " " + empleadoTB.getNombres();
-                controller.initUserSession(empleadoTB.getPuestoName());
+                Session.USER_NAME = (empleadoTB.getApellidos().substring(0, 1).toUpperCase()+empleadoTB.getApellidos().substring(1).toLowerCase()) 
+                        + " " + empleadoTB.getNombres().substring(0, 1).toUpperCase()+empleadoTB.getNombres().substring(1).toLowerCase();
+                controller.initUserSession((
+                        empleadoTB.getPuestoName().substring(0, 1).toUpperCase()+empleadoTB.getPuestoName().substring(1).toLowerCase()));
 
                 Session.WIDTH_WINDOW = scene.getWidth();
                 Session.HEIGHT_WINDOW = scene.getHeight();

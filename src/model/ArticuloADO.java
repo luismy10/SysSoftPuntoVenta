@@ -24,7 +24,7 @@ public class ArticuloADO {
             callableStatement.setString("NombreMarca", articuloTB.getNombre().get());
             callableStatement.setString("NombreGenerico", articuloTB.getNombreGenerico());
             callableStatement.setString("Descripcion", articuloTB.getDescripcion());
-            callableStatement.setInt("Categoria", articuloTB.getCategorio());
+            callableStatement.setInt("Categoria", articuloTB.getCategoria());
             callableStatement.setInt("Marca", articuloTB.getMarcar());
             callableStatement.setInt("Presentacion", articuloTB.getPresentacion());
             callableStatement.setDouble("StockMinimo", articuloTB.getStockMinimo());
@@ -118,14 +118,17 @@ public class ArticuloADO {
                 articuloTB.setNombre(rsEmps.getString("NombreMarca"));
                 articuloTB.setNombreGenerico(rsEmps.getString("NombreGenerico"));
                 articuloTB.setDescripcion(rsEmps.getString("Descripcion"));
-                articuloTB.setCategorio(rsEmps.getInt("Categoria"));
+                articuloTB.setCategoria(rsEmps.getInt("Categoria"));
+                articuloTB.setCategoriaName(rsEmps.getString("CategoriaNombre"));
                 articuloTB.setMarcar(rsEmps.getInt("Marca"));
+                articuloTB.setMarcaName(rsEmps.getString("MarcaNombre"));
+                articuloTB.setPresentacion(rsEmps.getInt("Presentacion"));
+                articuloTB.setPresentacionName(rsEmps.getString("PresentacionNombre"));
                 articuloTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
                 articuloTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
                 articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
                 articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                articuloTB.setPresentacion(rsEmps.getInt("Presentacion"));
                 articuloTB.setEstado(rsEmps.getInt("Estado"));
                 articuloTB.setLote(rsEmps.getBoolean("Lote"));
                 empList.add(articuloTB);
@@ -166,6 +169,45 @@ public class ArticuloADO {
                 ArticuloTB articuloTB = new ArticuloTB();
                 articuloTB.setNombre(rsEmps.getString("NombreMarca"));
                 articuloTB.setNombreGenerico(rsEmps.getString("NombreGenerico"));
+                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                empList.add(articuloTB);
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+
+    public static ObservableList<ArticuloTB> ListIniciarInventario() {
+        String selectStmt = "SELECT IdArticulo,Clave,NombreMarca,Lote,PrecioVenta,Cantidad "
+                + "FROM ArticuloTB WHERE Cantidad = 0";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<ArticuloTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+                ArticuloTB articuloTB = new ArticuloTB();
+                articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
+                articuloTB.setClave(rsEmps.getString("Clave"));
+                articuloTB.setNombre(rsEmps.getString("NombreMarca")); 
+                articuloTB.setLote(rsEmps.getBoolean("Lote")); 
                 articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 empList.add(articuloTB);
