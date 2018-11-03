@@ -85,7 +85,7 @@ public class FxInicioController implements Initializable {
                 FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource("/view/inicio/FxMenu.fxml"));
                 btnInicio = fXMLSeleccionado.load();
                 FxMenuController menuController = fXMLSeleccionado.getController();
-                menuController.getIvImagen().setImage(new Image("/view/home.png")); 
+                menuController.getIvImagen().setImage(new Image("/view/home.png"));
                 menuController.getLblNombre().setText(
                         menuTBs.get(0).getNombre().substring(0, 1).toUpperCase() + menuTBs.get(0).getNombre().substring(1).toLowerCase()
                 );
@@ -154,8 +154,9 @@ public class FxInicioController implements Initializable {
                 btnConfiguracion.setVisible(menuTBs.get(5).isEstado());
                 btnConfiguracion.setOnMouseClicked(this::onMouseClickedConfiguracion);
                 vbMenus.getChildren().add(btnConfiguracion);
+                System.out.println(vbSiderBar.getWidth());
             }
-
+            
             FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_PRINCIPAL));
             principal = fXMLPrincipal.load();
 
@@ -177,6 +178,7 @@ public class FxInicioController implements Initializable {
             setNode(principal);
 
             width_siderbar = vbSiderBar.getPrefWidth();
+           
 
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
@@ -215,9 +217,11 @@ public class FxInicioController implements Initializable {
     private void onMouseClickedSiderBar(MouseEvent event) {
         if (isExpand) {
             vbSiderBar.setPrefWidth(0);
+            
             isExpand = false;
         } else {
             vbSiderBar.setPrefWidth(width_siderbar);
+          
             isExpand = true;
         }
     }
