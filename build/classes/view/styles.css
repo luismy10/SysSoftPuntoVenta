@@ -517,6 +517,7 @@
 .table-view{
     -fx-border-radius: 0;
     -fx-background-radius: 0;
+    -fx-arc-width: 100%;
 }
 .table-view .filler, .table-view .column-header{
     -fx-background-color:  #1a2226;
@@ -1441,3 +1442,13 @@
     -fx-text-fill: white;
 }
 
+/*******************************************************************************
+ *                                                                             *
+ * Padding and Margin                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+.paddinContainer{
+    -fx-padding: 0.8333333333333334em;/*10px*/
+    -fx-spacing: 0.8333333333333334em;/*10px*/
+}
