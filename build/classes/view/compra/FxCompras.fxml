@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxComprasController">
+<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxComprasController">
    <children>
       <HBox VBox.vgrow="ALWAYS">
          <children>
@@ -123,7 +123,7 @@
                                  <columns>
                                     <TableColumn fx:id="tcArticulo" prefWidth="379.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
                                     <TableColumn fx:id="tcCantidad" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Cantidad" />
-                                    <TableColumn fx:id="tcPrecio" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Precio U.N" />
+                                    <TableColumn fx:id="tcCosto" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Costo U.N" />
                                     <TableColumn fx:id="tcDescuento" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Descuento" />
                                     <TableColumn fx:id="tcImporte" prefWidth="125.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />
                                  </columns>

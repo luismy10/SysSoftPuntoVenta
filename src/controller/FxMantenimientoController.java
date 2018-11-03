@@ -33,9 +33,7 @@ public class FxMantenimientoController implements Initializable {
 
     public void initWindow() {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
-        if (DBUtil.StateConnection()) {
-            txtCode.setText(MantenimientoADO.GetIdMantenimiento());
-        }
+        txtCode.setText(MantenimientoADO.GetIdMantenimiento());
     }
 
     public void aValidityProcess() {
@@ -45,7 +43,7 @@ public class FxMantenimientoController implements Initializable {
         } else if (txtName.getText().equalsIgnoreCase("")) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mantenimiento", "Ingrese el nombre del mantenimiento, por favor.", false);
             txtName.requestFocus();
-        } else {           
+        } else {
             if (DBUtil.StateConnection()) {
                 short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
                 if (confirmation == 1) {
@@ -53,7 +51,7 @@ public class FxMantenimientoController implements Initializable {
                     mantenimientoTB.setIdMantenimiento(txtCode.getText());
                     mantenimientoTB.setNombre(txtName.getText().trim());
                     mantenimientoTB.setEstado('1');
-                    mantenimientoTB.setUsuarioRegistro("76423388");
+                    mantenimientoTB.setUsuarioRegistro(Session.USER_ID);
                     String result = MantenimientoADO.CrudEntity(mantenimientoTB);
                     switch (result) {
                         case "registered":

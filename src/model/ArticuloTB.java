@@ -1,7 +1,10 @@
 package model;
 
+import java.time.LocalDate;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
 
@@ -14,7 +17,7 @@ public class ArticuloTB {
     private SimpleStringProperty nombre;
     private String nombreGenerico;
     private String descripcion;
-    private int categorio;
+    private int categoria;
     private SimpleStringProperty categoriaName;
     private int marcar;
     private SimpleStringProperty marcaName;
@@ -36,6 +39,7 @@ public class ArticuloTB {
     private SimpleDoubleProperty utilidad;
     private boolean impuesto;
     private ImagenTB imagenTB;
+    private ObjectProperty<LocalDate> fechaRegistro;
 
     public ArticuloTB() {
 
@@ -112,12 +116,12 @@ public class ArticuloTB {
         this.imagenTB = imagenTB;
     }
 
-    public int getCategorio() {
-        return categorio;
+    public int getCategoria() {
+        return categoria;
     }
 
-    public void setCategorio(int categorio) {
-        this.categorio = categorio;
+    public void setCategoria(int categoria) {
+        this.categoria = categoria;
     }
 
     public SimpleStringProperty getCategoriaName() {
@@ -279,5 +283,15 @@ public class ArticuloTB {
     public void setImageLote(ImageView imageLote) {
         this.imageLote = imageLote;
     }
+
+    public ObjectProperty<LocalDate> getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDate fechaRegistro) {
+        this.fechaRegistro = new SimpleObjectProperty(fechaRegistro);
+    }
+    
+    
 
 }

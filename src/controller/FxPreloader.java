@@ -17,6 +17,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import model.ClienteADO;
+import model.ClienteTB;
 import model.DBUtil;
 import model.DetalleADO;
 import model.EmpresaADO;
@@ -79,8 +81,8 @@ public class FxPreloader extends Preloader {
     public void handleStateChangeNotification(StateChangeNotification info) {
         StateChangeNotification.Type type = info.getType();
         switch (type) {
-            case BEFORE_LOAD:            
-                
+            case BEFORE_LOAD:
+
                 break;
             case BEFORE_INIT:
 
@@ -96,7 +98,7 @@ public class FxPreloader extends Preloader {
                     }
                 });
                 service.start();
-                
+
                 ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
                 if (!list.isEmpty()) {
                     Session.EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();
@@ -109,6 +111,12 @@ public class FxPreloader extends Preloader {
                 DetalleADO.GetDetailIdName("3", "0010", "").forEach(e -> {
                     Session.IMPUESTO = Double.parseDouble(e.getDescripcion().get());
                 });
+
+                ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");
+                if (clienteTB != null) {
+                    Session.IDCLIENTE = clienteTB.getIdCliente();
+                    Session.DATOSCLIENTE = clienteTB.getPersonaTB().getApellidoPaterno() + " " + clienteTB.getPersonaTB().getApellidoMaterno() + " " + clienteTB.getPersonaTB().getPrimerNombre() + " " + clienteTB.getPersonaTB().getSegundoNombre();
+                }
 
                 break;
             case BEFORE_START:

@@ -11,7 +11,9 @@ import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -22,8 +24,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.ArticuloADO;
 import model.ArticuloTB;
 import model.DetalleADO;
@@ -44,11 +48,11 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private TextField txtNombreGenerico;
     @FXML
-    private ComboBox<DetalleTB> cbCategoria;
+    private TextField txtCategoria;
     @FXML
-    private ComboBox<DetalleTB> cbMarca;
+    private TextField txtMarca;
     @FXML
-    private ComboBox<DetalleTB> cbPresentacion;
+    private TextField txtPresentacion;
     @FXML
     private ComboBox<DetalleTB> cbEstado;
     @FXML
@@ -62,8 +66,6 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private TextField txtStockMaximo;
     @FXML
-    private TextField txtCantidad;
-    @FXML
     private TextField txtPrecioCompra;
     @FXML
     private TextField txtImpuestoCompra;
@@ -73,33 +75,36 @@ public class FxArticuloProcesoController implements Initializable {
     private TextField txtImpuestoVenta;
     @FXML
     private CheckBox cbLote;
-    
+
     private String idArticulo;
 
     private long idImagen;
 
     private File selectFile;
 
+    private int idPresentacion;
+
+    private int idCategoria;
+
+    private int idMarca;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idArticulo = "";
         idImagen = 0;
+        idPresentacion = 0;
+        idCategoria = 0;
+        idMarca = 0;
     }
 
     public void setInitArticulo() {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
-        DetalleADO.GetDetailIdName("2", "0006", "").forEach(e -> {
-            cbCategoria.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-        });
-        DetalleADO.GetDetailIdName("2", "0007", "").forEach(e -> {
-            cbMarca.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-        });
+        txtClave.requestFocus();
         DetalleADO.GetDetailIdName("2", "0001", "").forEach(e -> {
             cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
-        DetalleADO.GetDetailIdName("2", "0008", "").forEach(e -> {
-            cbPresentacion.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-        });
+        cbEstado.getSelectionModel().select(0);
+
     }
 
     public void setValueClone(String value) {
@@ -110,34 +115,19 @@ public class FxArticuloProcesoController implements Initializable {
             txtNombreGenerico.setText(articuloTB.getNombreGenerico());
             txtDescripcion.setText(articuloTB.getDescripcion());
 
-            ObservableList<DetalleTB> lscate = cbCategoria.getItems();
-            if (articuloTB.getCategorio() != 0) {
-                for (int i = 0; i < lscate.size(); i++) {
-                    if (articuloTB.getCategorio() == lscate.get(i).getIdDetalle().get()) {
-                        cbCategoria.getSelectionModel().select(i);
-                        break;
-                    }
-                }
+            if (articuloTB.getCategoria() != 0) {
+                idCategoria = articuloTB.getCategoria();
+                txtCategoria.setText(articuloTB.getCategoriaName().get());
             }
 
-            ObservableList<DetalleTB> lsmar = cbMarca.getItems();
             if (articuloTB.getMarcar() != 0) {
-                for (int i = 0; i < lsmar.size(); i++) {
-                    if (articuloTB.getMarcar() == lsmar.get(i).getIdDetalle().get()) {
-                        cbMarca.getSelectionModel().select(i);
-                        break;
-                    }
-                }
+                idMarca = articuloTB.getMarcar();
+                txtMarca.setText(articuloTB.getMarcaName().get());
             }
 
-            ObservableList<DetalleTB> lspre = cbPresentacion.getItems();
             if (articuloTB.getPresentacion() != 0) {
-                for (int i = 0; i < lspre.size(); i++) {
-                    if (articuloTB.getPresentacion() == lspre.get(i).getIdDetalle().get()) {
-                        cbPresentacion.getSelectionModel().select(i);
-                        break;
-                    }
-                }
+                idPresentacion = articuloTB.getPresentacion();
+                txtPresentacion.setText(articuloTB.getPresentacionName().get());
             }
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
@@ -152,7 +142,6 @@ public class FxArticuloProcesoController implements Initializable {
 
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
-            txtCantidad.setText(Tools.roundingValue(articuloTB.getCantidad().get(), 2));
             txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
             txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
 
@@ -172,34 +161,19 @@ public class FxArticuloProcesoController implements Initializable {
             txtNombreGenerico.setText(articuloTB.getNombreGenerico());
             txtDescripcion.setText(articuloTB.getDescripcion());
 
-            ObservableList<DetalleTB> lscate = cbCategoria.getItems();
-            if (articuloTB.getCategorio() != 0) {
-                for (int i = 0; i < lscate.size(); i++) {
-                    if (articuloTB.getCategorio() == lscate.get(i).getIdDetalle().get()) {
-                        cbCategoria.getSelectionModel().select(i);
-                        break;
-                    }
-                }
+            if (articuloTB.getCategoria() != 0) {
+                idCategoria = articuloTB.getCategoria();
+                txtCategoria.setText(articuloTB.getCategoriaName().get());
             }
 
-            ObservableList<DetalleTB> lsmar = cbMarca.getItems();
             if (articuloTB.getMarcar() != 0) {
-                for (int i = 0; i < lsmar.size(); i++) {
-                    if (articuloTB.getMarcar() == lsmar.get(i).getIdDetalle().get()) {
-                        cbMarca.getSelectionModel().select(i);
-                        break;
-                    }
-                }
+                idMarca = articuloTB.getMarcar();
+                txtMarca.setText(articuloTB.getMarcaName().get());
             }
 
-            ObservableList<DetalleTB> lspre = cbPresentacion.getItems();
             if (articuloTB.getPresentacion() != 0) {
-                for (int i = 0; i < lspre.size(); i++) {
-                    if (articuloTB.getPresentacion() == lspre.get(i).getIdDetalle().get()) {
-                        cbPresentacion.getSelectionModel().select(i);
-                        break;
-                    }
-                }
+                idPresentacion = articuloTB.getPresentacion();
+                txtPresentacion.setText(articuloTB.getPresentacionName().get());
             }
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
@@ -211,12 +185,11 @@ public class FxArticuloProcesoController implements Initializable {
                     }
                 }
             }
-            
+
             cbLote.setSelected(articuloTB.isLote());
 
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
-            txtCantidad.setText(Tools.roundingValue(articuloTB.getCantidad().get(), 2));
             txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
             txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
 
@@ -226,7 +199,7 @@ public class FxArticuloProcesoController implements Initializable {
     }
 
     private void loadViewImage(String idRepresentante) {
-        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante,true);
+        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante, true);
         if (imagenTB.getIdImage() > 0) {
             idImagen = imagenTB.getIdImage();
             lnPrincipal.setImage(imagenTB.getImagen());
@@ -256,14 +229,14 @@ public class FxArticuloProcesoController implements Initializable {
                 articuloTB.setImagenTB(new ImagenTB(selectFile != null
                         ? getFileResources(selectFile)
                         : getFileResources(null)));
-                articuloTB.setCategorio(cbCategoria.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbCategoria.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                articuloTB.setCategoria(idCategoria != 0
+                        ? idCategoria
                         : 0);
-                articuloTB.setMarcar(cbMarca.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbMarca.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                articuloTB.setMarcar(idMarca != 0
+                        ? idMarca
                         : 0);
-                articuloTB.setPresentacion(cbPresentacion.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbPresentacion.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                articuloTB.setPresentacion(idPresentacion != 0
+                        ? idPresentacion
                         : 0);
 
                 articuloTB.setStockMinimo(Tools.isNumeric(txtStockMinimo.getText())
@@ -280,10 +253,6 @@ public class FxArticuloProcesoController implements Initializable {
 
                 articuloTB.setPrecioVenta(Tools.isNumeric(txtPrecioVenta.getText())
                         ? Double.parseDouble(txtPrecioVenta.getText())
-                        : 0);
-
-                articuloTB.setCantidad(Tools.isNumeric(txtCantidad.getText())
-                        ? Double.parseDouble(txtCantidad.getText())
                         : 0);
 
                 articuloTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
@@ -415,17 +384,6 @@ public class FxArticuloProcesoController implements Initializable {
     }
 
     @FXML
-    private void onKeyTypedCantidad(KeyEvent event) {
-        char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
-            event.consume();
-        }
-        if (c == '.' && txtCantidad.getText().contains(".") || c == '-' && txtCantidad.getText().contains("-")) {
-            event.consume();
-        }
-    }
-
-    @FXML
     private void onKeyTypedMinimo(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
@@ -470,8 +428,92 @@ public class FxArticuloProcesoController implements Initializable {
     }
 
     @FXML
-    private void onActionLote(ActionEvent event) {
-        
+    private void onKeyTypedDetalle(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if (c != '\b') {
+            event.consume();
+        }
+    }
+
+    private void openWindowDetalle(String title, String idDetalle) throws IOException {
+        URL url = getClass().getResource(Tools.FX_FILE_DETALLELISTA);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxDetalleListaController controller = fXMLLoader.getController();
+        controller.setControllerArticulo(this);
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, title, window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.show();
+        controller.initListDetalle(idDetalle, "");
+    }
+
+    @FXML
+    private void onKeyReleasedCategoria(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.SPACE) {
+            openWindowDetalle("Agregar Categoría", "0006");
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedMarca(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.SPACE) {
+            openWindowDetalle("Agregar Marca", "0007");
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedPresentacion(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.SPACE) {
+            openWindowDetalle("Agregar Presentación", "0008");
+        }
+    }
+
+    @FXML
+    private void onMouseClickedCategoria(MouseEvent event) throws IOException {
+        if (event.getClickCount() == 2) {
+            openWindowDetalle("Agregar Categoría", "0006");
+        }
+    }
+
+    @FXML
+    private void onMouseClickedMarca(MouseEvent event) throws IOException {
+        if (event.getClickCount() == 2) {
+            openWindowDetalle("Agregar Marca", "0007");
+        }
+    }
+
+    @FXML
+    private void onMouseClickedPresentacion(MouseEvent event) throws IOException {
+        if (event.getClickCount() == 2) {
+            openWindowDetalle("Agregar Presentación", "0008");
+        }
+    }
+
+    public void setIdPresentacion(int idPresentacion) {
+        this.idPresentacion = idPresentacion;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    public void setIdMarca(int idMarca) {
+        this.idMarca = idMarca;
+    }
+
+    public TextField getTxtPresentacion() {
+        return txtPresentacion;
+    }
+
+    public TextField getTxtCategoria() {
+        return txtCategoria;
+    }
+
+    public TextField getTxtMarca() {
+        return txtMarca;
     }
 
 }

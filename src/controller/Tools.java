@@ -1,5 +1,8 @@
 package controller;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
@@ -9,20 +12,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.EventType;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -62,6 +63,18 @@ public class Tools {
     static final String FX_FILE_LOTECAMBIAR = "/view/lote/FxLoteCambiar.fxml";
     static final String FX_FILE_LOTEPROCESO = "/view/lote/FxLoteProceso.fxml";
     static final String FX_FILE_REPRESENTANTE = "/view/persona/FxRepresentante.fxml";
+    static final String FX_FILE_VENTA = "/view/venta/FxVenta.fxml";
+    static final String FX_FILE_VENTAPROCESO = "/view/venta/FxVentaProceso.fxml";
+    static final String FX_FILE_VENTAREALIZADA = "/view/venta/FxVentaRealizadas.fxml";
+    static final String FX_FILE_VENTADETALLE = "/view/venta/FxVentaDetalle.fxml";
+    static final String FX_FILE_CLIENTELISTA = "/view/persona/FxClienteLista.fxml";
+    static final String FX_FILE_ROLES = "/view/login/FxRoles.fxml";
+    static final String FX_FILE_EMPLEADOS = "/view/login/FxEmpleados.fxml";
+    static final String FX_FILE_EMPLEADOSPROCESO = "/view/login/FxEmpleadosProceso.fxml";
+    static final String FX_FILE_DETALLELISTA = "/view/mantenimiento/FxDetalleLista.fxml";
+    static final String FX_FILE_DETALLEPROCESO = "/view/mantenimiento/FxDetalleProceso.fxml";
+    static final String FX_FILE_INVENTARIOINICIAL = "/view/lote/FxInventarioInicial.fxml";
+    static final String FX_FILE_IMPORTARINVENTARIO = "/view/lote/FxImportarInventario.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
@@ -125,9 +138,9 @@ public class Tools {
         return Tools.getValueAt(table, table.getSelectionModel().getSelectedIndex(), position).toString();
     }
 
-    private static Object getValueAt(TableView table, int rowIndex, int columnIndex) {
+    public static Object getValueAt(TableView table, int rowIndex, int columnIndex) {
         if (rowIndex >= 0 && rowIndex < table.getItems().size() && columnIndex >= 0 && columnIndex < table.getColumns().size()) {
-            return ((TableColumn) table.getColumns()).getCellObservableValue(rowIndex).getValue();
+            return ((TableColumn) table.getColumns().get(columnIndex)).getCellObservableValue(rowIndex).getValue();
         } else {
             return null;
         }
@@ -212,17 +225,13 @@ public class Tools {
         return new Timestamp(new Date().getTime());
     }
 
-    public static void showTooltip(Window owner, Control control, String tooltipText, ImageView tooltipGraphic) {
-        Point2D p = control.localToScene(0.0, 0.0);
-
-        final Tooltip customTooltip = new Tooltip();
-        customTooltip.setText(tooltipText);
-
-        control.setTooltip(customTooltip);
-        customTooltip.setAutoHide(true);
-
-        customTooltip.show(owner);
-
+    public static void openFile(String ruta) {
+        try {
+            File path = new File(ruta);
+            Desktop.getDesktop().open(path);
+        } catch (IOException ex) {
+            Logger.getLogger(Tools.class.getName()).log(Level.INFO, ex.getLocalizedMessage());
+        }
     }
 
 }

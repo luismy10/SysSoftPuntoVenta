@@ -137,6 +137,7 @@ public class FxProveedorProcesoController implements Initializable {
         DetalleADO.GetDetailIdName("2", "0001", "").forEach(e -> {
             cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
+        cbEstado.getSelectionModel().select(0);
         DetalleADO.GetDetailIdName("2", "0003", "").forEach(e -> {
             cbDocumentoRepresentante.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });

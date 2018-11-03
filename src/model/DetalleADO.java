@@ -13,14 +13,21 @@ public class DetalleADO {
         String selectStmt = "{call Sp_List_Table_Detalle(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        ObservableList<DetalleTB> empList = null;
+        ObservableList<DetalleTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, value[0]);
             preparedStatement.setString(2, value[1]);
             resultSet = preparedStatement.executeQuery();
-            empList = getEntityDetailList(resultSet);
+            while (resultSet.next()) {
+                DetalleTB emp = new DetalleTB();
+                emp.setIdDetalle(resultSet.getInt("IdDetalle"));
+                emp.setNombre(resultSet.getString("Nombre"));
+                emp.setDescripcion(resultSet.getString("Descripcion"));
+                emp.setEstado(resultSet.getString("Estado"));
+                empList.add(emp);
+            }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
         } finally {
@@ -37,20 +44,6 @@ public class DetalleADO {
 
             }
 
-        }
-        return empList;
-    }
-
-    private static ObservableList<DetalleTB> getEntityDetailList(ResultSet rs) throws SQLException {
-        ObservableList<DetalleTB> empList = FXCollections.observableArrayList();
-
-        while (rs.next()) {
-            DetalleTB emp = new DetalleTB();
-            emp.setIdDetalle(rs.getInt("IdDetalle"));
-            emp.setNombre(rs.getString("Nombre"));
-            emp.setDescripcion(rs.getString("Descripcion"));
-            emp.setEstado(rs.getString("Estado"));
-            empList.add(emp);
         }
         return empList;
     }

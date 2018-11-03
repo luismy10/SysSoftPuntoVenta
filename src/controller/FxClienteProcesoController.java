@@ -121,6 +121,7 @@ public class FxClienteProcesoController implements Initializable {
         DetalleADO.GetDetailIdName("2", "0001", "").forEach(e -> {
             cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
+        cbEstado.getSelectionModel().select(0);
         PaisADO.ListPais().forEach(e -> {
             cbPais.getItems().add(new PaisTB(e.getPaisCodigo(), e.getPaisNombre()));
         });
@@ -130,12 +131,14 @@ public class FxClienteProcesoController implements Initializable {
     public void setValueAdd() {
         lblDirectory.setVisible(false);
         btnDirectory.setVisible(false);
+        cbDocumentType.requestFocus();
     }
 
     public void setValueUpdate(String value) {
         btnDesglosar.setVisible(false);
         btnRegister.setText("Actualizar");
         btnRegister.getStyleClass().add("buttonLightWarning");
+        cbDocumentType.requestFocus();
         ClienteTB clienteTB = ClienteADO.GetByIdCliente(value);
         if (clienteTB != null) {
             idCliente = clienteTB.getIdCliente();
@@ -310,7 +313,7 @@ public class FxClienteProcesoController implements Initializable {
                     clienteTB.setEmail(txtEmail.getText().trim());
                     clienteTB.setDireccion(txtDireccion.getText().trim());
                     clienteTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                    clienteTB.setUsuarioRegistro("76423388");
+                    clienteTB.setUsuarioRegistro(Session.USER_ID);
 
                     PersonaTB personaTB = new PersonaTB();
                     personaTB.setIdPersona(idPersona);
@@ -323,9 +326,8 @@ public class FxClienteProcesoController implements Initializable {
                     personaTB.setSexo(cbSex.getSelectionModel().getSelectedIndex() >= 0
                             ? cbSex.getSelectionModel().getSelectedItem().getIdDetalle().get()
                             : 0);
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     if (dpBirthdate.getValue() != null) {
-                        personaTB.setFechaNacimiento(new java.sql.Date(dateFormat.parse(Tools.getDatePicker(dpBirthdate)).getTime()));
+                        personaTB.setFechaNacimiento(new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(Tools.getDatePicker(dpBirthdate)).getTime()));
                     } else {
                         personaTB.setFechaNacimiento(null);
                     }

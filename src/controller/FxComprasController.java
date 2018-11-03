@@ -59,7 +59,7 @@ public class FxComprasController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcCantidad;
     @FXML
-    private TableColumn<ArticuloTB, String> tcPrecio;
+    private TableColumn<ArticuloTB, String> tcCosto;
     @FXML
     private TableColumn<ArticuloTB, String> tcDescuento;
     @FXML
@@ -106,7 +106,7 @@ public class FxComprasController implements Initializable {
 
             @Override
             public RepresentanteTB fromString(String string) {
-                return cbRepresentante.getItems().stream().filter(p->p.getInformacion().equals(string)).findFirst().orElse(null);
+                return cbRepresentante.getItems().stream().filter(p -> p.getInformacion().equals(string)).findFirst().orElse(null);
             }
         });
         initTable();
@@ -118,7 +118,7 @@ public class FxComprasController implements Initializable {
         ));
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getCantidad().get(), 2)));
-        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(
+        tcCosto.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getDescuento().get(), 2)));
@@ -187,7 +187,7 @@ public class FxComprasController implements Initializable {
         }
     }
 
-    private void onViewAdd() throws IOException {
+    private void openWindowArticulos() throws IOException {
         InitializationTransparentBackground();
         URL url = getClass().getResource(Tools.FX_FILE_ARTICULOLISTA);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -272,7 +272,7 @@ public class FxComprasController implements Initializable {
         }
     }
 
-    private void onViewProviders() throws IOException {
+    private void openWindowProvedores() throws IOException {
         InitializationTransparentBackground();
         URL url = getClass().getResource(Tools.FX_FILE_PROVEEDORLISTA);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -306,13 +306,13 @@ public class FxComprasController implements Initializable {
     @FXML
     private void onKeyPressedAdd(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            onViewAdd();
+            openWindowArticulos();
         }
     }
 
     @FXML
     private void onActionAdd(ActionEvent event) throws IOException {
-        onViewAdd();
+        openWindowArticulos();
     }
 
     @FXML
@@ -342,13 +342,13 @@ public class FxComprasController implements Initializable {
     @FXML
     private void onKeyPressedProviders(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            onViewProviders();
+            openWindowProvedores();
         }
     }
 
     @FXML
     private void onActionProviders(ActionEvent event) throws IOException {
-        onViewProviders();
+        openWindowProvedores();
     }
 
     public void setInitComprasValue(String... value) {
@@ -360,10 +360,6 @@ public class FxComprasController implements Initializable {
                     + e.getNombres()));
         });
 
-    }
-
-    public void setContent(AnchorPane content) {
-        this.content = content;
     }
 
     @FXML
@@ -380,7 +376,7 @@ public class FxComprasController implements Initializable {
         if (cbRepresentante.getSelectionModel().getSelectedIndex() >= 0) {
             idRepresentante = RepresentanteADO.GetRepresentanteId(cbRepresentante.getSelectionModel().getSelectedItem().getNumeroDocumento());
         }
-       
+
     }
 
     public TableView<ArticuloTB> getTvList() {
@@ -414,6 +410,10 @@ public class FxComprasController implements Initializable {
 
     public ObservableList<LoteTB> getLoteTBs() {
         return loteTBs;
+    }
+
+    public void setContent(AnchorPane content) {
+        this.content = content;
     }
 
 }

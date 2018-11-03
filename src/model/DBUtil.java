@@ -1,5 +1,6 @@
 package model;
 
+import controller.Tools;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.Connection;
@@ -7,11 +8,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javafx.scene.control.Alert;
 
 public class DBUtil {
 
     private static Connection connection = null;
-    private static final String DIRECTION = "ALEZA";
+    private static final String DIRECTION = "localhost";
     private static final String PORT = "1433";
     private static final String DBNAME = "PuntoVentaSysSoftDB";
     private static final String USER = "sa";
@@ -22,7 +24,7 @@ public class DBUtil {
         try {   
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            System.out.println("Connection Failed! Check output console" + e);
+            Tools.AlertMessage(null, Alert.AlertType.NONE, "Conexion", e.getLocalizedMessage(), false);
         }
     }
 

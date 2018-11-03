@@ -30,7 +30,6 @@ public class LoteADO {
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
-
         } finally {
             try {
                 if (preparedStatement != null) {

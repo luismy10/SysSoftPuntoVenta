@@ -40,12 +40,14 @@ public class FxArticuloListaController implements Initializable {
     private TableColumn<ArticuloTB, String> tcArticulo;
     @FXML
     private TableColumn<ArticuloTB, String> tcMarca;
-    @FXML
+    @FXML 
     private TableColumn<ArticuloTB, String> tcExistencias;
     @FXML
     private TableColumn<ArticuloTB, String> tcPrecio;
 
     private FxComprasController comprasController;
+    
+    private FxVentaController ventaController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -127,14 +129,23 @@ public class FxArticuloListaController implements Initializable {
     @FXML
     private void onMouseClickedList(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
-            openWindowCompra();
+            if (comprasController != null) {
+                openWindowCompra();
+            } else if (ventaController != null) {
+                
+            }
+
         }
     }
 
     @FXML
     private void onKeyPressedList(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowCompra();
+            if (comprasController != null) {
+                openWindowCompra();
+            } else if (ventaController != null) {
+
+            }
         }
     }
 
@@ -162,7 +173,6 @@ public class FxArticuloListaController implements Initializable {
         }
     }
 
-
     @FXML
     private void onKeyPressedReload(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -177,6 +187,10 @@ public class FxArticuloListaController implements Initializable {
 
     void setInitComptrasController(FxComprasController comprasController) {
         this.comprasController = comprasController;
+    }
+
+    void setInitVentasController(FxVentaController ventaController) {
+        this.ventaController = ventaController;
     }
 
 }

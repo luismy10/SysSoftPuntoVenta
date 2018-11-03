@@ -17,7 +17,6 @@ public class SysSoft extends Application {
     public static Pane pane;
     private final int COUNT_LIMIT = 500000;
     private Parent parent;
-    private FxInicioController controller;
     private Scene scene;
 
     @Override
@@ -29,19 +28,16 @@ public class SysSoft extends Application {
         primaryStage.centerOnScreen();
         primaryStage.setMaximized(true);
         primaryStage.show();
-        primaryStage.requestFocus();
-        controller.initWindowSize();
-        Session.WIDTH_WINDOW = scene.getWidth();
-        Session.HEIGHT_WINDOW = scene.getHeight();
+        primaryStage.requestFocus();        
     }
 
     @Override
     public void init() throws Exception {
-        URL url = getClass().getResource(Tools.FX_FILE_INICIO);
-        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
-        parent = fXMLLoader.load(url.openStream());
-        controller = fXMLLoader.getController();
-        controller.initInicioController();
+
+        URL urllogin = getClass().getResource(Tools.FX_FILE_LOGIN);
+        FXMLLoader fXMLLoaderLogin = FxWindow.LoaderWindow(urllogin);
+        parent = fXMLLoaderLogin.load(urllogin.openStream());
+    
         pane = new Pane();
         scene = new Scene(parent);
         for (int i = 0; i < COUNT_LIMIT; i++) {

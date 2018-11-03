@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -68,6 +69,7 @@ public class FxArticulosController implements Initializable {
     private FxArticuloSeleccionadoController seleccionadoController;
 
     private FxArticuloDetalleController detalleController;
+   
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -88,13 +90,13 @@ public class FxArticulosController implements Initializable {
     public void fillArticlesTable(String value) {
         if (DBUtil.StateConnection()) {
 
-            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
                 Thread t = new Thread(runnable);
                 t.setDaemon(true);
                 return t;
             });
 
-            Task<List<ArticuloTB>> task = new Task<List<ArticuloTB>>() {
+            Task<ObservableList<ArticuloTB>> task = new Task<ObservableList<ArticuloTB>>() {
                 @Override
                 public ObservableList<ArticuloTB> call() {
                     return ArticuloADO.ListArticulos(value);
@@ -102,15 +104,16 @@ public class FxArticulosController implements Initializable {
             };
 
             task.setOnSucceeded((WorkerStateEvent e) -> {
-                tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
+//                tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
                 lblLoad.setVisible(false);
             });
             task.setOnFailed((WorkerStateEvent event) -> {
                 lblLoad.setVisible(false);
             });
 
-            task.setOnScheduled((WorkerStateEvent event) -> {
+            task.setOnScheduled((WorkerStateEvent event) -> {                
                 lblLoad.setVisible(true);
+                tvList.itemsProperty().bind(task.valueProperty());
             });
             exec.execute(task);
 
@@ -122,7 +125,7 @@ public class FxArticulosController implements Initializable {
     }
 
     private void loadViewImage(String idRepresentante) {
-        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante,false);
+        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante, false);
         seleccionadoController.getIvPrincipal().setImage(imagenTB.getImagen());
     }
 
@@ -271,9 +274,17 @@ public class FxArticulosController implements Initializable {
     }
 
     @FXML
-    private void onActionSearch(ActionEvent event) {
+    private void onKerPressedSearch(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            tvList.requestFocus();
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedSearch(KeyEvent event) {
         fillArticlesTable(txtSearch.getText());
     }
+
 
     @FXML
     private void onKeyPressedClone(KeyEvent event) throws IOException {
@@ -326,13 +337,27 @@ public class FxArticulosController implements Initializable {
             }
         }
     }
+    
+    @FXML
+    private void onKeyPressedCantidad(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            
+        }
+    }
+
+    @FXML
+    private void onActionCantidad(ActionEvent event) {
+        
+    }
 
     public TableView<ArticuloTB> getTvList() {
         return tvList;
     }
-    
+
     void setContent(AnchorPane content) {
         this.content = content;
     }
+
+    
 
 }

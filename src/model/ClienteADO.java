@@ -107,6 +107,49 @@ public class ClienteADO {
         return empList;
     }
 
+    public static ObservableList<ClienteTB> ListClienteVenta(String value) {
+        String selectStmt = "{call Sp_Listar_Clientes_Venta(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<ClienteTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            rsEmps = preparedStatement.executeQuery();
+
+            while (rsEmps.next()) {
+                ClienteTB clienteTB = new ClienteTB();
+                clienteTB.setId(rsEmps.getLong("Filas"));
+                clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
+                PersonaTB personaTB = new PersonaTB();
+                personaTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
+                personaTB.setApellidoPaterno(rsEmps.getString("ApellidoPaterno"));
+                personaTB.setApellidoMaterno(rsEmps.getString("ApellidoMaterno"));
+                personaTB.setPrimerNombre(rsEmps.getString("PrimerNombre"));
+                personaTB.setSegundoNombre(rsEmps.getString("SegundoNombre"));
+                clienteTB.setPersonaTB(personaTB);
+                empList.add(clienteTB);
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+
     public static ClienteTB GetByIdCliente(String documento) {
         String selectStmt = "{call Sp_Get_Cliente_By_Id(?)}";
         PreparedStatement preparedStatement = null;
@@ -149,6 +192,51 @@ public class ClienteADO {
                 facturacionTB.setDistrito(rsEmps.getInt("Distrito"));
                 clienteTB.setPersonaTB(personaTB);
                 clienteTB.setFacturacionTB(facturacionTB);
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return clienteTB;
+    }
+
+    public static ClienteTB GetByIdClienteVenta(String documento) {
+        String selectStmt = "select ci.IdCliente,\n"
+                + "		p.ApellidoPaterno,p.ApellidoMaterno,p.PrimerNombre,p.SegundoNombre\n"
+                + "		from ClienteTB as ci inner join  PersonaTB as p on ci.IdPersona = p.IdPersona inner join FacturacionTB as f\n"
+                + "		on ci.IdCliente = f.IdCliente\n"
+                + "		where p.NumeroDocumento = ?";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ClienteTB clienteTB = null;
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, documento);
+            rsEmps = preparedStatement.executeQuery();
+
+            if (rsEmps.next()) {
+                clienteTB = new ClienteTB();
+                clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
+                //persona
+                PersonaTB personaTB = new PersonaTB();
+                personaTB.setApellidoPaterno(rsEmps.getString("ApellidoPaterno"));
+                personaTB.setApellidoMaterno(rsEmps.getString("ApellidoMaterno"));
+                personaTB.setPrimerNombre(rsEmps.getString("PrimerNombre"));
+                personaTB.setSegundoNombre(rsEmps.getString("SegundoNombre"));
+                clienteTB.setPersonaTB(personaTB);
+
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);

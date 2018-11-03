@@ -57,6 +57,35 @@ public class FxConfiguracionController implements Initializable {
         content.getChildren().add(node);
     }
 
+    private void openWindowRoles() throws IOException {
+
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_ROLES));
+        VBox node = fXMLPrincipal.load();
+        FxRolesController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        content.getChildren().add(node);
+    }
+
+    private void openWindowEmpleados() throws IOException {
+
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_EMPLEADOS));
+        VBox node = fXMLPrincipal.load();
+        FxEmpleadosController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        content.getChildren().add(node);
+        controller.fillEmpleadosTable("");
+    }
+
     @FXML
     private void onKeyPressedTablasBasicas(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
@@ -83,14 +112,27 @@ public class FxConfiguracionController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedPrivileges(KeyEvent event) {
+    private void onKeyPressedPrivileges(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-
+            openWindowRoles();
         }
     }
 
     @FXML
-    private void onActionPrivileges(ActionEvent event) {
+    private void onActionPrivileges(ActionEvent event) throws IOException {
+        openWindowRoles();
+    }
+
+    @FXML
+    private void onKeyPressedEmployes(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowEmpleados();
+        }
+    }
+
+    @FXML
+    private void onActionEmployes(ActionEvent event) throws IOException {
+        openWindowEmpleados();
     }
 
     void setContent(AnchorPane windowinit, AnchorPane content) {

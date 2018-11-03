@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+
+<HBox fx:id="btnInicio" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" styleClass="buttonContainer" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxMenuController">
+   <children>
+      <ImageView fx:id="ivImagen" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../home.png" />
+         </image>
+      </ImageView>
+      <Text fx:id="lblNombre" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Inicio" />
+   </children>
+</HBox>
