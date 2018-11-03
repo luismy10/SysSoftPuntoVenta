@@ -18,7 +18,7 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" spacing="10.0" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;" styleClass="paddinContainer">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
@@ -41,7 +41,7 @@
             </HBox>
             <VBox minHeight="-Infinity" minWidth="-Infinity">
                <children>
-                  <HBox spacing="10.0">
+                  <HBox spacing="10.0" styleClass="paddinContainer">
                      <children>
                         <Button fx:id="btnIniciar" mnemonicParsing="false" onAction="#onActionIniciar" styleClass="buttonLight" text="Iniciar">
                            <graphic>
@@ -68,9 +68,9 @@
                   </HBox>
                </children>
             </VBox>
-            <VBox spacing="10.0" style="-fx-border-color: #cccccc; -fx-border-width: 1px 0px 1px 0px;" VBox.vgrow="ALWAYS">
+            <VBox spacing="10.0" style="-fx-border-color: #cccccc; -fx-border-width: 1px 0px 1px 0px;" styleClass="paddinContainer" VBox.vgrow="ALWAYS">
                <children>
-                  <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="340.0" styleClass="tableView" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="360.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="tcId" prefWidth="92.0" style="-fx-alignment: CENTER-LEFT;" text="Id" />
                         <TableColumn fx:id="tcClave" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Clave" />

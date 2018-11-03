@@ -13,31 +13,22 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox minHeight="-Infinity" spacing="10.0" style="-fx-background-color: #3c8dbc;">
+            <HBox minHeight="-Infinity" spacing="10.0" style="-fx-background-color: #3c8dbc;" styleClass="paddinContainer">
                <children>
-                  <VBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity">
+                  <HBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity">
-                           <children>
-                              <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Sistema de Ventas" />
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-                     <children>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icon.png" />
+                           </image>
+                        </ImageView>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="PUNTO DE VENTA" />
                         <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#onMouseClickedSiderBar" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                            <image>
                               <Image url="@../menu-white.png" />
                            </image>
                         </ImageView>
                      </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
@@ -52,11 +43,8 @@
                            </font>
                         </Text>
                      </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" onMouseClicked="#onMouseClickedCerrar" spacing="10.0" style="-fx-cursor: HAND; -fx-background-color: #cccccc;">
+                  <HBox alignment="CENTER_RIGHT" onMouseClicked="#onMouseClickedCerrar" spacing="10.0" style="-fx-cursor: HAND; -fx-background-color: #367fa9;">
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -65,10 +53,13 @@
                         </ImageView>
                      </children>
                      <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                   </HBox>
                </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
             </HBox>
             <HBox VBox.vgrow="ALWAYS">
                <children>

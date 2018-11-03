@@ -72,13 +72,13 @@
                <children>
                   <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="360.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="tcId" prefWidth="92.0" style="-fx-alignment: CENTER-LEFT;" text="Id" />
-                        <TableColumn fx:id="tcClave" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Clave" />
-                        <TableColumn fx:id="tcArticulo" prefWidth="311.0" style="-fx-alignment: CENTER-LEFT;" text="Artículo" />
-                        <TableColumn fx:id="tcLote" prefWidth="90.0" style="-fx-alignment: CENTER-LEFT;" text="Lote" />
-                        <TableColumn fx:id="tcCaducidad" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha caducidad" />
-                        <TableColumn fx:id="tcPrecio" prefWidth="101.0" style="-fx-alignment: CENTER-LEFT;" text="Precio U.N" />
-                        <TableColumn fx:id="tcExistencias" prefWidth="103.0" style="-fx-alignment: CENTER-LEFT;" text="Existencias" />
+                        <TableColumn fx:id="tcId" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="92.0" style="-fx-alignment: CENTER-LEFT;" text="Id" />
+                        <TableColumn fx:id="tcClave" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Clave" />
+                        <TableColumn fx:id="tcArticulo" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="311.0" style="-fx-alignment: CENTER-LEFT;" text="Artículo" />
+                        <TableColumn fx:id="tcLote" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="90.0" style="-fx-alignment: CENTER-LEFT;" text="Lote" />
+                        <TableColumn fx:id="tcCaducidad" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha caducidad" />
+                        <TableColumn fx:id="tcPrecio" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="101.0" style="-fx-alignment: CENTER-LEFT;" text="Precio U.N" />
+                        <TableColumn fx:id="tcExistencias" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="103.0" style="-fx-alignment: CENTER-LEFT;" text="Existencias" />
                      </columns>
                   </TableView>
                   <HBox alignment="CENTER_LEFT" spacing="10.0">
