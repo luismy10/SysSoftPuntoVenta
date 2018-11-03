@@ -129,7 +129,7 @@
                               <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                                  <children>
                                     <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="89.0" styleClass="labelOpenSansRegular16" text="Total:" />
-                                    <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="157.0" styleClass="labelRobotoBold30" text=" S/ 100.00" HBox.hgrow="ALWAYS" />
+                                    <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="157.0" styleClass="labelRobotoBold26" text=" S/ 100.00" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                            </children>
