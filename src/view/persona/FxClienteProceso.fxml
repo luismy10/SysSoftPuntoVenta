@@ -25,9 +25,9 @@
                <content>
                   <VBox>
                      <children>
-                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" style="-fx-background-color: #1a2226;">
+                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" style="-fx-background-color: #1a2226;" styleClass="paddinContainer">
                            <children>
-                              <HBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                              <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <ImageView fitHeight="66.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -63,16 +63,16 @@
                           <tabs>
                             <Tab text="Datos básicos">
                               <content>
-                                <AnchorPane style="-fx-background-color: #e7e6e6;">
+                                <AnchorPane style="-fx-background-color: #e7e6e6; -fx-padding: 0.8333333333333334em;">
                                        <children>
-                                          <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-padding: 1.6666666666666667em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer">
                                                    <VBox.margin>
                                                       <Insets />
                                                    </VBox.margin>
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Tipo documento:" textFill="#23283a">
+                                                      <Label prefWidth="110.0" styleClass="labelRoboto14" text="Tipo documento:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -92,53 +92,35 @@
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                    </padding>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Apellido paterno:" textFill="#23283a">
+                                                      <Label prefWidth="110.0" styleClass="labelRoboto14" text="Apellidos:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtLastName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="210.0" />
-                                                      <Label prefWidth="115.0" styleClass="labelRoboto14" text="Apellido materno:" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                         <HBox.margin>
-                                                            <Insets left="10.0" />
-                                                         </HBox.margin>
-                                                      </Label>
-                                                      <TextField fx:id="txtMotherLastName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="210.0" />
+                                                      <TextField fx:id="txtLastName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="210.0" HBox.hgrow="ALWAYS" />
                                                    </children>
                                                    <padding>
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                    </padding>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer">
                                                    <children>
-                                                      <Label prefWidth="106.0" styleClass="labelRoboto14" text="Primer nombre:" textFill="#23283a">
+                                                      <Label prefWidth="110.0" styleClass="labelRoboto14" text="Nombres:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtFirstName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="210.0" />
-                                                      <Label prefWidth="115.0" styleClass="labelRoboto14" text="Segundo nombre:" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                         <HBox.margin>
-                                                            <Insets left="10.0" />
-                                                         </HBox.margin>
-                                                      </Label>
-                                                      <TextField fx:id="txtSecondName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="210.0" />
+                                                      <TextField fx:id="txtFirstName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="210.0" HBox.hgrow="ALWAYS" />
                                                    </children>
                                                    <padding>
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                    </padding>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer">
                                                    <children>
-                                                      <Label prefWidth="106.0" styleClass="labelRoboto14" text="Estado:" textFill="#23283a">
+                                                      <Label prefWidth="110.0" styleClass="labelRoboto14" text="Estado:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -163,11 +145,11 @@
                             </Tab>
                               <Tab text="Datos de contacto">
                                  <content>
-                                    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6;">
+                                    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6; -fx-padding: 0.8333333333333334em;">
                                        <children>
-                                          <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-padding: 1.6666666666666667em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer">
                                                    <children>
                                                       <Label prefWidth="106.0" styleClass="labelRoboto14" text="Sexo:" textFill="#23283a">
                                                          <font>
@@ -189,7 +171,7 @@
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                    </padding>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer">
                                                    <children>
                                                       <Label prefWidth="106.0" styleClass="labelRoboto14" text="Teléfono:" textFill="#23283a">
                                                          <font>
@@ -211,7 +193,7 @@
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                    </padding>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer">
                                                    <children>
                                                       <Label prefWidth="106.0" styleClass="labelRoboto14" text="Email:" textFill="#23283a">
                                                          <font>
@@ -224,7 +206,7 @@
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                    </padding>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer">
                                                    <children>
                                                       <Label prefWidth="106.0" styleClass="labelRoboto14" text="Dirección:" textFill="#23283a">
                                                          <font>
@@ -240,7 +222,7 @@
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                    </padding>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer">
                                                    <children>
                                                       <Label fx:id="lblDirectory" prefWidth="106.0" styleClass="labelRoboto14" text="Directorio:" textFill="#23283a">
                                                          <font>
@@ -275,11 +257,11 @@
                               </Tab>
                             <Tab text="Datos de facturación">
                                  <content>
-                                    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6;">
+                                    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6; -fx-padding: 0.8333333333333334em;">
                                        <children>
-                                          <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-padding: 1.6666666666666667em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 0.8333333333333334em;">
                                                    <VBox.margin>
                                                       <Insets />
                                                    </VBox.margin>
@@ -304,7 +286,7 @@
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                    </padding>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 0.8333333333333334em;">
                                                    <children>
                                                       <Label prefWidth="106.0" styleClass="labelRoboto14" text="Razón social:" textFill="#23283a">
                                                          <font>
@@ -326,7 +308,7 @@
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                    </padding>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 0.8333333333333334em;">
                                                    <children>
                                                       <Label prefWidth="106.0" styleClass="labelRoboto14" text="País:" textFill="#23283a">
                                                          <font>
@@ -348,7 +330,7 @@
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                    </padding>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 0.8333333333333334em;">
                                                    <children>
                                                       <Label prefWidth="106.0" styleClass="labelRoboto14" text="Provincia:" textFill="#23283a">
                                                          <font>
@@ -388,7 +370,7 @@
                   </VBox>
                </content>
             </ScrollPane>
-            <HBox alignment="CENTER" spacing="10.0" style="-fx-border-width: 1 0 0 0; -fx-border-color: #CCCCCC; -fx-background-color: white;">
+            <HBox alignment="CENTER" spacing="10.0" style="-fx-border-width: 1 0 0 0; -fx-border-color: #CCCCCC; -fx-background-color: white;" styleClass="paddinContainer">
                <children>
                   <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLightDefault" text="Registrar">
                      <graphic>
