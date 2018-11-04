@@ -153,8 +153,7 @@ public class FxInicioController implements Initializable {
                 );
                 btnConfiguracion.setVisible(menuTBs.get(5).isEstado());
                 btnConfiguracion.setOnMouseClicked(this::onMouseClickedConfiguracion);
-                vbMenus.getChildren().add(btnConfiguracion);
-                System.out.println(vbSiderBar.getWidth());
+                vbMenus.getChildren().add(btnConfiguracion);               
             }
             
             FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_PRINCIPAL));

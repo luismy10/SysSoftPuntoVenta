@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.ArticuloTB;
+import model.ComprobanteADO;
 import model.DetalleADO;
 import model.DetalleTB;
 
@@ -78,6 +79,11 @@ public class FxVentaController implements Initializable {
         cbComprobante.getSelectionModel().select(0);
         txtCliente.setText(Session.DATOSCLIENTE);
         txtArticulo.requestFocus();
+        
+        String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
+        lblSerie.setText(array[0]);
+        lblNumeracion.setText(array[1]);
+
     }
 
     private void initTable() {
@@ -205,5 +211,6 @@ public class FxVentaController implements Initializable {
     void setContent(AnchorPane content) {
         this.content = content;
     }
+    
 
 }
