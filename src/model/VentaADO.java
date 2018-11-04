@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.nio.charset.Charset;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -69,7 +70,7 @@ public class VentaADO {
             venta.setInt(3, ventaTB.getComprobante());
             venta.setString(4, id_comprabante[0]);
             venta.setString(5, id_comprabante[1]);
-            venta.setDate(6, ventaTB.getFechaVenta());
+            venta.setTimestamp(6, ventaTB.getFechaVenta());
             venta.setDouble(7, ventaTB.getSubTotal());
             venta.setDouble(8, ventaTB.getGravada());
             venta.setDouble(9, ventaTB.getDescuento());
@@ -77,9 +78,9 @@ public class VentaADO {
             venta.setDouble(11, ventaTB.getTotal());
             venta.addBatch();
 
-            comprobante.setBytes(1, id_comprabante[0].getBytes());
+            comprobante.setBytes(1, id_comprabante[0].getBytes(Charset.forName("UTF-8")));
             comprobante.setString(2, id_comprabante[1]);
-            comprobante.setDate(3, ventaTB.getFechaVenta());
+            comprobante.setTimestamp(3, ventaTB.getFechaVenta());
             comprobante.addBatch();
 
             venta.executeBatch();

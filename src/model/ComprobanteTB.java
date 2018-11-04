@@ -10,13 +10,13 @@ package model;
  * @author Ruberfc
  */
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class ComprobanteTB {
     
     private byte[] serie;
     private String numeracion;
-    private Date facha;
+    private Timestamp facha;
 
     public ComprobanteTB() {
     }
@@ -26,7 +26,7 @@ public class ComprobanteTB {
         this.numeracion = numeracion;
     }
 
-    public ComprobanteTB(byte[] serie, String numeracion, Date facha) {
+    public ComprobanteTB(byte[] serie, String numeracion, Timestamp facha) {
         this.serie = serie;
         this.numeracion = numeracion;
         this.facha = facha;
@@ -49,11 +49,11 @@ public class ComprobanteTB {
         this.numeracion = numeracion;
     }
 
-    public Date getFacha() {
+    public Timestamp getFacha() {
         return facha;
     }
 
-    public void setFacha(Date facha) {
+    public void setFacha(Timestamp facha) {
         this.facha = facha;
     }
     

@@ -1,9 +1,7 @@
 
 package model;
 
-import java.sql.Date;
-
-
+import java.sql.Timestamp;
 
 public class VentaTB {
     
@@ -13,7 +11,7 @@ public class VentaTB {
     private int comprobante;
     private String serie;
     private String numeracion;
-    private Date fechaVenta;
+    private Timestamp fechaVenta;
     private double subTotal;
     private double gravada;
     private double descuento;
@@ -74,11 +72,11 @@ public class VentaTB {
         this.numeracion = numeracion;
     }
 
-    public Date getFechaVenta() {
+    public Timestamp getFechaVenta() {
         return fechaVenta;
     }
 
-    public void setFechaVenta(Date fechaVenta) {
+    public void setFechaVenta(Timestamp fechaVenta) {
         this.fechaVenta = fechaVenta;
     }
 
