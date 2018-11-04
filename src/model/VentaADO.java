@@ -5,10 +5,10 @@
  */
 package model;
 
-import java.nio.charset.Charset;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  *
@@ -58,12 +58,7 @@ public class VentaADO {
                     + "           ,?\n"
                     + "           ,?)");
 
-            comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO [dbo].[ComprobanteTB]\n"
-                    + "           ([Serie]\n"
-                    + "           ,[Numeracion]\n"
-                    + "           ,[FechaRegistro])\n"
-                    + "     VALUES\n"
-                    + "           (?,?,?)");
+            comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(Serie,Numeracion,FechaRegistro)VALUES(?,?,?)");
 
             venta.setString(1, ventaTB.getCliente());
             venta.setString(2, ventaTB.getVendedor());
@@ -78,7 +73,9 @@ public class VentaADO {
             venta.setDouble(11, ventaTB.getTotal());
             venta.addBatch();
 
-            comprobante.setBytes(1, id_comprabante[0].getBytes(Charset.forName("UTF-8")));
+            byte[] bytes = DatatypeConverter.parseHexBinary(id_comprabante[0]);
+            
+            comprobante.setBytes(1, bytes);
             comprobante.setString(2, id_comprabante[1]);
             comprobante.setTimestamp(3, ventaTB.getFechaVenta());
             comprobante.addBatch();
@@ -98,6 +95,12 @@ public class VentaADO {
             try {
                 if (serie_numeracion != null) {
                     serie_numeracion.close();
+                }
+                if (venta != null) {
+                    venta.close();
+                }
+                if (comprobante != null) {
+                    comprobante.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {

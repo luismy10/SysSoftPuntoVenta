@@ -51,6 +51,7 @@ public class FxVentaProcesoController implements Initializable {
             switch (result) {
                 case "register":
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Venta", "Se realiazo la venta con éxito", false);
+                    ventaController.resetVenta();
                     break;
                 default:
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Venta", result, false);

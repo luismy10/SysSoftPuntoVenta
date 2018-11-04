@@ -52,11 +52,9 @@ public class FxClienteProcesoController implements Initializable {
     private TextField txtDocumentNumber;
     @FXML
     private TextField txtLastName;
-    @FXML
     private TextField txtMotherLastName;
     @FXML
     private TextField txtFirstName;
-    @FXML
     private TextField txtSecondName;
     @FXML
     private ComboBox<DetalleTB> cbSex;
