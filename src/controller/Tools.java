@@ -147,10 +147,11 @@ public class Tools {
     }
 
     public static String[] getDataPeople(String data) {
-        if (data != null || !data.isEmpty()) {
+        if (data != null) {
             return data.trim().split(" ");
+        } else {
+            return null;
         }
-        return null;
     }
 
     public static String roundingValue(double valor, int decimals) {

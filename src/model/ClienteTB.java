@@ -1,16 +1,21 @@
-
 package model;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-
 public class ClienteTB {
-    
+
     private SimpleLongProperty id;
     private String idCliente;
+    private int tipoDocumento;
+    private String numeroDocumento;
+    private String apellidos;
+    private String nombres;
+    private int sexo;
+    private Date fechaNacimiento;
     private String telefono;
     private String celular;
     private String email;
@@ -21,15 +26,13 @@ public class ClienteTB {
     private ObjectProperty<LocalDate> fechaRegistro;
     private String usuarioActualizo;
     private ObjectProperty<LocalDate> fechaActualizo;
-    private String idPersona;
-    private PersonaTB personaTB;
     private long idFacturacion;
     private FacturacionTB facturacionTB;
-    
+
     public ClienteTB() {
-        
+
     }
-    
+
     public SimpleLongProperty getId() {
         return id;
     }
@@ -44,6 +47,54 @@ public class ClienteTB {
 
     public void setIdCliente(String idCliente) {
         this.idCliente = idCliente;
+    }
+
+    public int getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(int tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getNumeroDocumento() {
+        return numeroDocumento;
+    }
+
+    public void setNumeroDocumento(String numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public int getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(int sexo) {
+        this.sexo = sexo;
+    }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public String getTelefono() {
@@ -126,22 +177,6 @@ public class ClienteTB {
         this.fechaActualizo = new SimpleObjectProperty(fechaActualizo);
     }
 
-    public String getIdPersona() {
-        return idPersona;
-    }
-
-    public void setIdPersona(String idPersona) {
-        this.idPersona = idPersona;
-    }
-
-    public PersonaTB getPersonaTB() {
-        return personaTB;
-    }
-
-    public void setPersonaTB(PersonaTB personaTB) {
-        this.personaTB = personaTB;
-    }
-
     public long getIdFacturacion() {
         return idFacturacion;
     }
@@ -157,6 +192,5 @@ public class ClienteTB {
     public void setFacturacionTB(FacturacionTB facturacionTB) {
         this.facturacionTB = facturacionTB;
     }
-    
-    
+
 }

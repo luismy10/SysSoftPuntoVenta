@@ -10,23 +10,19 @@ import javafx.collections.ObservableList;
 public class ClienteADO {
 
     public static String CrudCliente(ClienteTB clienteTB) {
-        String selectStmt = "{call Sp_Crud_Persona_Cliente(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String selectStmt = "{call Sp_Crud_Persona_Cliente(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
             DBUtil.dbConnect();
             callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
-            //persona
-            callableStatement.setString("IdPersona", clienteTB.getPersonaTB().getIdPersona().get());
-            callableStatement.setInt("TipoDocumento", clienteTB.getPersonaTB().getTipoDocumento());
-            callableStatement.setString("NumeroDocumento", clienteTB.getPersonaTB().getNumeroDocumento().get());
-            callableStatement.setString("ApellidoPaterno", clienteTB.getPersonaTB().getApellidoPaterno());
-            callableStatement.setString("ApellidoMaterno", clienteTB.getPersonaTB().getApellidoMaterno());
-            callableStatement.setString("PrimerNombre", clienteTB.getPersonaTB().getPrimerNombre());
-            callableStatement.setString("SegundoNombre", clienteTB.getPersonaTB().getSegundoNombre());
-            callableStatement.setInt("Sexo", clienteTB.getPersonaTB().getSexo());
-            callableStatement.setDate("FechaNacimiento", clienteTB.getPersonaTB().getFechaNacimiento());
             //cliente
             callableStatement.setString("IdCliente", clienteTB.getIdCliente());
+            callableStatement.setInt("TipoDocumento", clienteTB.getTipoDocumento());
+            callableStatement.setString("NumeroDocumento", clienteTB.getNumeroDocumento());
+            callableStatement.setString("Apellidos", clienteTB.getApellidos());
+            callableStatement.setString("Nombres", clienteTB.getNombres());
+            callableStatement.setInt("Sexo", clienteTB.getSexo());
+            callableStatement.setDate("FechaNacimiento", clienteTB.getFechaNacimiento());
             callableStatement.setString("Telefono", clienteTB.getTelefono());
             callableStatement.setString("Celular", clienteTB.getCelular());
             callableStatement.setString("Email", clienteTB.getEmail());
@@ -74,22 +70,17 @@ public class ClienteADO {
             while (rsEmps.next()) {
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setId(rsEmps.getLong("Filas"));
-                clienteTB.setIdPersona(rsEmps.getString("IdPersona"));
-                PersonaTB personaTB = new PersonaTB();
-                personaTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
-                personaTB.setApellidoPaterno(rsEmps.getString("ApellidoPaterno"));
-                personaTB.setApellidoMaterno(rsEmps.getString("ApellidoMaterno"));
-                personaTB.setPrimerNombre(rsEmps.getString("PrimerNombre"));
-                personaTB.setSegundoNombre(rsEmps.getString("SegundoNombre"));
+                clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
+                clienteTB.setApellidos(rsEmps.getString("Apellidos"));
+                clienteTB.setNombres(rsEmps.getString("Nombres"));
                 clienteTB.setFechaRegistro(rsEmps.getDate("FRegistro").toLocalDate());
                 clienteTB.setTelefono(rsEmps.getString("Telefono"));
                 clienteTB.setCelular(rsEmps.getString("Celular"));
                 clienteTB.setEstadoName(rsEmps.getString("Estado"));
-                clienteTB.setPersonaTB(personaTB);
                 empList.add(clienteTB);
             }
         } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
+            System.out.println("ListCliente - La operación de selección de SQL ha fallado: " + e);
 
         } finally {
             try {
@@ -122,17 +113,13 @@ public class ClienteADO {
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setId(rsEmps.getLong("Filas"));
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
-                PersonaTB personaTB = new PersonaTB();
-                personaTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
-                personaTB.setApellidoPaterno(rsEmps.getString("ApellidoPaterno"));
-                personaTB.setApellidoMaterno(rsEmps.getString("ApellidoMaterno"));
-                personaTB.setPrimerNombre(rsEmps.getString("PrimerNombre"));
-                personaTB.setSegundoNombre(rsEmps.getString("SegundoNombre"));
-                clienteTB.setPersonaTB(personaTB);
+                clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
+                clienteTB.setApellidos(rsEmps.getString("Apellidos"));
+                clienteTB.setNombres(rsEmps.getString("Nombres"));
                 empList.add(clienteTB);
             }
         } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
+            System.out.println("ListClienteVenta - La operación de selección de SQL ha fallado: " + e);
 
         } finally {
             try {
@@ -164,22 +151,17 @@ public class ClienteADO {
             if (rsEmps.next()) {
                 clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
+                clienteTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
+                clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento")); 
+                clienteTB.setApellidos(rsEmps.getString("Apellidos"));
+                clienteTB.setNombres(rsEmps.getString("Nombres"));
+                clienteTB.setSexo(rsEmps.getInt("Sexo"));
+                clienteTB.setFechaNacimiento(rsEmps.getDate("FechaNacimiento"));
                 clienteTB.setTelefono(rsEmps.getString("Telefono"));
                 clienteTB.setCelular(rsEmps.getString("Celular"));
                 clienteTB.setEmail(rsEmps.getString("Email"));
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
                 clienteTB.setEstado(rsEmps.getInt("Estado"));
-                //persona
-                PersonaTB personaTB = new PersonaTB();
-                personaTB.setIdPersona(rsEmps.getString("IdPersona"));
-                personaTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
-                personaTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
-                personaTB.setApellidoPaterno(rsEmps.getString("ApellidoPaterno"));
-                personaTB.setApellidoMaterno(rsEmps.getString("ApellidoMaterno"));
-                personaTB.setPrimerNombre(rsEmps.getString("PrimerNombre"));
-                personaTB.setSegundoNombre(rsEmps.getString("SegundoNombre"));
-                personaTB.setSexo(rsEmps.getInt("Sexo"));
-                personaTB.setFechaNacimiento(rsEmps.getDate("FechaNacimiento"));
                 //facturación
                 FacturacionTB facturacionTB = new FacturacionTB();
                 facturacionTB.setTipoDocumentoFacturacion(rsEmps.getInt("TipoFactura"));
@@ -190,7 +172,6 @@ public class ClienteADO {
                 facturacionTB.setDepartamento(rsEmps.getInt("Ciudad"));
                 facturacionTB.setProvincia(rsEmps.getInt("Provincia"));
                 facturacionTB.setDistrito(rsEmps.getInt("Distrito"));
-                clienteTB.setPersonaTB(personaTB);
                 clienteTB.setFacturacionTB(facturacionTB);
             }
         } catch (SQLException e) {
@@ -213,10 +194,10 @@ public class ClienteADO {
 
     public static ClienteTB GetByIdClienteVenta(String documento) {
         String selectStmt = "select ci.IdCliente,\n"
-                + "		p.ApellidoPaterno,p.ApellidoMaterno,p.PrimerNombre,p.SegundoNombre\n"
-                + "		from ClienteTB as ci inner join  PersonaTB as p on ci.IdPersona = p.IdPersona inner join FacturacionTB as f\n"
+                + "		ci.Apellidos,ci.Nombres\n"
+                + "		from ClienteTB as ci inner join FacturacionTB as f\n"
                 + "		on ci.IdCliente = f.IdCliente\n"
-                + "		where p.NumeroDocumento = ?";
+                + "		where ci.NumeroDocumento = ?";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ClienteTB clienteTB = null;
@@ -229,14 +210,8 @@ public class ClienteADO {
             if (rsEmps.next()) {
                 clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
-                //persona
-                PersonaTB personaTB = new PersonaTB();
-                personaTB.setApellidoPaterno(rsEmps.getString("ApellidoPaterno"));
-                personaTB.setApellidoMaterno(rsEmps.getString("ApellidoMaterno"));
-                personaTB.setPrimerNombre(rsEmps.getString("PrimerNombre"));
-                personaTB.setSegundoNombre(rsEmps.getString("SegundoNombre"));
-                clienteTB.setPersonaTB(personaTB);
-
+                clienteTB.setApellidos(rsEmps.getString("Apellidos"));
+                clienteTB.setNombres(rsEmps.getString("Nombres"));
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);

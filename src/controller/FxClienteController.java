@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -62,13 +61,11 @@ public class FxClienteController implements Initializable {
         proccess = false;
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
-        tcDocumento.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getPersonaTB().getNumeroDocumento().get()));
+        tcDocumento.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroDocumento()));
         tcPersona.setCellValueFactory(cellData
                 -> Bindings.concat(
-                        cellData.getValue().getPersonaTB().getApellidoPaterno() + " ",
-                        cellData.getValue().getPersonaTB().getApellidoMaterno() + " ",
-                        cellData.getValue().getPersonaTB().getPrimerNombre() + " ",
-                        cellData.getValue().getPersonaTB().getSegundoNombre()
+                        cellData.getValue().getApellidos() + " ",
+                        cellData.getValue().getNombres() + " "
                 )
         );
         tcContacto.setCellValueFactory(cellData
@@ -102,7 +99,7 @@ public class FxClienteController implements Initializable {
                 return t;
             });
 
-            Task<List<ClienteTB>> task = new Task<List<ClienteTB>>() {
+            Task<ObservableList<ClienteTB>> task = new Task<ObservableList<ClienteTB>>() {
                 @Override
                 public ObservableList<ClienteTB> call() {
                     return ClienteADO.ListCliente(value);
@@ -110,7 +107,7 @@ public class FxClienteController implements Initializable {
             };
 
             task.setOnSucceeded((WorkerStateEvent e) -> {
-                tvList.setItems((ObservableList<ClienteTB>) task.getValue());
+                tvList.setItems(task.getValue());
                 proccess = true;
                 lblLoad.setVisible(false);
             });
@@ -178,7 +175,7 @@ public class FxClienteController implements Initializable {
                 content.getChildren().remove(SysSoft.pane);
             });
             stage.show();
-            controller.setValueUpdate(tvList.getSelectionModel().getSelectedItem().getPersonaTB().getNumeroDocumento().get());
+            controller.setValueUpdate(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento());
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Clientes", "Seleccione un cliente para actualizar.", false);
             tvList.requestFocus();

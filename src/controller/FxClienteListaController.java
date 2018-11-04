@@ -1,7 +1,6 @@
 package controller;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,13 +43,11 @@ public class FxClienteListaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
-        tcDocumento.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getPersonaTB().getNumeroDocumento().get()));
+        tcDocumento.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroDocumento()));
         tcPersona.setCellValueFactory(cellData
                 -> Bindings.concat(
-                        cellData.getValue().getPersonaTB().getApellidoPaterno() + " ",
-                        cellData.getValue().getPersonaTB().getApellidoMaterno() + " ",
-                        cellData.getValue().getPersonaTB().getPrimerNombre() + " ",
-                        cellData.getValue().getPersonaTB().getSegundoNombre()
+                        cellData.getValue().getApellidos() + " ",
+                        cellData.getValue().getNombres()
                 )
         );
     }
@@ -64,7 +61,7 @@ public class FxClienteListaController implements Initializable {
                 return t;
             });
 
-            Task<List<ClienteTB>> task = new Task<List<ClienteTB>>() {
+            Task<ObservableList<ClienteTB>> task = new Task<ObservableList<ClienteTB>>() {
                 @Override
                 public ObservableList<ClienteTB> call() {
                     return ClienteADO.ListClienteVenta(value);
@@ -72,7 +69,7 @@ public class FxClienteListaController implements Initializable {
             };
 
             task.setOnSucceeded((WorkerStateEvent e) -> {
-                tvList.setItems((ObservableList<ClienteTB>) task.getValue());
+                tvList.setItems(task.getValue());
             });
 
             exec.execute(task);

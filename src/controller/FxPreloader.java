@@ -82,10 +82,10 @@ public class FxPreloader extends Preloader {
         StateChangeNotification.Type type = info.getType();
         switch (type) {
             case BEFORE_LOAD:
-
+                System.out.println("BEFORE_LOAD");
                 break;
             case BEFORE_INIT:
-
+                System.out.println("BEFORE_INIT");
                 TimerService service = new TimerService();
                 service.setPeriod(Duration.seconds(59));
                 service.setOnSucceeded((WorkerStateEvent t) -> {
@@ -115,12 +115,13 @@ public class FxPreloader extends Preloader {
                 ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");
                 if (clienteTB != null) {
                     Session.IDCLIENTE = clienteTB.getIdCliente();
-                    Session.DATOSCLIENTE = clienteTB.getPersonaTB().getApellidoPaterno() + " " + clienteTB.getPersonaTB().getApellidoMaterno() + " " + clienteTB.getPersonaTB().getPrimerNombre() + " " + clienteTB.getPersonaTB().getSegundoNombre();
+                    Session.DATOSCLIENTE = clienteTB.getApellidos() + " " + clienteTB.getNombres();
                 }
-
+                System.out.println("BEFORE_INIT");
                 break;
             case BEFORE_START:
                 preloaderStage.hide();
+                System.out.println("BEFORE_START");
                 break;
         }
     }
