@@ -9,22 +9,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" minHeight="-Infinity" prefHeight="580.0" prefWidth="960.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxInicioController">
+<AnchorPane id="AnchorPane" fx:id="window" minHeight="-Infinity" prefHeight="580.0" prefWidth="960.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxInicioController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox minHeight="-Infinity" spacing="10.0" style="-fx-background-color: #3c8dbc;" styleClass="paddinContainer">
                <children>
-<<<<<<< HEAD
-                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity">
-                     <children>
-                        <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Sistema de Ventas" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-=======
                   <HBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
->>>>>>> ba74765ac4200d595c63422fb2ac9ad3ca3d9a05
                      <children>
                         <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -53,11 +44,7 @@
                         </Text>
                      </children>
                   </HBox>
-<<<<<<< HEAD
-                  <HBox alignment="CENTER_RIGHT" onMouseClicked="#onMouseClickedCerrar" spacing="10.0" style="-fx-cursor: HAND;">
-=======
                   <HBox alignment="CENTER_RIGHT" onMouseClicked="#onMouseClickedCerrar" spacing="10.0" style="-fx-cursor: HAND; -fx-background-color: #367fa9;">
->>>>>>> ba74765ac4200d595c63422fb2ac9ad3ca3d9a05
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -65,12 +52,9 @@
                            </image>
                         </ImageView>
                      </children>
-<<<<<<< HEAD
-=======
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
->>>>>>> ba74765ac4200d595c63422fb2ac9ad3ca3d9a05
                   </HBox>
                </children>
                <padding>
