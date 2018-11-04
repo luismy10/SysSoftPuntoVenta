@@ -106,7 +106,7 @@
                                                                   <Font name="Roboto" size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <TextField fx:id="txtLastName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="260.0" />
+                                                            <TextField fx:id="txtLastName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="280.0" />
                                                          </children>
                                                       </VBox>
                                                       <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
@@ -116,7 +116,7 @@
                                                                   <Font name="Roboto" size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <TextField fx:id="txtFirstName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="260.0" />
+                                                            <TextField fx:id="txtFirstName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="280.0" />
                                                          </children>
                                                       </VBox>
                                                    </children>
