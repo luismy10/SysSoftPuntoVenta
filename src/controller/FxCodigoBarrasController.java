@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
-
 
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
-
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -21,29 +14,42 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.Barcode39;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
-/**
- * FXML Controller class
- *
- * @author Ruberfc
- */
 public class FxCodigoBarrasController implements Initializable {
 
-    public static java.awt.Image getBarCode(String value) {
+    @FXML
+    private AnchorPane window;
+    @FXML
+    private ImageView ivCodigo;
+    @FXML
+    private ComboBox<?> cbCodificacion;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+    }
+
+    public static javafx.scene.image.Image getBarCode(String value) {
         Barcode128 code = new Barcode128();
         code.setCode(value);
         code.setCodeType(Barcode128.CODE128);
         code.setChecksumText(true);
         code.setTextAlignment(Element.ALIGN_CENTER);
-        java.awt.Image image128;
-        image128 = code.createAwtImage(Color.BLACK, Color.WHITE);
-
-        return image128;
+        BufferedImage buffered = (BufferedImage) code.createAwtImage(Color.BLACK, Color.WHITE);
+        javafx.scene.image.Image image = SwingFXUtils.toFXImage(buffered, null);
+        return image;
     }
-    
-    public static void getBarCodePDF(int opcion,String codigo) throws FileNotFoundException, DocumentException {
+
+    public static void getBarCodePDF(int opcion, String codigo) throws FileNotFoundException, DocumentException {
         Document doc = new Document();
         PdfWriter pdf = PdfWriter.getInstance(doc, new FileOutputStream("prueba.pdf"));
         doc.open();
@@ -61,10 +67,15 @@ public class FxCodigoBarrasController implements Initializable {
         }
         doc.close();
     }
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+
+    @FXML
+    private void onActionGenerar(ActionEvent event) {
+        ivCodigo.setImage(getBarCode("234324235435435"));
+    }
+
+    @FXML
+    private void onActionImprimir(ActionEvent event) {
+
+    }
+
 }

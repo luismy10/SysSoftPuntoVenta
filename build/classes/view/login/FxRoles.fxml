@@ -11,10 +11,7 @@
 
 <VBox stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxRolesController">
    <children>
-      <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" spacing="10.0" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
+      <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;" styleClass="paddinContainer">
          <children>
             <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -26,7 +23,7 @@
       </HBox>
       <VBox minHeight="-Infinity" minWidth="-Infinity">
          <children>
-            <HBox spacing="10.0">
+            <HBox styleClass="paddinContainer">
                <children>
                   <Button mnemonicParsing="false" styleClass="buttonLightDefault" text="Agregar">
                      <graphic>
@@ -56,15 +53,12 @@
                      </graphic>
                   </Button>
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </HBox>
          </children>
       </VBox>
-      <VBox minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
+      <VBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
          <children>
-            <HBox spacing="10.0" style="-fx-border-color: #cccccc;" VBox.vgrow="ALWAYS">
+            <HBox style="-fx-border-color: #cccccc;" styleClass="paddinContainer" VBox.vgrow="ALWAYS">
                <children>
                   <VBox alignment="TOP_CENTER" style="-fx-background-color: #666666;" HBox.hgrow="SOMETIMES">
                      <children>
@@ -81,7 +75,7 @@
                   </VBox>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox spacing="10.0" VBox.vgrow="ALWAYS">
+                        <HBox style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                            <children>
                               <VBox alignment="TOP_CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="ALWAYS">
                                  <children>
@@ -112,11 +106,8 @@
                   </VBox>
                </children>
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets />
                </VBox.margin>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </HBox>
          </children>
       </VBox>
