@@ -1,28 +1,26 @@
 package controller;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.Initializable;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.pdf.Barcode128;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.Barcode39;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import net.sourceforge.barbecue.Barcode;
+import net.sourceforge.barbecue.BarcodeException;
+import net.sourceforge.barbecue.BarcodeFactory;
+import net.sourceforge.barbecue.output.OutputException;
 
 public class FxCodigoBarrasController implements Initializable {
 
@@ -31,51 +29,50 @@ public class FxCodigoBarrasController implements Initializable {
     @FXML
     private ImageView ivCodigo;
     @FXML
-    private ComboBox<?> cbCodificacion;
+    private ComboBox<String> cbCodificacion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
+        cbCodificacion.getItems().addAll("Code bar", "Code 128");
 
-    }
-
-    public static javafx.scene.image.Image getBarCode(String value) {
-        Barcode128 code = new Barcode128();
-        code.setCode(value);
-        code.setCodeType(Barcode128.CODE128);
-        code.setChecksumText(true);
-        code.setTextAlignment(Element.ALIGN_CENTER);
-        BufferedImage buffered = (BufferedImage) code.createAwtImage(Color.BLACK, Color.WHITE);
-        javafx.scene.image.Image image = SwingFXUtils.toFXImage(buffered, null);
-        return image;
-    }
-
-    public static void getBarCodePDF(int opcion, String codigo) throws FileNotFoundException, DocumentException {
-        Document doc = new Document();
-        PdfWriter pdf = PdfWriter.getInstance(doc, new FileOutputStream("prueba.pdf"));
-        doc.open();
-        if (opcion == 1) {
-            Barcode128 code128 = new Barcode128();
-            code128.setCode(codigo);
-            Image img128 = code128.createImageWithBarcode(pdf.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
-            doc.add(img128);
-            doc.add(new Paragraph(" "));
-        } else if (opcion == 2) {
-            Barcode39 code39 = new Barcode39();
-            code39.setCode(codigo);
-            Image img39 = code39.createImageWithBarcode(pdf.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
-            doc.add(img39);
-        }
-        doc.close();
     }
 
     @FXML
     private void onActionGenerar(ActionEvent event) {
-        ivCodigo.setImage(getBarCode("234324235435435"));
+
     }
 
     @FXML
     private void onActionImprimir(ActionEvent event) {
 
+    }
+
+    @FXML
+    private void onActionCodificacion(ActionEvent event) {
+        try {
+            Barcode b;
+            if (cbCodificacion.getSelectionModel().getSelectedIndex() == 0) {
+                b = BarcodeFactory.createCodabar("1023567889232");
+            } else {
+                b = BarcodeFactory.createCode128("5689452310123");
+            }
+            b.setBarHeight(50);
+            b.setDrawingText(true);
+            BufferedImage bufferedImage = new BufferedImage((int) ivCodigo.getFitWidth(), 200, BufferedImage.TYPE_INT_ARGB);
+            Graphics graphics = bufferedImage.createGraphics();            
+            b.draw((Graphics2D) graphics,20, 60);
+            WritableImage wr = new WritableImage(bufferedImage.getWidth(), bufferedImage.getHeight());
+            PixelWriter pw = wr.getPixelWriter();
+            for (int x = 0; x < bufferedImage.getWidth(); x++) {
+                for (int y = 0; y < bufferedImage.getHeight(); y++) {
+                    pw.setArgb(x, y, bufferedImage.getRGB(x, y));
+                }
+            }
+            ivCodigo.setImage(wr);
+        } catch (BarcodeException | OutputException ex) {
+            Logger.getLogger(FxCodigoBarrasController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

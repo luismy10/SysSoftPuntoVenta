@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="window" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxCodigoBarrasController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxCodigoBarrasController">
    <children>
-      <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox>
                <children>
@@ -19,17 +19,21 @@
                         <Label styleClass="labelRobotoBold16" text="Auto Generar Código" />
                         <HBox style="-fx-border-color: #666666;">
                            <children>
-                              <ImageView fx:id="ivCodigo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="ivCodigo" fitHeight="200.0" fitWidth="349.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
+                  <VBox alignment="CENTER" style="-fx-spacing: 1.25em; -fx-padding: 1.25em;">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onActionGenerar" styleClass="buttonLightDefault" text="Generar" />
                         <Label styleClass="labelOpenSansRegular14" text="Tipo de Codificación" />
-                        <ComboBox fx:id="cbCodificacion" prefWidth="150.0" />
-                        <Button mnemonicParsing="false" onAction="#onActionImprimir" styleClass="buttonLight" text="Imprimir" />
+                        <ComboBox fx:id="cbCodificacion" onAction="#onActionCodificacion" prefHeight="28.0" prefWidth="200.0" />
+                        <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onActionGenerar" styleClass="buttonLightDefault" text="Generar" />
+                              <Button mnemonicParsing="false" onAction="#onActionImprimir" styleClass="buttonLight" text="Imprimir" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>
