@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxCodigoBarrasController">
-    
+
+<AnchorPane id="AnchorPane" prefHeight="281.0" prefWidth="512.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="controller.FxCodigoBarrasController">
+   <children>
+      <Label layoutX="51.0" layoutY="19.0" text="Auto Generar Código" />
+      <Button layoutX="331.0" layoutY="130.0" mnemonicParsing="false" text="Generar" />
+      <TextArea layoutX="33.0" layoutY="45.0" prefHeight="200.0" prefWidth="200.0" />
+      <Label layoutX="299.0" layoutY="19.0" text="Tipo de Codificación" />
+      <ComboBox layoutX="292.0" layoutY="45.0" prefWidth="150.0" />
+      <Button layoutX="329.0" layoutY="214.0" mnemonicParsing="false" text="Imprimir" />
+   </children>
 </AnchorPane>
