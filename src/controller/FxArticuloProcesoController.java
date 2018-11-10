@@ -41,6 +41,7 @@ public class FxArticuloProcesoController implements Initializable {
     private AnchorPane window;
     @FXML
     private TextField txtClave;
+    @FXML
     private TextField txtClaveAlterna;
     @FXML
     private TextField txtNombreMarca;
@@ -86,8 +87,6 @@ public class FxArticuloProcesoController implements Initializable {
     private int idCategoria;
 
     private int idMarca;
-    @FXML
-    private TextField txtClaveAlterna1;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
