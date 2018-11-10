@@ -15,18 +15,23 @@
 
 <AnchorPane id="AnchorPane" fx:id="window" prefWidth="540.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxDetalleController">
     <children>
-        <AnchorPane style="-fx-background-color: #1a2226 #1a2226;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <children>
-                <Label fx:id="lblTitle" styleClass="labelRobotoMedium18" text="Detalle del mantenimiento" textFill="WHITE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0">
-                    <font>
-                        <Font name="Calibri" size="19.0" />
-                    </font>
-                </Label>
-            </children>
-        </AnchorPane>
-        <AnchorPane style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="82.0">
-            <children>
-                <VBox spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #1a2226 #1a2226; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+               <children>
+                  <ImageView fitHeight="66.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../logo.png" />
+                     </image>
+                  </ImageView>
+                      <Label fx:id="lblTitle" styleClass="labelRoboto18" text="Detalle del mantenimiento" textFill="WHITE">
+                          <font>
+                              <Font name="Calibri" size="19.0" />
+                          </font>
+                      </Label>
+               </children>
+            </HBox>
+                <VBox spacing="10.0" style="-fx-padding: 1.25em;">
                     <children>
                         <Label styleClass="labelRoboto14" text="Código">
                             <font>
@@ -47,7 +52,7 @@
                         </Label>
                         <TextArea fx:id="txtDescripcion" onKeyPressed="#OnKeyPressedDescripcion" prefHeight="88.0" wrapText="true" />
                         <Label styleClass="labelRoboto14" text="Estado" />
-                        <ComboBox fx:id="cbEstado" minHeight="-Infinity" minWidth="-Infinity" prefWidth="501.0" styleClass="comboBox" />
+                        <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="comboBox" />
                         <HBox alignment="TOP_CENTER" spacing="10.0">
                             <children>
                                 <Button fx:id="btnToAction" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLightDefault" text="Registrar">
@@ -76,7 +81,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                 </VBox>
-            </children>
-        </AnchorPane>
+         </children>
+      </VBox>
     </children>
 </AnchorPane>

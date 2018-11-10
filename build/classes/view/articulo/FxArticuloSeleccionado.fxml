@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefWidth="400.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloSeleccionadoController">
+<VBox alignment="CENTER" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloSeleccionadoController">
    <children>
-      <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
+      <HBox alignment="CENTER_LEFT" style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
          <children>
             <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#onMouseClickedDetalle" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                <image>
@@ -18,11 +17,8 @@
             </ImageView>
             <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Artículo seleccionado" textAlignment="CENTER" wrappingWidth="346.0" HBox.hgrow="ALWAYS" />
          </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
       </HBox>
-      <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
+      <VBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
          <children>
             <ImageView fx:id="ivPrincipal" fitHeight="190.0" fitWidth="190.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -32,18 +28,12 @@
             <Text fx:id="lblName" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="-" textAlignment="CENTER" wrappingWidth="320.0" />
             <Text fx:id="lblPrice" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="-" />
          </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
       </VBox>
-      <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="labelRobotoMedium14" VBox.vgrow="SOMETIMES">
+      <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="labelRobotoMedium14" VBox.vgrow="SOMETIMES">
          <children>
             <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="CANTIDAD ACTUAL" wrappingWidth="73.9130859375" />
             <Text fx:id="lblQuantity" fill="#117c02" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="-" />
          </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
       </HBox>
    </children>
 </VBox>

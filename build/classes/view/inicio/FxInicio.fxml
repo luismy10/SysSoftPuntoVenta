@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" minHeight="-Infinity" prefHeight="580.0" prefWidth="960.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxInicioController">
+<AnchorPane id="AnchorPane" fx:id="window" minHeight="-Infinity" prefHeight="580.0" prefWidth="960.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxInicioController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -32,9 +32,9 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </HBox>
-                              <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity">
+                              <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 1.6666666666666667em;">
                                  <children>
-                                    <VBox alignment="CENTER" spacing="20.0" HBox.hgrow="ALWAYS">
+                                    <VBox alignment="CENTER" style="-fx-spacing: 1.6666666666666667em;" HBox.hgrow="ALWAYS">
                                        <children>
                                           <ImageView fitHeight="46.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -42,7 +42,7 @@
                                              </image>
                                           </ImageView>
                                           <Text fx:id="lblPuesto" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="Administrador" />
-                                          <HBox alignment="CENTER" spacing="10.0">
+                                          <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
                                                 <ImageView fx:id="imState" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -58,17 +58,11 @@
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                                 <padding>
-                                    <Insets bottom="20.0" top="20.0" />
-                                 </padding>
                               </HBox>
-                              <HBox minHeight="-Infinity" minWidth="-Infinity" spacing="10.0">
+                              <HBox minHeight="-Infinity" minWidth="-Infinity" styleClass="paddinContainer">
                                  <children>
                                     <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Menú principal" />
                                  </children>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
-                                 </padding>
                               </HBox>
                               <VBox fx:id="vbMenus" />
                            </children>
@@ -81,16 +75,16 @@
                            <children>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#onMouseClickedSiderBar" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" onMouseClicked="#onMouseClickedSiderBar" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                        <image>
                                           <Image url="@../menu-white.png" />
                                        </image>
                                     </ImageView>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                              <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../perfil-rediues.png" />
                                        </image>
@@ -104,15 +98,12 @@
                               </HBox>
                               <HBox alignment="CENTER_RIGHT" onMouseClicked="#onMouseClickedCerrar" style="-fx-cursor: HAND;">
                                  <children>
-                                    <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../close-session.png" />
                                        </image>
                                     </ImageView>
                                  </children>
-                                 <padding>
-                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                                 </padding>
                               </HBox>
                            </children>
                            <padding>
