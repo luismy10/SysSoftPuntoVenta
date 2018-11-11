@@ -17,7 +17,7 @@
     <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #1a2226 #1a2226; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #1a2226 #1a2226;" styleClass="paddinContainer">
                <children>
                   <ImageView fitHeight="66.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -31,7 +31,7 @@
                       </Label>
                </children>
             </HBox>
-                <VBox spacing="10.0" style="-fx-padding: 1.25em;">
+                <VBox style="-fx-padding: 1.25em; -fx-spacing: 0.8333333333333334em;">
                     <children>
                         <Label styleClass="labelRoboto14" text="Código">
                             <font>
@@ -53,7 +53,7 @@
                         <TextArea fx:id="txtDescripcion" onKeyPressed="#OnKeyPressedDescripcion" prefHeight="88.0" wrapText="true" />
                         <Label styleClass="labelRoboto14" text="Estado" />
                         <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="comboBox" />
-                        <HBox alignment="TOP_CENTER" spacing="10.0">
+                        <HBox alignment="TOP_CENTER" style="-fx-spacing: 0.8333333333333334em;">
                             <children>
                                 <Button fx:id="btnToAction" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLightDefault" text="Registrar">
                            <graphic>
@@ -73,7 +73,7 @@
                            </graphic></Button>
                             </children>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets />
                      </VBox.margin>
                         </HBox>
                     </children>
