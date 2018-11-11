@@ -77,7 +77,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <ComboBox fx:id="cbDocumentType" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="210.0" />
+                                                      <ComboBox fx:id="cbDocumentType" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" />
                                                    </children>
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
@@ -88,7 +88,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtDocumentNumber" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="210.0" />
+                                                      <TextField fx:id="txtDocumentNumber" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="280.0" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -133,7 +133,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" />
+                                                      <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -168,7 +168,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <ComboBox fx:id="cbSex" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="210.0" />
+                                                      <ComboBox fx:id="cbSex" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" />
                                                    </children>
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
@@ -179,7 +179,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <DatePicker fx:id="dpBirthdate" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="210.0" showWeekNumbers="true" />
+                                                      <DatePicker fx:id="dpBirthdate" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" showWeekNumbers="true" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -196,7 +196,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtTelefono" prefWidth="210.0" />
+                                                      <TextField fx:id="txtTelefono" prefWidth="280.0" />
                                                    </children>
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
@@ -207,7 +207,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtCelular" prefWidth="210.0" />
+                                                      <TextField fx:id="txtCelular" prefWidth="280.0" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -304,7 +304,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <ComboBox fx:id="cbDocumentTypeFactura" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="260.0" />
+                                                      <ComboBox fx:id="cbDocumentTypeFactura" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" />
                                                    </children>
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
@@ -315,7 +315,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtDocumentNumberFactura" prefHeight="30.0" prefWidth="260.0" />
+                                                      <TextField fx:id="txtDocumentNumberFactura" prefHeight="30.0" prefWidth="280.0" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -332,7 +332,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtBusinessName" prefHeight="30.0" />
+                                                      <TextField fx:id="txtBusinessName" prefHeight="30.0" prefWidth="280.0" />
                                                    </children>
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
@@ -343,7 +343,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtTradename" prefHeight="30.0" />
+                                                      <TextField fx:id="txtTradename" prefHeight="30.0" prefWidth="280.0" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -360,7 +360,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <ComboBox fx:id="cbPais" maxWidth="1.7976931348623157E308" onAction="#onActionPais" prefWidth="260.0" />
+                                                      <ComboBox fx:id="cbPais" maxWidth="1.7976931348623157E308" onAction="#onActionPais" prefWidth="280.0" />
                                                    </children>
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
@@ -371,7 +371,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <ComboBox fx:id="cbDepartamento" maxWidth="1.7976931348623157E308" onAction="#onActionDepartamento" prefWidth="260.0" />
+                                                      <ComboBox fx:id="cbDepartamento" maxWidth="1.7976931348623157E308" onAction="#onActionDepartamento" prefWidth="280.0" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -388,7 +388,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <ComboBox fx:id="cbProvincia" maxWidth="1.7976931348623157E308" onAction="#onActionProvincia" prefWidth="260.0" />
+                                                      <ComboBox fx:id="cbProvincia" maxWidth="1.7976931348623157E308" onAction="#onActionProvincia" prefWidth="280.0" />
                                                    </children>
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
@@ -399,7 +399,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <ComboBox fx:id="cbDistrito" maxWidth="1.7976931348623157E308" prefWidth="260.0" />
+                                                      <ComboBox fx:id="cbDistrito" maxWidth="1.7976931348623157E308" prefWidth="280.0" />
                                                    </children>
                                                 </VBox>
                                              </children>
