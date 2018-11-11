@@ -130,7 +130,7 @@
                               <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Artículos" />
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="10" />
+                                    <Text fx:id="lblArticulo" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="10" />
                                  </children>
                               </VBox>
                            </children>
@@ -149,7 +149,7 @@
                               <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Clientes" />
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="12" />
+                                    <Text fx:id="lblCliente" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="12" />
                                  </children>
                               </VBox>
                            </children>
@@ -168,7 +168,7 @@
                               <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Proveedores" />
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="50" />
+                                    <Text fx:id="lblProveedor" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="50" />
                                  </children>
                               </VBox>
                            </children>
@@ -187,7 +187,7 @@
                               <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Trabajadores" />
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="5" />
+                                    <Text fx:id="lblTrabajador" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="5" />
                                  </children>
                               </VBox>
                            </children>

@@ -30,7 +30,7 @@
                         <Font name="Roboto" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtSearch" onAction="#onActionToSearch" onKeyPressed="#onKeyPressedToSearh" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedToSearh" onKeyReleased="#onKeyReleasedToSearch" HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLight" text="Agregar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -40,11 +40,20 @@
                         </ImageView>
                      </graphic>
                   </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionToReload" onKeyPressed="#onKeyPressedToReload" styleClass="buttonLight" text="Recargar">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../reload.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <TableView fx:id="tvList" onMouseClicked="#onMouseClickedList" prefHeight="360.0" styleClass="tableView" HBox.hgrow="ALWAYS">
+                  <TableView fx:id="tvList" onMouseClicked="#onMouseClickedList" prefHeight="400.0" styleClass="tableView" HBox.hgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="tcId" prefWidth="61.0" style="-fx-alignment: CENTER;" text="N°" />
                         <TableColumn fx:id="tcDocument" prefWidth="141.0" style="-fx-alignment: CENTER;" text="Documento" />

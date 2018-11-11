@@ -194,7 +194,7 @@ public class FxComprasController implements Initializable {
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
         FxArticuloListaController controller = fXMLLoader.getController();
-        controller.setInitComptrasController(this);
+        controller.setInitComprasController(this);
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Seleccione un Artículo", window.getScene().getWindow());
         stage.setResizable(false);
@@ -279,7 +279,7 @@ public class FxComprasController implements Initializable {
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
         FxProveedorListaController controller = fXMLLoader.getController();
-        controller.setInitComptrasController(this);
+        controller.setInitComprasController(this);
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Seleccione un Proveedor", window.getScene().getWindow());
         stage.setResizable(false);
