@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,10 +12,13 @@ import javafx.fxml.Initializable;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import net.sourceforge.barbecue.Barcode;
@@ -30,49 +34,97 @@ public class FxCodigoBarrasController implements Initializable {
     private ImageView ivCodigo;
     @FXML
     private ComboBox<String> cbCodificacion;
+    @FXML
+    private Button btnGenerarCodBarras;
+    @FXML
+    private Button btnAceptarCobBarras;
+    
+    private String codigo;
+    
+    private FxArticuloProcesoController articuloProcesoController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         cbCodificacion.getItems().addAll("Code bar", "Code 128");
-
     }
 
     @FXML
     private void onActionGenerar(ActionEvent event) {
-
+        
+        if(cbCodificacion.getSelectionModel().getSelectedIndex() == 0 || cbCodificacion.getSelectionModel().getSelectedIndex() == 1){
+            Random rd = new Random();       
+            int dig5= rd.nextInt(90000) + 10000;
+            int dig7 = rd.nextInt(9000000) + 1000000;      
+            codigo = Integer.toString(dig5)+Integer.toString(dig7);
+        
+            try{
+            
+                Barcode barCode;
+            
+                if (cbCodificacion.getSelectionModel().getSelectedIndex() == 0) {
+                    barCode = BarcodeFactory.createCodabar(codigo);
+                }
+                else {
+                    barCode = BarcodeFactory.createCode128(codigo);
+                }
+            
+                barCode.setBarHeight(50);
+                barCode.setDrawingText(true);
+                BufferedImage bufferedImage = new BufferedImage((int) ivCodigo.getFitWidth(), 200, BufferedImage.TYPE_INT_ARGB);
+                Graphics graphics = bufferedImage.createGraphics();            
+                barCode.draw((Graphics2D) graphics,20, 60);
+                WritableImage wr = new WritableImage(bufferedImage.getWidth(), bufferedImage.getHeight());
+                PixelWriter pw = wr.getPixelWriter();
+                for (int x = 0; x < bufferedImage.getWidth(); x++) {
+                    for (int y = 0; y < bufferedImage.getHeight(); y++) {
+                        pw.setArgb(x, y, bufferedImage.getRGB(x, y));
+                    }
+                }
+                ivCodigo.setImage(wr);
+            }
+            catch (BarcodeException | OutputException ex) {
+                Logger.getLogger(FxCodigoBarrasController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Seleccione un tipo de codigo de barras.", false);
+        }
+        
     }
 
-    @FXML
-    private void onActionImprimir(ActionEvent event) {
-
-    }
 
     @FXML
     private void onActionCodificacion(ActionEvent event) {
-        try {
-            Barcode b;
-            if (cbCodificacion.getSelectionModel().getSelectedIndex() == 0) {
-                b = BarcodeFactory.createCodabar("1023567889232");
-            } else {
-                b = BarcodeFactory.createCode128("5689452310123");
-            }
-            b.setBarHeight(50);
-            b.setDrawingText(true);
-            BufferedImage bufferedImage = new BufferedImage((int) ivCodigo.getFitWidth(), 200, BufferedImage.TYPE_INT_ARGB);
-            Graphics graphics = bufferedImage.createGraphics();            
-            b.draw((Graphics2D) graphics,20, 60);
-            WritableImage wr = new WritableImage(bufferedImage.getWidth(), bufferedImage.getHeight());
-            PixelWriter pw = wr.getPixelWriter();
-            for (int x = 0; x < bufferedImage.getWidth(); x++) {
-                for (int y = 0; y < bufferedImage.getHeight(); y++) {
-                    pw.setArgb(x, y, bufferedImage.getRGB(x, y));
-                }
-            }
-            ivCodigo.setImage(wr);
-        } catch (BarcodeException | OutputException ex) {
-            Logger.getLogger(FxCodigoBarrasController.class.getName()).log(Level.SEVERE, null, ex);
+
+    }
+      
+    @FXML
+    private void onActionAceptar(ActionEvent event) {
+        cargarCodigo();
+    }
+
+    @FXML
+    private void onKeyPressedAceptar(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            cargarCodigo();
         }
+    }
+    
+    private void cargarCodigo(){
+        
+        if(codigo != null && (cbCodificacion.getSelectionModel().getSelectedIndex() == 0 || cbCodificacion.getSelectionModel().getSelectedIndex() == 1) ){
+            articuloProcesoController.getTxtClave().setText(codigo);
+            Tools.Dispose(window);
+        }
+        else{
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No genero el codigo de barras o no selecciono un tipo de codigo de barras.", false);
+        }
+
+    }
+
+    public void setControllerArticulo(FxArticuloProcesoController articuloProcesoController) {
+        this.articuloProcesoController=articuloProcesoController;
     }
 
 }

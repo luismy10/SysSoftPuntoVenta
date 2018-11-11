@@ -30,8 +30,8 @@
                         <ComboBox fx:id="cbCodificacion" onAction="#onActionCodificacion" prefHeight="28.0" prefWidth="200.0" />
                         <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#onActionGenerar" styleClass="buttonLightDefault" text="Generar" />
-                              <Button mnemonicParsing="false" onAction="#onActionImprimir" styleClass="buttonLight" text="Imprimir" />
+                              <Button fx:id="btnGenerarCodBarras" mnemonicParsing="false" onAction="#onActionGenerar" styleClass="buttonLightDefault" text="Generar" />
+                              <Button fx:id="btnAceptarCobBarras" mnemonicParsing="false" onAction="#onActionAceptar" onKeyReleased="#onKeyPressedAceptar" styleClass="buttonLight" text="Aceptar" />
                            </children>
                         </HBox>
                      </children>

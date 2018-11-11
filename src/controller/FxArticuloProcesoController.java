@@ -455,8 +455,8 @@ public class FxArticuloProcesoController implements Initializable {
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
-//        FxDetalleListaController controller = fXMLLoader.getController();
-//        controller.setControllerArticulo(this);
+        FxCodigoBarrasController controller = fXMLLoader.getController();
+        controller.setControllerArticulo(this);
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Generar codigo de barras", window.getScene().getWindow());
         stage.setResizable(false);
@@ -535,5 +535,11 @@ public class FxArticuloProcesoController implements Initializable {
     public TextField getTxtMarca() {
         return txtMarca;
     }
+
+    public TextField getTxtClave() {
+        return txtClave;
+    }
+    
+    
 
 }

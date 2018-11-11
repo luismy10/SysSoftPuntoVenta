@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloProcesoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloProcesoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -80,7 +80,7 @@
                                                 </VBox>
                                                 <VBox alignment="BOTTOM_CENTER">
                                                    <children>
-                                                      <Button mnemonicParsing="false" onAction="#onActionGenerar" styleClass="buttonLight" text="Generar" />
+                                                      <Button mnemonicParsing="false" onAction="#onActionGenerar" styleClass="buttonLight" text="Crear" />
                                                    </children>
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
