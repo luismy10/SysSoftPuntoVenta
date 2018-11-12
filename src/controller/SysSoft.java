@@ -15,7 +15,7 @@ import javafx.stage.StageStyle;
 public class SysSoft extends Application {
 
     public static Pane pane;
-    private final int COUNT_LIMIT = 500000;
+    private final int COUNT_LIMIT = 50000;
     private Parent parent;
     private Scene scene;
 
@@ -40,10 +40,10 @@ public class SysSoft extends Application {
     
         pane = new Pane();
         scene = new Scene(parent);
-//        for (int i = 0; i < COUNT_LIMIT; i++) {
-//            double progress = (100 * i) / COUNT_LIMIT;
-//            LauncherImpl.notifyPreloader(this, new Preloader.ProgressNotification(progress));
-//        }
+        for (int i = 0; i < COUNT_LIMIT; i++) {
+            double progress = (100 * i) / COUNT_LIMIT;
+            LauncherImpl.notifyPreloader(this, new Preloader.ProgressNotification(progress));
+        }
 
     }
 

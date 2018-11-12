@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -11,13 +12,17 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import model.DBUtil;
 import model.ProveedorADO;
 import model.ProveedorTB;
@@ -77,24 +82,58 @@ public class FxProveedorListaController implements Initializable {
 
     }
 
+    private void openWindowAddProveedor() throws IOException {
+        URL url = getClass().getResource(Tools.FX_FILE_PROVEEDOREPROCESO);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxProveedorProcesoController controller = fXMLLoader.getController();
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Proveedor", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.show();
+        controller.setValueAdd();
+    }
+
+    private void openWindowReload() {
+        fillCustomersTable("");
+    }
+
+    @FXML
+    private void onKeyReleasedToSearch(KeyEvent event) {
+        fillCustomersTable(txtSearch.getText());
+    }
+
     @FXML
     private void onKeyPressedToSearh(KeyEvent event) {
-
+        if (event.getCode() == KeyCode.ENTER) {
+            tvList.requestFocus();
+        }
     }
 
     @FXML
-    private void onActionToSearch(ActionEvent event) {
-
+    private void onKeyPressedToRegister(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowAddProveedor();
+        }
     }
 
     @FXML
-    private void onKeyPressedToRegister(KeyEvent event) {
-
+    private void onActionToRegister(ActionEvent event) throws IOException {
+        openWindowAddProveedor();
     }
 
     @FXML
-    private void onActionToRegister(ActionEvent event) {
+    private void onKeyPressedToReload(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowReload();
+        }
+    }
 
+    @FXML
+    private void onActionToReload(ActionEvent event) {
+        openWindowReload();
     }
 
     @FXML
@@ -108,7 +147,7 @@ public class FxProveedorListaController implements Initializable {
         }
     }
 
-    void setInitComptrasController(FxComprasController comprasController) {
+    void setInitComprasController(FxComprasController comprasController) {
         this.comprasController = comprasController;
     }
 
