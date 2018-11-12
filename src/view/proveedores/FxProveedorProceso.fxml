@@ -63,14 +63,14 @@
                                  <children>
                                     <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-padding: 1.6666666666666667em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
                                              <VBox.margin>
                                                 <Insets />
                                              </VBox.margin>
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="115.0" styleClass="labelRoboto14" text="Tipo documento:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Tipo documento:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -81,7 +81,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="130.0" styleClass="labelRoboto14" text="N° Documento:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="N° Documento:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -91,11 +91,11 @@
                                                 </VBox>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="115.0" styleClass="labelRoboto14" text="Razón social:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Razón social:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -106,7 +106,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefWidth="130.0" styleClass="labelRoboto14" text="Nombre comercial:" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Nombre comercial:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -116,11 +116,11 @@
                                                 </VBox>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="115.0" styleClass="labelRoboto14" text="País:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="País:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -131,7 +131,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="130.0" styleClass="labelRoboto14" text="Departamento:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Departamento:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -141,11 +141,11 @@
                                                 </VBox>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="115.0" styleClass="labelRoboto14" text="Provincia:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Provincia:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -156,7 +156,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="130.0" styleClass="labelRoboto14" text="Distrito:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Distrito:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -166,11 +166,11 @@
                                                 </VBox>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" prefWidth="120.0" styleClass="paddinContainer">
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="115.0" styleClass="labelRoboto14" text="Ámbito:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Ámbito:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -181,7 +181,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="130.0" styleClass="labelRoboto14" text="Estado:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Estado:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -206,11 +206,11 @@
                                  <children>
                                     <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-padding: 1.6666666666666667em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="115.0" styleClass="labelRoboto14" text="Teléfono:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Teléfono:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -221,7 +221,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefWidth="130.0" styleClass="labelRoboto14" text="Celular:" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Celular:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -231,11 +231,11 @@
                                                 </VBox>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="115.0" styleClass="labelRoboto14" text="Email:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Email:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -246,7 +246,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefWidth="130.0" styleClass="labelRoboto14" text="Pagina web:" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Pagina web:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -256,11 +256,11 @@
                                                 </VBox>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" prefWidth="115.0" styleClass="labelRoboto14" text="Dirección:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Dirección:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -270,11 +270,11 @@
                                                 </VBox>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label fx:id="lblDirectory" prefWidth="115.0" styleClass="labelRoboto14" text="Directorio:" textFill="#23283a">
+                                                      <Label fx:id="lblDirectory" styleClass="labelRoboto14" text="Directorio:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -307,7 +307,7 @@
                                  <children>
                                     <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-padding: 1.6666666666666667em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
                                              <children>
                                                 <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSeach" onKeyReleased="#onKeyReleasedSeach" prefHeight="30.0" promptText="Buscar...." HBox.hgrow="ALWAYS" />
                                                 <Button mnemonicParsing="false" onAction="#onActionToRepresentanteRegister" onKeyPressed="#onKeyPressedToRepresentanteRegister" styleClass="buttonLight">
@@ -348,7 +348,7 @@
                                                 </Button>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105" VBox.vgrow="ALWAYS">
                                              <children>
                                                 <TableView fx:id="tvList" onMouseClicked="#onMouseClicked" prefHeight="285.0" styleClass="tableView" HBox.hgrow="ALWAYS">
                                                    <columns>
