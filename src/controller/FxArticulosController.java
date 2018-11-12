@@ -3,7 +3,6 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -89,13 +88,13 @@ public class FxArticulosController implements Initializable {
     public void fillArticlesTable(String value) {
         if (DBUtil.StateConnection()) {
 
-            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
                 Thread t = new Thread(runnable);
                 t.setDaemon(true);
                 return t;
             });
 
-            Task<List<ArticuloTB>> task = new Task<List<ArticuloTB>>() {
+            Task<ObservableList<ArticuloTB>> task = new Task<ObservableList<ArticuloTB>>() {
                 @Override
                 public ObservableList<ArticuloTB> call() {
                     return ArticuloADO.ListArticulos(value);
@@ -103,15 +102,16 @@ public class FxArticulosController implements Initializable {
             };
 
             task.setOnSucceeded((WorkerStateEvent e) -> {
-                tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
+//                tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
                 lblLoad.setVisible(false);
             });
             task.setOnFailed((WorkerStateEvent event) -> {
                 lblLoad.setVisible(false);
             });
 
-            task.setOnScheduled((WorkerStateEvent event) -> {
+            task.setOnScheduled((WorkerStateEvent event) -> {                
                 lblLoad.setVisible(true);
+                tvList.itemsProperty().bind(task.valueProperty());
             });
             exec.execute(task);
 

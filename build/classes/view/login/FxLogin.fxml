@@ -20,14 +20,11 @@
                <children>
                   <VBox alignment="CENTER" style="-fx-background-color: #151a23;">
                      <children>
-                        <HBox alignment="CENTER_LEFT" spacing="20.0">
-                           <padding>
-                              <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
-                           </padding>
+                        <HBox alignment="CENTER_LEFT" style="-fx-padding: 1.6666666666666667em;">
                            <children>
                               <VBox>
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 1.6666666666666667em;">
                                        <children>
                                           <ImageView fitHeight="79.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -41,10 +38,7 @@
                                           </Text>
                                        </children>
                                     </HBox>
-                                    <VBox spacing="20.0">
-                                       <padding>
-                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                       </padding>
+                                    <VBox style="-fx-padding: 1.6666666666666667em; -fx-spacing: 1.6666666666666667em;">
                                        <children>
                                           <Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Bienvenido">
                                              <font>
@@ -70,10 +64,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #FFFFFF;" HBox.hgrow="ALWAYS">
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
+                  <VBox alignment="CENTER_LEFT" style="-fx-background-color: #FFFFFF; -fx-padding: 1.6666666666666667em; -fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Digite los datos de ingreso al sistema">
                            <font>
@@ -93,7 +84,7 @@
                               <Insets />
                            </VBox.margin>
                         </PasswordField>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
                               <Button mnemonicParsing="false" onAction="#onActionEntrar" styleClass="buttonLightDefault" text="ENTRAR" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="¿Olvidaste tu contraseña?" underline="true">

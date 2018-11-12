@@ -2,8 +2,10 @@ package controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javafx.application.Platform;
 import javafx.application.Preloader;
 import javafx.concurrent.WorkerStateEvent;
@@ -19,6 +21,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import model.ClienteADO;
 import model.ClienteTB;
+import model.ConsultasADO;
 import model.DBUtil;
 import model.DetalleADO;
 import model.EmpresaADO;
@@ -82,10 +85,10 @@ public class FxPreloader extends Preloader {
         StateChangeNotification.Type type = info.getType();
         switch (type) {
             case BEFORE_LOAD:
-
+                System.out.println("BEFORE_LOAD");
                 break;
             case BEFORE_INIT:
-
+                System.out.println("BEFORE_INIT");
                 TimerService service = new TimerService();
                 service.setPeriod(Duration.seconds(59));
                 service.setOnSucceeded((WorkerStateEvent t) -> {
@@ -93,9 +96,23 @@ public class FxPreloader extends Preloader {
                         DBUtil.dbConnect();
                         Session.CONNECTION_SESSION = true;
                         DBUtil.dbDisconnect();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
+                        ExecutorService exec = Executors.newFixedThreadPool(1);
+                        ExecutorCompletionService completionService = new ExecutorCompletionService<>(exec);
+                        completionService.submit(ConsultasADO.TotalObjectInit());
+                        Long[] tipos = (Long[]) completionService.take().get();
+                        Session.ARTICULOS_TOTAL = "" + tipos[0];
+                        Session.CLIENTES_TOTAL = "" + tipos[1];
+                        Session.PROVEEDORES_TOTAL = "" + tipos[2];
+                        Session.TRABAJADORES_TOTAL = "" + tipos[3];
+                        System.out.println("dentro-----------------");
+                        System.out.println(Session.TRABAJADORES_TOTAL);
+                        if (!exec.isShutdown()) {
+                            exec.shutdown();
+                        }
+                    } catch (SQLException | InterruptedException | ExecutionException ex) {
+                        System.out.println(getClass().getName() + ":" + ex);
                     }
+
                 });
                 service.start();
 
@@ -115,12 +132,13 @@ public class FxPreloader extends Preloader {
                 ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");
                 if (clienteTB != null) {
                     Session.IDCLIENTE = clienteTB.getIdCliente();
-                    Session.DATOSCLIENTE = clienteTB.getPersonaTB().getApellidoPaterno() + " " + clienteTB.getPersonaTB().getApellidoMaterno() + " " + clienteTB.getPersonaTB().getPrimerNombre() + " " + clienteTB.getPersonaTB().getSegundoNombre();
+                    Session.DATOSCLIENTE = clienteTB.getApellidos() + " " + clienteTB.getNombres();
                 }
-
+                System.out.println("BEFORE_INIT");
                 break;
             case BEFORE_START:
                 preloaderStage.hide();
+                System.out.println("BEFORE_START");
                 break;
         }
     }

@@ -53,11 +53,7 @@ public class FxClienteProcesoController implements Initializable {
     @FXML
     private TextField txtLastName;
     @FXML
-    private TextField txtMotherLastName;
-    @FXML
     private TextField txtFirstName;
-    @FXML
-    private TextField txtSecondName;
     @FXML
     private ComboBox<DetalleTB> cbSex;
     @FXML
@@ -66,8 +62,6 @@ public class FxClienteProcesoController implements Initializable {
     private Button btnDirectory;
     @FXML
     private Button btnRegister;
-    @FXML
-    private Button btnCancel;
     @FXML
     private Label lblDirectory;
     @FXML
@@ -101,14 +95,12 @@ public class FxClienteProcesoController implements Initializable {
 
     private String idCliente;
 
-    private String idPersona;
-
     private String information;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
-        idPersona = idCliente = "";
+        idCliente = "";
         DetalleADO.GetDetailIdName("1", "0003", "RUC").forEach(e -> {
             cbDocumentType.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
@@ -142,22 +134,19 @@ public class FxClienteProcesoController implements Initializable {
         ClienteTB clienteTB = ClienteADO.GetByIdCliente(value);
         if (clienteTB != null) {
             idCliente = clienteTB.getIdCliente();
-            idPersona = clienteTB.getPersonaTB().getIdPersona().get();
             ObservableList<DetalleTB> lstype = cbDocumentType.getItems();
             for (int i = 0; i < lstype.size(); i++) {
-                if (clienteTB.getPersonaTB().getTipoDocumento() == lstype.get(i).getIdDetalle().get()) {
+                if (clienteTB.getTipoDocumento() == lstype.get(i).getIdDetalle().get()) {
                     cbDocumentType.getSelectionModel().select(i);
                     break;
                 }
             }
 
-            txtDocumentNumber.setText(clienteTB.getPersonaTB().getNumeroDocumento().get());
-            txtLastName.setText(clienteTB.getPersonaTB().getApellidoPaterno());
-            txtMotherLastName.setText(clienteTB.getPersonaTB().getApellidoMaterno());
-            txtFirstName.setText(clienteTB.getPersonaTB().getPrimerNombre());
-            txtSecondName.setText(clienteTB.getPersonaTB().getSegundoNombre());
+            txtDocumentNumber.setText(clienteTB.getNumeroDocumento());
+            txtLastName.setText(clienteTB.getApellidos());
+            txtFirstName.setText(clienteTB.getNombres());
 
-            information = clienteTB.getPersonaTB().getApellidoPaterno() + " " + clienteTB.getPersonaTB().getApellidoMaterno() + " " + clienteTB.getPersonaTB().getPrimerNombre() + " " + clienteTB.getPersonaTB().getSegundoNombre();
+            information = clienteTB.getApellidos() + " " + clienteTB.getNombres();
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
             for (int i = 0; i < lsest.size(); i++) {
@@ -166,18 +155,18 @@ public class FxClienteProcesoController implements Initializable {
                     break;
                 }
             }
-            if (clienteTB.getPersonaTB().getSexo() != 0) {
+            if (clienteTB.getSexo() != 0) {
                 ObservableList<DetalleTB> lssex = cbSex.getItems();
                 for (int i = 0; i < lssex.size(); i++) {
-                    if (clienteTB.getPersonaTB().getSexo() == lssex.get(i).getIdDetalle().get()) {
+                    if (clienteTB.getSexo() == lssex.get(i).getIdDetalle().get()) {
                         cbSex.getSelectionModel().select(i);
                         break;
                     }
                 }
             }
 
-            if (clienteTB.getPersonaTB().getFechaNacimiento() != null) {
-                Tools.actualDate(clienteTB.getPersonaTB().getFechaNacimiento().toString(), dpBirthdate);
+            if (clienteTB.getFechaNacimiento() != null) {
+                Tools.actualDate(clienteTB.getFechaNacimiento().toString(), dpBirthdate);
             }
             txtTelefono.setText(clienteTB.getTelefono());
             txtCelular.setText(clienteTB.getCelular());
@@ -262,7 +251,7 @@ public class FxClienteProcesoController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.show();
-        controller.setLoadView(idPersona, information);
+        controller.setLoadView(idCliente, information);
     }
 
     @FXML
@@ -290,10 +279,6 @@ public class FxClienteProcesoController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese el apellido paterno, por favor.", false);
 
             txtLastName.requestFocus();
-        } else if (txtMotherLastName.getText().equalsIgnoreCase("")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese el apellido materno, por favor.", false);
-
-            txtMotherLastName.requestFocus();
         } else if (txtFirstName.getText().equalsIgnoreCase("")) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese el primero nombre, por favor.", false);
 
@@ -308,29 +293,24 @@ public class FxClienteProcesoController implements Initializable {
 
                     ClienteTB clienteTB = new ClienteTB();
                     clienteTB.setIdCliente(idCliente);
+                    clienteTB.setTipoDocumento(cbDocumentType.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    clienteTB.setApellidos(txtLastName.getText().trim());
+                    clienteTB.setNombres(txtFirstName.getText().trim());
+                    clienteTB.setNumeroDocumento(txtDocumentNumber.getText().trim());
+                    clienteTB.setSexo(cbSex.getSelectionModel().getSelectedIndex() >= 0
+                            ? cbSex.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                            : 0);
+                    if (dpBirthdate.getValue() != null) {
+                        clienteTB.setFechaNacimiento(new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(Tools.getDatePicker(dpBirthdate)).getTime()));
+                    } else {
+                        clienteTB.setFechaNacimiento(null);
+                    }
                     clienteTB.setTelefono(txtTelefono.getText().trim());
                     clienteTB.setCelular(txtCelular.getText().trim());
                     clienteTB.setEmail(txtEmail.getText().trim());
                     clienteTB.setDireccion(txtDireccion.getText().trim());
                     clienteTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
                     clienteTB.setUsuarioRegistro(Session.USER_ID);
-
-                    PersonaTB personaTB = new PersonaTB();
-                    personaTB.setIdPersona(idPersona);
-                    personaTB.setTipoDocumento(cbDocumentType.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                    personaTB.setNumeroDocumento(txtDocumentNumber.getText().trim());
-                    personaTB.setApellidoPaterno(txtLastName.getText().trim());
-                    personaTB.setApellidoMaterno(txtMotherLastName.getText().trim());
-                    personaTB.setPrimerNombre(txtFirstName.getText().trim());
-                    personaTB.setSegundoNombre(txtSecondName.getText().trim());
-                    personaTB.setSexo(cbSex.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbSex.getSelectionModel().getSelectedItem().getIdDetalle().get()
-                            : 0);
-                    if (dpBirthdate.getValue() != null) {
-                        personaTB.setFechaNacimiento(new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(Tools.getDatePicker(dpBirthdate)).getTime()));
-                    } else {
-                        personaTB.setFechaNacimiento(null);
-                    }
 
                     FacturacionTB facturacionTB = new FacturacionTB();
                     facturacionTB.setTipoDocumentoFacturacion(cbDocumentTypeFactura.getSelectionModel().getSelectedIndex() >= 0 ? cbDocumentTypeFactura.getSelectionModel().getSelectedItem().getIdDetalle().get()
@@ -343,7 +323,6 @@ public class FxClienteProcesoController implements Initializable {
                     facturacionTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0 ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
                     facturacionTB.setDistrito(cbDistrito.getSelectionModel().getSelectedIndex() >= 0 ? cbDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
 
-                    clienteTB.setPersonaTB(personaTB);
                     clienteTB.setFacturacionTB(facturacionTB);
 
                     String result = ClienteADO.CrudCliente(clienteTB);
@@ -420,10 +399,8 @@ public class FxClienteProcesoController implements Initializable {
             String[] app = Tools.getDataPeople(result.get());
             if (app != null) {
                 try {
-                    txtLastName.setText(app[0]);
-                    txtMotherLastName.setText(app[1]);
-                    txtFirstName.setText(app[2]);
-                    txtSecondName.setText(app[3] != null ? app[3] : "");
+                    txtLastName.setText(app[0] + " " + app[1]);
+                    txtFirstName.setText(app[2] + " " + app[3] != null ? app[3] : "");
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("Error :" + e);
                 }

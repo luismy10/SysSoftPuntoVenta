@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -17,7 +16,7 @@
    <children>
       <VBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-border-color: #cccccc;">
+            <HBox alignment="CENTER_LEFT" style="-fx-border-color: #cccccc;" styleClass="paddinContainer">
                <children>
                   <Label styleClass="labelRoboto14" text="Buscar:">
                      <graphic>
@@ -31,7 +30,7 @@
                         <Font name="Roboto" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtSearch" onAction="#onActionToSearch" onKeyPressed="#onKeyPressedToSearh" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedToSearh" onKeyReleased="#onKeyReleasedToSearch" HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLight" text="Agregar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -41,14 +40,20 @@
                         </ImageView>
                      </graphic>
                   </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionToReload" onKeyPressed="#onKeyPressedToReload" styleClass="buttonLight" text="Recargar">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../reload.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </HBox>
-            <HBox VBox.vgrow="ALWAYS">
+            <HBox style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <TableView fx:id="tvList" onMouseClicked="#onMouseClickedList" prefHeight="300.0" prefWidth="700.0" styleClass="tableView" HBox.hgrow="ALWAYS">
+                  <TableView fx:id="tvList" onMouseClicked="#onMouseClickedList" prefHeight="400.0" styleClass="tableView" HBox.hgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="tcId" prefWidth="61.0" style="-fx-alignment: CENTER;" text="N°" />
                         <TableColumn fx:id="tcDocument" prefWidth="141.0" style="-fx-alignment: CENTER;" text="Documento" />
@@ -56,13 +61,10 @@
                      </columns>
                   </TableView>
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </HBox>
-            <HBox alignment="CENTER" style="-fx-border-color: #cccccc;">
+            <HBox alignment="CENTER" style="-fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em;">
                <children>
-                  <HBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #cccccc;">
+                  <HBox alignment="CENTER" style="-fx-background-color: #cccccc; -fx-spacing: 0.8333333333333334em;">
                      <children>
                         <Button mnemonicParsing="false" styleClass="buttonLight" text="Anterior">
                            <graphic>
@@ -88,9 +90,6 @@
                      </children>
                   </HBox>
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </HBox>
          </children>
       </VBox>

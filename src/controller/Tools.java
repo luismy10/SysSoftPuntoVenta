@@ -75,7 +75,11 @@ public class Tools {
     static final String FX_FILE_DETALLEPROCESO = "/view/mantenimiento/FxDetalleProceso.fxml";
     static final String FX_FILE_INVENTARIOINICIAL = "/view/lote/FxInventarioInicial.fxml";
     static final String FX_FILE_IMPORTARINVENTARIO = "/view/lote/FxImportarInventario.fxml";
-
+    static final String FX_FILE_CODIGOBARRAS = "/view/articulo/FxCodigoBarras.fxml";
+    static final String FX_FILE_PROVEEDORESREPRENTANTE = "/view/proveedores/FxProveedorRepresentante.fxml";
+    static final String FX_FILE_HISTORIAL = "/view/consultas/FxHistorial.fxml";
+    static final String FX_FILE_ACTUALIZAR_STOCK = "/view/articulo/FxActualizarStock";
+    
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);
@@ -147,10 +151,11 @@ public class Tools {
     }
 
     public static String[] getDataPeople(String data) {
-        if (data != null || !data.isEmpty()) {
+        if (data != null) {
             return data.trim().split(" ");
+        } else {
+            return null;
         }
-        return null;
     }
 
     public static String roundingValue(double valor, int decimals) {

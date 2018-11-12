@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.ArticuloTB;
+import model.ComprobanteADO;
 import model.DetalleADO;
 import model.DetalleTB;
 
@@ -67,17 +68,22 @@ public class FxVentaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         initTable();
     }
-    
-    public void loadWindow(){
+
+    public void loadWindow() {
         DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> {
             cbComprobante.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
         cbComprobante.getSelectionModel().select(0);
         txtCliente.setText(Session.DATOSCLIENTE);
         txtArticulo.requestFocus();
+
+        String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
+        lblSerie.setText(array[0]);
+        lblNumeracion.setText(array[1]);
+
     }
 
     private void initTable() {
@@ -140,7 +146,7 @@ public class FxVentaController implements Initializable {
         });
         stage.show();
     }
-    
+
     private void openWindowCliente() throws IOException {
         InitializationTransparentBackground();
         URL url = getClass().getResource(Tools.FX_FILE_CLIENTELISTA);
@@ -158,6 +164,13 @@ public class FxVentaController implements Initializable {
         });
         stage.show();
         controller.fillCustomersTable("");
+    }
+
+    public void resetVenta() {
+        
+        String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
+        lblSerie.setText(array[0]);
+        lblNumeracion.setText(array[1]);
     }
 
     @FXML
@@ -179,22 +192,22 @@ public class FxVentaController implements Initializable {
 
     @FXML
     private void onActionEdit(ActionEvent event) {
-        
+
     }
 
     @FXML
     private void onActionRemover(ActionEvent event) {
-        
+
     }
 
     @FXML
     private void onActionCancel(ActionEvent event) {
-        
+
     }
 
     @FXML
     private void onActionVendedor(ActionEvent event) {
-        
+
     }
 
     @FXML

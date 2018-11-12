@@ -13,68 +13,28 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox minHeight="-Infinity" spacing="10.0" style="-fx-background-color: #3c8dbc;">
-               <children>
-                  <HBox alignment="CENTER_LEFT" minWidth="-Infinity" prefWidth="187.0" style="-fx-background-color: #367fa9;">
-                     <children>
-                        <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Sistema de Ventas" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-                     <children>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#onMouseClickedSiderBar" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
-                           <image>
-                              <Image url="@../menu-white.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../perfil-rediues.png" />
-                           </image>
-                        </ImageView>
-                        <Text fx:id="lblDatos" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Luis Alexander Lara Serna">
-                           <font>
-                              <Font name="Roboto" size="14.0" />
-                           </font>
-                        </Text>
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_RIGHT" onMouseClicked="#onMouseClickedCerrar" spacing="10.0" style="-fx-cursor: HAND; -fx-background-color: #cccccc;">
-                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../close-session.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-               </children>
-            </HBox>
             <HBox VBox.vgrow="ALWAYS">
                <children>
-                  <VBox fx:id="vbSiderBar" minHeight="-Infinity" minWidth="-Infinity" prefWidth="187.0" style="-fx-background-color: #1a2226;">
+                  <VBox fx:id="vbSiderBar" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #1a2226;">
                      <children>
                         <VBox VBox.vgrow="ALWAYS">
                            <children>
-                              <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity">
+                              <HBox alignment="CENTER_LEFT" minHeight="-Infinity" spacing="10.0" style="-fx-background-color: #367fa9;" styleClass="paddinContainer">
                                  <children>
-                                    <VBox alignment="CENTER" spacing="20.0" HBox.hgrow="ALWAYS">
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icon.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="PUNTO DE VENTA" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 1.6666666666666667em;">
+                                 <children>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 1.6666666666666667em;" HBox.hgrow="ALWAYS">
                                        <children>
                                           <ImageView fitHeight="46.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -82,7 +42,7 @@
                                              </image>
                                           </ImageView>
                                           <Text fx:id="lblPuesto" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="Administrador" />
-                                          <HBox alignment="CENTER" spacing="10.0">
+                                          <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
                                                 <ImageView fx:id="imState" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -98,17 +58,11 @@
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                                 <padding>
-                                    <Insets bottom="20.0" top="20.0" />
-                                 </padding>
                               </HBox>
-                              <HBox minHeight="-Infinity" minWidth="-Infinity" spacing="10.0">
+                              <HBox minHeight="-Infinity" minWidth="-Infinity" styleClass="paddinContainer">
                                  <children>
                                     <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Menú principal" />
                                  </children>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
-                                 </padding>
                               </HBox>
                               <VBox fx:id="vbMenus" />
                            </children>
@@ -117,7 +71,55 @@
                   </VBox>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <AnchorPane fx:id="vbContent" style="-fx-background-color: white;" VBox.vgrow="ALWAYS" />
+                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" spacing="10.0" style="-fx-background-color: #3c8dbc;" styleClass="paddinContainer">
+                           <children>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" onMouseClicked="#onMouseClickedSiderBar" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                       <image>
+                                          <Image url="@../menu-white.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../perfil-rediues.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Text fx:id="lblDatos" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Luis Alexander Lara Serna">
+                                       <font>
+                                          <Font name="Roboto" size="14.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" onMouseClicked="#onMouseClickedCerrar" style="-fx-cursor: HAND;">
+                                 <children>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../close-session.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox VBox.vgrow="ALWAYS">
+                           <children>
+                              <VBox HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <AnchorPane fx:id="vbContent" style="-fx-background-color: white;" VBox.vgrow="ALWAYS" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox />
                      </children>
                   </VBox>
                </children>

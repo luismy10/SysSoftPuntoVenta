@@ -450,6 +450,21 @@ public class FxArticuloProcesoController implements Initializable {
         controller.initListDetalle(idDetalle, "");
     }
 
+    private void openWindowGerarCodigoBarras() throws IOException {
+        URL url = getClass().getResource(Tools.FX_FILE_CODIGOBARRAS);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxCodigoBarrasController controller = fXMLLoader.getController();
+        controller.setControllerArticulo(this);
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Generar codigo de barras", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.show();
+//        controller.initListDetalle(idDetalle, "");
+    }
+
     @FXML
     private void onKeyReleasedCategoria(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.SPACE) {
@@ -492,6 +507,11 @@ public class FxArticuloProcesoController implements Initializable {
         }
     }
 
+    @FXML
+    private void onActionGenerar(ActionEvent event) throws IOException {
+        openWindowGerarCodigoBarras();
+    }
+
     public void setIdPresentacion(int idPresentacion) {
         this.idPresentacion = idPresentacion;
     }
@@ -515,5 +535,11 @@ public class FxArticuloProcesoController implements Initializable {
     public TextField getTxtMarca() {
         return txtMarca;
     }
+
+    public TextField getTxtClave() {
+        return txtClave;
+    }
+    
+    
 
 }

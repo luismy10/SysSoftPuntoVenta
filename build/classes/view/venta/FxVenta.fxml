@@ -19,10 +19,7 @@
          <children>
             <VBox HBox.hgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" spacing="10.0" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
+                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;" styleClass="paddinContainer">
                      <children>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -34,7 +31,7 @@
                   </HBox>
                   <VBox minHeight="-Infinity" minWidth="-Infinity">
                      <children>
-                        <HBox spacing="10.0">
+                        <HBox styleClass="paddinContainer">
                            <children>
                               <Button mnemonicParsing="false" onAction="#onActionRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightDefault" text="Cobrar">
                                  <graphic>
@@ -82,26 +79,23 @@
                                  </graphic>
                               </Button>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox VBox.vgrow="ALWAYS">
+                  <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                      <children>
-                        <HBox alignment="CENTER_LEFT" style="-fx-border-width: 1; -fx-border-color: #cccccc;" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" style="-fx-border-width: 1; -fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                            <children>
-                              <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                              <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <HBox>
                                        <children>
                                           <Label styleClass="labelOpenSansRegular16" text="Datos del artículo" />
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <HBox alignment="CENTER_LEFT">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <Label styleClass="labelRoboto14" textFill="#1a2226">
                                                    <graphic>
@@ -126,9 +120,9 @@
                                           </HBox>
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                    <HBox alignment="CENTER_LEFT">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <Label styleClass="labelRoboto14" textFill="#1a2226" HBox.hgrow="ALWAYS">
                                                    <graphic>
@@ -170,54 +164,45 @@
                               </VBox>
                            </children>
                            <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              <Insets />
                            </HBox.margin>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
                         </HBox>
                         <HBox style="-fx-border-width: 1; -fx-border-color: #cccccc;">
                            <children>
                               <VBox>
                                  <children>
-                                    <HBox alignment="CENTER" spacing="5.0" style="-fx-background-color: #cccccc;">
+                                    <HBox alignment="CENTER" style="-fx-background-color: #cccccc;" styleClass="paddinContainer105">
                                        <children>
                                           <Text fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium28" text="S/." />
                                           <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium28" text="0.00" />
                                        </children>
-                                       <padding>
-                                          <Insets bottom="10.0" right="10.0" top="10.0" />
-                                       </padding>
                                     </HBox>
-                                    <HBox alignment="CENTER" spacing="10.0">
+                                    <HBox alignment="CENTER" styleClass="paddinContainer">
                                        <children>
-                                          <VBox spacing="10.0">
+                                          <VBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="SERIE" />
                                                 <Text fx:id="lblSerie" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="0000" />
                                              </children>
                                           </VBox>
-                                          <VBox spacing="10.0">
+                                          <VBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="N° DE VENTA" />
                                                 <Text fx:id="lblNumeracion" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="00000000" />
                                              </children>
                                           </VBox>
                                        </children>
-                                       <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </padding>
                                     </HBox>
-                                    <HBox alignment="CENTER" spacing="10.0" style="-fx-border-color: #cccccc; -fx-border-width: 1px 0 1px 0;">
+                                    <HBox alignment="CENTER" style="-fx-border-color: #cccccc; -fx-border-width: 1px 0 1px 0;" styleClass="paddinContainer">
                                        <children>
-                                          <VBox spacing="10.0">
+                                          <VBox style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
                                                 <VBox>
                                                    <children>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Datos del cliente" />
                                                    </children>
                                                 </VBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label styleClass="labelRoboto14" textFill="#1a2226">
                                                          <graphic>
@@ -240,7 +225,7 @@
                                                       </Button>
                                                    </children>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label styleClass="labelRoboto14" textFill="#1a2226">
                                                          <graphic>
@@ -257,15 +242,12 @@
                                              </children>
                                           </VBox>
                                        </children>
-                                       <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </padding>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT">
                                        <children>
-                                          <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                          <VBox styleClass="paddinContainer" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label styleClass="labelRoboto14" text="Sub Total" textFill="#1a2226" />
                                                       <HBox spacing="5.0">
@@ -276,7 +258,7 @@
                                                       </HBox>
                                                    </children>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label styleClass="labelRoboto14" text="Descuento" textFill="#1a2226" />
                                                       <HBox spacing="5.0">
@@ -287,7 +269,7 @@
                                                       </HBox>
                                                    </children>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label styleClass="labelRoboto14" text="Op. Gravada" textFill="#1a2226" />
                                                       <HBox spacing="5.0">
@@ -298,7 +280,7 @@
                                                       </HBox>
                                                    </children>
                                                 </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label styleClass="labelRoboto14" text="IGV" textFill="#1a2226" />
                                                       <HBox spacing="5.0">
@@ -309,7 +291,7 @@
                                                       </HBox>
                                                    </children>
                                                 </HBox>
-                                                <HBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #8AAFBE;">
+                                                <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium22" text="Total a pagar:" />
                                                       <Text fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium22" text="S/." />
@@ -320,9 +302,6 @@
                                                    </padding>
                                                 </HBox>
                                              </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
                                           </VBox>
                                        </children>
                                     </HBox>
@@ -330,7 +309,7 @@
                               </VBox>
                            </children>
                            <HBox.margin>
-                              <Insets bottom="10.0" right="10.0" top="10.0" />
+                              <Insets />
                            </HBox.margin>
                         </HBox>
                      </children>

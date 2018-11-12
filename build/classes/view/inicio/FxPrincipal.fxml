@@ -22,7 +22,7 @@
    <content>
       <VBox stylesheets="@../styles.css">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="66.0" style="-fx-border-color: #cccccc; -fx-border-width: 0  0 1px 0; -fx-background-color: white;">
+            <HBox alignment="CENTER_LEFT" prefHeight="66.0" style="-fx-border-color: #cccccc; -fx-border-width: 0  0 1px 0; -fx-background-color: white; -fx-padding: 0.8333333333333334em;">
                <children>
                   <Text fx:id="lblFechaActual" fill="#514f4f" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Jueves 12 de Enero del 2018">
                      <font>
@@ -30,11 +30,8 @@
                      </font>
                   </Text>
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="66.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="66.0" style="-fx-padding: 0.8333333333333334em;">
                <children>
                   <Text fill="#1a2226" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="Pantalla principal">
                      <font>
@@ -42,18 +39,12 @@
                      </font>
                   </Text>
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="20.0" VBox.vgrow="ALWAYS">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
+            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 1.6666666666666667em;" VBox.vgrow="ALWAYS">
                <children>
                   <AnchorPane style="-fx-background-color: #03A9F4; -fx-border-color: #03A9F4; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox layoutX="22.0" layoutY="22.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox layoutX="22.0" layoutY="22.0" style="-fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="S/. 800.60" wrappingWidth="218.0">
                                  <VBox.margin>
@@ -71,7 +62,7 @@
                   </AnchorPane>
                   <AnchorPane style="-fx-background-color: #f44336; -fx-border-color: #f44336; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox style="-fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="S/. 800.60" wrappingWidth="218.0">
                                  <VBox.margin>
@@ -89,7 +80,7 @@
                   </AnchorPane>
                   <AnchorPane style="-fx-background-color: #ff9800; -fx-border-color: #ff9800; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox style="-fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="100" wrappingWidth="218.0">
                                  <VBox.margin>
@@ -107,7 +98,7 @@
                   </AnchorPane>
                   <AnchorPane style="-fx-background-color: #4caf50; -fx-border-color: #4caf50; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox style="-fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="200" wrappingWidth="218.0">
                                  <VBox.margin>
@@ -125,14 +116,11 @@
                   </AnchorPane>
                </children>
             </HBox>
-            <HBox alignment="BASELINE_LEFT" spacing="20.0" VBox.vgrow="ALWAYS">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
+            <HBox alignment="BASELINE_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 1.6666666666666667em;" VBox.vgrow="ALWAYS">
                <children>
                   <AnchorPane prefWidth="240.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <HBox styleClass="paddinContainer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -142,19 +130,16 @@
                               <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Artículos" />
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="10" />
+                                    <Text fx:id="lblArticulo" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="10" />
                                  </children>
                               </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
                         </HBox>
                      </children>
                   </AnchorPane>
                   <AnchorPane prefWidth="240.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <HBox styleClass="paddinContainer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -164,19 +149,16 @@
                               <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Clientes" />
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="12" />
+                                    <Text fx:id="lblCliente" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="12" />
                                  </children>
                               </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
                         </HBox>
                      </children>
                   </AnchorPane>
                   <AnchorPane prefWidth="240.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <HBox styleClass="paddinContainer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -186,19 +168,16 @@
                               <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Proveedores" />
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="50" />
+                                    <Text fx:id="lblProveedor" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="50" />
                                  </children>
                               </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
                         </HBox>
                      </children>
                   </AnchorPane>
                   <AnchorPane prefWidth="240.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <HBox styleClass="paddinContainer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -208,24 +187,18 @@
                               <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Trabajadores" />
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="5" />
+                                    <Text fx:id="lblTrabajador" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="5" />
                                  </children>
                               </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
                         </HBox>
                      </children>
                   </AnchorPane>
                </children>
             </HBox>
-            <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
+            <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <BarChart prefHeight="320.0" styleClass="labelOpenSansRegular12" title="Ventas del día">
+                  <BarChart prefHeight="320.0" styleClass="labelOpenSansRegular12" title="Ventas del día" HBox.hgrow="ALWAYS">
                      <xAxis>
                         <CategoryAxis side="BOTTOM" />
                      </xAxis>
@@ -233,8 +206,8 @@
                         <NumberAxis side="LEFT" />
                      </yAxis>
                   </BarChart>
-                  <PieChart prefHeight="320.0" styleClass="labelOpenSansRegular12" title="Producto mas vendidos" />
-                  <StackedAreaChart prefHeight="320.0" styleClass="labelOpenSansRegular12" title="Ventas por semana">
+                  <PieChart prefHeight="320.0" styleClass="labelOpenSansRegular12" title="Producto mas vendidos" HBox.hgrow="ALWAYS" />
+                  <StackedAreaChart prefHeight="320.0" styleClass="labelOpenSansRegular12" title="Ventas por semana" HBox.hgrow="ALWAYS">
                      <xAxis>
                         <NumberAxis side="BOTTOM" />
                      </xAxis>
@@ -244,12 +217,9 @@
                   </StackedAreaChart>
                </children>
             </HBox>
-            <HBox alignment="CENTER">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
+            <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
                <children>
-                  <AreaChart prefHeight="320.0" styleClass="labelOpenSansRegular12" title="Ventas por hora">
+                  <AreaChart prefHeight="320.0" styleClass="labelOpenSansRegular12" title="Ventas por hora" HBox.hgrow="ALWAYS">
                      <xAxis>
                         <CategoryAxis side="BOTTOM" />
                      </xAxis>
@@ -257,7 +227,7 @@
                         <NumberAxis side="LEFT" />
                      </yAxis>
                   </AreaChart>
-                  <LineChart prefHeight="320.0" styleClass="labelOpenSansRegular12" title="Ventas por día de la semana">
+                  <LineChart prefHeight="320.0" styleClass="labelOpenSansRegular12" title="Ventas por día de la semana" HBox.hgrow="ALWAYS">
                      <xAxis>
                         <CategoryAxis side="BOTTOM" />
                      </xAxis>
@@ -265,7 +235,7 @@
                         <NumberAxis side="LEFT" />
                      </yAxis>
                   </LineChart>
-                  <StackedBarChart prefHeight="320.0" styleClass="labelOpenSansRegular12" title="Ventas por mes(anual)">
+                  <StackedBarChart prefHeight="320.0" styleClass="labelOpenSansRegular12" title="Ventas por mes(anual)" HBox.hgrow="ALWAYS">
                      <xAxis>
                         <CategoryAxis side="BOTTOM" />
                      </xAxis>

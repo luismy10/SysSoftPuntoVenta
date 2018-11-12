@@ -185,7 +185,7 @@ public class FxArticuloListaController implements Initializable {
         fillProvidersTable("");
     }
 
-    void setInitComptrasController(FxComprasController comprasController) {
+    void setInitComprasController(FxComprasController comprasController) {
         this.comprasController = comprasController;
     }
 

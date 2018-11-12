@@ -516,7 +516,7 @@
 
 .table-view{
     -fx-border-radius: 0;
-    -fx-background-radius: 0;
+    -fx-background-radius: 0;    
 }
 .table-view .filler, .table-view .column-header{
     -fx-background-color:  #1a2226;
@@ -541,7 +541,7 @@
     -fx-text-fill:  white;
     -fx-font-family:"Roboto Medium"; 
     -fx-font-size: 1.1666666666666667em;
-    -fx-padding: 0.6666666666666666em 0em 0.6666666666666666em 0em;/*8px 0px 8px 0*/
+    -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em;/*8px 2px 8px 2*/
 }
 .table-view .column-header .label:hover{
     -fx-text-fill: white;
@@ -576,7 +576,7 @@
 }
 
 .buttonLight{
-    -fx-padding: 0.25em 1.666666em 0.25em 1.666666em; /*3 20 3 20*/
+    -fx-padding: 0.3333333333333333em 1.666666em 0.3333333333333333em 1.666666em; /*4 20 4 20*/
 
     -fx-border-color: transparent;
     -fx-border-width: 1;
@@ -645,7 +645,7 @@
 }
 
 .buttonLightDefault{
-    -fx-padding: 0.25em 1.666666em 0.25em 1.666666em; /*3 20 3 20*/
+    -fx-padding: 0.3333333333333333em 1.666666em 0.3333333333333333em 1.666666em; /*4 20 4 20*/
 
     -fx-border-color: transparent;
     -fx-border-width: 1;
@@ -715,7 +715,7 @@
 }
 
 .buttonLightWarning{
-    -fx-padding: 0.25em 1.666666em 0.25em 1.666666em; /*3 20 3 20*/
+     -fx-padding: 0.3333333333333333em 1.666666em 0.3333333333333333em 1.666666em; /*4 20 4 20*/
 
     -fx-border-color: transparent;
     -fx-border-width: 1;
@@ -784,7 +784,7 @@
 }
 
 .buttonLightSuccess{
-    -fx-padding: 0.25em 1.666666em 0.25em 1.666666em; /*3 20 3 20*/
+    -fx-padding: 0.3333333333333333em 1.666666em 0.3333333333333333em 1.666666em; /*4 20 4 20*/
 
     -fx-border-color: transparent;
     -fx-border-width: 1;
@@ -853,7 +853,7 @@
 }
 
 .buttonBorder{
-    -fx-padding: 0.25em  1.1666666666666667em 0.25em  1.1666666666666667em; /*3 14 3 14*/
+     -fx-padding: 0.3333333333333333em 1.666666em 0.3333333333333333em 1.666666em; /*4 20 4 20*/
 
     -fx-border-color: #999999;
     -fx-border-width: 1;
@@ -922,7 +922,7 @@
 }
 
 .buttonInfo{
-    -fx-padding: 0.25em 0.86em 0.25em 0.86em; /*3 12 3 12*/
+    -fx-padding: 0.3333333333333333em 1.666666em 0.3333333333333333em 1.666666em; /*4 20 4 20*/
 
     -fx-border-color: transparent;
     -fx-border-width: 1;
@@ -1439,5 +1439,21 @@
     -fx-background-color: #00aff0;
     -fx-background-insets: 0;
     -fx-text-fill: white;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Padding and Margin                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+.paddinContainer{
+    -fx-padding: 0.8333333333333334em;/*10px*/
+    -fx-spacing: 0.8333333333333334em;/*10px*/
+}
+
+.paddinContainer105{
+    -fx-padding: 0.4166666666666667em;/*5px*/
+    -fx-spacing: 0.8333333333333334em;/*10px*/
 }
 

@@ -15,7 +15,7 @@ import javafx.stage.StageStyle;
 public class SysSoft extends Application {
 
     public static Pane pane;
-    private final int COUNT_LIMIT = 500000;
+    private final int COUNT_LIMIT = 50000;
     private Parent parent;
     private Scene scene;
 

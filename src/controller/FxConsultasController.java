@@ -55,6 +55,22 @@ public class FxConsultasController implements Initializable {
         controller.fillEmployeeTable("");
 
     }
+    
+    private void openWindowHistorial() throws IOException {
+
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_HISTORIAL));
+        VBox node = fXMLPrincipal.load();
+        FxHistorialController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        content.getChildren().add(node);
+        controller.fillHistorialTable("");
+    }
+    
 
     @FXML
     private void onKeyPressedCompras(KeyEvent event) throws IOException {
@@ -92,6 +108,15 @@ public class FxConsultasController implements Initializable {
 
     @FXML
     private void onActionVentas(ActionEvent event) {
+    }
+
+    @FXML
+    private void onKeyPressedHistorial(KeyEvent event) {
+    }
+
+    @FXML
+    private void onActionHistorial(ActionEvent event) throws IOException {
+        openWindowHistorial();
     }
 
 }
