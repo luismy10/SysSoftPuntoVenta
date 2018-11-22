@@ -1,40 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package model;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import javafx.beans.property.SimpleIntegerProperty;
 
-/**
- *
- * @author Ruberfc
- */
+
 public class HistorialTB {
 
     private SimpleIntegerProperty idHistorial;
-    private String tipoOperacion;
-    private String idOperacion;
     private String idArticulo;
-    private Timestamp fechaRegistro;
-    private SimpleIntegerProperty entrada;
-    private SimpleIntegerProperty salida;
+    private String tipoOperacion;    
+    private LocalDate fechaRegistro;
+    private Double entrada;
+    private Double salida;
+    private Double saldo;
     private String usuarioRegistro;
 
     public HistorialTB() {
-    }
-
-    public HistorialTB(SimpleIntegerProperty idHistorial, String tipoOperacion, String idOperacion, String idArticulo, Timestamp fechaRegistro, SimpleIntegerProperty entrada, SimpleIntegerProperty salida, String usuarioRegistro) {
-        this.idHistorial = idHistorial;
-        this.tipoOperacion = tipoOperacion;
-        this.idOperacion = idOperacion;
-        this.idArticulo = idArticulo;
-        this.fechaRegistro = fechaRegistro;
-        this.entrada = entrada;
-        this.salida = salida;
-        this.usuarioRegistro = usuarioRegistro;
+        
     }
 
     public SimpleIntegerProperty getIdHistorial() {
@@ -45,22 +28,6 @@ public class HistorialTB {
         this.idHistorial = new SimpleIntegerProperty(idHistorial);
     }
 
-    public String getTipoOperacion() {
-        return tipoOperacion;
-    }
-
-    public void setTipoOperacion(String tipoOperacion) {
-        this.tipoOperacion = tipoOperacion;
-    }
-
-    public String getIdOperacion() {
-        return idOperacion;
-    }
-
-    public void setIdOperacion(String idOperacion) {
-        this.idOperacion = idOperacion;
-    }
-
     public String getIdArticulo() {
         return idArticulo;
     }
@@ -69,28 +36,44 @@ public class HistorialTB {
         this.idArticulo = idArticulo;
     }
 
-    public Timestamp getFechaRegistro() {
+    public String getTipoOperacion() {
+        return tipoOperacion;
+    }
+
+    public void setTipoOperacion(String tipoOperacion) {
+        this.tipoOperacion = tipoOperacion;
+    }
+
+    public LocalDate getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(Timestamp fechaRegistro) {
+    public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public SimpleIntegerProperty getEntrada() {
+    public Double getEntrada() {
         return entrada;
     }
 
-    public void setEntrada(int entrada) {
-        this.entrada = new SimpleIntegerProperty(entrada);
+    public void setEntrada(Double entrada) {
+        this.entrada = entrada;
     }
 
-    public SimpleIntegerProperty getSalida() {
+    public Double getSalida() {
         return salida;
     }
 
-    public void setSalida(int salida) {
-        this.salida = new SimpleIntegerProperty(salida);
+    public void setSalida(Double salida) {
+        this.salida = salida;
+    }
+
+    public Double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(Double saldo) {
+        this.saldo = saldo;
     }
 
     public String getUsuarioRegistro() {
@@ -103,8 +86,8 @@ public class HistorialTB {
     
     
 
+  
 
-   
     
     
     

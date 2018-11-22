@@ -25,13 +25,11 @@ public class FxPrincipalController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("initialize");
         lblFechaActual.setText(Tools.getDate("EEEE d 'de' MMMM 'de' yyyy"));        
         lblArticulo.setText(Session.ARTICULOS_TOTAL);
         lblCliente.setText(Session.CLIENTES_TOTAL);
         lblProveedor.setText(Session.PROVEEDORES_TOTAL);
         lblTrabajador.setText(Session.TRABAJADORES_TOTAL);
-        System.out.println(Session.TRABAJADORES_TOTAL);
     }
 
 }

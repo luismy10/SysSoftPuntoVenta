@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package model;
 
 import java.sql.PreparedStatement;
@@ -11,15 +7,14 @@ import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-/**
- *
- * @author Ruberfc
- */
+
 public class HistorialADO {
+    
+ 
     
     public static ObservableList<HistorialTB> ListArticulos(String value){
         
-        String selectStmt = "{call Sp_listar_Historial(?)}";
+        String selectStmt = "{call Sp_listar_Historial_Articulo(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<HistorialTB> empList = FXCollections.observableArrayList();
@@ -34,15 +29,13 @@ public class HistorialADO {
                 
                 HistorialTB historialTB = new HistorialTB();
                 
-                historialTB.setIdHistorial(rsEmps.getInt("IdHistorial"));
+                historialTB.setIdHistorial(rsEmps.getInt("Filas"));
+                historialTB.setFechaRegistro(rsEmps.getDate("FechaRegistro").toLocalDate());
                 historialTB.setTipoOperacion(rsEmps.getString("TipoOperacion"));
-                historialTB.setIdOperacion(rsEmps.getString("IdOperacion"));
-                historialTB.setIdArticulo(rsEmps.getString("IdArticulo"));
-                historialTB.setFechaRegistro(rsEmps.getTimestamp("FechaRegistro"));
-                historialTB.setEntrada(rsEmps.getInt("Entrada"));
-                historialTB.setSalida(rsEmps.getInt("Salida"));
+                historialTB.setEntrada(rsEmps.getDouble("Entrada"));
+                historialTB.setSalida(rsEmps.getDouble("Salida"));
+                historialTB.setSaldo(rsEmps.getDouble("Saldo"));
                 historialTB.setUsuarioRegistro(rsEmps.getString("UsuarioRegistro"));
-                
                 empList.add(historialTB);
                 
             }

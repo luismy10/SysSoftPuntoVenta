@@ -111,7 +111,7 @@ public class FxArticuloProcesoController implements Initializable {
         ArrayList<ArticuloTB> list = ArticuloADO.GetArticulosById(value);
         if (!list.isEmpty()) {
             ArticuloTB articuloTB = list.get(0);
-            txtNombreMarca.setText(articuloTB.getNombre().get());
+            txtNombreMarca.setText(articuloTB.getNombreMarca().get());
             txtNombreGenerico.setText(articuloTB.getNombreGenerico());
             txtDescripcion.setText(articuloTB.getDescripcion());
 
@@ -157,7 +157,7 @@ public class FxArticuloProcesoController implements Initializable {
             idArticulo = articuloTB.getIdArticulo();
             txtClave.setText(articuloTB.getClave().get());
             txtClaveAlterna.setText(articuloTB.getClaveAlterna());
-            txtNombreMarca.setText(articuloTB.getNombre().get());
+            txtNombreMarca.setText(articuloTB.getNombreMarca().get());
             txtNombreGenerico.setText(articuloTB.getNombreGenerico());
             txtDescripcion.setText(articuloTB.getDescripcion());
 
@@ -223,7 +223,7 @@ public class FxArticuloProcesoController implements Initializable {
                 articuloTB.setIdArticulo(idArticulo);
                 articuloTB.setClave(txtClave.getText().trim());
                 articuloTB.setClaveAlterna(txtClaveAlterna.getText().trim());
-                articuloTB.setNombre(txtNombreMarca.getText().trim());
+                articuloTB.setNombreMarca(txtNombreMarca.getText().trim());
                 articuloTB.setNombreGenerico(txtNombreGenerico.getText().trim());
                 articuloTB.setDescripcion(txtDescripcion.getText().trim());
                 articuloTB.setImagenTB(new ImagenTB(selectFile != null
@@ -260,7 +260,7 @@ public class FxArticuloProcesoController implements Initializable {
                         : 0);
                 articuloTB.setLote(cbLote.isSelected());
 
-                String result = ArticuloADO.CrudEntity(articuloTB);
+                String result = ArticuloADO.CrudArticulo(articuloTB);
                 switch (result) {
                     case "registered":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Registrado correctamente el artículo.", false);
@@ -272,9 +272,6 @@ public class FxArticuloProcesoController implements Initializable {
                     case "duplicate":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puede haber 2 artículos con la misma clave.", false);
                         txtClave.requestFocus();
-                        break;
-                    case "error":
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puedo completar la ejecución.", false);
                         break;
                     default:
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Articulo", result, false);
@@ -313,17 +310,20 @@ public class FxArticuloProcesoController implements Initializable {
         imagenTB.setIdImage(idImagen);
         imagenTB.setFile(inputStream);
         imagenTB.setIdRelacionado(idArticulo);
-        String result = ImageADO.CrudImage(imagenTB);
-        if (result.equalsIgnoreCase("insert")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Registrado correctamente la imagen.", false);
-            loadViewImage(idArticulo);
-        } else if (result.equalsIgnoreCase("update")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Actualizado correctamente la imagen.", false);
-        } else if (result.equalsIgnoreCase("error")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puedo completar la ejecución.", false);
-        } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Articulo", result, false);
+        if (!idArticulo.equalsIgnoreCase("")) {
+            String result = ImageADO.CrudImage(imagenTB);
+            if (result.equalsIgnoreCase("insert")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Registrado correctamente la imagen.", false);
+                loadViewImage(idArticulo);
+            } else if (result.equalsIgnoreCase("update")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Actualizado correctamente la imagen.", false);
+            } else if (result.equalsIgnoreCase("error")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puedo completar la ejecución.", false);
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Articulo", result, false);
+            }
         }
+
     }
 
     @FXML
@@ -539,7 +539,5 @@ public class FxArticuloProcesoController implements Initializable {
     public TextField getTxtClave() {
         return txtClave;
     }
-    
-    
 
 }

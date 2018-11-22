@@ -14,7 +14,7 @@ public class ArticuloTB {
     private String idArticulo;
     private SimpleStringProperty clave;
     private String claveAlterna;
-    private SimpleStringProperty nombre;
+    private SimpleStringProperty nombreMarca;
     private String nombreGenerico;
     private String descripcion;
     private int categoria;
@@ -45,9 +45,9 @@ public class ArticuloTB {
 
     }
 
-    public ArticuloTB(String clave, String nombre) {
+    public ArticuloTB(String clave, String nombreMarca) {
         this.clave = new SimpleStringProperty(clave);
-        this.nombre = new SimpleStringProperty(nombre);
+        this.nombreMarca = new SimpleStringProperty(nombreMarca);
     }
     
     
@@ -84,12 +84,12 @@ public class ArticuloTB {
         this.claveAlterna = claveAlterna;
     }
 
-    public SimpleStringProperty getNombre() {
-        return nombre;
+    public SimpleStringProperty getNombreMarca() {
+        return nombreMarca;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = new SimpleStringProperty(nombre);
+    public void setNombreMarca(String nombreMarca) {
+        this.nombreMarca = new SimpleStringProperty(nombreMarca);
     }
 
     public String getNombreGenerico() {

@@ -90,7 +90,7 @@ public class FxCompraDetalleController implements Initializable {
         tcId.setCellValueFactory(callData -> callData.getValue().getId().asObject());
         tcCantidad.setCellValueFactory(callData -> callData.getValue().getCantidad().asObject());
         tcDescripcion.setCellValueFactory(callData -> Bindings.concat(
-                callData.getValue().getClave().get() + "\n" + callData.getValue().getNombre().get()
+                callData.getValue().getClave().get() + "\n" + callData.getValue().getNombreMarca().get()
         ));
         tcPrecioCompra.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));

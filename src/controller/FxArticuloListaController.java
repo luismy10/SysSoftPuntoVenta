@@ -40,14 +40,16 @@ public class FxArticuloListaController implements Initializable {
     private TableColumn<ArticuloTB, String> tcArticulo;
     @FXML
     private TableColumn<ArticuloTB, String> tcMarca;
-    @FXML 
+    @FXML
     private TableColumn<ArticuloTB, String> tcExistencias;
     @FXML
     private TableColumn<ArticuloTB, String> tcPrecio;
 
     private FxComprasController comprasController;
-    
+
     private FxVentaController ventaController;
+
+    private FxArticuloHistorialController articuloHistorialController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -55,7 +57,7 @@ public class FxArticuloListaController implements Initializable {
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombre().get()
+                cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombreMarca().get()
         )
         );
         tcMarca.setCellValueFactory(cellData -> cellData.getValue().getMarcaName());
@@ -105,7 +107,6 @@ public class FxArticuloListaController implements Initializable {
 
     private void openWindowCompra() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-
             URL url = getClass().getResource(Tools.FX_FILE_ARTICULOCOMPRA);
             FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -119,7 +120,7 @@ public class FxArticuloListaController implements Initializable {
             stage.show();
             controller.setLoadData(new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
                 tvList.getSelectionModel().getSelectedItem().getClave().get(),
-                tvList.getSelectionModel().getSelectedItem().getNombre().get()},
+                tvList.getSelectionModel().getSelectedItem().getNombreMarca().get()},
                     tvList.getSelectionModel().getSelectedItem().isLote()
             );
 
@@ -132,7 +133,33 @@ public class FxArticuloListaController implements Initializable {
             if (comprasController != null) {
                 openWindowCompra();
             } else if (ventaController != null) {
-                
+                if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                    ArticuloTB articuloTB = new ArticuloTB();
+                    articuloTB.setIdArticulo(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
+                    articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave().get());
+                    articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca().get());
+                    articuloTB.setCantidad(1);
+                    articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioVenta().get());
+                    articuloTB.setDescuento(0);
+                    articuloTB.setSubTotal(1 * tvList.getSelectionModel().getSelectedItem().getPrecioVenta().get());
+                    articuloTB.setImporte(
+                            articuloTB.getSubTotal().get()
+                            - articuloTB.getDescuento().get()
+                    );
+                    ventaController.getAddArticulo(articuloTB);
+                    Tools.Dispose(window);
+                }
+
+            } else if (articuloHistorialController != null) {
+                if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                    articuloHistorialController.getElemetsArticulo(
+                            new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
+                                tvList.getSelectionModel().getSelectedItem().getClave().get(),
+                                tvList.getSelectionModel().getSelectedItem().getNombreMarca().get(),
+                                "" + tvList.getSelectionModel().getSelectedItem().getCantidad().get(),
+                                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta().get()});
+                    Tools.Dispose(window);
+                }
             }
 
         }
@@ -144,6 +171,32 @@ public class FxArticuloListaController implements Initializable {
             if (comprasController != null) {
                 openWindowCompra();
             } else if (ventaController != null) {
+                if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                    ArticuloTB articuloTB = new ArticuloTB();
+                    articuloTB.setIdArticulo(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
+                    articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave().get());
+                    articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca().get());
+                    articuloTB.setCantidad(1);
+                    articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioVenta().get());
+                    articuloTB.setDescuento(0);
+                    articuloTB.setSubTotal(1 * tvList.getSelectionModel().getSelectedItem().getPrecioVenta().get());
+                    articuloTB.setImporte(
+                            articuloTB.getSubTotal().get()
+                            - articuloTB.getDescuento().get()
+                    );
+                    ventaController.getAddArticulo(articuloTB);
+                    Tools.Dispose(window);
+                }
+            } else if (articuloHistorialController != null) {
+                if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                    articuloHistorialController.getElemetsArticulo(
+                            new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
+                                tvList.getSelectionModel().getSelectedItem().getClave().get(),
+                                tvList.getSelectionModel().getSelectedItem().getNombreMarca().get(),
+                                "" + tvList.getSelectionModel().getSelectedItem().getCantidad().get(),
+                                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta().get()});
+                    Tools.Dispose(window);
+                }
 
             }
         }
@@ -191,6 +244,10 @@ public class FxArticuloListaController implements Initializable {
 
     void setInitVentasController(FxVentaController ventaController) {
         this.ventaController = ventaController;
+    }
+
+    void setInitArticuloHistorialController(FxArticuloHistorialController articuloHistorialController) {
+        this.articuloHistorialController = articuloHistorialController;
     }
 
 }

@@ -89,11 +89,11 @@ public class FxArticuloCompraController implements Initializable {
         stage.show();
         if (!loteedit) {
             controller.setLoadData(articuloTB.getIdArticulo(), articuloTB.getClave().get(),
-                    articuloTB.getNombre().get(),
+                    articuloTB.getNombreMarca().get(),
                     String.valueOf(articuloTB.getCantidad().get()));
         } else {
             controller.setEditData(new String[]{articuloTB.getIdArticulo(), articuloTB.getClave().get(),
-                articuloTB.getNombre().get(),
+                articuloTB.getNombreMarca().get(),
                 String.valueOf(articuloTB.getCantidad().get())},
                     loteTBs);
         }
@@ -110,7 +110,7 @@ public class FxArticuloCompraController implements Initializable {
     public void setLoadEdit(ArticuloTB articuloTB, int index, ObservableList<LoteTB> loteTBs) {
         idArticulo = articuloTB.getIdArticulo();
         lblClave.setText(articuloTB.getClave().get());
-        lblDescripcion.setText(articuloTB.getNombre().get());
+        lblDescripcion.setText(articuloTB.getNombreMarca().get());
         txtCantidad.setText("" + articuloTB.getCantidad().get());
         txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompraReal(), 2));
         txtDescuento.setText(Tools.roundingValue(articuloTB.getDescuento().get(), 2));
@@ -130,7 +130,7 @@ public class FxArticuloCompraController implements Initializable {
         ArticuloTB articuloTB = new ArticuloTB();
         articuloTB.setIdArticulo(idArticulo);
         articuloTB.setClave(lblClave.getText());
-        articuloTB.setNombre(lblDescripcion.getText());
+        articuloTB.setNombreMarca(lblDescripcion.getText());
         articuloTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
         articuloTB.setPrecioCompra(costo);
         articuloTB.setPrecioCompraReal(costoreal);
@@ -143,9 +143,7 @@ public class FxArticuloCompraController implements Initializable {
 
         articuloTB.setImporte(
                 (Double.parseDouble(txtCantidad.getText()) * costo)
-                - Double.parseDouble(txtDescuento.getText().isEmpty() ? "0"
-                        : txtDescuento.getText()
-                ));
+                - articuloTB.getDescuento().get());
 
         articuloTB.setUtilidad(Tools.isNumeric(txtUtilidad.getText())
                 ? Double.parseDouble(txtUtilidad.getText()) : 0
@@ -167,7 +165,7 @@ public class FxArticuloCompraController implements Initializable {
             comprasController.setCalculateTotals();
         }
     }
-    
+
     private void generationPrice() {
         double importe = Double.parseDouble(txtImporte.getText());
         double cantidad = Double.parseDouble(txtCantidad.getText());
@@ -183,7 +181,7 @@ public class FxArticuloCompraController implements Initializable {
 
         txtUtilidad.setText(Tools.roundingValue((Double.parseDouble(txtPrecio.getText()) - preciocompra), 2));
     }
-    
+
     private boolean validateStock(TableView<ArticuloTB> view, ArticuloTB articuloTB) throws IOException {
         boolean ret = false;
         for (int i = 0; i < view.getItems().size(); i++) {
@@ -203,7 +201,7 @@ public class FxArticuloCompraController implements Initializable {
         return ret;
     }
 
-    public void addArticuloList() throws IOException{
+    public void addArticuloList() throws IOException {
         if (!Tools.isNumeric(txtCantidad.getText())) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en la cantidad", false);
             txtCantidad.requestFocus();
@@ -233,8 +231,6 @@ public class FxArticuloCompraController implements Initializable {
     private void onActionCancel(ActionEvent event) {
         Tools.Dispose(window);
     }
-
-    
 
     @FXML
     private void onKeyTypedImporte(KeyEvent event) {
@@ -272,12 +268,9 @@ public class FxArticuloCompraController implements Initializable {
     @FXML
     private void onKeyTypedDescuento(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+        if ((c < '0' || c > '9') && (c != '\b')) {
             event.consume();
-        }
-        if (c == '.' && txtDescuento.getText().contains(".") || c == '-' && txtDescuento.getText().contains("-")) {
-            event.consume();
-        }
+        }        
     }
 
     @FXML
@@ -384,6 +377,34 @@ public class FxArticuloCompraController implements Initializable {
 
                 txtUtilidad.setText(Tools.roundingValue((Double.parseDouble(txtPrecio.getText()) - preciocompra), 2));
             }
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedPrecio(KeyEvent event) {
+        if (Tools.isNumeric(txtPrecio.getText()) && Tools.isNumeric(txtCosto.getText())) {
+            if (cbImpuesto.isSelected()) {
+                Double valor = Double.parseDouble(txtCosto.getText());
+                Double precio = Double.parseDouble(txtPrecio.getText());
+                Double porcentaje = (precio * 100) / valor;
+                int recalculado = (int) Math.abs((100 - (Double.parseDouble(Tools.roundingValue(
+                        Double.parseDouble(Tools.roundingValue(porcentaje, 2)),
+                        0)))));
+                txtMargen.setText(String.valueOf(recalculado));
+            } else {
+                double igv = Tools.calculateTax(Session.IMPUESTO, Double.parseDouble(txtCosto.getText()));
+                double precioigv = (Double.parseDouble(txtCosto.getText()) + igv);
+
+                Double valor = precioigv;
+                Double precio = Double.parseDouble(txtPrecio.getText());
+                Double porcentaje = (precio * 100) / valor;
+                int recalculado = (int) Math.abs((100 - (Double.parseDouble(Tools.roundingValue(
+                        Double.parseDouble(Tools.roundingValue(porcentaje, 2)),
+                        0)))));
+                txtMargen.setText(String.valueOf(recalculado));
+
+            }
+
         }
     }
 

@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloProcesoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloProcesoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -133,7 +133,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtCategoria" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedCategoria" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedCategoria" />
+                                                      <TextField fx:id="txtCategoria" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedCategoria" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedCategoria" prefHeight="30.0" />
                                                    </children>
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
@@ -144,7 +144,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtMarca" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedMarca" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedMarca" />
+                                                      <TextField fx:id="txtMarca" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedMarca" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedMarca" prefHeight="30.0" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -158,7 +158,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtPresentacion" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedPresentacion" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedPresentacion" prefWidth="210.0" />
+                                                      <TextField fx:id="txtPresentacion" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedPresentacion" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedPresentacion" prefHeight="30.0" prefWidth="210.0" />
                                                    </children>
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
@@ -169,7 +169,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" prefWidth="210.0" />
+                                                      <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="210.0" />
                                                    </children>
                                                 </VBox>
                                              </children>

@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.scene.layout.Pane;
+
 public class Session {
 
     public static String USER_ID;
@@ -16,9 +18,15 @@ public class Session {
     public static boolean CONNECTION_SESSION;
     public static String IDCLIENTE;
     public static String DATOSCLIENTE;
+    public static Pane pane;
 
     public static String ARTICULOS_TOTAL;
     public static String CLIENTES_TOTAL;
     public static String PROVEEDORES_TOTAL;
     public static String TRABAJADORES_TOTAL;
+    
+    public static int ROL;
+    
+    
+    
 }

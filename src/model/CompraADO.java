@@ -15,13 +15,9 @@ public class CompraADO {
     public static String CrudEntity(CompraTB compraTB, TableView<ArticuloTB> tableView, ObservableList<LoteTB> loteTBs) {
         PreparedStatement compra = null;
         CallableStatement codigo_compra = null;
-
         PreparedStatement detalle_compra = null;
-
         PreparedStatement articulo_update = null;
-
         PreparedStatement lote_compra = null;
-
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
@@ -316,7 +312,7 @@ public class CompraADO {
                 ArticuloTB articuloTB = new ArticuloTB();
                 articuloTB.setId(rsEmps.getRow());
                 articuloTB.setClave(rsEmps.getString("Clave"));
-                articuloTB.setNombre(rsEmps.getString("NombreMarca"));
+                articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
                 articuloTB.setImporte(rsEmps.getDouble("Importe"));

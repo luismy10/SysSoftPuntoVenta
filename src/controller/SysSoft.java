@@ -14,7 +14,6 @@ import javafx.stage.StageStyle;
 
 public class SysSoft extends Application {
 
-    public static Pane pane;
     private final int COUNT_LIMIT = 50000;
     private Parent parent;
     private Scene scene;
@@ -38,7 +37,7 @@ public class SysSoft extends Application {
         FXMLLoader fXMLLoaderLogin = FxWindow.LoaderWindow(urllogin);
         parent = fXMLLoaderLogin.load(urllogin.openStream());
     
-        pane = new Pane();
+        Session.pane = new Pane();
         scene = new Scene(parent);
         for (int i = 0; i < COUNT_LIMIT; i++) {
             double progress = (100 * i) / COUNT_LIMIT;

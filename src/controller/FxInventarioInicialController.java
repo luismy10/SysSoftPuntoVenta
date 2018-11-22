@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -62,33 +63,37 @@ public class FxInventarioInicialController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcCaducidad;
     @FXML
+    private TableColumn<ArticuloTB, Double> tcCompra;
+    @FXML
     private TableColumn<ArticuloTB, Double> tcPrecio;
     @FXML
     private TableColumn<ArticuloTB, Double> tcExistencias;
 
     private AnchorPane content;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getIdArticulo()));
         tcClave.setCellValueFactory(cellData -> cellData.getValue().getClave());
-        tcArticulo.setCellValueFactory(cellData -> cellData.getValue().getNombre());
+        tcArticulo.setCellValueFactory(cellData -> cellData.getValue().getNombreMarca());
         tcLote.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().isLote() ? "SI" : "NO"
         ));
         tcCaducidad.setCellValueFactory(cellData -> Bindings.concat(""));
+        tcCompra.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrecioCompra()).asObject());
         tcPrecio.setCellValueFactory(cellData -> cellData.getValue().getPrecioVenta().asObject());
         tcExistencias.setCellValueFactory(cellData -> cellData.getValue().getCantidad().asObject());
     }
     
     private void InitializationTransparentBackground() {
-        SysSoft.pane.setStyle("-fx-background-color: black");
-        SysSoft.pane.setTranslateX(0);
-        SysSoft.pane.setTranslateY(0);
-        SysSoft.pane.setPrefWidth(Session.WIDTH_WINDOW);
-        SysSoft.pane.setPrefHeight(Session.HEIGHT_WINDOW);
-        SysSoft.pane.setOpacity(0.7f);
-        content.getChildren().add(SysSoft.pane);
+        Session.pane.setStyle("-fx-background-color: black");
+        Session.pane.setTranslateX(0);
+        Session.pane.setTranslateY(0);
+        Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.pane.setOpacity(0.7f);
+        content.getChildren().add(Session.pane);
     }
 
     public void fillArticlesTable() {
@@ -169,7 +174,7 @@ public class FxInventarioInicialController implements Initializable {
                     CellStyle cellStyle = workbook.createCellStyle();
                     cellStyle.setFont(font);
                     cellStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-                    String header[] = {"Id","Clave", "Artículo", "Lote", "Fecha de Caducidad", "Precio U.N", "Existencias"};
+                    String header[] = {"Id","Clave", "Artículo", "Lote", "Fecha de Caducidad", "Precio Compra", "Precio Venta", "Existencias"};
 
                     Row headerRow = sheet.createRow(0);
                     for (int i = 0; i < header.length; i++) {
@@ -215,12 +220,19 @@ public class FxInventarioInicialController implements Initializable {
                         cell6.setCellType(Cell.CELL_TYPE_NUMERIC);
                         cell6.setCellStyle(cellStyleCell);
                         sheet.autoSizeColumn(cell6.getColumnIndex());
-
+                        
                         Cell cell7 = row.createCell(6);
                         cell7.setCellValue(Double.parseDouble(Tools.getValueAt(tvList, i, 6).toString()));
                         cell7.setCellType(Cell.CELL_TYPE_NUMERIC);
                         cell7.setCellStyle(cellStyleCell);
                         sheet.autoSizeColumn(cell7.getColumnIndex());
+
+                        Cell cell8 = row.createCell(7);
+                        cell8.setCellValue(Double.parseDouble(Tools.getValueAt(tvList, i, 7).toString()));
+                        cell8.setCellType(Cell.CELL_TYPE_NUMERIC);
+                        cell8.setCellStyle(cellStyleCell);
+                        sheet.autoSizeColumn(cell8.getColumnIndex());
+                        
                     }
 
                     try (FileOutputStream out = new FileOutputStream(file)) {
@@ -251,7 +263,7 @@ public class FxInventarioInicialController implements Initializable {
         Stage stage = FxWindow.StageLoader(parent, "Importar inventario", window.getScene().getWindow());
         stage.setResizable(true);        
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(SysSoft.pane);
+            content.getChildren().remove(Session.pane);
         });
         stage.show();
         

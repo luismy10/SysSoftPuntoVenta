@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" minHeight="-Infinity" prefHeight="580.0" prefWidth="960.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxInicioController">
+<AnchorPane id="AnchorPane" fx:id="window" minHeight="-Infinity" prefHeight="580.0" prefWidth="960.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxInicioController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -64,7 +64,69 @@
                                     <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Menú principal" />
                                  </children>
                               </HBox>
-                              <VBox fx:id="vbMenus" />
+                              <VBox>
+                                 <children>
+                                    <HBox fx:id="btnInicio" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" styleClass="buttonContainer" stylesheets="@../styles.css">
+                                       <children>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../home.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Inicio" />
+                                       </children>
+                                    </HBox>
+                                    <HBox fx:id="btnOperaciones" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" styleClass="buttonContainer" stylesheets="@../styles.css">
+                                       <children>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../bag.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Operaciones" />
+                                       </children>
+                                    </HBox>
+                                    <HBox fx:id="btnConsultas" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" styleClass="buttonContainer" stylesheets="@../styles.css">
+                                       <children>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../consultas.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Consultas" />
+                                       </children>
+                                    </HBox>
+                                    <HBox fx:id="btnReportes" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" styleClass="buttonContainer" stylesheets="@../styles.css">
+                                       <children>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../reports-white.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Reportes" />
+                                       </children>
+                                    </HBox>
+                                    <HBox fx:id="btnGraficos" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" styleClass="buttonContainer" stylesheets="@../styles.css">
+                                       <children>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../charts.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Gráficos" />
+                                       </children>
+                                    </HBox>
+                                    <HBox fx:id="btnConfiguracion" alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" styleClass="buttonContainer" stylesheets="@../styles.css">
+                                       <children>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../configuration.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Configuración" />
+                                       </children>
+                                    </HBox>
+                                 </children></VBox>
                            </children>
                         </VBox>
                      </children>

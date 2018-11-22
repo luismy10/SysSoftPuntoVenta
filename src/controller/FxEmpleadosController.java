@@ -117,13 +117,13 @@ public class FxEmpleadosController implements Initializable {
     }
 
     private void InitializationTransparentBackground() {
-        SysSoft.pane.setStyle("-fx-background-color: black");
-        SysSoft.pane.setTranslateX(0);
-        SysSoft.pane.setTranslateY(0);
-        SysSoft.pane.setPrefWidth(Session.WIDTH_WINDOW);
-        SysSoft.pane.setPrefHeight(Session.HEIGHT_WINDOW);
-        SysSoft.pane.setOpacity(0.7f);
-        content.getChildren().add(SysSoft.pane);
+        Session.pane.setStyle("-fx-background-color: black");
+        Session.pane.setTranslateX(0);
+        Session.pane.setTranslateY(0);
+        Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.pane.setOpacity(0.7f);
+        content.getChildren().add(Session.pane);
     }
 
     private void openWindowEmpleadosAdd() throws IOException {
@@ -138,7 +138,7 @@ public class FxEmpleadosController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(SysSoft.pane);
+            content.getChildren().remove(Session.pane);
         });
         stage.show();
     }
@@ -156,7 +156,7 @@ public class FxEmpleadosController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(SysSoft.pane);
+            content.getChildren().remove(Session.pane);
         });
         stage.show();
         controller.setEditEmpleado(value);
