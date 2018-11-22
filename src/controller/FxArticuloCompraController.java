@@ -139,10 +139,12 @@ public class FxArticuloCompraController implements Initializable {
 
         articuloTB.setPrecioVenta(Double.parseDouble(txtPrecio.getText()));
 
-        articuloTB.setSubTotal((Double.parseDouble(txtCantidad.getText()) * costo));
+        articuloTB.setSubTotal((Double.parseDouble(txtCantidad.getText())
+                * (costo - (costo * (articuloTB.getDescuento().get() / 100.00))))
+        );
 
         articuloTB.setImporte(
-                (Double.parseDouble(txtCantidad.getText()) * costo)
+                articuloTB.getSubTotal().get()
                 - articuloTB.getDescuento().get());
 
         articuloTB.setUtilidad(Tools.isNumeric(txtUtilidad.getText())
@@ -270,7 +272,7 @@ public class FxArticuloCompraController implements Initializable {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b')) {
             event.consume();
-        }        
+        }
     }
 
     @FXML
