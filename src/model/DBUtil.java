@@ -17,7 +17,7 @@ public class DBUtil {
     private static final String PORT = "1433";
     private static final String DBNAME = "PuntoVentaSysSoftDB";
     private static final String USER = "sa";
-    private static final String PASSWORD = "123456";
+    private static final String PASSWORD = "123456";//Qz0966lb
     private static final String URL = "jdbc:sqlserver://" + DIRECTION + ":" + PORT + ";databaseName=" + DBNAME + "";
 
     public static void dbConnect()  {

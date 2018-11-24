@@ -114,10 +114,10 @@ public class FxComprasController implements Initializable {
 
     private void initTable() {
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombre().get()
+                cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombreMarca().get()
         ));
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getCantidad().get(), 2)));
+                Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
         tcCosto.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
@@ -127,13 +127,13 @@ public class FxComprasController implements Initializable {
     }
 
     private void InitializationTransparentBackground() {
-        SysSoft.pane.setStyle("-fx-background-color: black");
-        SysSoft.pane.setTranslateX(0);
-        SysSoft.pane.setTranslateY(0);
-        SysSoft.pane.setPrefWidth(Session.WIDTH_WINDOW);
-        SysSoft.pane.setPrefHeight(Session.HEIGHT_WINDOW);
-        SysSoft.pane.setOpacity(0.7f);
-        content.getChildren().add(SysSoft.pane);
+        Session.pane.setStyle("-fx-background-color: black");
+        Session.pane.setTranslateX(0);
+        Session.pane.setTranslateY(0);
+        Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.pane.setOpacity(0.7f);
+        content.getChildren().add(Session.pane);
     }
 
     private void onViewRegister() {
@@ -200,7 +200,7 @@ public class FxComprasController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(SysSoft.pane);
+            content.getChildren().remove(Session.pane);
         });
         stage.show();
         controller.fillProvidersTable("");
@@ -225,14 +225,18 @@ public class FxComprasController implements Initializable {
                     ArticuloTB articuloTB = new ArticuloTB();
                     articuloTB.setIdArticulo(e.getIdArticulo());
                     articuloTB.setClave(e.getClave().get());
-                    articuloTB.setNombre(e.getNombre().get());
-                    articuloTB.setCantidad(e.getCantidad().get());
+                    articuloTB.setNombreMarca(e.getNombreMarca().get());
+                    articuloTB.setCantidad(e.getCantidad());
                     articuloTB.setPrecioCompra(e.getPrecioCompra());
                     articuloTB.setPrecioCompraReal(e.getPrecioCompraReal());
-                    articuloTB.setPrecioVenta(e.getPrecioVenta().get());
+                    articuloTB.setPrecioVenta(e.getPrecioVenta());
+                    articuloTB.setMargen(e.getMargen());
+                    articuloTB.setUtilidad(e.getUtilidad());
+                    articuloTB.setPrecioVentaMayoreo(e.getPrecioVentaMayoreo());
+                    articuloTB.setMargenMayoreo(e.getMargenMayoreo());
+                    articuloTB.setUtilidadMayoreo(e.getUtilidadMayoreo());
                     articuloTB.setDescuento(e.getDescuento().get());
                     articuloTB.setImporte(e.getImporte().get());
-                    articuloTB.setUtilidad(e.getUtilidad().get());
                     articuloTB.setImpuesto(e.isImpuesto());
                     articuloTB.setLote(e.isLote());
                     controller.setLoadEdit(articuloTB, tvList.getSelectionModel().getSelectedIndex(), loteTBs);
@@ -285,7 +289,7 @@ public class FxComprasController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(SysSoft.pane);
+            content.getChildren().remove(Session.pane);
         });
         stage.show();
         controller.fillCustomersTable("");

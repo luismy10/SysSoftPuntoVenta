@@ -48,6 +48,7 @@ public class FxLoginController implements Initializable {
         } else {
             EmpleadoTB empleadoTB = EmpleadoADO.GetValidateUser(txtUsuario.getText().trim(), txtClave.getText().trim());
             if (empleadoTB != null) {
+                Session.ROL = empleadoTB.getRol();
                 Tools.Dispose(window);
                 URL url = getClass().getResource(Tools.FX_FILE_INICIO);
                 FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -64,7 +65,7 @@ public class FxLoginController implements Initializable {
                 stage.setMaximized(true);
                 stage.show();
                 stage.requestFocus();                
-                controller.initInicioController(empleadoTB.getRol());
+                controller.initInicioController();
                 controller.initWindowSize();
                 Session.USER_ID = empleadoTB.getIdEmpleado();
                 Session.USER_NAME = (empleadoTB.getApellidos().substring(0, 1).toUpperCase()+empleadoTB.getApellidos().substring(1).toLowerCase()) 

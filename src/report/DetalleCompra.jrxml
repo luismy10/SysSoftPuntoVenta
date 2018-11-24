@@ -4,7 +4,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SysSoftProcess"/>
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="69"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
@@ -75,7 +75,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[select ROW_NUMBER() over( order by a.Clave desc) as Filas,
-a.Clave,a.NombreMarca, d.Cantidad,d.PrecioCompra,d.Importe from DetalleCompraTB as d inner join ArticuloTB as a
+a.Clave,a.NombreMarca, d.Cantidad,d.PrecioCompra,d.Descuento,d.Importe from DetalleCompraTB as d inner join ArticuloTB as a
 on d.IdArticulo = a.IdArticulo
 where d.IdCompra =  $P{IDCOMPRA}]]>
 	</queryString>
@@ -94,6 +94,7 @@ where d.IdCompra =  $P{IDCOMPRA}]]>
 	<field name="PrecioCompra" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="PrecioCompra"/>
 	</field>
+	<field name="Descuento" class="java.math.BigDecimal"/>
 	<field name="Importe" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="Importe"/>
 	</field>
@@ -199,39 +200,39 @@ where d.IdCompra =  $P{IDCOMPRA}]]>
 	<columnHeader>
 		<band height="20">
 			<staticText>
-				<reportElement style="Column header" positionType="Float" x="0" y="0" width="80" height="20" forecolor="#000000" uuid="7b79d824-c130-4436-a415-8ae2590cbcb1">
+				<reportElement style="Column header" positionType="Float" x="0" y="0" width="50" height="20" forecolor="#000000" uuid="7b79d824-c130-4436-a415-8ae2590cbcb1">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="97e5caea-5df0-4c02-9e11-12c88b8e15a7"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[N°]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" positionType="Float" x="80" y="0" width="230" height="20" forecolor="#000000" uuid="b0972bca-72b2-40b7-be28-8fa6a2b0c71e">
+				<reportElement style="Column header" positionType="Float" x="50" y="0" width="170" height="20" forecolor="#000000" uuid="b0972bca-72b2-40b7-be28-8fa6a2b0c71e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="36c0cb03-944b-4797-88f1-edb9013640e6"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="11" isBold="true"/>
 					<paragraph leftIndent="10"/>
 				</textElement>
 				<text><![CDATA[Descripción]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" positionType="Float" x="310" y="0" width="80" height="20" forecolor="#000000" uuid="b0843301-0653-4ca5-aa48-8f0b95eb8b01">
+				<reportElement style="Column header" positionType="Float" x="220" y="0" width="80" height="20" forecolor="#000000" uuid="b0843301-0653-4ca5-aa48-8f0b95eb8b01">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0f80e744-6c09-4a28-88c0-ee35bf159bdd"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" positionType="Float" x="390" y="0" width="80" height="20" forecolor="#000000" uuid="190695ea-37cd-419d-b09e-8f3e253335de">
+				<reportElement style="Column header" positionType="Float" x="300" y="0" width="80" height="20" forecolor="#000000" uuid="190695ea-37cd-419d-b09e-8f3e253335de">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2b25292f-79a9-45a3-ae86-6952829ec862"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[P. Unitario]]></text>
 			</staticText>
@@ -240,48 +241,55 @@ where d.IdCompra =  $P{IDCOMPRA}]]>
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9dc46f19-1b94-405d-bb1c-9206eaef8f3d"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Importe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="380" y="0" width="90" height="20" forecolor="#000000" uuid="6c9554d1-15a7-4029-8ffa-1ab8b81f9084"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descuento]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="30">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="0" y="0" width="80" height="30" uuid="6b8dfc1d-fb97-4c35-8809-8fcfbe36b24f">
+				<reportElement style="Detail" positionType="Float" x="0" y="0" width="50" height="30" uuid="6b8dfc1d-fb97-4c35-8809-8fcfbe36b24f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="97e5caea-5df0-4c02-9e11-12c88b8e15a7"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Filas}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="80" y="0" width="230" height="30" uuid="16fe6dcd-f839-4f36-8cf7-66bbfa32e4a4">
+				<reportElement style="Detail" positionType="Float" x="50" y="0" width="170" height="30" uuid="16fe6dcd-f839-4f36-8cf7-66bbfa32e4a4">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="36c0cb03-944b-4797-88f1-edb9013640e6"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="10" isBold="false"/>
 					<paragraph leftIndent="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{NombreMarca}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="310" y="0" width="80" height="30" uuid="d948a5b3-5432-45d6-8e5c-8122a568d528">
+				<reportElement style="Detail" positionType="Float" x="220" y="0" width="80" height="30" uuid="d948a5b3-5432-45d6-8e5c-8122a568d528">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0f80e744-6c09-4a28-88c0-ee35bf159bdd"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Cantidad}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="390" y="0" width="80" height="30" uuid="07014563-40fd-4804-bcc7-1b7e01ed4bee">
+				<reportElement style="Detail" positionType="Float" x="300" y="0" width="80" height="30" uuid="07014563-40fd-4804-bcc7-1b7e01ed4bee">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2b25292f-79a9-45a3-ae86-6952829ec862"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{PrecioCompra}]]></textFieldExpression>
 			</textField>
@@ -290,32 +298,39 @@ where d.IdCompra =  $P{IDCOMPRA}]]>
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9dc46f19-1b94-405d-bb1c-9206eaef8f3d"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Importe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="90" height="30" uuid="bf20d0a2-1952-4f14-b6c7-9539d0628ffb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Descuento}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<lastPageFooter>
 		<band height="170">
 			<rectangle>
-				<reportElement x="0" y="140" width="555" height="30" backcolor="#E6E8E9" uuid="a033a399-997b-4922-9437-460435dad9e2"/>
+				<reportElement x="0" y="140" width="555" height="25" backcolor="#E6E8E9" uuid="a033a399-997b-4922-9437-460435dad9e2"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement x="0" y="140" width="280" height="30" uuid="3699efa8-e8c6-4297-9539-ca37a4b68366"/>
+				<reportElement x="0" y="140" width="280" height="25" uuid="3699efa8-e8c6-4297-9539-ca37a4b68366"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Serif" size="12" isItalic="true"/>
+					<font fontName="Serif" size="10" isItalic="true"/>
 					<paragraph leftIndent="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new SimpleDateFormat("d 'de' MMMM 'del' yyyy").format(new java.util.Date())]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="280" y="140" width="275" height="30" uuid="f1a4231f-e992-4290-8394-58df176a805e"/>
+				<reportElement x="280" y="140" width="275" height="25" uuid="f1a4231f-e992-4290-8394-58df176a805e"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Serif" size="12" isItalic="true"/>
+					<font fontName="Serif" size="10" isItalic="true"/>
 					<paragraph rightIndent="10"/>
 				</textElement>
 				<text><![CDATA[GRACIAS POR HACER NEGOCIOS

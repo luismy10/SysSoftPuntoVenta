@@ -41,8 +41,18 @@ public class FxInicioController implements Initializable {
     @FXML
     private Text lblPuesto;
     @FXML
-    private VBox vbMenus;
-
+    private HBox btnInicio;
+    @FXML
+    private HBox btnOperaciones;
+    @FXML
+    private HBox btnConsultas;
+    @FXML
+    private HBox btnReportes;
+    @FXML
+    private HBox btnGraficos;
+    @FXML
+    private HBox btnConfiguracion;
+    
     private ScrollPane principal;
 
     private HBox operaciones;
@@ -55,107 +65,38 @@ public class FxInicioController implements Initializable {
 
     private double width_siderbar;
 
-    private HBox btnInicio;
-
-    private HBox btnOperaciones;
-
-    private HBox btnConsultas;
-
-    private HBox btnReportes;
-
-    private HBox btnGraficos;
-
-    private HBox btnConfiguracion;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-    }
-
-    public void initInicioController(int rol) {
+        lblEstado.setText(Session.CONNECTION_SESSION == true ? "Conectado" : "Desconectado");
+        imState.setImage(Session.CONNECTION_SESSION == true ? new Image("/view/connected.png")
+                : new Image("/view/disconnected.png"));
         try {
-            lblEstado.setText(Session.CONNECTION_SESSION == true ? "Conectado" : "Desconectado");
-            imState.setImage(Session.CONNECTION_SESSION == true ? new Image("/view/connected.png")
-                    : new Image("/view/disconnected.png"));
-
-            vbMenus.getChildren().clear();
-            ObservableList<MenuTB> menuTBs = MenuADO.GetMenus(rol);
-
+            ObservableList<MenuTB> menuTBs = MenuADO.GetMenus(Session.ROL);
             if (menuTBs.get(0).getIdMenu() != 0) {
-                FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource("/view/inicio/FxMenu.fxml"));
-                btnInicio = fXMLSeleccionado.load();
-                FxMenuController menuController = fXMLSeleccionado.getController();
-                menuController.getIvImagen().setImage(new Image("/view/home.png"));
-                menuController.getLblNombre().setText(
-                        menuTBs.get(0).getNombre().substring(0, 1).toUpperCase() + menuTBs.get(0).getNombre().substring(1).toLowerCase()
-                );
                 btnInicio.setVisible(menuTBs.get(0).isEstado());
                 btnInicio.setOnMouseClicked(this::onMouseClickedInicio);
                 btnInicio.getStyleClass().add("buttonContainerActivate");
-                vbMenus.getChildren().add(btnInicio);
-
             }
-            if (menuTBs.get(1).getIdMenu() != 0) {
-                FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource("/view/inicio/FxMenu.fxml"));
-                btnOperaciones = fXMLSeleccionado.load();
-                FxMenuController menuController = fXMLSeleccionado.getController();
-                menuController.getIvImagen().setImage(new Image("/view/bag.png"));
-                menuController.getLblNombre().setText(
-                        menuTBs.get(1).getNombre().substring(0, 1).toUpperCase() + menuTBs.get(1).getNombre().substring(1).toLowerCase()
-                );
+            if (menuTBs.get(1).getIdMenu() != 0) {                
                 btnOperaciones.setVisible(menuTBs.get(1).isEstado());
                 btnOperaciones.setOnMouseClicked(this::onMouseClickedOperaciones);
-                vbMenus.getChildren().add(btnOperaciones);
             }
-            if (menuTBs.get(2).getIdMenu() != 0) {
-                FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource("/view/inicio/FxMenu.fxml"));
-                btnConsultas = fXMLSeleccionado.load();
-                FxMenuController menuController = fXMLSeleccionado.getController();
-                menuController.getIvImagen().setImage(new Image("/view/consultas.png"));
-                menuController.getLblNombre().setText(
-                        menuTBs.get(2).getNombre().substring(0, 1).toUpperCase() + menuTBs.get(2).getNombre().substring(1).toLowerCase()
-                );
+            if (menuTBs.get(2).getIdMenu() != 0) {                
                 btnConsultas.setVisible(menuTBs.get(2).isEstado());
                 btnConsultas.setOnMouseClicked(this::onMouseClickedConsultas);
-                vbMenus.getChildren().add(btnConsultas);
             }
-            if (menuTBs.get(3).getIdMenu() != 0) {
-                FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource("/view/inicio/FxMenu.fxml"));
-                btnReportes = fXMLSeleccionado.load();
-                FxMenuController menuController = fXMLSeleccionado.getController();
-                menuController.getIvImagen().setImage(new Image("/view/reports.png"));
-                menuController.getLblNombre().setText(
-                        menuTBs.get(3).getNombre().substring(0, 1).toUpperCase() + menuTBs.get(3).getNombre().substring(1).toLowerCase()
-                );
+            if (menuTBs.get(3).getIdMenu() != 0) {              
                 btnReportes.setVisible(menuTBs.get(3).isEstado());
                 btnReportes.setOnMouseClicked(this::onMouseClickedReportes);
-                vbMenus.getChildren().add(btnReportes);
             }
-            if (menuTBs.get(4).getIdMenu() != 0) {
-                FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource("/view/inicio/FxMenu.fxml"));
-                btnGraficos = fXMLSeleccionado.load();
-                FxMenuController menuController = fXMLSeleccionado.getController();
-                menuController.getIvImagen().setImage(new Image("/view/charts.png"));
-                menuController.getLblNombre().setText(
-                        menuTBs.get(4).getNombre().substring(0, 1).toUpperCase() + menuTBs.get(4).getNombre().substring(1).toLowerCase()
-                );
+            if (menuTBs.get(4).getIdMenu() != 0) {                
                 btnGraficos.setVisible(menuTBs.get(4).isEstado());
                 btnGraficos.setOnMouseClicked(this::onMouseClickedGraficos);
-                vbMenus.getChildren().add(btnGraficos);
             }
-            if (menuTBs.get(5).getIdMenu() != 0) {
-                FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource("/view/inicio/FxMenu.fxml"));
-                btnConfiguracion = fXMLSeleccionado.load();
-                FxMenuController menuController = fXMLSeleccionado.getController();
-                menuController.getIvImagen().setImage(new Image("/view/configuration.png"));
-                menuController.getLblNombre().setText(
-                        menuTBs.get(5).getNombre().substring(0, 1).toUpperCase() + menuTBs.get(5).getNombre().substring(1).toLowerCase()
-                );
+            if (menuTBs.get(5).getIdMenu() != 0) {                
                 btnConfiguracion.setVisible(menuTBs.get(5).isEstado());
                 btnConfiguracion.setOnMouseClicked(this::onMouseClickedConfiguracion);
-                vbMenus.getChildren().add(btnConfiguracion);               
             }
-            
             FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_PRINCIPAL));
             principal = fXMLPrincipal.load();
 
@@ -174,25 +115,27 @@ public class FxInicioController implements Initializable {
             FxConfiguracionController configuracionController = fXMLConfiguracion.getController();
             configuracionController.setContent(window, vbContent);
 
-            setNode(principal);
-
-            width_siderbar = vbSiderBar.getPrefWidth();
-           
+            
 
         } catch (IOException ex) {
-            System.out.println(ex.getLocalizedMessage());
+
         }
+    }
+
+    public void initInicioController() {
+        width_siderbar = vbSiderBar.getPrefWidth();
+        setNode(principal);
     }
 
     public void initWindowSize() {
         window.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             Session.WIDTH_WINDOW = (double) newValue;
-            SysSoft.pane.setPrefWidth(Session.WIDTH_WINDOW);
+            Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
         });
 
         window.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             Session.HEIGHT_WINDOW = (double) newValue;
-            SysSoft.pane.setPrefHeight(Session.HEIGHT_WINDOW);
+            Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
         });
     }
 
@@ -216,11 +159,9 @@ public class FxInicioController implements Initializable {
     private void onMouseClickedSiderBar(MouseEvent event) {
         if (isExpand) {
             vbSiderBar.setPrefWidth(0);
-            
             isExpand = false;
         } else {
             vbSiderBar.setPrefWidth(width_siderbar);
-          
             isExpand = true;
         }
     }

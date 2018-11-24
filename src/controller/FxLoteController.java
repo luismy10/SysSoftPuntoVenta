@@ -58,7 +58,7 @@ public class FxLoteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcNumeroLote.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroLote()));
-        tcArticulo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getArticuloTB().getClave().get() + "\n" + cellData.getValue().getArticuloTB().getNombre().get()));
+        tcArticulo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getArticuloTB().getClave().get() + "\n" + cellData.getValue().getArticuloTB().getNombreMarca().get()));
         tcFabricacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaFabricacion().format(DateTimeFormatter.ofPattern("E, MMM dd yyyy"))));
         tcCaducidad.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCaducidad().format(DateTimeFormatter.ofPattern("E, MMM dd yyyy"))));
         tcInicial.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getExistenciaInicial()));
@@ -66,13 +66,13 @@ public class FxLoteController implements Initializable {
     }
 
     private void InitializationTransparentBackground() {
-        SysSoft.pane.setStyle("-fx-background-color: black");
-        SysSoft.pane.setTranslateX(0);
-        SysSoft.pane.setTranslateY(0);
-        SysSoft.pane.setPrefWidth(Session.WIDTH_WINDOW);
-        SysSoft.pane.setPrefHeight(Session.HEIGHT_WINDOW);
-        SysSoft.pane.setOpacity(0.7f);
-        content.getChildren().add(SysSoft.pane);
+        Session.pane.setStyle("-fx-background-color: black");
+        Session.pane.setTranslateX(0);
+        Session.pane.setTranslateY(0);
+        Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.pane.setOpacity(0.7f);
+        content.getChildren().add(Session.pane);
     }
 
     private void onViewArticuloAdd() throws IOException {
@@ -84,7 +84,7 @@ public class FxLoteController implements Initializable {
         FxLoteCambiarController controller = fXMLLoader.getController();
         controller.setEditBatchRealizado(new String[]{tvList.getSelectionModel().getSelectedItem().getNumeroLote(),
             tvList.getSelectionModel().getSelectedItem().getArticuloTB().getClave().get(),
-            tvList.getSelectionModel().getSelectedItem().getArticuloTB().getNombre().get(),
+            tvList.getSelectionModel().getSelectedItem().getArticuloTB().getNombreMarca().get(),
             tvList.getSelectionModel().getSelectedItem().getExistenciaActual() + "",
             tvList.getSelectionModel().getSelectedItem().getFechaCaducidad() + "",
             tvList.getSelectionModel().getSelectedItem().getFechaFabricacion() + ""
@@ -94,7 +94,7 @@ public class FxLoteController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(SysSoft.pane);
+            content.getChildren().remove(Session.pane);
         });
         stage.show();
 

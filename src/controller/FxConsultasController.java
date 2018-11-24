@@ -57,10 +57,9 @@ public class FxConsultasController implements Initializable {
     }
     
     private void openWindowHistorial() throws IOException {
-
-        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_HISTORIAL));
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_ARTICULOHISTORIAL));
         VBox node = fXMLPrincipal.load();
-        FxHistorialController controller = fXMLPrincipal.getController();
+        FxArticuloHistorialController controller = fXMLPrincipal.getController();
         controller.setContent(windowinit);
         content.getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
@@ -68,7 +67,6 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         content.getChildren().add(node);
-        controller.fillHistorialTable("");
     }
     
 

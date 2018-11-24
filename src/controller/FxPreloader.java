@@ -90,31 +90,36 @@ public class FxPreloader extends Preloader {
             case BEFORE_INIT:
                 System.out.println("BEFORE_INIT");
                 TimerService service = new TimerService();
-                service.setPeriod(Duration.seconds(59));
-                service.setOnSucceeded((WorkerStateEvent t) -> {
-                    try {
-                        DBUtil.dbConnect();
-                        Session.CONNECTION_SESSION = true;
-                        DBUtil.dbDisconnect();
-                        ExecutorService exec = Executors.newFixedThreadPool(1);
-                        ExecutorCompletionService completionService = new ExecutorCompletionService<>(exec);
-                        completionService.submit(ConsultasADO.TotalObjectInit());
-                        Long[] tipos = (Long[]) completionService.take().get();
-                        Session.ARTICULOS_TOTAL = "" + tipos[0];
-                        Session.CLIENTES_TOTAL = "" + tipos[1];
-                        Session.PROVEEDORES_TOTAL = "" + tipos[2];
-                        Session.TRABAJADORES_TOTAL = "" + tipos[3];
-                        System.out.println("dentro-----------------");
-                        System.out.println(Session.TRABAJADORES_TOTAL);
-                        if (!exec.isShutdown()) {
-                            exec.shutdown();
+                try {                    
+                    service.setPeriod(Duration.seconds(59));
+                    
+                    service.setOnSucceeded((WorkerStateEvent t) -> {
+                        try {
+                            DBUtil.dbConnect();
+                            Session.CONNECTION_SESSION = true;
+                            DBUtil.dbDisconnect();
+                            ExecutorService exec = Executors.newFixedThreadPool(1);
+                            ExecutorCompletionService completionService = new ExecutorCompletionService<>(exec);
+                            completionService.submit(ConsultasADO.TotalObjectInit());
+                            Long[] tipos = (Long[]) completionService.take().get();
+                            Session.ARTICULOS_TOTAL = "" + tipos[0];
+                            Session.CLIENTES_TOTAL = "" + tipos[1];
+                            Session.PROVEEDORES_TOTAL = "" + tipos[2];
+                            Session.TRABAJADORES_TOTAL = "" + tipos[3];                            
+                            if (!exec.isShutdown()) {
+                                exec.shutdown();
+                            }
+                        } catch (SQLException | InterruptedException | ExecutionException ex) {
+                            System.out.println(getClass().getName() + ":" + ex);
                         }
-                    } catch (SQLException | InterruptedException | ExecutionException ex) {
-                        System.out.println(getClass().getName() + ":" + ex);
-                    }
 
-                });
-                service.start();
+                    });
+                    service.start();
+                } catch (Exception ex) {
+
+                } finally {
+                    
+                }
 
                 ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
                 if (!list.isEmpty()) {

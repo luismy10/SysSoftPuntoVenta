@@ -56,6 +56,8 @@ public class FxArticulosController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcPresentacion;
     @FXML
+    private TableColumn<ArticuloTB, String> tcUnidadVenta;
+    @FXML
     private TableColumn<ArticuloTB, String> tcEstado;
     @FXML
     private TableColumn<ArticuloTB, ImageView> tcLote;
@@ -67,17 +69,19 @@ public class FxArticulosController implements Initializable {
     private FxArticuloSeleccionadoController seleccionadoController;
 
     private FxArticuloDetalleController detalleController;
-   
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocument.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombre().get()
+                cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombreMarca().get()
         ));
         tcMarca.setCellValueFactory(cellData -> cellData.getValue().getMarcaName());
         tcPresentacion.setCellValueFactory(cellData -> cellData.getValue().getPresentacionName());
+        tcUnidadVenta.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel"
+        ));
         tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
         tcLote.setCellValueFactory(new PropertyValueFactory<>("imageLote"));
 
@@ -102,16 +106,15 @@ public class FxArticulosController implements Initializable {
             };
 
             task.setOnSucceeded((WorkerStateEvent e) -> {
-//                tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
+                tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
                 lblLoad.setVisible(false);
             });
             task.setOnFailed((WorkerStateEvent event) -> {
                 lblLoad.setVisible(false);
             });
 
-            task.setOnScheduled((WorkerStateEvent event) -> {                
+            task.setOnScheduled((WorkerStateEvent event) -> {
                 lblLoad.setVisible(true);
-                tvList.itemsProperty().bind(task.valueProperty());
             });
             exec.execute(task);
 
@@ -128,13 +131,13 @@ public class FxArticulosController implements Initializable {
     }
 
     private void InitializationTransparentBackground() {
-        SysSoft.pane.setStyle("-fx-background-color: black");
-        SysSoft.pane.setTranslateX(0);
-        SysSoft.pane.setTranslateY(0);
-        SysSoft.pane.setPrefWidth(Session.WIDTH_WINDOW);
-        SysSoft.pane.setPrefHeight(Session.HEIGHT_WINDOW);
-        SysSoft.pane.setOpacity(0.7f);
-        content.getChildren().add(SysSoft.pane);
+        Session.pane.setStyle("-fx-background-color: black");
+        Session.pane.setTranslateX(0);
+        Session.pane.setTranslateY(0);
+        Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.pane.setOpacity(0.7f);
+        content.getChildren().add(Session.pane);
     }
 
     private void onViewArticuloAdd() throws IOException {
@@ -149,7 +152,7 @@ public class FxArticulosController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(SysSoft.pane);
+            content.getChildren().remove(Session.pane);
         });
         stage.show();
         controller.setInitArticulo();
@@ -168,7 +171,7 @@ public class FxArticulosController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding((WindowEvent WindowEvent) -> {
-                content.getChildren().remove(SysSoft.pane);
+                content.getChildren().remove(Session.pane);
             });
             stage.show();
             controller.setInitArticulo();
@@ -193,7 +196,7 @@ public class FxArticulosController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding((WindowEvent WindowEvent) -> {
-                content.getChildren().remove(SysSoft.pane);
+                content.getChildren().remove(Session.pane);
             });
             stage.show();
             controller.setInitArticulo();
@@ -302,7 +305,6 @@ public class FxArticulosController implements Initializable {
         fillArticlesTable(txtSearch.getText());
     }
 
-
     @FXML
     private void onKeyPressedClone(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
@@ -320,12 +322,12 @@ public class FxArticulosController implements Initializable {
         ArrayList<ArticuloTB> list = ArticuloADO.GetArticulosByIdView(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
         if (!list.isEmpty()) {
             ArticuloTB articuloTB = list.get(0);
-            seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
-            seleccionadoController.getLblName().setText(articuloTB.getNombre().get());
-            seleccionadoController.getLblPrice().setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
-            seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad().get() % 1 == 0
-                    ? Tools.roundingValue(articuloTB.getCantidad().get(), 0)
-                    : Tools.roundingValue(articuloTB.getCantidad().get(), 2));
+            seleccionadoController.getLblName().setText(articuloTB.getNombreMarca().get());
+            seleccionadoController.getLblName().setText(articuloTB.getNombreMarca().get());
+            seleccionadoController.getLblPrice().setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
+            seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad() % 1 == 0
+                    ? Tools.roundingValue(articuloTB.getCantidad(), 0)
+                    : Tools.roundingValue(articuloTB.getCantidad(), 2));
             if (detalleController != null) {
                 detalleController.getTvList().setItems(LoteADO.ListByIdLote(tvList.getSelectionModel().getSelectedItem().getIdArticulo()));
             }
@@ -354,17 +356,22 @@ public class FxArticulosController implements Initializable {
             }
         }
     }
-    
+
     @FXML
     private void onKeyPressedCantidad(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
-            
+        if (event.getCode() == KeyCode.ENTER) {
+
         }
     }
 
     @FXML
+<<<<<<< HEAD
     private void onActionCantidad(ActionEvent event) throws IOException{
         onViewArticuloUpdateStock();
+=======
+    private void onActionCantidad(ActionEvent event) {
+
+>>>>>>> a4ab218f457f9805c480fcde898347373e34e703
     }
 
     public TableView<ArticuloTB> getTvList() {
@@ -374,7 +381,5 @@ public class FxArticulosController implements Initializable {
     void setContent(AnchorPane content) {
         this.content = content;
     }
-
-    
 
 }

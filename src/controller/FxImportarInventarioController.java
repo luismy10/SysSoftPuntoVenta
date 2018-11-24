@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -25,6 +26,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import model.ArticuloADO;
 import model.ArticuloTB;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -53,6 +55,8 @@ public class FxImportarInventarioController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcCaducidad;
     @FXML
+    private TableColumn<ArticuloTB, Double> tcCompra;
+    @FXML
     private TableColumn<ArticuloTB, Double> tcPrecio;
     @FXML
     private TableColumn<ArticuloTB, Double> tcExistencias;
@@ -66,19 +70,21 @@ public class FxImportarInventarioController implements Initializable {
     private int count;
 
     private File file;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getIdArticulo()));
         tcClave.setCellValueFactory(cellData -> cellData.getValue().getClave());
-        tcArticulo.setCellValueFactory(cellData -> cellData.getValue().getNombre());
+        tcArticulo.setCellValueFactory(cellData -> cellData.getValue().getNombreMarca());
         tcLote.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().isLote() ? "SI" : "NO"
         ));
         tcCaducidad.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaRegistro().get().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))));
-        tcPrecio.setCellValueFactory(cellData -> cellData.getValue().getPrecioVenta().asObject());
-        tcExistencias.setCellValueFactory(cellData -> cellData.getValue().getCantidad().asObject());
-        count = 1;
+        tcCompra.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrecioCompra()).asObject());
+        tcPrecio.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrecioVenta()).asObject());
+        tcExistencias.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getCantidad()).asObject());
+        count = 0;
     }
 
     @FXML
@@ -86,7 +92,15 @@ public class FxImportarInventarioController implements Initializable {
         if (!tvList.getItems().isEmpty()) {
             short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Importar", "¿Esta seguro de continuar?", true);
             if (value == 1) {
-
+                String result = ArticuloADO.ImportarArticulos(tvList);
+                switch (result) {
+                    case "register":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Importar inventario", "Se ha ingresado el inventario inicial correctamente", false);
+                        break;
+                    default:
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Importar inventario", result, false);
+                        break;
+                }
             }
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Importar", "La lista para iniciar esta vacía", false);
@@ -109,7 +123,7 @@ public class FxImportarInventarioController implements Initializable {
         );
         file = fileChooser.showOpenDialog(window.getScene().getWindow());
         if (file != null) {
-
+            
             file = new File(file.getAbsolutePath());
             if (file.getName().endsWith("xls") || file.getName().endsWith("xlsx")) {
 
@@ -136,6 +150,7 @@ public class FxImportarInventarioController implements Initializable {
                                         Cell cell5 = row.getCell(4);
                                         Cell cell6 = row.getCell(5);
                                         Cell cell7 = row.getCell(6);
+                                        Cell cell8 = row.getCell(7);
                                         if (indexRow > 0) {
                                             try {
                                                 count++;
@@ -143,27 +158,25 @@ public class FxImportarInventarioController implements Initializable {
                                                 ArticuloTB articuloTB = new ArticuloTB();
                                                 articuloTB.setIdArticulo(cell1.getStringCellValue());
                                                 articuloTB.setClave(cell2.getStringCellValue());
-                                                articuloTB.setNombre(cell3.getStringCellValue());
+                                                articuloTB.setNombreMarca(cell3.getStringCellValue());
                                                 articuloTB.setLote(cell4.getStringCellValue().equalsIgnoreCase("SI"));
                                                 articuloTB.setFechaRegistro(new java.sql.Date(cell5.getDateCellValue().getTime()).toLocalDate());
-                                                articuloTB.setPrecioVenta(cell6.getNumericCellValue());
-                                                articuloTB.setCantidad(cell7.getNumericCellValue());
+                                                articuloTB.setPrecioCompra(cell6.getNumericCellValue());
+                                                articuloTB.setPrecioVenta(cell7.getNumericCellValue());
+                                                articuloTB.setCantidad(cell8.getNumericCellValue());
                                                 listImportada.add(articuloTB);
                                             } catch (Exception ex) {
                                                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Importar", "El formato de las celdas no son correctas.", false);
                                                 break;
                                             }
                                         }
-
                                     }
-
                                 } catch (EncryptedDocumentException ex) {
                                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Importar", "Error al importar el archivo, intente de nuevo.", false);
                                 } catch (IOException | InvalidFormatException ex) {
                                     Logger.getLogger(FxImportarInventarioController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 return listImportada;
-
                             }
                         };
                     }
