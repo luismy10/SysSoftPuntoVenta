@@ -184,6 +184,16 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
+                                                      <Label styleClass="labelRoboto14" text="El artículo si utiliza inventario:" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <CheckBox fx:id="cbInventario" mnemonicParsing="false" selected="true" text="Inventario" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                                   <children>
                                                       <Label styleClass="labelRoboto14" text="Estado:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
@@ -314,16 +324,6 @@
                                              <children>
                                                 <CheckBox fx:id="cbLote" mnemonicParsing="false" text="Lote" />
                                                 <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="(Indica si manejara un control de lotes y caducidades para este artículo)">
-                                                   <font>
-                                                      <Font name="Roboto" size="14.0" />
-                                                   </font>
-                                                </Text>
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
-                                             <children>
-                                                <CheckBox fx:id="cbInventario" mnemonicParsing="false" selected="true" text="Inventario" />
-                                                <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="(El artículo si utiliza inventario)">
                                                    <font>
                                                       <Font name="Roboto" size="14.0" />
                                                    </font>
