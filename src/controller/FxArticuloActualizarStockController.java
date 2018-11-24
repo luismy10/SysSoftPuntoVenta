@@ -7,21 +7,36 @@ package controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
-/**
- * FXML Controller class
- *
- * @author Ruberfc
- */
+
 public class FxArticuloActualizarStockController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
+    @FXML
+    private VBox window;
+    private FxArticulosController articulosController;
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+    }
+    
+    public void initComponents(){
+               Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.NONE, "Actualizar stock artículo","Vista iniciada", false);
+
+    }
+
+    public void setInitArticuloUpdateStock(FxArticulosController articulosController) {
+        this.articulosController = articulosController;
+    }
+    
+    
+    
+    
     
 }

@@ -98,7 +98,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionHistorial" onKeyPressed="#onKeyPressedHistorial" styleClass="buttonTransparent" text="Historial">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionHistorial" onKeyPressed="#onKeyPressedHistorial" styleClass="buttonTransparent" text="Artículo">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
