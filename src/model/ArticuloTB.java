@@ -375,6 +375,7 @@ public class ArticuloTB {
     public void setUtilidadMayoreo(double utilidadMayoreo) {
         this.utilidadMayoreo = utilidadMayoreo;
     }
+
     
     
 

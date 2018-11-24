@@ -227,7 +227,7 @@ public class FxArticuloProcesoController implements Initializable {
             cbLote.setSelected(articuloTB.isLote());
             cbInventario.setSelected(articuloTB.isInventario());
 
-            txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidad(), 2));            
+            txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidad(), 2));
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
             txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
@@ -298,28 +298,40 @@ public class FxArticuloProcesoController implements Initializable {
                 articuloTB.setPrecioVenta(Tools.isNumeric(txtPrecioVenta.getText())
                         ? Double.parseDouble(txtPrecioVenta.getText())
                         : 0);
+                if (articuloTB.getPrecioCompra() > 0) {
+                    Double porcentaje = (articuloTB.getPrecioVenta() * 100) / articuloTB.getPrecioCompra();
+                    int recalculado = (int) Math.abs((100
+                            - (Double.parseDouble(
+                                    Tools.roundingValue(Double.parseDouble(
+                                            Tools.roundingValue(porcentaje, 2)), 0)))));
 
-                Double porcentaje = (articuloTB.getPrecioVenta() * 100) / articuloTB.getPrecioCompra();
-                int recalculado = (int) Math.abs((100
-                        - (Double.parseDouble(
-                                Tools.roundingValue(Double.parseDouble(
-                                        Tools.roundingValue(porcentaje, 2)), 0)))));
+                    articuloTB.setMargen((short) recalculado);
+                    articuloTB.setUtilidad(articuloTB.getPrecioVenta() - articuloTB.getPrecioCompra());
 
-                articuloTB.setMargen((short) recalculado);
-                articuloTB.setUtilidad(articuloTB.getPrecioVenta() - articuloTB.getPrecioCompra());
+                } else {
+                    articuloTB.setMargen((short) 0);
+                    articuloTB.setUtilidad(0);
+                }
 
                 articuloTB.setPrecioVentaMayoreo(Tools.isNumeric(txtPrecioMayoreo.getText())
                         ? Double.parseDouble(txtPrecioMayoreo.getText())
                         : 0);
 
-                Double porcentajeMayoreo = (articuloTB.getPrecioVentaMayoreo() * 100) / articuloTB.getPrecioCompra();
-                int recalculadoMayoreo = (int) Math.abs((100
-                        - (Double.parseDouble(
-                                Tools.roundingValue(Double.parseDouble(
-                                        Tools.roundingValue(porcentajeMayoreo, 2)), 0)))));
-                
-                articuloTB.setMargenMayoreo((short)recalculadoMayoreo);
-                articuloTB.setUtilidadMayoreo(articuloTB.getPrecioVentaMayoreo() - articuloTB.getPrecioCompra());
+                if (articuloTB.getPrecioCompra() > 0) {
+                    Double porcentajeMayoreo = (articuloTB.getPrecioVentaMayoreo() * 100) / articuloTB.getPrecioCompra();
+                    int recalculadoMayoreo = (int) Math.abs((100
+                            - (Double.parseDouble(
+                                    Tools.roundingValue(Double.parseDouble(
+                                            Tools.roundingValue(porcentajeMayoreo, 2)), 0)))));
+
+                    articuloTB.setMargenMayoreo((short) recalculadoMayoreo);
+                    articuloTB.setUtilidadMayoreo(articuloTB.getPrecioVentaMayoreo() - articuloTB.getPrecioCompra());
+
+                } else {
+                    articuloTB.setMargenMayoreo((short) 0);
+                    articuloTB.setUtilidadMayoreo(0);
+
+                }
 
                 articuloTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
                         ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get()
