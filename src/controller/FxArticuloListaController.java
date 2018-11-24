@@ -44,6 +44,8 @@ public class FxArticuloListaController implements Initializable {
     private TableColumn<ArticuloTB, String> tcExistencias;
     @FXML
     private TableColumn<ArticuloTB, String> tcPrecio;
+    @FXML
+    private TableColumn<ArticuloTB, String> tcUnidadVenta;
 
     private FxComprasController comprasController;
 
@@ -61,9 +63,11 @@ public class FxArticuloListaController implements Initializable {
         )
         );
         tcMarca.setCellValueFactory(cellData -> cellData.getValue().getMarcaName());
-        tcExistencias.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad().get(), 2)));
-        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVenta().get(), 2)));
-
+        tcExistencias.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
+        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVenta(), 2)));
+        tcUnidadVenta.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel"
+        ));
     }
 
     public void fillProvidersTable(String value) {
@@ -139,9 +143,9 @@ public class FxArticuloListaController implements Initializable {
                     articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave().get());
                     articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca().get());
                     articuloTB.setCantidad(1);
-                    articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioVenta().get());
+                    articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
                     articuloTB.setDescuento(0);
-                    articuloTB.setSubTotal(1 * tvList.getSelectionModel().getSelectedItem().getPrecioVenta().get());
+                    articuloTB.setSubTotal(1 * tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
                     articuloTB.setImporte(
                             articuloTB.getSubTotal().get()
                             - articuloTB.getDescuento().get()
@@ -156,8 +160,8 @@ public class FxArticuloListaController implements Initializable {
                             new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
                                 tvList.getSelectionModel().getSelectedItem().getClave().get(),
                                 tvList.getSelectionModel().getSelectedItem().getNombreMarca().get(),
-                                "" + tvList.getSelectionModel().getSelectedItem().getCantidad().get(),
-                                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta().get()});
+                                "" + tvList.getSelectionModel().getSelectedItem().getCantidad(),
+                                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta()});
                     Tools.Dispose(window);
                 }
             }
@@ -177,9 +181,9 @@ public class FxArticuloListaController implements Initializable {
                     articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave().get());
                     articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca().get());
                     articuloTB.setCantidad(1);
-                    articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioVenta().get());
+                    articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
                     articuloTB.setDescuento(0);
-                    articuloTB.setSubTotal(1 * tvList.getSelectionModel().getSelectedItem().getPrecioVenta().get());
+                    articuloTB.setSubTotal(1 * tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
                     articuloTB.setImporte(
                             articuloTB.getSubTotal().get()
                             - articuloTB.getDescuento().get()
@@ -193,8 +197,8 @@ public class FxArticuloListaController implements Initializable {
                             new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
                                 tvList.getSelectionModel().getSelectedItem().getClave().get(),
                                 tvList.getSelectionModel().getSelectedItem().getNombreMarca().get(),
-                                "" + tvList.getSelectionModel().getSelectedItem().getCantidad().get(),
-                                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta().get()});
+                                "" + tvList.getSelectionModel().getSelectedItem().getCantidad(),
+                                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta()});
                     Tools.Dispose(window);
                 }
 

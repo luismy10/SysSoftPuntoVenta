@@ -18,8 +18,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -68,13 +70,21 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private TextField txtPrecioCompra;
     @FXML
-    private TextField txtImpuestoCompra;
-    @FXML
     private TextField txtPrecioVenta;
     @FXML
-    private TextField txtImpuestoVenta;
-    @FXML
     private CheckBox cbLote;
+    @FXML
+    private TextField txtDepartamento;
+    @FXML
+    private CheckBox cbInventario;
+    @FXML
+    private RadioButton rbUnidad;
+    @FXML
+    private RadioButton rbGranel;
+    @FXML
+    private TextField txtCantidadActual;
+    @FXML
+    private TextField txtPrecioMayoreo;
 
     private String idArticulo;
 
@@ -88,6 +98,8 @@ public class FxArticuloProcesoController implements Initializable {
 
     private int idMarca;
 
+    private int idDepartmento;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idArticulo = "";
@@ -95,6 +107,10 @@ public class FxArticuloProcesoController implements Initializable {
         idPresentacion = 0;
         idCategoria = 0;
         idMarca = 0;
+        idDepartmento = 0;
+        ToggleGroup group = new ToggleGroup();
+        rbUnidad.setToggleGroup(group);
+        rbGranel.setToggleGroup(group);
     }
 
     public void setInitArticulo() {
@@ -130,6 +146,17 @@ public class FxArticuloProcesoController implements Initializable {
                 txtPresentacion.setText(articuloTB.getPresentacionName().get());
             }
 
+            if (articuloTB.getDepartamento() != 0) {
+                idDepartmento = articuloTB.getDepartamento();
+                txtDepartamento.setText(articuloTB.getDepartamentoName().get());
+            }
+
+            if (articuloTB.getUnidadVenta() == 1) {
+                rbUnidad.setSelected(true);
+            } else {
+                rbGranel.setSelected(true);
+            }
+
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
             if (articuloTB.getEstado() != 0) {
                 for (int i = 0; i < lsest.size(); i++) {
@@ -143,7 +170,7 @@ public class FxArticuloProcesoController implements Initializable {
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
             txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
-            txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
+            txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
 
         }
     }
@@ -176,6 +203,17 @@ public class FxArticuloProcesoController implements Initializable {
                 txtPresentacion.setText(articuloTB.getPresentacionName().get());
             }
 
+            if (articuloTB.getDepartamento() != 0) {
+                idDepartmento = articuloTB.getDepartamento();
+                txtDepartamento.setText(articuloTB.getDepartamentoName().get());
+            }
+
+            if (articuloTB.getUnidadVenta() == 1) {
+                rbUnidad.setSelected(true);
+            } else {
+                rbGranel.setSelected(true);
+            }
+
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
             if (articuloTB.getEstado() != 0) {
                 for (int i = 0; i < lsest.size(); i++) {
@@ -187,11 +225,14 @@ public class FxArticuloProcesoController implements Initializable {
             }
 
             cbLote.setSelected(articuloTB.isLote());
+            cbInventario.setSelected(articuloTB.isInventario());
 
+            txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidad(), 2));            
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
             txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
-            txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
+            txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
+            txtPrecioMayoreo.setText(Tools.roundingValue(articuloTB.getPrecioVentaMayoreo(), 2));
 
             loadViewImage(idArticulo);
 
@@ -238,6 +279,9 @@ public class FxArticuloProcesoController implements Initializable {
                 articuloTB.setPresentacion(idPresentacion != 0
                         ? idPresentacion
                         : 0);
+                articuloTB.setDepartamento(idDepartmento != 0
+                        ? idDepartmento
+                        : 0);
 
                 articuloTB.setStockMinimo(Tools.isNumeric(txtStockMinimo.getText())
                         ? Double.parseDouble(txtStockMinimo.getText().trim())
@@ -255,10 +299,34 @@ public class FxArticuloProcesoController implements Initializable {
                         ? Double.parseDouble(txtPrecioVenta.getText())
                         : 0);
 
+                Double porcentaje = (articuloTB.getPrecioVenta() * 100) / articuloTB.getPrecioCompra();
+                int recalculado = (int) Math.abs((100
+                        - (Double.parseDouble(
+                                Tools.roundingValue(Double.parseDouble(
+                                        Tools.roundingValue(porcentaje, 2)), 0)))));
+
+                articuloTB.setMargen((short) recalculado);
+                articuloTB.setUtilidad(articuloTB.getPrecioVenta() - articuloTB.getPrecioCompra());
+
+                articuloTB.setPrecioVentaMayoreo(Tools.isNumeric(txtPrecioMayoreo.getText())
+                        ? Double.parseDouble(txtPrecioMayoreo.getText())
+                        : 0);
+
+                Double porcentajeMayoreo = (articuloTB.getPrecioVentaMayoreo() * 100) / articuloTB.getPrecioCompra();
+                int recalculadoMayoreo = (int) Math.abs((100
+                        - (Double.parseDouble(
+                                Tools.roundingValue(Double.parseDouble(
+                                        Tools.roundingValue(porcentajeMayoreo, 2)), 0)))));
+                
+                articuloTB.setMargenMayoreo((short)recalculadoMayoreo);
+                articuloTB.setUtilidadMayoreo(articuloTB.getPrecioVentaMayoreo() - articuloTB.getPrecioCompra());
+
                 articuloTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
                         ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get()
                         : 0);
+                articuloTB.setUnidadVenta(rbUnidad.isSelected() ? 1 : 2);
                 articuloTB.setLote(cbLote.isSelected());
+                articuloTB.setInventario(cbInventario.isSelected());
 
                 String result = ArticuloADO.CrudArticulo(articuloTB);
                 switch (result) {
@@ -428,6 +496,17 @@ public class FxArticuloProcesoController implements Initializable {
     }
 
     @FXML
+    private void onKeyTypedPrecioVentaMayoreo(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+            event.consume();
+        }
+        if (c == '.' && txtPrecioMayoreo.getText().contains(".") || c == '-' && txtPrecioMayoreo.getText().contains("-")) {
+            event.consume();
+        }
+    }
+
+    @FXML
     private void onKeyTypedDetalle(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if (c != '\b') {
@@ -512,6 +591,28 @@ public class FxArticuloProcesoController implements Initializable {
         openWindowGerarCodigoBarras();
     }
 
+    @FXML
+    private void onMouseClickedDepartamento(MouseEvent event) throws IOException {
+        if (event.getClickCount() == 2) {
+            openWindowDetalle("Agregar Departamento", "0013");
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedDepartamento(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.SPACE) {
+            openWindowDetalle("Agregar Departamento", "0013");
+        }
+    }
+
+    @FXML
+    private void onKeyTypedDepartamento(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if (c != '\b') {
+            event.consume();
+        }
+    }
+
     public void setIdPresentacion(int idPresentacion) {
         this.idPresentacion = idPresentacion;
     }
@@ -522,6 +623,10 @@ public class FxArticuloProcesoController implements Initializable {
 
     public void setIdMarca(int idMarca) {
         this.idMarca = idMarca;
+    }
+
+    public void setIdDepartmento(int idDepartmento) {
+        this.idDepartmento = idDepartmento;
     }
 
     public TextField getTxtPresentacion() {
@@ -538,6 +643,10 @@ public class FxArticuloProcesoController implements Initializable {
 
     public TextField getTxtClave() {
         return txtClave;
+    }
+
+    public TextField getTxtDepartamento() {
+        return txtDepartamento;
     }
 
 }

@@ -117,7 +117,7 @@ public class FxComprasController implements Initializable {
                 cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombreMarca().get()
         ));
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getCantidad().get(), 2)));
+                Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
         tcCosto.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
@@ -226,13 +226,17 @@ public class FxComprasController implements Initializable {
                     articuloTB.setIdArticulo(e.getIdArticulo());
                     articuloTB.setClave(e.getClave().get());
                     articuloTB.setNombreMarca(e.getNombreMarca().get());
-                    articuloTB.setCantidad(e.getCantidad().get());
+                    articuloTB.setCantidad(e.getCantidad());
                     articuloTB.setPrecioCompra(e.getPrecioCompra());
                     articuloTB.setPrecioCompraReal(e.getPrecioCompraReal());
-                    articuloTB.setPrecioVenta(e.getPrecioVenta().get());
+                    articuloTB.setPrecioVenta(e.getPrecioVenta());
+                    articuloTB.setMargen(e.getMargen());
+                    articuloTB.setUtilidad(e.getUtilidad());
+                    articuloTB.setPrecioVentaMayoreo(e.getPrecioVentaMayoreo());
+                    articuloTB.setMargenMayoreo(e.getMargenMayoreo());
+                    articuloTB.setUtilidadMayoreo(e.getUtilidadMayoreo());
                     articuloTB.setDescuento(e.getDescuento().get());
                     articuloTB.setImporte(e.getImporte().get());
-                    articuloTB.setUtilidad(e.getUtilidad().get());
                     articuloTB.setImpuesto(e.isImpuesto());
                     articuloTB.setLote(e.isLote());
                     controller.setLoadEdit(articuloTB, tvList.getSelectionModel().getSelectedIndex(), loteTBs);

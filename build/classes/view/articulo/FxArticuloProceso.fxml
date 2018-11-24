@@ -5,6 +5,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -18,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloProcesoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloProcesoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -158,10 +159,29 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtPresentacion" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedPresentacion" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedPresentacion" prefHeight="30.0" prefWidth="210.0" />
+                                                      <TextField fx:id="txtPresentacion" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedPresentacion" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedPresentacion" prefHeight="30.0" prefWidth="245.0" />
                                                    </children>
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
+                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto14" text="Se vende:" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="SOMETIMES">
+                                                         <children>
+                                                            <RadioButton fx:id="rbUnidad" mnemonicParsing="false" selected="true" styleClass="labelRoboto14" text="Por Unidad/Pza" />
+                                                            <RadioButton fx:id="rbGranel" mnemonicParsing="false" styleClass="labelRoboto14" text="A Granel(Peso)" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
+                                             <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
                                                       <Label styleClass="labelRoboto14" text="Estado:" textFill="#23283a">
@@ -229,12 +249,12 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Sin impuesto:" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Cantidad actual:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtImpuestoCompra" disable="true" onAction="#onActionToRegister" prefHeight="30.0" promptText="0.00" />
+                                                      <TextField fx:id="txtCantidadActual" disable="true" onAction="#onActionToRegister" prefHeight="30.0" promptText="0.00" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -254,12 +274,26 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Sin impuesto:" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Precio de venta x mayoreo:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtImpuestoVenta" disable="true" onAction="#onActionToRegister" prefHeight="30.0" promptText="0.00" />
+                                                      <TextField fx:id="txtPrecioMayoreo" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedPrecioVentaMayoreo" prefHeight="30.0" promptText="0.00" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
+                                             <children>
+                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto14" text="Departamento(Espacio):" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField fx:id="txtDepartamento" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedDepartamento" onKeyTyped="#onKeyTypedDepartamento" onMouseClicked="#onMouseClickedDepartamento" promptText="Ingrese el departamento" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -279,7 +313,17 @@
                                           <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
                                              <children>
                                                 <CheckBox fx:id="cbLote" mnemonicParsing="false" text="Lote" />
-                                                <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="(Indica si manejara un control de lotes y caducidades para este artíclo)">
+                                                <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="(Indica si manejara un control de lotes y caducidades para este artículo)">
+                                                   <font>
+                                                      <Font name="Roboto" size="14.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
+                                             <children>
+                                                <CheckBox fx:id="cbInventario" mnemonicParsing="false" selected="true" text="Inventario" />
+                                                <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="(El artículo si utiliza inventario)">
                                                    <font>
                                                       <Font name="Roboto" size="14.0" />
                                                    </font>

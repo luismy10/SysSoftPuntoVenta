@@ -124,7 +124,6 @@
                                     <TableColumn fx:id="tcDocument" prefWidth="280.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
                                     <TableColumn fx:id="tcMarca" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Marca" />
                                     <TableColumn fx:id="tcPresentacion" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Presentación" />
-                                    <TableColumn fx:id="tcEstado" prefWidth="90.0" style="-fx-alignment: CENTER;" text="Estado" />
                                     <TableColumn fx:id="tcLote" prefWidth="60.0" style="-fx-alignment: CENTER;">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -134,6 +133,8 @@
                                           </ImageView>
                                        </graphic>
                                     </TableColumn>
+                                    <TableColumn fx:id="tcUnidadVenta" prefWidth="110.0" style="-fx-alignment: CENTER-LEFT;" text="Medida" />
+                                    <TableColumn fx:id="tcEstado" prefWidth="90.0" style="-fx-alignment: CENTER;" text="Estado" />
                                  </columns>
                               </TableView>
                            </children>

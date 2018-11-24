@@ -82,8 +82,8 @@ public class FxImportarInventarioController implements Initializable {
         ));
         tcCaducidad.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaRegistro().get().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))));
         tcCompra.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrecioCompra()).asObject());
-        tcPrecio.setCellValueFactory(cellData -> cellData.getValue().getPrecioVenta().asObject());
-        tcExistencias.setCellValueFactory(cellData -> cellData.getValue().getCantidad().asObject());
+        tcPrecio.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrecioVenta()).asObject());
+        tcExistencias.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getCantidad()).asObject());
         count = 0;
     }
 

@@ -79,7 +79,8 @@ public class Tools {
     static final String FX_FILE_PROVEEDORESREPRENTANTE = "/view/proveedores/FxProveedorRepresentante.fxml";
     static final String FX_FILE_ARTICULOHISTORIAL = "/view/articulo/FxArticuloHistorial.fxml";
     static final String FX_FILE_VENTADESCUENTO = "/view/venta/FxVentaDescuento.fxml";
-    
+    static final String FX_FILE_VENTAGRANEL = "/view/venta/FxVentaGranel.fxml";
+
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);

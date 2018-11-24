@@ -60,6 +60,7 @@
                         <TableColumn fx:id="tcMarca" prefWidth="158.0" text="Marca" />
                         <TableColumn fx:id="tcExistencias" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Existencias" />
                         <TableColumn fx:id="tcPrecio" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Precio" />
+                        <TableColumn fx:id="tcUnidadVenta" prefWidth="110.0" style="-fx-alignment: CENTER-LEFT;" text="Medida" />
                      </columns>
                   </TableView>
                </children>

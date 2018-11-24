@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentaController">
+<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentaController">
    <children>
       <HBox VBox.vgrow="ALWAYS">
          <children>
@@ -33,7 +33,7 @@
                      <children>
                         <HBox styleClass="paddinContainer">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#onActionRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightDefault" text="Cobrar">
+                              <Button mnemonicParsing="false" onAction="#onActionRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightDefault" text="Cobrar(F1)">
                                  <graphic>
                                     <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -42,7 +42,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionAdd" styleClass="buttonLight" text="Artículo">
+                              <Button mnemonicParsing="false" onAction="#onActionAdd" styleClass="buttonLight" text="Artículo(F2)">
                                  <graphic>
                                     <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -51,7 +51,16 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionDescuento" styleClass="buttonLight" text="Descuento">
+                              <Button mnemonicParsing="false" onAction="#onActionPrecio" onKeyPressed="#onKeyPressedPrecio" styleClass="buttonLight" text="Cambiar Precio(F5)">
+                                 <graphic>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../moneda.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionDescuento" styleClass="buttonLight" text="Descuento(F6)">
                                  <graphic>
                                     <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -60,16 +69,16 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionRemover" styleClass="buttonLight" text="Quitar">
+                              <Button mnemonicParsing="false" onAction="#onActionPrecioSumar" onKeyPressed="#onKeyPressedPrecioSumar" styleClass="buttonLight" text="Sumar Precio(F7)">
                                  <graphic>
                                     <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../remove.png" />
+                                          <Image url="@../money.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionCancel" styleClass="buttonLight" text="Cancelar">
+                              <Button mnemonicParsing="false" onAction="#onActionCancel" styleClass="buttonLight" text="Cancelar(Esc)">
                                  <graphic>
                                     <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -109,7 +118,7 @@
                                                 <TextField fx:id="txtArticulo" prefHeight="30.0" promptText="Ingrese el código de barras o clave alterna... " HBox.hgrow="ALWAYS" />
                                                 <Button mnemonicParsing="false" onAction="#onActionAdd" styleClass="buttonBorder">
                                                    <graphic>
-                                                      <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../search.png" />
                                                          </image>
@@ -120,44 +129,39 @@
                                           </HBox>
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER_LEFT">
-                                       <children>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                                             <children>
-                                                <Label styleClass="labelRoboto14" textFill="#1a2226" HBox.hgrow="ALWAYS">
-                                                   <graphic>
-                                                      <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../seller.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Label>
-                                                <TextField disable="true" prefHeight="30.0" prefWidth="321.0" promptText="Buscar vendedor..." HBox.hgrow="ALWAYS" />
-                                                <Button mnemonicParsing="false" onAction="#onActionVendedor" styleClass="buttonBorder">
-                                                   <graphic>
-                                                      <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../search.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </HBox>
-                                    <VBox VBox.vgrow="ALWAYS">
+                                    <VBox style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                                        <children>
                                           <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyReleased="#onKeyReleasedList" onMouseClicked="#onMouseClickedList" prefHeight="300.0" prefWidth="812.0" VBox.vgrow="ALWAYS">
                                              <columns>
                                                 <TableColumn fx:id="tcArticulo" prefWidth="350.0" style="-fx-alignment: CENTER-LEFT;" text="Descripcion" />
                                                 <TableColumn fx:id="tcCantidad" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Cantidad" />
-                                                <TableColumn fx:id="tcPrecio" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Precio U." />
+                                                <TableColumn fx:id="tcPrecio" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Precio Venta" />
                                                 <TableColumn fx:id="tcDescuento" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Descuento" />
                                                 <TableColumn fx:id="tcImporte" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />
                                              </columns>
                                           </TableView>
+                                          <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#onActionRemover" styleClass="buttonLight" text="Quitar(Supr)">
+                                                   <graphic>
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../remove.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                                <Button mnemonicParsing="false" styleClass="buttonLight" text="Imprimir">
+                                                   <graphic>
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../print.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                          </HBox>
                                        </children>
                                     </VBox>
                                  </children>
@@ -199,9 +203,32 @@
                                              <children>
                                                 <VBox>
                                                    <children>
-                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Datos del cliente" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Datos del documento" />
                                                    </children>
                                                 </VBox>
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto14" textFill="#1a2226">
+                                                         <graphic>
+                                                            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../seller.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Label>
+                                                      <TextField disable="true" prefHeight="30.0" promptText="Buscar vendedor..." />
+                                                      <Button mnemonicParsing="false" onAction="#onActionVendedor" styleClass="buttonBorder">
+                                                         <graphic>
+                                                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../search.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
                                                 <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label styleClass="labelRoboto14" textFill="#1a2226">
@@ -216,7 +243,7 @@
                                                       <TextField fx:id="txtCliente" disable="true" prefHeight="30.0" promptText="Buscar cliente..." HBox.hgrow="ALWAYS" />
                                                       <Button mnemonicParsing="false" onAction="#onActionCliente" styleClass="buttonBorder">
                                                          <graphic>
-                                                            <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
                                                                   <Image url="@../search.png" />
                                                                </image>

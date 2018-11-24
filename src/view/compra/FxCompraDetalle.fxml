@@ -54,13 +54,13 @@
                                           <HBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Documento:" textAlignment="RIGHT" wrappingWidth="100.0" />
-                                                <Text fx:id="lblDocumento" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="280.0" />
+                                                <Text fx:id="lblDocumento" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="300.0" />
                                              </children>
                                           </HBox>
                                           <HBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Numeración:" textAlignment="RIGHT" wrappingWidth="100.0" />
-                                                <Text fx:id="lblNumeracion" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="280.0" />
+                                                <Text fx:id="lblNumeracion" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="300.0" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -70,13 +70,13 @@
                                           <HBox style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
                                                 <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Proveedor:" textAlignment="RIGHT" wrappingWidth="100.0" />
-                                                <Text fx:id="lblProveedor" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="280.0" />
+                                                <Text fx:id="lblProveedor" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="300.0" />
                                              </children>
                                           </HBox>
                                           <HBox style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
                                                 <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Comprobante:" textAlignment="RIGHT" wrappingWidth="100.0" />
-                                                <Text fx:id="lblComprobante" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="280.0" />
+                                                <Text fx:id="lblComprobante" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="300.0" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -86,13 +86,13 @@
                                           <HBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Domicilio:" textAlignment="RIGHT" wrappingWidth="100.0" />
-                                                <Text fx:id="lblDomicilio" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="280.0" />
+                                                <Text fx:id="lblDomicilio" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="300.0" />
                                              </children>
                                           </HBox>
                                           <HBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Contacto:" textAlignment="RIGHT" wrappingWidth="100.0" />
-                                                <Text fx:id="lblContacto" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="280.0" />
+                                                <Text fx:id="lblContacto" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" wrappingWidth="300.0" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -118,8 +118,9 @@
                                     <TableColumn fx:id="tcId" prefWidth="61.0" style="-fx-alignment: CENTER;" text="N°" />
                                     <TableColumn fx:id="tcDescripcion" prefWidth="290.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
                                   <TableColumn fx:id="tcCantidad" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
-                                  <TableColumn prefWidth="110.0" text="Unidad" />
+                                  <TableColumn fx:id="tcMedidad" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Medidad" />
                                     <TableColumn fx:id="tcPrecioCompra" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="P. Unitario" />
+                                    <TableColumn fx:id="tcDescuento" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Descuento" />
                                     <TableColumn fx:id="tcImporte" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />
                                 </columns>
                               </TableView>

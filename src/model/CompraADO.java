@@ -30,8 +30,8 @@ public class CompraADO {
             compra = DBUtil.getConnection().prepareStatement("INSERT INTO CompraTB(IdCompra,Proveedor,Representante,Comprobante,Numeracion,FechaCompra,SubTotal,Descuento,Gravada,Igv,Total) "
                     + "VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 
-            detalle_compra = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleCompraTB(IdCompra,IdArticulo,Cantidad,PrecioCompra,PrecioVenta,Importe)"
-                    + "VALUES(?,?,?,?,?,?)");
+            detalle_compra = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleCompraTB(IdCompra,IdArticulo,Cantidad,PrecioCompra,Descuento,PrecioVenta,Margen,Utilidad,PrecioVentaMayoreo,MargenMayoreo,UtilidadMayoreo,Importe)"
+                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
 
             articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET PrecioCompra = ?, PrecioVenta = ?, Cantidad = Cantidad + ? WHERE IdArticulo = ?");
 
@@ -54,15 +54,21 @@ public class CompraADO {
             for (int i = 0; i < tableView.getItems().size(); i++) {
                 detalle_compra.setString(1, id_compra);
                 detalle_compra.setString(2, tableView.getItems().get(i).getIdArticulo());
-                detalle_compra.setDouble(3, tableView.getItems().get(i).getCantidad().get());
+                detalle_compra.setDouble(3, tableView.getItems().get(i).getCantidad());
                 detalle_compra.setDouble(4, tableView.getItems().get(i).getPrecioCompra());
-                detalle_compra.setDouble(5, tableView.getItems().get(i).getPrecioVenta().get());
-                detalle_compra.setDouble(6, tableView.getItems().get(i).getImporte().get());
+                detalle_compra.setDouble(5, tableView.getItems().get(i).getDescuento().get());
+                detalle_compra.setDouble(6, tableView.getItems().get(i).getPrecioVenta());
+                detalle_compra.setShort(7, tableView.getItems().get(i).getMargen());
+                detalle_compra.setDouble(8, tableView.getItems().get(i).getUtilidad());
+                detalle_compra.setDouble(9, tableView.getItems().get(i).getPrecioVentaMayoreo());
+                detalle_compra.setShort(10, tableView.getItems().get(i).getMargenMayoreo());
+                detalle_compra.setDouble(11, tableView.getItems().get(i).getUtilidadMayoreo());
+                detalle_compra.setDouble(12, tableView.getItems().get(i).getImporte().get());
                 detalle_compra.addBatch();
 
                 articulo_update.setDouble(1, tableView.getItems().get(i).getPrecioCompra());
-                articulo_update.setDouble(2, tableView.getItems().get(i).getPrecioVenta().get());
-                articulo_update.setDouble(3, tableView.getItems().get(i).getCantidad().get());
+                articulo_update.setDouble(2, tableView.getItems().get(i).getPrecioVenta());
+                articulo_update.setDouble(3, tableView.getItems().get(i).getCantidad());
                 articulo_update.setString(4, tableView.getItems().get(i).getIdArticulo());
                 articulo_update.addBatch();
 
@@ -296,7 +302,7 @@ public class CompraADO {
     }
 
     public static ObservableList<ArticuloTB> ListDetalleCompra(String value) {
-        String selectStmt = "select a.Clave,a.NombreMarca, d.Cantidad,d.PrecioCompra,d.Importe from DetalleCompraTB as d inner join ArticuloTB as a\n"
+        String selectStmt = "select a.Clave,a.NombreMarca, d.Cantidad,d.PrecioCompra,d.Descuento,d.Importe,a.UnidadVenta from DetalleCompraTB as d inner join ArticuloTB as a\n"
                 + "on d.IdArticulo = a.IdArticulo\n"
                 + "where IdCompra = ? ";
         PreparedStatement preparedStatement = null;
@@ -314,7 +320,9 @@ public class CompraADO {
                 articuloTB.setClave(rsEmps.getString("Clave"));
                 articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
+                articuloTB.setDescuento(rsEmps.getDouble("Descuento"));
                 articuloTB.setImporte(rsEmps.getDouble("Importe"));
                 empList.add(articuloTB);
             }
