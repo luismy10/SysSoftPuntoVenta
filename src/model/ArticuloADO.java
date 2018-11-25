@@ -59,20 +59,8 @@ public class ArticuloADO {
                     preparedArticulo.setString(23, articuloTB.getIdArticulo());
 
                     preparedArticulo.addBatch();
-
-                    preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("insert into HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
-                            + "								values(?,GETDATE(),?,?,?,?,?)");
-                    preparedHistorialArticulo.setString(1, articuloTB.getIdArticulo());
-                    preparedHistorialArticulo.setString(2, "Actualización del artículo");
-                    preparedHistorialArticulo.setDouble(3, 0);
-                    preparedHistorialArticulo.setDouble(4, 0);
-                    preparedHistorialArticulo.setDouble(5, 0);
-                    preparedHistorialArticulo.setString(6, Session.USER_ID);
-
-                    preparedHistorialArticulo.addBatch();
-
                     preparedArticulo.executeBatch();
-                    preparedHistorialArticulo.executeBatch();
+
                     DBUtil.getConnection().commit();
                     return "updated";
                 }
@@ -88,7 +76,7 @@ public class ArticuloADO {
                     codigoArticulo.execute();
                     String idArticulo = codigoArticulo.getString(1);
 
-                    preparedArticulo = DBUtil.getConnection().prepareStatement("insert into ArticuloTB(IdArticulo,Clave,ClaveAlterna,NombreMarca,NombreGenerico,Descripcion,Categoria,Marca,Presentacion,StockMinimo,StockMaximo,PrecioCompra,PrecioVenta,Margen,Utilidad,PrecioVentaMayoreo,MargenMayoreo,UtilidadMayoreo,Cantidad,UnidadVenta,Departamento,Estado,Lote,Inventario)values(?,?,?,UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,0,?,?,?,?,?)");
+                    preparedArticulo = DBUtil.getConnection().prepareStatement("insert into ArticuloTB(IdArticulo,Clave,ClaveAlterna,NombreMarca,NombreGenerico,Descripcion,Categoria,Marca,Presentacion,StockMinimo,StockMaximo,PrecioCompra,PrecioVenta,Margen,Utilidad,PrecioVentaMayoreo,MargenMayoreo,UtilidadMayoreo,Cantidad,CantidadGranel,UnidadVenta,Departamento,Estado,Lote,Inventario)values(?,?,?,UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,0,0,?,?,?,?,?)");
                     preparedArticulo.setString(1, idArticulo);
                     preparedArticulo.setString(2, articuloTB.getClave().get());
                     preparedArticulo.setString(3, articuloTB.getClaveAlterna());
@@ -163,6 +151,7 @@ public class ArticuloADO {
         }
     }
 
+    @Deprecated
     private static String CrudEntity(ArticuloTB articuloTB) {
         String selectStmt = "{call Sp_Crud_Articulo(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
@@ -283,7 +272,7 @@ public class ArticuloADO {
                 articuloTB.setImageLote(rsEmps.getBoolean("Lote")
                         ? new ImageView(new Image("/view/lote-box.png", 28, 28, false, false))
                         : null);
-                articuloTB.setInventario(rsEmps.getBoolean("Inventario")); 
+                articuloTB.setInventario(rsEmps.getBoolean("Inventario"));
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {
@@ -338,8 +327,9 @@ public class ArticuloADO {
                 articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
                 articuloTB.setMargen(rsEmps.getShort("Margen"));
                 articuloTB.setUtilidad(rsEmps.getDouble("Utilidad"));
-                articuloTB.setPrecioVentaMayoreo(rsEmps.getDouble("PrecioVentaMayoreo"));                
+                articuloTB.setPrecioVentaMayoreo(rsEmps.getDouble("PrecioVentaMayoreo"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                articuloTB.setCantidadGranel(rsEmps.getDouble("CantidadGranel"));
                 articuloTB.setEstado(rsEmps.getInt("Estado"));
                 articuloTB.setLote(rsEmps.getBoolean("Lote"));
                 articuloTB.setInventario(rsEmps.getBoolean("Inventario"));

@@ -124,7 +124,9 @@ public class FxArticuloListaController implements Initializable {
             stage.show();
             controller.setLoadData(new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
                 tvList.getSelectionModel().getSelectedItem().getClave().get(),
-                tvList.getSelectionModel().getSelectedItem().getNombreMarca().get()},
+                tvList.getSelectionModel().getSelectedItem().getNombreMarca().get(),
+                "" + tvList.getSelectionModel().getSelectedItem().getUnidadVenta()
+            },
                     tvList.getSelectionModel().getSelectedItem().isLote()
             );
 

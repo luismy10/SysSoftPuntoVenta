@@ -227,6 +227,7 @@ public class FxComprasController implements Initializable {
                     articuloTB.setClave(e.getClave().get());
                     articuloTB.setNombreMarca(e.getNombreMarca().get());
                     articuloTB.setCantidad(e.getCantidad());
+                    articuloTB.setCantidadGranel(e.getCantidadGranel());
                     articuloTB.setPrecioCompra(e.getPrecioCompra());
                     articuloTB.setPrecioCompraReal(e.getPrecioCompraReal());
                     articuloTB.setPrecioVenta(e.getPrecioVenta());
@@ -239,6 +240,7 @@ public class FxComprasController implements Initializable {
                     articuloTB.setImporte(e.getImporte().get());
                     articuloTB.setImpuesto(e.isImpuesto());
                     articuloTB.setLote(e.isLote());
+                    articuloTB.setUnidadVenta(e.getUnidadVenta());
                     controller.setLoadEdit(articuloTB, tvList.getSelectionModel().getSelectedIndex(), loteTBs);
                 } catch (IOException ex) {
                     Logger.getLogger(FxComprasController.class.getName()).log(Level.SEVERE, null, ex);

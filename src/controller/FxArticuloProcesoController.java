@@ -210,8 +210,10 @@ public class FxArticuloProcesoController implements Initializable {
 
             if (articuloTB.getUnidadVenta() == 1) {
                 rbUnidad.setSelected(true);
+                 txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidad(), 2));
             } else {
                 rbGranel.setSelected(true);
+                 txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidadGranel(), 2));
             }
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
@@ -227,7 +229,7 @@ public class FxArticuloProcesoController implements Initializable {
             cbLote.setSelected(articuloTB.isLote());
             cbInventario.setSelected(articuloTB.isInventario());
 
-            txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidad(), 2));
+           
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
             txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
