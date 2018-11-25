@@ -299,6 +299,14 @@ public class FxVentaController implements Initializable {
         String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
         lblSerie.setText(array[0]);
         lblNumeracion.setText(array[1]);
+      
+        this.tvList.getItems().clear();
+        lblTotal.setText("0.00");
+        lblSubTotal.setText("0.00");
+        lblDescuento.setText("0.00");
+        lblGravada.setText("0.00");
+        lblIgv.setText("0.00");
+        lblTotalPagar.setText("0.00");
     }
 
     @FXML
@@ -376,7 +384,8 @@ public class FxVentaController implements Initializable {
                             articuloTB.getSubTotal().get()
                             - articuloTB.getDescuento().get()
                     );
-
+                    articuloTB.setInventario(e.isInventario());
+                    articuloTB.setUnidadVenta(e.getUnidadVenta());
                     tvList.getItems().set(index, articuloTB);
                     tvList.getSelectionModel().select(index);
                     calculateTotales();
@@ -403,6 +412,8 @@ public class FxVentaController implements Initializable {
                             articuloTB.getSubTotal().get()
                             - articuloTB.getDescuento().get()
                     );
+                    articuloTB.setInventario(e.isInventario());
+                    articuloTB.setUnidadVenta(e.getUnidadVenta());
                     tvList.getItems().set(index, articuloTB);
                     tvList.getSelectionModel().select(index);
                     calculateTotales();

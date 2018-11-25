@@ -32,6 +32,7 @@ public class ArticuloTB {
     private double stockMinimo;
     private double stockMaximo;
     private double cantidad;
+    private double cantidadGranel;
     private double precioCompra;
     private double precioCompraReal;
 
@@ -246,6 +247,14 @@ public class ArticuloTB {
 
     public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public double getCantidadGranel() {
+        return cantidadGranel;
+    }
+
+    public void setCantidadGranel(double cantidadGranel) {
+        this.cantidadGranel = cantidadGranel;
     }
 
     public SimpleDoubleProperty getDescuento() {

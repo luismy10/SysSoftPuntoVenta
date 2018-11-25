@@ -64,6 +64,8 @@ public class FxArticuloCompraController implements Initializable {
     private boolean loteedit;
 
     private int indexcompra;
+    
+    private int unidadventa;
 
     private ObservableList<LoteTB> loteTBs;
 
@@ -110,6 +112,7 @@ public class FxArticuloCompraController implements Initializable {
         idArticulo = value[0];
         lblClave.setText(value[1]);
         lblDescripcion.setText(value[2]);
+        unidadventa = Integer.parseInt(value[3]);
         validarlote = lote;
         this.lote = lote;
     }
@@ -119,6 +122,7 @@ public class FxArticuloCompraController implements Initializable {
         lblClave.setText(articuloTB.getClave().get());
         lblDescripcion.setText(articuloTB.getNombreMarca().get());
         txtCantidad.setText("" + articuloTB.getCantidad());
+        unidadventa = articuloTB.getUnidadVenta();
         txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompraReal(), 2));
         txtDescuento.setText(Tools.roundingValue(articuloTB.getDescuento().get(), 2));
 
@@ -145,8 +149,8 @@ public class FxArticuloCompraController implements Initializable {
         articuloTB.setIdArticulo(idArticulo);
         articuloTB.setClave(lblClave.getText());
         articuloTB.setNombreMarca(lblDescripcion.getText());
-        articuloTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
-
+        articuloTB.setCantidad(Double.parseDouble(txtCantidad.getText()));        
+        articuloTB.setUnidadVenta(unidadventa);
         articuloTB.setPrecioCompra(costo);
         articuloTB.setPrecioCompraReal(costoreal);
 
@@ -158,6 +162,7 @@ public class FxArticuloCompraController implements Initializable {
         articuloTB.setImporte(
                 articuloTB.getSubTotal().get()
                 - articuloTB.getDescuento().get());
+        articuloTB.setCantidadGranel(articuloTB.getImporte().get());
 
         articuloTB.setUtilidad(Tools.isNumeric(txtUtilidad.getText())
                 ? Double.parseDouble(txtUtilidad.getText()) : 0

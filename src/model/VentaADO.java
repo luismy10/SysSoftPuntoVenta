@@ -5,6 +5,7 @@
  */
 package model;
 
+import controller.Session;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -30,6 +31,8 @@ public class VentaADO {
         PreparedStatement detalle_venta = null;
 
         PreparedStatement articulo_update = null;
+
+        PreparedStatement preparedHistorialArticulo = null;
 
         try {
 
@@ -67,7 +70,11 @@ public class VentaADO {
 
             detalle_venta = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleVentaTB(IdVenta,IdArticulo,Cantidad,PrecioUnitario,Descuento,Importe)VALUES(?,?,?,?,?,?)");
 
-//            articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad + ? WHERE IdArticulo = ?");
+            articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad - ?,CantidadGranel = CantidadGranel - ? WHERE IdArticulo = ?");
+
+            preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("INSERT INTO HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
+                    + "VALUES(?,GETDATE(),?,?,?,?,?)");
+
             venta.setString(1, id_venta);
             venta.setString(2, ventaTB.getCliente());
             venta.setString(3, ventaTB.getVendedor());
@@ -97,18 +104,45 @@ public class VentaADO {
                 detalle_venta.setDouble(5, tvList.getItems().get(i).getDescuento().get());
                 detalle_venta.setDouble(6, tvList.getItems().get(i).getImporte().get());
                 detalle_venta.addBatch();
-                if(tvList.getItems().get(i).isInventario()){
-                    
+
+                if (tvList.getItems().get(i).isInventario()) {
+                    articulo_update.setDouble(1, tvList.getItems().get(i).getCantidad());
+                    articulo_update.setDouble(2, tvList.getItems().get(i).getImporte().get());
+                    articulo_update.setString(3, tvList.getItems().get(i).getIdArticulo());
+                    articulo_update.addBatch();
+
+                    preparedHistorialArticulo.setString(1, tvList.getItems().get(i).getIdArticulo());
+                    preparedHistorialArticulo.setString(2, "Venta");
+                    preparedHistorialArticulo.setDouble(3, 0);
+                    preparedHistorialArticulo.setDouble(4, tvList.getItems().get(i).getUnidadVenta() == 1
+                            ? tvList.getItems().get(i).getCantidad()
+                            : tvList.getItems().get(i).getImporte().get()
+                    );
+                    preparedHistorialArticulo.setDouble(5, 0);
+                    preparedHistorialArticulo.setString(6, Session.USER_ID);
+
+                    preparedHistorialArticulo.addBatch();
+                } else {
+                    preparedHistorialArticulo.setString(1, tvList.getItems().get(i).getIdArticulo());
+                    preparedHistorialArticulo.setString(2, "Venta");
+                    preparedHistorialArticulo.setDouble(3, 0);
+                    preparedHistorialArticulo.setDouble(4, tvList.getItems().get(i).getUnidadVenta() == 1
+                            ? tvList.getItems().get(i).getCantidad()
+                            : tvList.getItems().get(i).getImporte().get()
+                    );
+                    preparedHistorialArticulo.setDouble(5, 0);
+                    preparedHistorialArticulo.setString(6, Session.USER_ID);
+
+                    preparedHistorialArticulo.addBatch();
                 }
-                
-                if(tvList.getItems().get(i).getUnidadVenta() == 2){
-                    
-                }
+
             }
 
             venta.executeBatch();
             comprobante.executeBatch();
             detalle_venta.executeBatch();
+            articulo_update.executeBatch();
+            preparedHistorialArticulo.executeBatch();
             DBUtil.getConnection().commit();
             return "register";
         } catch (SQLException ex) {
@@ -129,17 +163,21 @@ public class VentaADO {
                 if (comprobante != null) {
                     comprobante.close();
                 }
-                
+
                 if (detalle_venta != null) {
                     detalle_venta.close();
                 }
+
                 if (articulo_update != null) {
                     articulo_update.close();
                 }
+
                 if (codigo_venta != null) {
                     codigo_venta.close();
                 }
-                
+                if (preparedHistorialArticulo != null) {
+                    preparedHistorialArticulo.close();
+                }
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {
             }
