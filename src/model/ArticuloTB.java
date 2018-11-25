@@ -56,7 +56,7 @@ public class ArticuloTB {
     private ObjectProperty<LocalDate> fechaRegistro;
 
     public ArticuloTB() {
-
+     
     }
 
     public ArticuloTB(String clave, String nombreMarca) {

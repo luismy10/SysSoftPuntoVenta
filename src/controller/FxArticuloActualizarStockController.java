@@ -15,16 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 
-<<<<<<< HEAD:src/controller/FxArticuloActualizarStockController.java
 public class FxArticuloActualizarStockController implements Initializable {
-=======
-/**
- * FXML Controller class
- *
- * @author Aleza
- */
-public class FArticuloActualizarStockController implements Initializable {
->>>>>>> a4ab218f457f9805c480fcde898347373e34e703:src/controller/FArticuloActualizarStockController.java
 
     @FXML
     private VBox window;

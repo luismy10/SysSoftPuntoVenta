@@ -221,7 +221,7 @@ public class FxArticulosController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(SysSoft.pane);
+            content.getChildren().remove(Session.pane);
         });
         stage.show();
         controller.initComponents();
@@ -365,13 +365,8 @@ public class FxArticulosController implements Initializable {
     }
 
     @FXML
-<<<<<<< HEAD
     private void onActionCantidad(ActionEvent event) throws IOException{
         onViewArticuloUpdateStock();
-=======
-    private void onActionCantidad(ActionEvent event) {
-
->>>>>>> a4ab218f457f9805c480fcde898347373e34e703
     }
 
     public TableView<ArticuloTB> getTvList() {

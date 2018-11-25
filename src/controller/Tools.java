@@ -78,16 +78,11 @@ public class Tools {
     static final String FX_FILE_IMPORTARINVENTARIO = "/view/lote/FxImportarInventario.fxml";
     static final String FX_FILE_CODIGOBARRAS = "/view/articulo/FxCodigoBarras.fxml";
     static final String FX_FILE_PROVEEDORESREPRENTANTE = "/view/proveedores/FxProveedorRepresentante.fxml";
-<<<<<<< HEAD
-    static final String FX_FILE_HISTORIAL = "/view/consultas/FxHistorial.fxml";
     static final String FX_FILE_ACTUALIZAR_STOCK = "/view/articulo/FxArticuloActualizarStock.fxml";
-    
-=======
     static final String FX_FILE_ARTICULOHISTORIAL = "/view/articulo/FxArticuloHistorial.fxml";
     static final String FX_FILE_VENTADESCUENTO = "/view/venta/FxVentaDescuento.fxml";
     static final String FX_FILE_VENTAGRANEL = "/view/venta/FxVentaGranel.fxml";
 
->>>>>>> a4ab218f457f9805c480fcde898347373e34e703
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);
