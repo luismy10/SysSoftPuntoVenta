@@ -33,7 +33,7 @@ public class VentaADO {
             serie_numeracion.execute();
             String[] id_comprabante = serie_numeracion.getString(1).split("-");
 
-            venta = DBUtil.getConnection().prepareStatement("INSERT INTO [dbo].[VentaTB]\n"
+            venta = DBUtil.getConnection().prepareStatement("INSERT INTO VentaTB\n"
                     + "           ([Cliente]\n"
                     + "           ,[Vendedor]\n"
                     + "           ,[Comprobante]\n"
@@ -46,17 +46,7 @@ public class VentaADO {
                     + "           ,[Igv]\n"
                     + "           ,[Total])\n"
                     + "     VALUES\n"
-                    + "           (?\n"
-                    + "           ,?\n"
-                    + "           ,?\n"
-                    + "           ,?\n"
-                    + "           ,?\n"
-                    + "           ,?\n"
-                    + "           ,?\n"
-                    + "           ,?\n"
-                    + "           ,?\n"
-                    + "           ,?\n"
-                    + "           ,?)");
+                    + "           (?,?,?,?,?,?,?,?,?,?,?)");
 
             comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(Serie,Numeracion,FechaRegistro)VALUES(?,?,?)");
 
@@ -74,7 +64,7 @@ public class VentaADO {
             venta.addBatch();
 
             byte[] bytes = DatatypeConverter.parseHexBinary(id_comprabante[0]);
-            
+
             comprobante.setBytes(1, bytes);
             comprobante.setString(2, id_comprabante[1]);
             comprobante.setTimestamp(3, ventaTB.getFechaVenta());

@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -10,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -26,6 +28,7 @@ import model.ArticuloTB;
 import model.ComprobanteADO;
 import model.DetalleADO;
 import model.DetalleTB;
+import model.VentaTB;
 
 public class FxVentaController implements Initializable {
 
@@ -72,20 +75,36 @@ public class FxVentaController implements Initializable {
 
     private double descuento;
 
+    private String idCliente;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        window.setOnKeyPressed((KeyEvent event) -> {
+        window.setOnKeyReleased((KeyEvent event) -> {
             try {
-                if (event.getCode() == KeyCode.F5) {
-                    openWindowGranel("Cambiar precio al Artículo",false);
-                } else if (event.getCode() == KeyCode.F7) {
-                    openWindowGranel("Sumar precio al Artículo",true);
+                if (null != event.getCode()) {
+                    switch (event.getCode()) {
+                        case F5:
+                            openWindowGranel("Cambiar precio al Artículo", false);
+                            break;
+                        case F7:
+                            openWindowGranel("Sumar precio al Artículo", true);
+                            break;
+                        case F1:
+                            openWindowVentaProceso();
+                            break;
+                        case F2:
+                            openWindowArticulos();
+                            break;
+                        default:
+                            break;
+                    }
                 }
             } catch (IOException ex) {
                 System.out.println(ex.getLocalizedMessage());
             }
 
         });
+        idCliente = "";
         initTable();
     }
 
@@ -147,21 +166,42 @@ public class FxVentaController implements Initializable {
     }
 
     private void openWindowVentaProceso() throws IOException {
-        InitializationTransparentBackground();
-        URL url = getClass().getResource(Tools.FX_FILE_VENTAPROCESO);
-        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
-        Parent parent = fXMLLoader.load(url.openStream());
-        //Controlller here
-        FxVentaProcesoController controller = fXMLLoader.getController();
-        controller.setInitVentasController(this);
-        //
-        Stage stage = FxWindow.StageLoaderModal(parent, "Completar la venta", window.getScene().getWindow());
-        stage.setResizable(false);
-        stage.sizeToScene();
-        stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(Session.pane);
-        });
-        stage.show();
+        if (!tvList.getItems().isEmpty()) {
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_VENTAPROCESO);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxVentaProcesoController controller = fXMLLoader.getController();
+            controller.setInitVentasController(this);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Completar la venta", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.pane);
+            });
+            stage.show();
+            VentaTB ventaTB = new VentaTB();
+            ventaTB.setCliente(idCliente);
+            ventaTB.setVendedor(Session.USER_ID);
+            ventaTB.setComprobante(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbComprobante.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                    : 0
+            );
+            ventaTB.setSerie(lblSerie.getText());
+            ventaTB.setNumeracion(lblNumeracion.getText());
+            ventaTB.setFechaVenta(Timestamp.valueOf(Tools.getDate() + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
+            ventaTB.setSubTotal(Double.parseDouble(lblSubTotal.getText()));
+            ventaTB.setGravada(Double.parseDouble(lblGravada.getText()));
+            ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
+            ventaTB.setIgv(Double.parseDouble(lblIgv.getText()));
+            ventaTB.setTotal(Double.parseDouble(lblTotalPagar.getText()));
+            controller.setInitComponents(ventaTB);
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventas", "Debes agregar artículos a la venta", false);
+        }
+
     }
 
     private void openWindowCliente() throws IOException {
@@ -264,7 +304,14 @@ public class FxVentaController implements Initializable {
     }
 
     @FXML
-    private void onActionAdd(ActionEvent event) throws IOException {
+    private void onKeyPressedArticulo(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowArticulos();
+        }
+    }
+
+    @FXML
+    private void onActionArticulo(ActionEvent event) throws IOException {
         openWindowArticulos();
     }
 
@@ -377,28 +424,28 @@ public class FxVentaController implements Initializable {
     @FXML
     private void onKeyPressedPrecio(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowGranel("Cambiar precio al Artículo",false);
+            openWindowGranel("Cambiar precio al Artículo", false);
         }
     }
 
     @FXML
     private void onActionPrecio(ActionEvent event) throws IOException {
-        openWindowGranel("Cambiar precio al Artículo",false);
+        openWindowGranel("Cambiar precio al Artículo", false);
     }
 
     @FXML
     private void onKeyPressedPrecioSumar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowGranel("Sumar precio al Artículo",true);
+            openWindowGranel("Sumar precio al Artículo", true);
         }
     }
 
     @FXML
     private void onActionPrecioSumar(ActionEvent event) throws IOException {
-        openWindowGranel("Sumar precio al Artículo",true);
+        openWindowGranel("Sumar precio al Artículo", true);
     }
 
-    void setContent(AnchorPane content) {
+    public void setContent(AnchorPane content) {
         this.content = content;
     }
 

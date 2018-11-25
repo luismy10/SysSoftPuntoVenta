@@ -42,7 +42,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionAdd" styleClass="buttonLight" text="Artículo(F2)">
+                              <Button mnemonicParsing="false" onAction="#onActionArticulo" onKeyPressed="#onKeyPressedArticulo" styleClass="buttonLight" text="Artículo(F2)">
                                  <graphic>
                                     <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -116,7 +116,7 @@
                                                    </graphic>
                                                 </Label>
                                                 <TextField fx:id="txtArticulo" prefHeight="30.0" promptText="Ingrese el código de barras o clave alterna... " HBox.hgrow="ALWAYS" />
-                                                <Button mnemonicParsing="false" onAction="#onActionAdd" styleClass="buttonBorder">
+                                                <Button mnemonicParsing="false" onAction="#onActionArticulo" onKeyPressed="#onKeyPressedArticulo" styleClass="buttonBorder">
                                                    <graphic>
                                                       <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>

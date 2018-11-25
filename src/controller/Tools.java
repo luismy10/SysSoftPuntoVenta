@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.DialogEvent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
@@ -30,6 +31,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 
 public class Tools {
 
@@ -92,7 +94,7 @@ public class Tools {
         alert.setHeaderText(null);
         alert.setContentText(value);
         alert.getDialogPane().getStylesheets().add(url.toExternalForm());
-
+ 
         ButtonType buttonTypeOne = new ButtonType("Aceptar", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeTwo = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
         ButtonType buttonTypeClose = new ButtonType("Aceptar", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -130,6 +132,7 @@ public class Tools {
         window.addEventHandler(eventType, (KeyEvent event) -> {
             if (event.getCode() == KeyCode.ESCAPE) {
                 Dispose(window);
+                event.consume();
             }
         });
     }
