@@ -26,6 +26,8 @@ public class FxVentaProcesoController implements Initializable {
     private TextField txtEfectivo;
     @FXML
     private Label lblVuelto;
+    
+    private TableView<ArticuloTB> tvList;
 
     private VentaTB ventaTB;
 
@@ -39,7 +41,7 @@ public class FxVentaProcesoController implements Initializable {
         if (Tools.isNumeric(txtEfectivo.getText())) {
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Esta seguro de continuar?", true);
             if (confirmation == 1) {
-                String result = VentaADO.CrudVenta(ventaTB);
+                String result = VentaADO.CrudVenta(ventaTB,tvList);
                 switch (result) {
                     case "register":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Venta", "Se realiazo la venta con éxito", false);
@@ -57,6 +59,7 @@ public class FxVentaProcesoController implements Initializable {
 
     public void setInitComponents(VentaTB ventaTB,TableView<ArticuloTB> tvList) {
         this.ventaTB = ventaTB;
+        this.tvList=tvList;
         lblTotal.setText("S/ " + Tools.roundingValue(ventaTB.getTotal(), 2));
         txtEfectivo.requestFocus();
     }
