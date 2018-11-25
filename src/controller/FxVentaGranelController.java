@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class FxVentaGranelController implements Initializable {
@@ -21,12 +22,12 @@ public class FxVentaGranelController implements Initializable {
     @FXML
     private TextField txtImporte;
     @FXML
-    private Text lblArticulo;
+    private Label lblArticulo;
 
     private FxVentaController ventaController;
 
     private boolean validar;
-
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -36,8 +37,9 @@ public class FxVentaGranelController implements Initializable {
 
     public void initComponents(String value, String value1, boolean v) {
         lblTitle.setText(value);
-        lblArticulo.setText(value1);             
+        lblArticulo.setText(value1);           
         validar = v;
+
     }
 
     @FXML
