@@ -283,6 +283,7 @@ public class ArticuloADO {
                 articuloTB.setImageLote(rsEmps.getBoolean("Lote")
                         ? new ImageView(new Image("/view/lote-box.png", 28, 28, false, false))
                         : null);
+                articuloTB.setInventario(rsEmps.getBoolean("Inventario")); 
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {

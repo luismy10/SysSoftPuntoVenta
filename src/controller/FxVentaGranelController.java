@@ -10,8 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
+import model.ArticuloTB;
 
 public class FxVentaGranelController implements Initializable {
 
@@ -26,24 +25,50 @@ public class FxVentaGranelController implements Initializable {
 
     private FxVentaController ventaController;
 
-    private boolean validar;
-    
+    private ArticuloTB articuloTB;
+
+    private int index;
+
+    private boolean opcion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
-        validar = false;
     }
 
-    public void initComponents(String value, String value1, boolean v) {
+    public void initComponents(String value, ArticuloTB articuloTB, int index, boolean opcion) {
         lblTitle.setText(value);
-        lblArticulo.setText(value1);           
-        validar = v;
-
+        this.articuloTB = articuloTB;
+        this.index = index;
+        this.opcion = opcion;
+        lblArticulo.setText(articuloTB.getNombreMarca().get());
     }
 
     @FXML
     private void onActionAceptar(ActionEvent event) {
+        if (opcion) {
+            articuloTB.setPrecioVenta(Double.parseDouble(txtImporte.getText()) + articuloTB.getSubTotal().get());
+            articuloTB.setSubTotal(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+            articuloTB.setImporte(
+                    articuloTB.getSubTotal().get()
+                    - articuloTB.getDescuento().get()
+            );
+            ventaController.getTvList().getItems().set(index, articuloTB);
+            ventaController.getTvList().getSelectionModel().select(index);
+            ventaController.calculateTotales();
+            Tools.Dispose(window);
+        } else {
+            articuloTB.setPrecioVenta(Double.parseDouble(txtImporte.getText()));
+            articuloTB.setSubTotal(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+            articuloTB.setImporte(
+                    articuloTB.getSubTotal().get()
+                    - articuloTB.getDescuento().get()
+            );
+            ventaController.getTvList().getItems().set(index, articuloTB);
+            ventaController.getTvList().getSelectionModel().select(index);
+            ventaController.calculateTotales();
+            Tools.Dispose(window);
+        }
 
     }
 
