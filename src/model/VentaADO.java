@@ -18,7 +18,7 @@ import javax.xml.bind.DatatypeConverter;
  */
 public class VentaADO {
 
-    public static String CrudVenta(VentaTB ventaTB,TableView<ArticuloTB> tvList) {
+    public static String CrudVenta(VentaTB ventaTB, TableView<ArticuloTB> tvList) {
 
         CallableStatement serie_numeracion = null;
 
@@ -26,8 +26,13 @@ public class VentaADO {
 
         PreparedStatement comprobante = null;
 
+        CallableStatement codigo_venta = null;
+        PreparedStatement detalle_venta = null;
+
+        PreparedStatement articulo_update = null;
+
         try {
-            
+
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
 
@@ -35,11 +40,16 @@ public class VentaADO {
             serie_numeracion.registerOutParameter(1, java.sql.Types.VARCHAR);
             serie_numeracion.execute();
             String[] id_comprabante = serie_numeracion.getString(1).split("-");
-            
-            
+
+            codigo_venta = DBUtil.getConnection().prepareCall("{? = call Fc_Venta_Codigo_Alfanumerico()}");
+            codigo_venta.registerOutParameter(1, java.sql.Types.VARCHAR);
+            codigo_venta.execute();
+
+            String id_venta = codigo_venta.getString(1);
 
             venta = DBUtil.getConnection().prepareStatement("INSERT INTO VentaTB\n"
-                    + "           ([Cliente]\n"
+                    + "           ([IdVenta]\n"
+                    + "           ,[Cliente]\n"
                     + "           ,[Vendedor]\n"
                     + "           ,[Comprobante]\n"
                     + "           ,[Serie]\n"
@@ -51,21 +61,25 @@ public class VentaADO {
                     + "           ,[Igv]\n"
                     + "           ,[Total])\n"
                     + "     VALUES\n"
-                    + "           (?,?,?,?,?,?,?,?,?,?,?)");
+                    + "           (?,?,?,?,?,?,?,?,?,?,?,?)");
 
             comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(Serie,Numeracion,FechaRegistro)VALUES(?,?,?)");
 
-            venta.setString(1, ventaTB.getCliente());
-            venta.setString(2, ventaTB.getVendedor());
-            venta.setInt(3, ventaTB.getComprobante());
-            venta.setString(4, id_comprabante[0]);
-            venta.setString(5, id_comprabante[1]);
-            venta.setTimestamp(6, ventaTB.getFechaVenta());
-            venta.setDouble(7, ventaTB.getSubTotal());
-            venta.setDouble(8, ventaTB.getGravada());
-            venta.setDouble(9, ventaTB.getDescuento());
-            venta.setDouble(10, ventaTB.getIgv());
-            venta.setDouble(11, ventaTB.getTotal());
+            detalle_venta = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleVentaTB(IdVenta,IdArticulo,Cantidad,PrecioUnitario,Descuento,Importe)VALUES(?,?,?,?,?,?)");
+
+//            articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad + ? WHERE IdArticulo = ?");
+            venta.setString(1, id_venta);
+            venta.setString(2, ventaTB.getCliente());
+            venta.setString(3, ventaTB.getVendedor());
+            venta.setInt(4, ventaTB.getComprobante());
+            venta.setString(5, id_comprabante[0]);
+            venta.setString(6, id_comprabante[1]);
+            venta.setTimestamp(7, ventaTB.getFechaVenta());
+            venta.setDouble(8, ventaTB.getSubTotal());
+            venta.setDouble(9, ventaTB.getGravada());
+            venta.setDouble(10, ventaTB.getDescuento());
+            venta.setDouble(11, ventaTB.getIgv());
+            venta.setDouble(12, ventaTB.getTotal());
             venta.addBatch();
 
             byte[] bytes = DatatypeConverter.parseHexBinary(id_comprabante[0]);
@@ -75,8 +89,26 @@ public class VentaADO {
             comprobante.setTimestamp(3, ventaTB.getFechaVenta());
             comprobante.addBatch();
 
+            for (int i = 0; i < tvList.getItems().size(); i++) {
+                detalle_venta.setString(1, id_venta);
+                detalle_venta.setString(2, tvList.getItems().get(i).getIdArticulo());
+                detalle_venta.setDouble(3, tvList.getItems().get(i).getCantidad());
+                detalle_venta.setDouble(4, tvList.getItems().get(i).getPrecioVenta());
+                detalle_venta.setDouble(5, tvList.getItems().get(i).getDescuento().get());
+                detalle_venta.setDouble(6, tvList.getItems().get(i).getImporte().get());
+                detalle_venta.addBatch();
+                if(tvList.getItems().get(i).isInventario()){
+                    
+                }
+                
+                if(tvList.getItems().get(i).getUnidadVenta() == 2){
+                    
+                }
+            }
+
             venta.executeBatch();
             comprobante.executeBatch();
+            detalle_venta.executeBatch();
             DBUtil.getConnection().commit();
             return "register";
         } catch (SQLException ex) {
@@ -97,36 +129,47 @@ public class VentaADO {
                 if (comprobante != null) {
                     comprobante.close();
                 }
+                
+                if (detalle_venta != null) {
+                    detalle_venta.close();
+                }
+                if (articulo_update != null) {
+                    articulo_update.close();
+                }
+                if (codigo_venta != null) {
+                    codigo_venta.close();
+                }
+                
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {
             }
         }
     }
-    
-    private String InsertDetalleVenta(DetalleVentaTB detalleVentaTB, TableView<ArticuloTB> tableView, ObservableList<LoteTB> loteTBs) throws SQLException{
-        
+
+    private String InsertDetalleVenta(DetalleVentaTB detalleVentaTB, TableView<ArticuloTB> tableView, ObservableList<LoteTB> loteTBs) throws SQLException {
+
         PreparedStatement venta = null;
-        
+
         CallableStatement codigo_venta = null;
         PreparedStatement detalle_venta = null;
-        
+
         PreparedStatement articulo_update = null;
-        
+
         PreparedStatement lote_compra = null;
-        
-        try{
+
+        try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
             codigo_venta = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero_Generado()}");
             codigo_venta.registerOutParameter(1, java.sql.Types.VARCHAR);
             codigo_venta.execute();
-            
+
             String id_venta = codigo_venta.getString(1);
-            
+
             detalle_venta = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleVentaTB(IdVenta,IdArticulo,Cantidad,PrecioUnitario,Descuento,Importe)"
                     + "VALUES(?,?,?,?,?,?)");
             articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad + ? WHERE IdArticulo = ?");
-            
+
             for (int i = 0; i < tableView.getItems().size(); i++) {
                 detalle_venta.setString(1, id_venta);
                 detalle_venta.setString(2, tableView.getItems().get(i).getIdArticulo());
@@ -138,24 +181,24 @@ public class VentaADO {
 
                 articulo_update.setDouble(3, tableView.getItems().get(i).getCantidad());
                 //articulo_update.setString(4, tableView.getItems().get(i).getIdArticulo());
-                articulo_update.addBatch();              
+                articulo_update.addBatch();
 
             }
-            
+
             detalle_venta.executeBatch();
             articulo_update.executeBatch();
             DBUtil.getConnection().commit();
             return "register";
-            
-        }catch(SQLException ex){
-                      
+
+        } catch (SQLException ex) {
+
             try {
                 DBUtil.getConnection().rollback();
                 return ex.getLocalizedMessage();
             } catch (SQLException ex1) {
                 return ex1.getLocalizedMessage();
             }
-        }finally {
+        } finally {
             try {
 //                if (venta != null) {
 //                    venta.close();
@@ -177,5 +220,5 @@ public class VentaADO {
             }
         }
     }
-    
+
 }
