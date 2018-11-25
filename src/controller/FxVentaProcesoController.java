@@ -1,16 +1,17 @@
 package controller;
 
 import java.net.URL;
-
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import model.ArticuloTB;
 import model.VentaADO;
 import model.VentaTB;
 
@@ -25,6 +26,8 @@ public class FxVentaProcesoController implements Initializable {
     private TextField txtEfectivo;
     @FXML
     private Label lblVuelto;
+    
+    private TableView<ArticuloTB> tvList;
 
     private VentaTB ventaTB;
 
@@ -38,7 +41,7 @@ public class FxVentaProcesoController implements Initializable {
         if (Tools.isNumeric(txtEfectivo.getText())) {
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Esta seguro de continuar?", true);
             if (confirmation == 1) {
-                String result = VentaADO.CrudVenta(ventaTB);
+                String result = VentaADO.CrudVenta(ventaTB,tvList);
                 switch (result) {
                     case "register":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Venta", "Se realiazo la venta con éxito", false);
@@ -54,8 +57,9 @@ public class FxVentaProcesoController implements Initializable {
 
     }
 
-    public void setInitComponents(VentaTB ventaTB) {
+    public void setInitComponents(VentaTB ventaTB,TableView<ArticuloTB> tvList) {
         this.ventaTB = ventaTB;
+        this.tvList=tvList;
         lblTotal.setText("S/ " + Tools.roundingValue(ventaTB.getTotal(), 2));
         txtEfectivo.requestFocus();
     }

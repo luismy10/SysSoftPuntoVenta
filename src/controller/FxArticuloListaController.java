@@ -150,8 +150,11 @@ public class FxArticuloListaController implements Initializable {
                             articuloTB.getSubTotal().get()
                             - articuloTB.getDescuento().get()
                     );
-                    ventaController.getAddArticulo(articuloTB);
+                    articuloTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
+                    articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
                     Tools.Dispose(window);
+                    ventaController.getAddArticulo(articuloTB);
+
                 }
 
             } else if (articuloHistorialController != null) {
@@ -188,8 +191,11 @@ public class FxArticuloListaController implements Initializable {
                             articuloTB.getSubTotal().get()
                             - articuloTB.getDescuento().get()
                     );
-                    ventaController.getAddArticulo(articuloTB);
+                    articuloTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
+                    articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
                     Tools.Dispose(window);
+                    ventaController.getAddArticulo(articuloTB);
+
                 }
             } else if (articuloHistorialController != null) {
                 if (tvList.getSelectionModel().getSelectedIndex() >= 0) {

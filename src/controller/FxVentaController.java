@@ -197,7 +197,7 @@ public class FxVentaController implements Initializable {
             ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
             ventaTB.setIgv(Double.parseDouble(lblIgv.getText()));
             ventaTB.setTotal(Double.parseDouble(lblTotalPagar.getText()));
-            controller.setInitComponents(ventaTB);
+            controller.setInitComponents(ventaTB, tvList);
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventas", "Debes agregar artículos a la venta", false);
         }
@@ -266,7 +266,8 @@ public class FxVentaController implements Initializable {
             stage.show();
             controller.initComponents(
                     title,
-                    tvList.getSelectionModel().getSelectedItem().getNombreMarca().get(),
+                    tvList.getSelectionModel().getSelectedItem(),
+                    tvList.getSelectionModel().getSelectedIndex(),
                     opcion
             );
         } else {
@@ -276,8 +277,22 @@ public class FxVentaController implements Initializable {
     }
 
     public void getAddArticulo(ArticuloTB articuloTB) {
-        tvList.getItems().add(articuloTB);
-        calculateTotales();
+
+        if (articuloTB.getUnidadVenta() == 2) {
+            try {
+                tvList.getItems().add(articuloTB);
+                int index = tvList.getItems().size() - 1;
+                tvList.requestFocus();
+                tvList.getSelectionModel().select(index);
+
+                openWindowGranel("Cambiar precio al Artículo", false);
+            } catch (IOException ex) {
+            }
+        } else {
+            tvList.getItems().add(articuloTB);
+            calculateTotales();
+        }
+
     }
 
     public void resetVenta() {
@@ -443,6 +458,10 @@ public class FxVentaController implements Initializable {
     @FXML
     private void onActionPrecioSumar(ActionEvent event) throws IOException {
         openWindowGranel("Sumar precio al Artículo", true);
+    }
+
+    public TableView<ArticuloTB> getTvList() {
+        return tvList;
     }
 
     public void setContent(AnchorPane content) {

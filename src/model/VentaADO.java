@@ -18,7 +18,7 @@ import javax.xml.bind.DatatypeConverter;
  */
 public class VentaADO {
 
-    public static String CrudVenta(VentaTB ventaTB) {
+    public static String CrudVenta(VentaTB ventaTB,TableView<ArticuloTB> tvList) {
 
         CallableStatement serie_numeracion = null;
 
@@ -27,6 +27,7 @@ public class VentaADO {
         PreparedStatement comprobante = null;
 
         try {
+            
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
 
@@ -34,6 +35,8 @@ public class VentaADO {
             serie_numeracion.registerOutParameter(1, java.sql.Types.VARCHAR);
             serie_numeracion.execute();
             String[] id_comprabante = serie_numeracion.getString(1).split("-");
+            
+            
 
             venta = DBUtil.getConnection().prepareStatement("INSERT INTO VentaTB\n"
                     + "           ([Cliente]\n"

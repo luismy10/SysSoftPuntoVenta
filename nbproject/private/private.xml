@@ -3,6 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaGranelController.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaController.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaProcesoController.java</file>
+        </group>
+=======
+<<<<<<< HEAD
+        <group>
             <file>file:/D:/Proyecto/SysSoftPuntoVenta/src/model/ArticuloTB.java</file>
             <file>file:/D:/Proyecto/SysSoftPuntoVenta/src/controller/FxArticuloProcesoController.java</file>
             <file>file:/D:/Proyecto/SysSoftPuntoVenta/src/controller/FxArticuloActualizarStockController.java</file>
@@ -12,5 +19,12 @@
             <file>file:/D:/Proyecto/SysSoftPuntoVenta/src/controller/FxCodigoBarrasController.java</file>
             <file>file:/D:/Proyecto/SysSoftPuntoVenta/src/controller/FxVentaProcesoController.java</file>
         </group>
+<<<<<<< HEAD
+=======
+=======
+        <group/>
+>>>>>>> a4ab218f457f9805c480fcde898347373e34e703
+>>>>>>> 74587fd29f0641e5ae8299e09d18f01b474e96c3
+>>>>>>> 5fb53f3a3dca36b1b776326b225c291ae23eec6f
     </open-files>
 </project-private>
