@@ -28,6 +28,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -79,6 +80,7 @@ public class Tools {
     static final String FX_FILE_IMPORTARINVENTARIO = "/view/lote/FxImportarInventario.fxml";
     static final String FX_FILE_CODIGOBARRAS = "/view/articulo/FxCodigoBarras.fxml";
     static final String FX_FILE_PROVEEDORESREPRENTANTE = "/view/proveedores/FxProveedorRepresentante.fxml";
+    static final String FX_FILE_ACTUALIZAR_STOCK = "/view/articulo/FxArticuloActualizarStock.fxml";
     static final String FX_FILE_ARTICULOHISTORIAL = "/view/articulo/FxArticuloHistorial.fxml";
     static final String FX_FILE_VENTADESCUENTO = "/view/venta/FxVentaDescuento.fxml";
     static final String FX_FILE_VENTAGRANEL = "/view/venta/FxVentaGranel.fxml";
@@ -241,6 +243,10 @@ public class Tools {
         } catch (IOException ex) {
             Logger.getLogger(Tools.class.getName()).log(Level.INFO, ex.getLocalizedMessage());
         }
+    }
+
+    static void DisposeWindow(VBox window, EventType<KeyEvent> KEY_RELEASED) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

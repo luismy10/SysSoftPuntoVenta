@@ -207,6 +207,25 @@ public class FxArticulosController implements Initializable {
         }
 
     }
+    
+    private void onViewArticuloUpdateStock() throws IOException {
+        InitializationTransparentBackground();
+        URL url = getClass().getResource(Tools.FX_FILE_ACTUALIZAR_STOCK);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxArticuloActualizarStockController controller = fXMLLoader.getController();      
+        controller.setInitArticuloUpdateStock(this);
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Actualizar Stock", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.setOnHiding((WindowEvent WindowEvent) -> {
+            content.getChildren().remove(Session.pane);
+        });
+        stage.show();
+        controller.initComponents();
+    }
 
     public void changeViewArticuloSeleccionado() {
         try {
@@ -346,8 +365,8 @@ public class FxArticulosController implements Initializable {
     }
 
     @FXML
-    private void onActionCantidad(ActionEvent event) {
-
+    private void onActionCantidad(ActionEvent event) throws IOException{
+        onViewArticuloUpdateStock();
     }
 
     public TableView<ArticuloTB> getTvList() {
