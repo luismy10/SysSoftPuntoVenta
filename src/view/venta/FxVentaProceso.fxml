@@ -18,7 +18,7 @@
          <children>
             <HBox alignment="CENTER" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;" styleClass="paddinContainer">
                <children>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium24" text="Comprobante: Factura" />
+                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold24" text="Comprobante: Factura" />
                </children>
             </HBox>
             <HBox VBox.vgrow="ALWAYS">
@@ -30,11 +30,11 @@
                               <VBox alignment="CENTER" styleClass="paddinContainer">
                                  <children>
                                     <Label styleClass="labelOpenSansRegular18" text="Total a Pagar" />
-                                    <Label contentDisplay="RIGHT" styleClass="labelRobotoBold24" text="S/ 100.00">
+                                    <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold26" text="S/ 100.00">
                                        <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../Monto.jpg" />
+                                                <Image url="@../billetes.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
@@ -50,7 +50,7 @@
                            <children>
                               <VBox alignment="CENTER" styleClass="paddinContainer">
                                  <children>
-                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../moneda.png" />
                                        </image>
@@ -61,24 +61,24 @@
                               </VBox>
                               <VBox alignment="CENTER" styleClass="paddinContainer">
                                  <children>
-                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../efectivo.png" />
                                        </image>
                                     </ImageView>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Efectivo" />
-                                    <TextField />
+                                    <TextField fx:id="txtEfectivo" onAction="#onActionAceptar" onKeyReleased="#onKeyReleasedEfectivo" onKeyTyped="#onKeyTypedEfectivo" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER" styleClass="paddinContainer">
                                  <children>
-                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../vuelto.png" />
+                                          <Image url="@../cambio-divisas.png" />
                                        </image>
                                     </ImageView>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Vuelto" />
-                                    <TextField disable="true" />
+                                    <Label alignment="CENTER" styleClass="labelOpenSansRegular16" text="Tipo de Cambio" />
+                                    <TextField disable="true" promptText="S/ 3.34" />
                                  </children>
                               </VBox>
                            </children>
@@ -87,33 +87,24 @@
                            <children>
                               <VBox alignment="CENTER" styleClass="paddinContainer" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label alignment="CENTER" styleClass="labelOpenSansRegular16" text="Tipo de Cambio" />
-                                    <Label alignment="CENTER" styleClass="labelOpenSansRegular16" text="S/ 3.34">
-                                       <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../cambio-divisas.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox alignment="CENTER" styleClass="paddinContainer" HBox.hgrow="ALWAYS">
-                                 <children>
                                     <Label alignment="CENTER" contentDisplay="TOP" styleClass="labelOpenSansRegular16" text="Cliente: Publico en General">
                                        <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../cliente-venta.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                                    <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="89.0" styleClass="labelOpenSansRegular16" text="Total:" />
-                                          <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="157.0" styleClass="labelRobotoBold26" text=" S/ 100.00" HBox.hgrow="ALWAYS" />
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../vuelto.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular18" text="Vuelto:" />
+                                          <Label fx:id="lblVuelto" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold26" text=" S/ 00.00" textFill="#0754b9" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                  </children>

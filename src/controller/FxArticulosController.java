@@ -56,6 +56,8 @@ public class FxArticulosController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcPresentacion;
     @FXML
+    private TableColumn<ArticuloTB, String> tcUnidadVenta;
+    @FXML
     private TableColumn<ArticuloTB, String> tcEstado;
     @FXML
     private TableColumn<ArticuloTB, ImageView> tcLote;
@@ -67,7 +69,6 @@ public class FxArticulosController implements Initializable {
     private FxArticuloSeleccionadoController seleccionadoController;
 
     private FxArticuloDetalleController detalleController;
-   
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -78,6 +79,9 @@ public class FxArticulosController implements Initializable {
         ));
         tcMarca.setCellValueFactory(cellData -> cellData.getValue().getMarcaName());
         tcPresentacion.setCellValueFactory(cellData -> cellData.getValue().getPresentacionName());
+        tcUnidadVenta.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel"
+        ));
         tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
         tcLote.setCellValueFactory(new PropertyValueFactory<>("imageLote"));
 
@@ -102,16 +106,15 @@ public class FxArticulosController implements Initializable {
             };
 
             task.setOnSucceeded((WorkerStateEvent e) -> {
-//                tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
+                tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
                 lblLoad.setVisible(false);
             });
             task.setOnFailed((WorkerStateEvent event) -> {
                 lblLoad.setVisible(false);
             });
 
-            task.setOnScheduled((WorkerStateEvent event) -> {                
+            task.setOnScheduled((WorkerStateEvent event) -> {
                 lblLoad.setVisible(true);
-                tvList.itemsProperty().bind(task.valueProperty());
             });
             exec.execute(task);
 
@@ -204,6 +207,25 @@ public class FxArticulosController implements Initializable {
         }
 
     }
+    
+    private void onViewArticuloUpdateStock() throws IOException {
+        InitializationTransparentBackground();
+        URL url = getClass().getResource(Tools.FX_FILE_ACTUALIZAR_STOCK);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxArticuloActualizarStockController controller = fXMLLoader.getController();      
+        controller.setInitArticuloUpdateStock(this);
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Actualizar Stock", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.setOnHiding((WindowEvent WindowEvent) -> {
+            content.getChildren().remove(Session.pane);
+        });
+        stage.show();
+        controller.initComponents();
+    }
 
     public void changeViewArticuloSeleccionado() {
         try {
@@ -283,7 +305,6 @@ public class FxArticulosController implements Initializable {
         fillArticlesTable(txtSearch.getText());
     }
 
-
     @FXML
     private void onKeyPressedClone(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
@@ -303,10 +324,10 @@ public class FxArticulosController implements Initializable {
             ArticuloTB articuloTB = list.get(0);
             seleccionadoController.getLblName().setText(articuloTB.getNombreMarca().get());
             seleccionadoController.getLblName().setText(articuloTB.getNombreMarca().get());
-            seleccionadoController.getLblPrice().setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta().get(), 2));
-            seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad().get() % 1 == 0
-                    ? Tools.roundingValue(articuloTB.getCantidad().get(), 0)
-                    : Tools.roundingValue(articuloTB.getCantidad().get(), 2));
+            seleccionadoController.getLblPrice().setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
+            seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad() % 1 == 0
+                    ? Tools.roundingValue(articuloTB.getCantidad(), 0)
+                    : Tools.roundingValue(articuloTB.getCantidad(), 2));
             if (detalleController != null) {
                 detalleController.getTvList().setItems(LoteADO.ListByIdLote(tvList.getSelectionModel().getSelectedItem().getIdArticulo()));
             }
@@ -335,17 +356,17 @@ public class FxArticulosController implements Initializable {
             }
         }
     }
-    
+
     @FXML
     private void onKeyPressedCantidad(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
-            
+        if (event.getCode() == KeyCode.ENTER) {
+
         }
     }
 
     @FXML
-    private void onActionCantidad(ActionEvent event) {
-        
+    private void onActionCantidad(ActionEvent event) throws IOException{
+        onViewArticuloUpdateStock();
     }
 
     public TableView<ArticuloTB> getTvList() {
@@ -355,7 +376,5 @@ public class FxArticulosController implements Initializable {
     void setContent(AnchorPane content) {
         this.content = content;
     }
-
-    
 
 }

@@ -23,34 +23,47 @@ public class ArticuloTB {
     private SimpleStringProperty marcaName;
     private int presentacion;
     private SimpleStringProperty presentacionName;
+    private int unidadVenta;
+    private SimpleStringProperty unidadVentaName;
+    private int departamento;
+    private SimpleStringProperty departamentoName;
+    private int estado;
+
     private double stockMinimo;
     private double stockMaximo;
+    private double cantidad;
+    private double cantidadGranel;
     private double precioCompra;
     private double precioCompraReal;
-    private SimpleDoubleProperty precioVenta;
-    private SimpleDoubleProperty cantidad;
-    private int estado;
+
+    private double precioVenta;
+    private short margen;
+    private double utilidad;
+
+    private double precioVentaMayoreo;
+    private short margenMayoreo;
+
+    private double utilidadMayoreo;
+
     private boolean lote;
+    private boolean inventario;
     private ImageView imageLote;
     private SimpleStringProperty estadoName;
     private SimpleDoubleProperty descuento;
     private SimpleDoubleProperty subTotal;
     private SimpleDoubleProperty importe;
-    private SimpleDoubleProperty utilidad;
     private boolean impuesto;
     private ImagenTB imagenTB;
     private ObjectProperty<LocalDate> fechaRegistro;
 
     public ArticuloTB() {
-
+     
     }
 
     public ArticuloTB(String clave, String nombreMarca) {
         this.clave = new SimpleStringProperty(clave);
         this.nombreMarca = new SimpleStringProperty(nombreMarca);
     }
-    
-    
 
     public SimpleIntegerProperty getId() {
         return id;
@@ -220,20 +233,28 @@ public class ArticuloTB {
         this.precioCompraReal = precioCompraReal;
     }
 
-    public SimpleDoubleProperty getPrecioVenta() {
+    public double getPrecioVenta() {
         return precioVenta;
     }
 
     public void setPrecioVenta(double precioVenta) {
-        this.precioVenta = new SimpleDoubleProperty(precioVenta);
+        this.precioVenta = precioVenta;
     }
 
-    public SimpleDoubleProperty getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
 
     public void setCantidad(double cantidad) {
-        this.cantidad = new SimpleDoubleProperty(cantidad);
+        this.cantidad = cantidad;
+    }
+
+    public double getCantidadGranel() {
+        return cantidadGranel;
+    }
+
+    public void setCantidadGranel(double cantidadGranel) {
+        this.cantidadGranel = cantidadGranel;
     }
 
     public SimpleDoubleProperty getDescuento() {
@@ -260,12 +281,12 @@ public class ArticuloTB {
         this.subTotal = new SimpleDoubleProperty(subTotal);
     }
 
-    public SimpleDoubleProperty getUtilidad() {
+    public double getUtilidad() {
         return utilidad;
     }
 
     public void setUtilidad(double utilidad) {
-        this.utilidad = new SimpleDoubleProperty(utilidad);
+        this.utilidad = utilidad;
     }
 
     public boolean isImpuesto() {
@@ -291,6 +312,79 @@ public class ArticuloTB {
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = new SimpleObjectProperty(fechaRegistro);
     }
+
+    public int getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(int departamento) {
+        this.departamento = departamento;
+    }
+
+    public SimpleStringProperty getDepartamentoName() {
+        return departamentoName;
+    }
+
+    public void setDepartamentoName(String departamentoName) {
+        this.departamentoName = new SimpleStringProperty(departamentoName);
+    }
+
+    public boolean isInventario() {
+        return inventario;
+    }
+
+    public void setInventario(boolean inventario) {
+        this.inventario = inventario;
+    }
+
+    public int getUnidadVenta() {
+        return unidadVenta;
+    }
+
+    public void setUnidadVenta(int unidadVenta) {
+        this.unidadVenta = unidadVenta;
+    }
+
+    public SimpleStringProperty getUnidadVentaName() {
+        return unidadVentaName;
+    }
+
+    public void setUnidadVentaName(String unidadVentaName) {
+        this.unidadVentaName = new SimpleStringProperty(unidadVentaName);
+    }
+
+    public short getMargen() {
+        return margen;
+    }
+
+    public void setMargen(short margen) {
+        this.margen = margen;
+    }
+
+    public double getPrecioVentaMayoreo() {
+        return precioVentaMayoreo;
+    }
+
+    public void setPrecioVentaMayoreo(double precioVentaMayoreo) {
+        this.precioVentaMayoreo = precioVentaMayoreo;
+    }
+
+    public short getMargenMayoreo() {
+        return margenMayoreo;
+    }
+
+    public void setMargenMayoreo(short margenMayoreo) {
+        this.margenMayoreo = margenMayoreo;
+    }
+
+    public double getUtilidadMayoreo() {
+        return utilidadMayoreo;
+    }
+
+    public void setUtilidadMayoreo(double utilidadMayoreo) {
+        this.utilidadMayoreo = utilidadMayoreo;
+    }
+
     
     
 

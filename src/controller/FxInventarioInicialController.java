@@ -82,8 +82,8 @@ public class FxInventarioInicialController implements Initializable {
         ));
         tcCaducidad.setCellValueFactory(cellData -> Bindings.concat(""));
         tcCompra.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrecioCompra()).asObject());
-        tcPrecio.setCellValueFactory(cellData -> cellData.getValue().getPrecioVenta().asObject());
-        tcExistencias.setCellValueFactory(cellData -> cellData.getValue().getCantidad().asObject());
+        tcPrecio.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrecioVenta()).asObject());
+        tcExistencias.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getCantidad()).asObject());
     }
     
     private void InitializationTransparentBackground() {

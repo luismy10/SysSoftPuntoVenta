@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
 
+<<<<<<< HEAD:src/view/articulo/FxArticuloActualizarStock.fxml
+
+<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloActualizarStockController">
+   <children>
+      <Button mnemonicParsing="false" text="Button" />
+   </children>
+</VBox>
+=======
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FArticuloActualizarStockController">
     
 </AnchorPane>
+>>>>>>> a4ab218f457f9805c480fcde898347373e34e703:src/view/articulo/FArticuloActualizarStock.fxml

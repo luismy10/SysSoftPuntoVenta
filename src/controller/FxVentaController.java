@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -10,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -26,6 +28,7 @@ import model.ArticuloTB;
 import model.ComprobanteADO;
 import model.DetalleADO;
 import model.DetalleTB;
+import model.VentaTB;
 
 public class FxVentaController implements Initializable {
 
@@ -72,9 +75,36 @@ public class FxVentaController implements Initializable {
 
     private double descuento;
 
+    private String idCliente;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        window.setOnKeyReleased((KeyEvent event) -> {
+            try {
+                if (null != event.getCode()) {
+                    switch (event.getCode()) {
+                        case F5:
+                            openWindowGranel("Cambiar precio al Artículo", false);
+                            break;
+                        case F7:
+                            openWindowGranel("Sumar precio al Artículo", true);
+                            break;
+                        case F1:
+                            openWindowVentaProceso();
+                            break;
+                        case F2:
+                            openWindowArticulos();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            } catch (IOException ex) {
+                System.out.println(ex.getLocalizedMessage());
+            }
 
+        });
+        idCliente = "";
         initTable();
     }
 
@@ -97,9 +127,9 @@ public class FxVentaController implements Initializable {
                 cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombreMarca().get()
         ));
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getCantidad().get(), 2)));
+                Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
         tcPrecio.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getPrecioVenta().get(), 2)));
+                Tools.roundingValue(cellData.getValue().getPrecioVenta(), 2)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getDescuento().get(), 2)));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
@@ -136,21 +166,42 @@ public class FxVentaController implements Initializable {
     }
 
     private void openWindowVentaProceso() throws IOException {
-        InitializationTransparentBackground();
-        URL url = getClass().getResource(Tools.FX_FILE_VENTAPROCESO);
-        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
-        Parent parent = fXMLLoader.load(url.openStream());
-        //Controlller here
-        FxVentaProcesoController controller = fXMLLoader.getController();
-        controller.setInitVentasController(this);
-        //
-        Stage stage = FxWindow.StageLoaderModal(parent, "Completar la venta", window.getScene().getWindow());
-        stage.setResizable(false);
-        stage.sizeToScene();
-        stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(Session.pane);
-        });
-        stage.show();
+        if (!tvList.getItems().isEmpty()) {
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_VENTAPROCESO);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxVentaProcesoController controller = fXMLLoader.getController();
+            controller.setInitVentasController(this);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Completar la venta", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.pane);
+            });
+            stage.show();
+            VentaTB ventaTB = new VentaTB();
+            ventaTB.setCliente(idCliente);
+            ventaTB.setVendedor(Session.USER_ID);
+            ventaTB.setComprobante(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbComprobante.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                    : 0
+            );
+            ventaTB.setSerie(lblSerie.getText());
+            ventaTB.setNumeracion(lblNumeracion.getText());
+            ventaTB.setFechaVenta(Timestamp.valueOf(Tools.getDate() + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
+            ventaTB.setSubTotal(Double.parseDouble(lblSubTotal.getText()));
+            ventaTB.setGravada(Double.parseDouble(lblGravada.getText()));
+            ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
+            ventaTB.setIgv(Double.parseDouble(lblIgv.getText()));
+            ventaTB.setTotal(Double.parseDouble(lblTotalPagar.getText()));
+            controller.setInitComponents(ventaTB, tvList);
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventas", "Debes agregar artículos a la venta", false);
+        }
+
     }
 
     private void openWindowCliente() throws IOException {
@@ -189,22 +240,73 @@ public class FxVentaController implements Initializable {
                 content.getChildren().remove(Session.pane);
             });
             stage.show();
-            controller.initComponents(tvList.getSelectionModel().getSelectedItem(),tvList.getSelectionModel().getSelectedIndex());
-        }else{
+            controller.initComponents(tvList.getSelectionModel().getSelectedItem(), tvList.getSelectionModel().getSelectedIndex());
+        } else {
+            tvList.requestFocus();
+        }
+
+    }
+
+    private void openWindowGranel(String title, boolean opcion) throws IOException {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_VENTAGRANEL);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxVentaGranelController controller = fXMLLoader.getController();
+            controller.setInitVentasController(this);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, title, window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.pane);
+            });
+            stage.show();
+            controller.initComponents(
+                    title,
+                    tvList.getSelectionModel().getSelectedItem(),
+                    tvList.getSelectionModel().getSelectedIndex(),
+                    opcion
+            );
+        } else {
             tvList.requestFocus();
         }
 
     }
 
     public void getAddArticulo(ArticuloTB articuloTB) {
-        tvList.getItems().add(articuloTB);
-        calculateTotales();
+
+        if (articuloTB.getUnidadVenta() == 2) {
+            try {
+                tvList.getItems().add(articuloTB);
+                int index = tvList.getItems().size() - 1;
+                tvList.requestFocus();
+                tvList.getSelectionModel().select(index);
+
+                openWindowGranel("Cambiar precio al Artículo", false);
+            } catch (IOException ex) {
+            }
+        } else {
+            tvList.getItems().add(articuloTB);
+            calculateTotales();
+        }
+
     }
 
     public void resetVenta() {
         String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
         lblSerie.setText(array[0]);
         lblNumeracion.setText(array[1]);
+      
+        this.tvList.getItems().clear();
+        lblTotal.setText("0.00");
+        lblSubTotal.setText("0.00");
+        lblDescuento.setText("0.00");
+        lblGravada.setText("0.00");
+        lblIgv.setText("0.00");
+        lblTotalPagar.setText("0.00");
     }
 
     @FXML
@@ -225,7 +327,14 @@ public class FxVentaController implements Initializable {
     }
 
     @FXML
-    private void onActionAdd(ActionEvent event) throws IOException {
+    private void onKeyPressedArticulo(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowArticulos();
+        }
+    }
+
+    @FXML
+    private void onActionArticulo(ActionEvent event) throws IOException {
         openWindowArticulos();
     }
 
@@ -257,7 +366,8 @@ public class FxVentaController implements Initializable {
     @FXML
     private void onKeyReleasedList(KeyEvent event) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            if (event.getCode() == KeyCode.PLUS) {
+
+            if (event.getCode() == KeyCode.PLUS || event.getCode() == KeyCode.ADD) {
                 ObservableList<ArticuloTB> articuloTBs;
                 articuloTBs = tvList.getSelectionModel().getSelectedItems();
                 int index = tvList.getSelectionModel().getSelectedIndex();
@@ -266,21 +376,22 @@ public class FxVentaController implements Initializable {
                     articuloTB.setIdArticulo(e.getIdArticulo());
                     articuloTB.setClave(e.getClave().get());
                     articuloTB.setNombreMarca(e.getNombreMarca().get());
-                    articuloTB.setCantidad(e.getCantidad().get() + 1);
-                    articuloTB.setPrecioVenta(e.getPrecioVenta().get());
+                    articuloTB.setCantidad(e.getCantidad() + 1);
+                    articuloTB.setPrecioVenta(e.getPrecioVenta());
                     articuloTB.setDescuento(e.getDescuento().get());
-                    articuloTB.setSubTotal(articuloTB.getCantidad().get() * e.getPrecioVenta().get());
+                    articuloTB.setSubTotal(articuloTB.getCantidad() * e.getPrecioVenta());
                     articuloTB.setImporte(
                             articuloTB.getSubTotal().get()
                             - articuloTB.getDescuento().get()
                     );
-
+                    articuloTB.setInventario(e.isInventario());
+                    articuloTB.setUnidadVenta(e.getUnidadVenta());
                     tvList.getItems().set(index, articuloTB);
                     tvList.getSelectionModel().select(index);
                     calculateTotales();
                 });
 
-            } else if (event.getCode() == KeyCode.MINUS) {
+            } else if (event.getCode() == KeyCode.MINUS || event.getCode() == KeyCode.SUBTRACT) {
                 ObservableList<ArticuloTB> articuloTBs;
                 articuloTBs = tvList.getSelectionModel().getSelectedItems();
                 int index = tvList.getSelectionModel().getSelectedIndex();
@@ -290,17 +401,19 @@ public class FxVentaController implements Initializable {
                     articuloTB.setIdArticulo(e.getIdArticulo());
                     articuloTB.setClave(e.getClave().get());
                     articuloTB.setNombreMarca(e.getNombreMarca().get());
-                    articuloTB.setCantidad(e.getCantidad().get() - 1);
-                    articuloTB.setPrecioVenta(e.getPrecioVenta().get());
-                    if (articuloTB.getCantidad().get() < 1) {
+                    articuloTB.setCantidad(e.getCantidad() - 1);
+                    articuloTB.setPrecioVenta(e.getPrecioVenta());
+                    if (articuloTB.getCantidad() < 1) {
                         return;
                     }
                     articuloTB.setDescuento(e.getDescuento().get());
-                    articuloTB.setSubTotal(articuloTB.getCantidad().get() * e.getPrecioVenta().get());
+                    articuloTB.setSubTotal(articuloTB.getCantidad() * e.getPrecioVenta());
                     articuloTB.setImporte(
                             articuloTB.getSubTotal().get()
                             - articuloTB.getDescuento().get()
                     );
+                    articuloTB.setInventario(e.isInventario());
+                    articuloTB.setUnidadVenta(e.getUnidadVenta());
                     tvList.getItems().set(index, articuloTB);
                     tvList.getSelectionModel().select(index);
                     calculateTotales();
@@ -334,7 +447,35 @@ public class FxVentaController implements Initializable {
 
     }
 
-    void setContent(AnchorPane content) {
+    @FXML
+    private void onKeyPressedPrecio(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowGranel("Cambiar precio al Artículo", false);
+        }
+    }
+
+    @FXML
+    private void onActionPrecio(ActionEvent event) throws IOException {
+        openWindowGranel("Cambiar precio al Artículo", false);
+    }
+
+    @FXML
+    private void onKeyPressedPrecioSumar(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowGranel("Sumar precio al Artículo", true);
+        }
+    }
+
+    @FXML
+    private void onActionPrecioSumar(ActionEvent event) throws IOException {
+        openWindowGranel("Sumar precio al Artículo", true);
+    }
+
+    public TableView<ArticuloTB> getTvList() {
+        return tvList;
+    }
+
+    public void setContent(AnchorPane content) {
         this.content = content;
     }
 

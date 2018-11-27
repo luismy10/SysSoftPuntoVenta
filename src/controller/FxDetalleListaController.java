@@ -137,6 +137,10 @@ public class FxDetalleListaController implements Initializable {
                     procesoController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
                     procesoController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
                     Tools.Dispose(window);
+                } else if (idMantenimiento.equalsIgnoreCase("0013")) {
+                    procesoController.setIdDepartmento(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    procesoController.getTxtDepartamento().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                    Tools.Dispose(window);
                 }
 
             }
@@ -158,6 +162,10 @@ public class FxDetalleListaController implements Initializable {
                 } else if (idMantenimiento.equalsIgnoreCase("0006")) {
                     procesoController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
                     procesoController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                    Tools.Dispose(window);
+                } else if (idMantenimiento.equalsIgnoreCase("0013")) {
+                    procesoController.setIdDepartmento(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    procesoController.getTxtDepartamento().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
                     Tools.Dispose(window);
                 }
             }

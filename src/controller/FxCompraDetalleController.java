@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -74,7 +75,11 @@ public class FxCompraDetalleController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, Double> tcCantidad;
     @FXML
+    private TableColumn<ArticuloTB, String> tcMedidad;
+    @FXML
     private TableColumn<ArticuloTB, String> tcPrecioCompra;
+    @FXML
+    private TableColumn<ArticuloTB, String> tcDescuento;
     @FXML
     private TableColumn<ArticuloTB, String> tcImporte;
     @FXML
@@ -88,12 +93,23 @@ public class FxCompraDetalleController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         tcId.setCellValueFactory(callData -> callData.getValue().getId().asObject());
-        tcCantidad.setCellValueFactory(callData -> callData.getValue().getCantidad().asObject());
+        
         tcDescripcion.setCellValueFactory(callData -> Bindings.concat(
                 callData.getValue().getClave().get() + "\n" + callData.getValue().getNombreMarca().get()
         ));
+        
+        tcMedidad.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel"
+        ));
+        
+        tcCantidad.setCellValueFactory(callData -> new SimpleDoubleProperty(callData.getValue().getCantidad()).asObject());
+        
         tcPrecioCompra.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
+
+        tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
+                Tools.roundingValue(cellData.getValue().getDescuento().get(), 2)));
+        
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getImporte().get(), 2)));
 
@@ -177,7 +193,7 @@ public class FxCompraDetalleController implements Initializable {
             map.put("IDCOMPRA", idCompra);
             map.put("EMPRESA", Session.EMPRESA);
             map.put("LOGO", imgInputStream);
-            map.put("EMAIL","EMAIL" + Session.EMAIL);
+            map.put("EMAIL", "EMAIL" + Session.EMAIL);
             map.put("TELEFONOCELULAR", "TEL:" + Session.TELEFONO + " CEL:" + Session.CELULAR);
             map.put("DIRECCION", Session.DIRECCION);
 
