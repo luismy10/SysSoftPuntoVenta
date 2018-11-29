@@ -22,16 +22,11 @@ public class VentaADO {
     public static String CrudVenta(VentaTB ventaTB, TableView<ArticuloTB> tvList) {
 
         CallableStatement serie_numeracion = null;
-
         PreparedStatement venta = null;
-
         PreparedStatement comprobante = null;
-
         CallableStatement codigo_venta = null;
         PreparedStatement detalle_venta = null;
-
         PreparedStatement articulo_update = null;
-
         PreparedStatement preparedHistorialArticulo = null;
 
         try {
