@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -299,7 +300,7 @@ public class FxVentaController implements Initializable {
         String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
         lblSerie.setText(array[0]);
         lblNumeracion.setText(array[1]);
-      
+
         this.tvList.getItems().clear();
         lblTotal.setText("0.00");
         lblSubTotal.setText("0.00");
@@ -307,6 +308,21 @@ public class FxVentaController implements Initializable {
         lblGravada.setText("0.00");
         lblIgv.setText("0.00");
         lblTotalPagar.setText("0.00");
+    }
+
+    private void removeArticulo() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Esta seguro de quitar el artículo?", true);
+            if (confirmation == 1) {
+                ObservableList<ArticuloTB> articuloSelect, allArticulos;
+                allArticulos = tvList.getItems();
+                articuloSelect = tvList.getSelectionModel().getSelectedItems();
+                articuloSelect.forEach(allArticulos::remove);
+                calculateTotales();
+            }
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Venta", "Seleccione un artículo para quitarlo", false);
+        }
     }
 
     @FXML
@@ -339,13 +355,20 @@ public class FxVentaController implements Initializable {
     }
 
     @FXML
-    private void onActionRemover(ActionEvent event) {
+    private void onKeyPressedRemover(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
 
+        }
+    }
+
+    @FXML
+    private void onActionRemover(ActionEvent event) {
+        removeArticulo();
     }
 
     @FXML
     private void onActionCancel(ActionEvent event) {
-
+        removeArticulo();
     }
 
     @FXML

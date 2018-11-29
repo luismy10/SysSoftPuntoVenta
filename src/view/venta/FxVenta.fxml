@@ -142,7 +142,7 @@
                                           </TableView>
                                           <HBox style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
-                                                <Button mnemonicParsing="false" onAction="#onActionRemover" styleClass="buttonLight" text="Quitar(Supr)">
+                                                <Button mnemonicParsing="false" onAction="#onActionRemover" onKeyPressed="#onKeyPressedRemover" styleClass="buttonLight" text="Quitar(Supr)">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
