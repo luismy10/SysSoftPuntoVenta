@@ -277,29 +277,41 @@ public class FxVentaController implements Initializable {
     }
 
     public void getAddArticulo(ArticuloTB articuloTB) {
-
-        if (articuloTB.getUnidadVenta() == 2) {
-            try {
-                tvList.getItems().add(articuloTB);
-                int index = tvList.getItems().size() - 1;
-                tvList.requestFocus();
-                tvList.getSelectionModel().select(index);
-
-                openWindowGranel("Cambiar precio al Artículo", false);
-            } catch (IOException ex) {
+        if (!validateDuplicateArticulo(tvList, articuloTB)) {
+            if (articuloTB.getUnidadVenta() == 2) {
+                try {
+                    int index = tvList.getItems().size() - 1;
+                    tvList.requestFocus();
+                    tvList.getSelectionModel().select(index);
+                    openWindowGranel("Cambiar precio al Artículo", false);
+                } catch (IOException ex) {
+                }
+            } else {               
+                calculateTotales();
             }
-        } else {
-            tvList.getItems().add(articuloTB);
-            calculateTotales();
         }
 
+    }
+
+    private boolean validateDuplicateArticulo(TableView<ArticuloTB> view, ArticuloTB articuloTB) {
+        boolean ret = false;
+        for (int i = 0; i < view.getItems().size(); i++) {
+            if (view.getItems().get(i).getClave().get().equals(articuloTB.getClave().get())) {
+                ret = true;
+                break;
+            }
+        }
+        if (!ret) {
+            view.getItems().add(articuloTB);
+        }
+        return ret;
     }
 
     public void resetVenta() {
         String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
         lblSerie.setText(array[0]);
         lblNumeracion.setText(array[1]);
-      
+
         this.tvList.getItems().clear();
         lblTotal.setText("0.00");
         lblSubTotal.setText("0.00");

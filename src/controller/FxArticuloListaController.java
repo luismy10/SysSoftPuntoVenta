@@ -133,32 +133,35 @@ public class FxArticuloListaController implements Initializable {
         }
     }
 
+    private void addArticuloToList() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            ArticuloTB articuloTB = new ArticuloTB();
+            articuloTB.setIdArticulo(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
+            articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave().get());
+            articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca().get());
+            articuloTB.setCantidad(1);
+            articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
+            articuloTB.setDescuento(0);
+            articuloTB.setSubTotal(1 * tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
+            articuloTB.setImporte(
+                    articuloTB.getSubTotal().get()
+                    - articuloTB.getDescuento().get()
+            );
+            articuloTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
+            articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
+            Tools.Dispose(window);
+//            System.out.println(validateDuplicateArticulo(ventaController.getTvList(),articuloTB));
+            ventaController.getAddArticulo(articuloTB);            
+        }
+    }
+
     @FXML
     private void onMouseClickedList(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
             if (comprasController != null) {
                 openWindowCompra();
             } else if (ventaController != null) {
-                if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                    ArticuloTB articuloTB = new ArticuloTB();
-                    articuloTB.setIdArticulo(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
-                    articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave().get());
-                    articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca().get());
-                    articuloTB.setCantidad(1);
-                    articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
-                    articuloTB.setDescuento(0);
-                    articuloTB.setSubTotal(1 * tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
-                    articuloTB.setImporte(
-                            articuloTB.getSubTotal().get()
-                            - articuloTB.getDescuento().get()
-                    );
-                    articuloTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
-                    articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
-                    Tools.Dispose(window);
-                    ventaController.getAddArticulo(articuloTB);
-
-                }
-
+                addArticuloToList();
             } else if (articuloHistorialController != null) {
                 if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                     articuloHistorialController.getElemetsArticulo(
@@ -180,25 +183,7 @@ public class FxArticuloListaController implements Initializable {
             if (comprasController != null) {
                 openWindowCompra();
             } else if (ventaController != null) {
-                if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                    ArticuloTB articuloTB = new ArticuloTB();
-                    articuloTB.setIdArticulo(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
-                    articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave().get());
-                    articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca().get());
-                    articuloTB.setCantidad(1);
-                    articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
-                    articuloTB.setDescuento(0);
-                    articuloTB.setSubTotal(1 * tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
-                    articuloTB.setImporte(
-                            articuloTB.getSubTotal().get()
-                            - articuloTB.getDescuento().get()
-                    );
-                    articuloTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
-                    articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
-                    Tools.Dispose(window);
-                    ventaController.getAddArticulo(articuloTB);
-
-                }
+                addArticuloToList();
             } else if (articuloHistorialController != null) {
                 if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                     articuloHistorialController.getElemetsArticulo(
@@ -213,6 +198,8 @@ public class FxArticuloListaController implements Initializable {
             }
         }
     }
+
+    
 
     @FXML
     private void onKeyPressedAdd(KeyEvent event) throws IOException {
