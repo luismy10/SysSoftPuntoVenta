@@ -9,7 +9,6 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -84,7 +83,6 @@
                                                       <Button mnemonicParsing="false" onAction="#onActionGenerar" styleClass="buttonLight" text="Crear" />
                                                    </children>
                                                 </VBox>
-                                                <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
                                                       <Label styleClass="labelRoboto14" text="Clave alterna:" textFill="#23283a">
@@ -115,29 +113,18 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Descripción alterna:" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Presentación(Espacio):" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtNombreGenerico" onAction="#onActionToRegister" prefHeight="30.0" />
+                                                      <TextField fx:id="txtPresentacion" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedPresentacion" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedPresentacion" prefHeight="30.0" />
                                                    </children>
                                                 </VBox>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
                                              <children>
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" text="Categoría(Espacio):" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <TextField fx:id="txtCategoria" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedCategoria" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedCategoria" prefHeight="30.0" />
-                                                   </children>
-                                                </VBox>
-                                                <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
                                                       <Label styleClass="labelRoboto14" text="Marca(Espacio):" textFill="#23283a">
@@ -146,36 +133,6 @@
                                                          </font>
                                                       </Label>
                                                       <TextField fx:id="txtMarca" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedMarca" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedMarca" prefHeight="30.0" />
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
-                                             <children>
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" text="Presentación(Espacio):" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <TextField fx:id="txtPresentacion" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedPresentacion" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedPresentacion" prefHeight="30.0" prefWidth="245.0" />
-                                                   </children>
-                                                </VBox>
-                                                <Separator orientation="VERTICAL" />
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" text="Se vende:" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="SOMETIMES">
-                                                         <children>
-                                                            <RadioButton fx:id="rbUnidad" mnemonicParsing="false" selected="true" styleClass="labelRoboto14" text="Por Unidad/Pza" />
-                                                            <RadioButton fx:id="rbGranel" mnemonicParsing="false" styleClass="labelRoboto14" text="A Granel(Peso)" />
-                                                         </children>
-                                                      </HBox>
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -194,12 +151,17 @@
                                                 </VBox>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Estado:" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Se vende:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="210.0" />
+                                                      <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="SOMETIMES">
+                                                         <children>
+                                                            <RadioButton fx:id="rbUnidad" mnemonicParsing="false" selected="true" styleClass="labelRoboto14" text="Por Unidad/Pza" />
+                                                            <RadioButton fx:id="rbGranel" mnemonicParsing="false" styleClass="labelRoboto14" text="A Granel(Peso)" />
+                                                         </children>
+                                                      </HBox>
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -345,7 +307,7 @@
                                  <children>
                                     <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-padding: 1.6666666666666667em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                                          <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
                                                 <ImageView fx:id="lnPrincipal" fitHeight="164.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -376,20 +338,48 @@
                                                 </HBox>
                                              </children>
                                           </HBox>
-                                          <HBox>
+                                          <VBox style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
-                                                <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                                <HBox alignment="CENTER_LEFT">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Características" textFill="#23283a">
+                                                      <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label styleClass="labelRoboto14" text="Descripción alterna:" textFill="#23283a">
+                                                               <font>
+                                                                  <Font name="Roboto" size="14.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <TextField fx:id="txtNombreGenerico" onAction="#onActionToRegister" prefHeight="30.0" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox>
+                                                   <children>
+                                                      <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label styleClass="labelRoboto14" text="Categoría(Espacio):" textFill="#23283a">
+                                                               <font>
+                                                                  <Font name="Roboto" size="14.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <TextField fx:id="txtCategoria" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedCategoria" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedCategoria" prefHeight="30.0" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto14" text="Estado:" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextArea fx:id="txtDescripcion" prefHeight="120.0" wrapText="true" VBox.vgrow="ALWAYS" />
+                                                      <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="210.0" />
                                                    </children>
                                                 </VBox>
                                              </children>
-                                          </HBox>
+                                          </VBox>
                                        </children>
                                     </VBox>
                                  </children>

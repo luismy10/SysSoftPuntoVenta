@@ -156,7 +156,7 @@ public class FxArticuloHistorialController implements Initializable {
         openWindowArticulos();
     }
 
-    void setContent(AnchorPane content) {
+    public void setContent(AnchorPane content) {
         this.content = content;
     }
 

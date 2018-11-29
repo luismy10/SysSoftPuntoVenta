@@ -29,7 +29,7 @@
                         <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Proveedores" />
                      </children>
                   </HBox>
-                  <VBox minHeight="-Infinity" minWidth="-Infinity">
+                  <VBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                      <children>
                         <HBox styleClass="paddinContainer">
                            <children>

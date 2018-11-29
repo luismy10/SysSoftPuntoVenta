@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -28,9 +27,17 @@
                            </image>
                         </ImageView>
                         <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Ventas realizadas" />
+                        <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textOverrun="CLIP" visible="false">
+                           <font>
+                              <Font name="Roboto" size="14.0" />
+                           </font>
+                           <graphic>
+                              <ProgressIndicator prefHeight="30.0" prefWidth="30.0" style="-fx-progress-color: #23283a;" />
+                           </graphic>
+                        </Label>
                      </children>
                   </HBox>
-                  <VBox minHeight="-Infinity" minWidth="-Infinity">
+                  <VBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                      <children>
                         <HBox styleClass="paddinContainer">
                            <children>
@@ -43,7 +50,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" styleClass="buttonLight" text="Eliminar">
+                              <Button mnemonicParsing="false" styleClass="buttonLight" text="Cancelar">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -96,38 +103,19 @@
                                           <DatePicker fx:id="dtFechaFinal" editable="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
-                                       <children>
-                                          <Label styleClass="labelRoboto14" text="Datos de la persona o documento" textFill="#1a2226">
-                                             <font>
-                                                <Font name="Calibri" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textOverrun="CLIP" visible="false">
-                                             <font>
-                                                <Font name="Roboto" size="14.0" />
-                                             </font>
-                                             <graphic>
-                                                <ProgressIndicator prefHeight="30.0" prefWidth="30.0" style="-fx-progress-color: #23283a;" />
-                                             </graphic>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                    <HBox style="-fx-spacing: 0.8333333333333334em;">
-                                       <children>
-                                          <TextField fx:id="txtSearch" prefHeight="30.0" promptText="Buscar...." HBox.hgrow="ALWAYS" />
-                                       </children>
-                                    </HBox>
                                  </children>
                               </VBox>
                            </children>
                         </HBox>
-                        <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="298.0" prefWidth="726.0" styleClass="tableView" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="298.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                              <TableColumn fx:id="tcFechaCompra" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de compra" />
-                              <TableColumn fx:id="tcProveedor" prefWidth="295.0" text="Proveedor" />
-                              <TableColumn fx:id="tcTotal" prefWidth="127.0" style="-fx-alignment: CENTER-RIGHT;" text="Total/Saldo" />
+                              <TableColumn fx:id="tcFechaVenta" prefWidth="170.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de compra" />
+                              <TableColumn fx:id="Cliente" prefWidth="210.0" style="-fx-alignment: CENTER-LEFT;" text="Proveedor" />
+                              <TableColumn fx:id="tcSerie" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Serie/Numeración" />
+                              <TableColumn fx:id="tcEstado" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
+                              <TableColumn fx:id="tcTotal" prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Total/Saldo" />
+                              <TableColumn fx:id="tcObservacion" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Observación" />
                            </columns>
                         </TableView>
                      </children>

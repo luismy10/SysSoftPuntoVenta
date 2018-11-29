@@ -13,7 +13,7 @@ import javafx.scene.control.TableView;
 
 public class CompraADO {
 
-    public static String CrudEntity(CompraTB compraTB, TableView<ArticuloTB> tableView, ObservableList<LoteTB> loteTBs) {
+    public static String CrudCompra(CompraTB compraTB, TableView<ArticuloTB> tableView, ObservableList<LoteTB> loteTBs) {
         PreparedStatement compra = null;
         CallableStatement codigo_compra = null;
         PreparedStatement detalle_compra = null;
@@ -133,7 +133,7 @@ public class CompraADO {
                 if (codigo_compra != null) {
                     codigo_compra.close();
                 }
-                if(preparedHistorialArticulo != null){
+                if (preparedHistorialArticulo != null) {
                     preparedHistorialArticulo.close();
                 }
                 if (lote_compra != null) {
@@ -145,16 +145,15 @@ public class CompraADO {
         }
     }
 
-    public static ObservableList<CompraTB> ListComprasRealizadas(String... value) {
-        String selectStmt = "{call Sp_Listar_Compras()}";
+    public static ObservableList<CompraTB> ListComprasRealizadas(String value) {
+        String selectStmt = "{call Sp_Listar_Compras(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<CompraTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-//            preparedStatement.setString(1, value[0]);
-//            preparedStatement.setString(2, value[1]);
+            preparedStatement.setString(1, value);
             rsEmps = preparedStatement.executeQuery();
 
             while (rsEmps.next()) {
@@ -162,6 +161,48 @@ public class CompraADO {
                 compraTB.setId(rsEmps.getInt("Filas"));
                 compraTB.setIdCompra(rsEmps.getString("IdCompra"));
                 compraTB.setFechaCompra(rsEmps.getDate("Fecha").toLocalDate());
+                compraTB.setNumeracion(rsEmps.getString("Numeracion"));
+                compraTB.setProveedorTB(new ProveedorTB(rsEmps.getString("NumeroDocumento"), rsEmps.getString("RazonSocial")));
+                compraTB.setTotal(rsEmps.getDouble("Total"));
+                empList.add(compraTB);
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+
+    public static ObservableList<CompraTB> ListComprasRealizadasByFecha(String inicialDate, String finalDate) {
+        String selectStmt = "{call Sp_Listar_Compras_By_Fecha(?,?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<CompraTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, inicialDate);
+            preparedStatement.setString(2, finalDate);
+            rsEmps = preparedStatement.executeQuery();
+
+            while (rsEmps.next()) {
+                CompraTB compraTB = new CompraTB();
+                compraTB.setId(rsEmps.getInt("Filas"));
+                compraTB.setIdCompra(rsEmps.getString("IdCompra"));
+                compraTB.setFechaCompra(rsEmps.getDate("Fecha").toLocalDate());
+                compraTB.setNumeracion(rsEmps.getString("Numeracion"));
                 compraTB.setProveedorTB(new ProveedorTB(rsEmps.getString("NumeroDocumento"), rsEmps.getString("RazonSocial")));
                 compraTB.setTotal(rsEmps.getDouble("Total"));
                 empList.add(compraTB);

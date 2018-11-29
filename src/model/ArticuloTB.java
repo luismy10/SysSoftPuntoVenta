@@ -16,7 +16,6 @@ public class ArticuloTB {
     private String claveAlterna;
     private SimpleStringProperty nombreMarca;
     private String nombreGenerico;
-    private String descripcion;
     private int categoria;
     private SimpleStringProperty categoriaName;
     private int marcar;
@@ -111,14 +110,6 @@ public class ArticuloTB {
 
     public void setNombreGenerico(String nombreGenerico) {
         this.nombreGenerico = nombreGenerico;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public ImagenTB getImagenTB() {

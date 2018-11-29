@@ -164,7 +164,7 @@ public class FxComprasController implements Initializable {
             compraTB.setGravada(Double.parseDouble(lblGravada.getText()));
             compraTB.setIgv(Double.parseDouble(lblIgv.getText()));
             compraTB.setTotal(Double.parseDouble(lblTotal.getText()));
-            String result = CompraADO.CrudEntity(compraTB, tvList, loteTBs);
+            String result = CompraADO.CrudCompra(compraTB, tvList, loteTBs);
             if (result.equalsIgnoreCase("register")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Compras", "Registrado correctamente la compra.", false);
                 idProveedor = idRepresentante = "";

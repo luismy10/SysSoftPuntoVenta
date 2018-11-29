@@ -1,4 +1,3 @@
-
 package controller;
 
 import java.net.URL;
@@ -10,8 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-
 
 public class FxVentaRealizadasController implements Initializable {
 
@@ -30,18 +29,25 @@ public class FxVentaRealizadasController implements Initializable {
     @FXML
     private TableColumn<?, ?> tcId;
     @FXML
-    private TableColumn<?, ?> tcFechaCompra;
-    @FXML
-    private TableColumn<?, ?> tcProveedor;
-    @FXML
     private TableColumn<?, ?> tcTotal;
+    @FXML
+    private TableColumn<?, ?> tcFechaVenta;
+    @FXML
+    private TableColumn<?, ?> Cliente;
+    @FXML
+    private TableColumn<?, ?> tcEstado;
+    @FXML
+    private TableColumn<?, ?> tcObservacion;
+    
+    private AnchorPane content;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+
+    }
+
+    public void setContent(AnchorPane content) {
+        this.content = content;
+    }
+
 }

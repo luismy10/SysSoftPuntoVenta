@@ -30,6 +30,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -69,6 +71,8 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private TableColumn<CompraTB, String> tcFechaCompra;
     @FXML
+    private TableColumn<CompraTB, String> tcNumeracion;
+    @FXML
     private TableColumn<CompraTB, String> tcProveedor;
     @FXML
     private TableColumn<CompraTB, String> tcTotal;
@@ -77,10 +81,11 @@ public class FxComprasRealizadasController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcFechaCompra.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCompra().get().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))));
+        tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeracion()));
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getProveedorTB().getNumeroDocumento().get() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial().get()
         ));
-        tcTotal.setCellValueFactory(cellData -> Bindings.concat("S/. "+cellData.getValue().getTotal().get()));
+        tcTotal.setCellValueFactory(cellData -> Bindings.concat("S/. " + Tools.roundingValue(cellData.getValue().getTotal().get(), 2)));
     }
 
     public void fillPurchasesTable(String value) {
@@ -165,20 +170,11 @@ public class FxComprasRealizadasController implements Initializable {
     }
 
     @FXML
-    private void onActionSearch(ActionEvent event) {
-
-    }
-
-    void setContent(AnchorPane content) {
-        this.content = content;
-    }
-
-    @FXML
     private void onActionReport(ActionEvent event) {
         try {
             DBUtil.dbConnect();
             InputStream inputStream = getClass().getResourceAsStream("/report/Compras.jasper");
-  
+
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(inputStream);
             Map map = new HashMap();
 
@@ -206,4 +202,88 @@ public class FxComprasRealizadasController implements Initializable {
         }
     }
 
+    @FXML
+    private void onKeyPressedSearch(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!tvList.getItems().isEmpty()) {
+                tvList.requestFocus();
+                tvList.getSelectionModel().select(0);
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedSeach(KeyEvent event) {
+        fillPurchasesTable(txtSearch.getText().trim());
+    }
+
+    @FXML
+    private void onActionFechaInicial(ActionEvent actionEvent) {
+        if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
+            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+                Thread t = new Thread(runnable);
+                t.setDaemon(true);
+                return t;
+            });
+
+            Task<List<CompraTB>> task = new Task<List<CompraTB>>() {
+                @Override
+                public ObservableList<CompraTB> call() {
+                    return CompraADO.ListComprasRealizadasByFecha(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
+                }
+            };
+            task.setOnSucceeded((WorkerStateEvent e) -> {
+                tvList.setItems((ObservableList<CompraTB>) task.getValue());
+                lblLoad.setVisible(false);
+            });
+            task.setOnFailed((WorkerStateEvent event) -> {
+                lblLoad.setVisible(false);
+            });
+
+            task.setOnScheduled((WorkerStateEvent event) -> {
+                lblLoad.setVisible(true);
+            });
+            exec.execute(task);
+            if (!exec.isShutdown()) {
+                exec.shutdown();
+            }
+        }
+    }
+
+    @FXML
+    private void onActionFechaFinal(ActionEvent actionEvent) {
+        if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
+            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+                Thread t = new Thread(runnable);
+                t.setDaemon(true);
+                return t;
+            });
+
+            Task<List<CompraTB>> task = new Task<List<CompraTB>>() {
+                @Override
+                public ObservableList<CompraTB> call() {
+                    return CompraADO.ListComprasRealizadasByFecha(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
+                }
+            };
+            task.setOnSucceeded((WorkerStateEvent e) -> {
+                tvList.setItems((ObservableList<CompraTB>) task.getValue());
+                lblLoad.setVisible(false);
+            });
+            task.setOnFailed((WorkerStateEvent event) -> {
+                lblLoad.setVisible(false);
+            });
+
+            task.setOnScheduled((WorkerStateEvent event) -> {
+                lblLoad.setVisible(true);
+            });
+            exec.execute(task);
+            if (!exec.isShutdown()) {
+                exec.shutdown();
+            }
+        }
+    }
+
+    public void setContent(AnchorPane content) {
+        this.content = content;
+    }
 }
