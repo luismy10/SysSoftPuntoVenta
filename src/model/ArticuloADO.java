@@ -377,7 +377,7 @@ public class ArticuloADO {
 
     public static ObservableList<ArticuloTB> ListIniciarInventario() {
         String selectStmt = "SELECT IdArticulo,Clave,NombreMarca,Lote,PrecioCompra,PrecioVenta,Cantidad "
-                + "FROM ArticuloTB WHERE Cantidad = 0";
+                + "FROM ArticuloTB WHERE Cantidad = 0 and UnidadVenta = 1 and Inventario = 1";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<ArticuloTB> empList = FXCollections.observableArrayList();
@@ -394,6 +394,49 @@ public class ArticuloADO {
                 articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
                 articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                empList.add(articuloTB);
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+    
+    public static ObservableList<ArticuloTB> ListInventario() {
+        String selectStmt = "{call Sp_Listar_Inventario_Articulos()}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<ArticuloTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+                ArticuloTB articuloTB = new ArticuloTB();
+                articuloTB.setId(rsEmps.getInt("Filas"));
+                articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
+                articuloTB.setClave(rsEmps.getString("Clave"));
+                articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
+                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                articuloTB.setCantidadGranel(rsEmps.getDouble("CantidadGranel"));
+                articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
+                articuloTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
+                articuloTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {

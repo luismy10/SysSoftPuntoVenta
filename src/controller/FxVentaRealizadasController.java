@@ -149,9 +149,7 @@ public class FxVentaRealizadasController implements Initializable {
         }
     }
 
-    private void exucuteDeleteEvent() {
-
-    }
+    
 
     private void openWindowDetalleVenta() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
@@ -214,17 +212,6 @@ public class FxVentaRealizadasController implements Initializable {
         }
     }
 
-    @FXML
-    private void onKeyPressedCancelar(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            exucuteDeleteEvent();
-        }
-    }
-
-    @FXML
-    private void onActionCancelar(ActionEvent event) {
-        exucuteDeleteEvent();
-    }
 
     @FXML
     private void onKeyPressedList(KeyEvent event) throws IOException {

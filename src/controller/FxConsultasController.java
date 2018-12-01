@@ -94,6 +94,7 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         content.getChildren().add(node);
+        controller.fillInventarioTable();
     }
 
     @FXML

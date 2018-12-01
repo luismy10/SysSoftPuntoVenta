@@ -12,18 +12,18 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import model.DetalleVentaTB;
 import model.VentaADO;
-
-
 
 public class FxVentaDetalleController implements Initializable {
 
@@ -108,7 +108,7 @@ public class FxVentaDetalleController implements Initializable {
         }
     }
 
-    public void setInitComponents(LocalDateTime fechaRegistro, String cliente, String comprobanteName, String serie, String numeracion, String estado, String observaciones, String total,String idVenta) {
+    public void setInitComponents(LocalDateTime fechaRegistro, String cliente, String comprobanteName, String serie, String numeracion, String estado, String observaciones, String total, String idVenta) {
         lblFechaVenta.setText(fechaRegistro.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
         lblCliente.setText(cliente);
         lblComprobante.setText(comprobanteName);
@@ -117,6 +117,18 @@ public class FxVentaDetalleController implements Initializable {
         lblObservaciones.setText(observaciones);
         lblTotal.setText(total);
         fillVentasDetalleTable(idVenta);
+    }
+
+    @FXML
+    private void onKeyPressedCancelar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActionCancelar(ActionEvent event) {
+
     }
 
     public void setInitVentasController(FxVentaRealizadasController ventaRealizadasController) {

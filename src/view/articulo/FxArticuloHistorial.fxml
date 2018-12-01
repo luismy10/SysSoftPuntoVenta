@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloHistorialController">
+<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloHistorialController">
    <children>
       <VBox VBox.vgrow="ALWAYS">
          <children>
@@ -89,7 +89,7 @@
                   <TableView fx:id="tvListaHistorial" fixedCellSize="-0.0" prefHeight="340.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="tcId" prefWidth="67.0" style="-fx-alignment: CENTER;" text="N°" />
-                        <TableColumn fx:id="tcFecha" minWidth="0.0" prefWidth="172.0" style="-fx-alignment: CENTER-RIGHT;" text="Fecha registro" />
+                        <TableColumn fx:id="tcFecha" minWidth="0.0" prefWidth="172.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha registro" />
                         <TableColumn fx:id="tcOperacion" prefWidth="222.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo Operacion" />
                         <TableColumn fx:id="tcEntrada" prefWidth="160.0" style="-fx-alignment: CENTER-RIGHT;" text="Entrada" />
                         <TableColumn fx:id="tcSalida" prefWidth="160.0" style="-fx-alignment: CENTER-RIGHT;" text="Salida" />

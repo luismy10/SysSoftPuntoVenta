@@ -95,7 +95,7 @@ public class Tools {
         alert.setHeaderText(null);
         alert.setContentText(value);
         alert.getDialogPane().getStylesheets().add(url.toExternalForm());
- 
+
         ButtonType buttonTypeOne = new ButtonType("Aceptar", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeTwo = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
         ButtonType buttonTypeClose = new ButtonType("Aceptar", ButtonBar.ButtonData.CANCEL_CLOSE);
