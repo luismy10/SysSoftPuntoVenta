@@ -118,6 +118,36 @@ public class FxComprasRealizadasController implements Initializable {
         }
     }
 
+    private void fillPurchasesTableByDate() {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<List<CompraTB>> task = new Task<List<CompraTB>>() {
+            @Override
+            public ObservableList<CompraTB> call() {
+                return CompraADO.ListComprasRealizadasByFecha(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
+            }
+        };
+        task.setOnSucceeded((WorkerStateEvent e) -> {
+            tvList.setItems((ObservableList<CompraTB>) task.getValue());
+            lblLoad.setVisible(false);
+        });
+        task.setOnFailed((WorkerStateEvent event) -> {
+            lblLoad.setVisible(false);
+        });
+
+        task.setOnScheduled((WorkerStateEvent event) -> {
+            lblLoad.setVisible(true);
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
     private void InitializationTransparentBackground() {
         Session.pane.setStyle("-fx-background-color: black");
         Session.pane.setTranslateX(0);
@@ -220,66 +250,14 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private void onActionFechaInicial(ActionEvent actionEvent) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-                Thread t = new Thread(runnable);
-                t.setDaemon(true);
-                return t;
-            });
-
-            Task<List<CompraTB>> task = new Task<List<CompraTB>>() {
-                @Override
-                public ObservableList<CompraTB> call() {
-                    return CompraADO.ListComprasRealizadasByFecha(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
-                }
-            };
-            task.setOnSucceeded((WorkerStateEvent e) -> {
-                tvList.setItems((ObservableList<CompraTB>) task.getValue());
-                lblLoad.setVisible(false);
-            });
-            task.setOnFailed((WorkerStateEvent event) -> {
-                lblLoad.setVisible(false);
-            });
-
-            task.setOnScheduled((WorkerStateEvent event) -> {
-                lblLoad.setVisible(true);
-            });
-            exec.execute(task);
-            if (!exec.isShutdown()) {
-                exec.shutdown();
-            }
+             fillPurchasesTableByDate();
         }
     }
 
     @FXML
     private void onActionFechaFinal(ActionEvent actionEvent) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-                Thread t = new Thread(runnable);
-                t.setDaemon(true);
-                return t;
-            });
-
-            Task<List<CompraTB>> task = new Task<List<CompraTB>>() {
-                @Override
-                public ObservableList<CompraTB> call() {
-                    return CompraADO.ListComprasRealizadasByFecha(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
-                }
-            };
-            task.setOnSucceeded((WorkerStateEvent e) -> {
-                tvList.setItems((ObservableList<CompraTB>) task.getValue());
-                lblLoad.setVisible(false);
-            });
-            task.setOnFailed((WorkerStateEvent event) -> {
-                lblLoad.setVisible(false);
-            });
-
-            task.setOnScheduled((WorkerStateEvent event) -> {
-                lblLoad.setVisible(true);
-            });
-            exec.execute(task);
-            if (!exec.isShutdown()) {
-                exec.shutdown();
-            }
+            fillPurchasesTableByDate();
         }
     }
 

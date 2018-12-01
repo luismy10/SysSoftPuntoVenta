@@ -30,7 +30,6 @@ import model.CiudadADO;
 import model.CiudadTB;
 import model.ClienteADO;
 import model.ClienteTB;
-import model.DBUtil;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.DistritoADO;
@@ -38,7 +37,6 @@ import model.DistritoTB;
 import model.FacturacionTB;
 import model.PaisADO;
 import model.PaisTB;
-import model.PersonaTB;
 import model.ProvinciaADO;
 import model.ProvinciaTB;
 
@@ -143,6 +141,7 @@ public class FxClienteProcesoController implements Initializable {
             }
 
             txtDocumentNumber.setText(clienteTB.getNumeroDocumento());
+            txtDocumentNumber.setDisable(clienteTB.getNumeroDocumento().equals("00000000"));
             txtLastName.setText(clienteTB.getApellidos());
             txtFirstName.setText(clienteTB.getNombres());
 
@@ -287,69 +286,69 @@ public class FxClienteProcesoController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Seleccione el estado, por favor.", false);
             cbEstado.requestFocus();
         } else {
-            if (DBUtil.StateConnection()) {
-                short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
-                if (confirmation == 1) {
 
-                    ClienteTB clienteTB = new ClienteTB();
-                    clienteTB.setIdCliente(idCliente);
-                    clienteTB.setTipoDocumento(cbDocumentType.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                    clienteTB.setApellidos(txtLastName.getText().trim());
-                    clienteTB.setNombres(txtFirstName.getText().trim());
-                    clienteTB.setNumeroDocumento(txtDocumentNumber.getText().trim());
-                    clienteTB.setSexo(cbSex.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbSex.getSelectionModel().getSelectedItem().getIdDetalle().get()
-                            : 0);
-                    if (dpBirthdate.getValue() != null) {
-                        clienteTB.setFechaNacimiento(new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(Tools.getDatePicker(dpBirthdate)).getTime()));
-                    } else {
-                        clienteTB.setFechaNacimiento(null);
-                    }
-                    clienteTB.setTelefono(txtTelefono.getText().trim());
-                    clienteTB.setCelular(txtCelular.getText().trim());
-                    clienteTB.setEmail(txtEmail.getText().trim());
-                    clienteTB.setDireccion(txtDireccion.getText().trim());
-                    clienteTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                    clienteTB.setUsuarioRegistro(Session.USER_ID);
+            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
+            if (confirmation == 1) {
 
-                    FacturacionTB facturacionTB = new FacturacionTB();
-                    facturacionTB.setTipoDocumentoFacturacion(cbDocumentTypeFactura.getSelectionModel().getSelectedIndex() >= 0 ? cbDocumentTypeFactura.getSelectionModel().getSelectedItem().getIdDetalle().get()
-                            : 0);
-                    facturacionTB.setNumeroDocumentoFacturacion(txtDocumentNumberFactura.getText());
-                    facturacionTB.setRazonSocial(txtBusinessName.getText().trim());
-                    facturacionTB.setNombreComercial(txtTradename.getText().trim());
-                    facturacionTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0 ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo() : "");
-                    facturacionTB.setDepartamento(cbDepartamento.getSelectionModel().getSelectedIndex() >= 0 ? cbDepartamento.getSelectionModel().getSelectedItem().getIdCiudad() : 0);
-                    facturacionTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0 ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
-                    facturacionTB.setDistrito(cbDistrito.getSelectionModel().getSelectedIndex() >= 0 ? cbDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
-
-                    clienteTB.setFacturacionTB(facturacionTB);
-
-                    String result = ClienteADO.CrudCliente(clienteTB);
-
-                    switch (result) {
-                        case "registered":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Registrado correctamente.", false);
-                            Tools.Dispose(window);
-                            break;
-                        case "updated":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Actualizado correctamente.", false);
-
-                            break;
-                        case "duplicate":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "No se puede haber 2 personas con el mismo documento de identidad.", false);
-                            txtDocumentNumber.requestFocus();
-                            break;
-                        case "error":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "No se puedo completar la ejecución.", false);
-
-                            break;
-                        default:
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Persona", result, false);
-
-                            break;
-                    }
+                ClienteTB clienteTB = new ClienteTB();
+                clienteTB.setIdCliente(idCliente);
+                clienteTB.setTipoDocumento(cbDocumentType.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                clienteTB.setApellidos(txtLastName.getText().trim());
+                clienteTB.setNombres(txtFirstName.getText().trim());
+                clienteTB.setNumeroDocumento(txtDocumentNumber.getText().trim());
+                clienteTB.setSexo(cbSex.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbSex.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                        : 0);
+                if (dpBirthdate.getValue() != null) {
+                    clienteTB.setFechaNacimiento(new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(Tools.getDatePicker(dpBirthdate)).getTime()));
+                } else {
+                    clienteTB.setFechaNacimiento(null);
                 }
+                clienteTB.setTelefono(txtTelefono.getText().trim());
+                clienteTB.setCelular(txtCelular.getText().trim());
+                clienteTB.setEmail(txtEmail.getText().trim());
+                clienteTB.setDireccion(txtDireccion.getText().trim());
+                clienteTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                clienteTB.setUsuarioRegistro(Session.USER_ID);
+
+                FacturacionTB facturacionTB = new FacturacionTB();
+                facturacionTB.setTipoDocumentoFacturacion(cbDocumentTypeFactura.getSelectionModel().getSelectedIndex() >= 0 ? cbDocumentTypeFactura.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                        : 0);
+                facturacionTB.setNumeroDocumentoFacturacion(txtDocumentNumberFactura.getText());
+                facturacionTB.setRazonSocial(txtBusinessName.getText().trim());
+                facturacionTB.setNombreComercial(txtTradename.getText().trim());
+                facturacionTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0 ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo() : "");
+                facturacionTB.setDepartamento(cbDepartamento.getSelectionModel().getSelectedIndex() >= 0 ? cbDepartamento.getSelectionModel().getSelectedItem().getIdCiudad() : 0);
+                facturacionTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0 ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
+                facturacionTB.setDistrito(cbDistrito.getSelectionModel().getSelectedIndex() >= 0 ? cbDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
+
+                clienteTB.setFacturacionTB(facturacionTB);
+
+                String result = ClienteADO.CrudCliente(clienteTB);
+
+                switch (result) {
+                    case "registered":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Registrado correctamente.", false);
+                        Tools.Dispose(window);
+                        break;
+                    case "updated":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Actualizado correctamente.", false);
+
+                        break;
+                    case "duplicate":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "No se puede haber 2 personas con el mismo documento de identidad.", false);
+                        txtDocumentNumber.requestFocus();
+                        break;
+                    case "error":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "No se puedo completar la ejecución.", false);
+
+                        break;
+                    default:
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Persona", result, false);
+
+                        break;
+                }
+
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Persona", "No hay conexión al servidor.", false);
 

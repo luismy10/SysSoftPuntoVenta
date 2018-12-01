@@ -31,7 +31,16 @@
                         <Font name="Roboto" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedToSearh" onKeyReleased="#onKeyReleasedToSearh" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedToSearh" onKeyReleased="#onKeyReleasedToSearh" prefHeight="30.0" prefWidth="400.0" HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../plus.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Button mnemonicParsing="false" onAction="#onActionReload" styleClass="buttonLight" text="Recargar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -45,18 +54,18 @@
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="300.0" prefWidth="650.0" styleClass="tableView" HBox.hgrow="ALWAYS">
-                     <columns>
-                        <TableColumn fx:id="tcId" prefWidth="61.0" style="-fx-alignment: CENTER;" text="N°" />
-                        <TableColumn fx:id="tcDocumento" prefWidth="141.0" style="-fx-alignment: CENTER;" text="Documento" />
-                        <TableColumn fx:id="tcPersona" prefWidth="440.0" text="Cliente" />
-                     </columns>
-                  </TableView>
-               </children>
-            </HBox>
-            <HBox style="-fx-padding: 0.8333333333333334em;">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Elija un representante y has doble click para seleccionarlo." />
+                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" styleClass="tableView">
+                           <columns>
+                              <TableColumn fx:id="tcId" prefWidth="61.0" style="-fx-alignment: CENTER;" text="N°" />
+                              <TableColumn fx:id="tcDocumento" prefWidth="141.0" style="-fx-alignment: CENTER;" text="Documento" />
+                              <TableColumn fx:id="tcPersona" prefWidth="543.0" text="Cliente" />
+                           </columns>
+                        </TableView>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Elija un item de la lista y has doble click para seleccionarlo o enter." />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
             <HBox alignment="CENTER" style="-fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em;">

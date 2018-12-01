@@ -56,7 +56,12 @@ public class ArticuloTB {
     private ObjectProperty<LocalDate> fechaRegistro;
 
     public ArticuloTB() {
-     
+
+    }
+
+    public ArticuloTB(String nombreMarca, int unidadVenta) {
+        this.nombreMarca = new SimpleStringProperty(nombreMarca);
+        this.unidadVenta = unidadVenta;
     }
 
     public ArticuloTB(String clave, String nombreMarca) {
@@ -375,8 +380,5 @@ public class ArticuloTB {
     public void setUtilidadMayoreo(double utilidadMayoreo) {
         this.utilidadMayoreo = utilidadMayoreo;
     }
-
-    
-    
 
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -69,6 +68,8 @@ public class FxVentaController implements Initializable {
     private TextField txtCliente;
     @FXML
     private Text lblTotalPagar;
+    @FXML
+    private TextField txtObservacion;
 
     private AnchorPane content;
 
@@ -77,6 +78,8 @@ public class FxVentaController implements Initializable {
     private double descuento;
 
     private String idCliente;
+
+    private String datodCliente;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -105,7 +108,7 @@ public class FxVentaController implements Initializable {
             }
 
         });
-        idCliente = "";
+        setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
         initTable();
     }
 
@@ -198,6 +201,8 @@ public class FxVentaController implements Initializable {
             ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
             ventaTB.setIgv(Double.parseDouble(lblIgv.getText()));
             ventaTB.setTotal(Double.parseDouble(lblTotalPagar.getText()));
+            ventaTB.setEstado("Completada");
+            ventaTB.setObservaciones(txtObservacion.getText().trim());
             controller.setInitComponents(ventaTB, tvList);
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventas", "Debes agregar artículos a la venta", false);
@@ -287,7 +292,7 @@ public class FxVentaController implements Initializable {
                     openWindowGranel("Cambiar precio al Artículo", false);
                 } catch (IOException ex) {
                 }
-            } else {               
+            } else {
                 calculateTotales();
             }
         }
@@ -320,6 +325,7 @@ public class FxVentaController implements Initializable {
         lblGravada.setText("0.00");
         lblIgv.setText("0.00");
         lblTotalPagar.setText("0.00");
+        setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
     }
 
     private void removeArticulo() {
@@ -504,6 +510,14 @@ public class FxVentaController implements Initializable {
     @FXML
     private void onActionPrecioSumar(ActionEvent event) throws IOException {
         openWindowGranel("Sumar precio al Artículo", true);
+    }
+
+    public void setClienteVenta(String id, String datos) {
+        idCliente = !id.equalsIgnoreCase("") ? id : Session.IDCLIENTE;
+        datodCliente = datos;
+        txtCliente.setText(datodCliente.equalsIgnoreCase("")
+                ? Session.DATOSCLIENTE
+                : datodCliente);
     }
 
     public TableView<ArticuloTB> getTvList() {

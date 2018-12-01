@@ -142,7 +142,7 @@ public class ClienteTB {
     }
 
     public void setEstadoName(String estadoName) {
-        this.estadoName = estadoName;
+        this.estadoName = estadoName == null ? "" : estadoName;
     }
 
     public String getUsuarioRegistro() {

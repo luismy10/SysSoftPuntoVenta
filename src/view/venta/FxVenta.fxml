@@ -140,7 +140,7 @@
                                                 <TableColumn fx:id="tcImporte" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />
                                              </columns>
                                           </TableView>
-                                          <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
                                                 <Button mnemonicParsing="false" onAction="#onActionRemover" onKeyPressed="#onKeyPressedRemover" styleClass="buttonLight" text="Quitar(Supr)">
                                                    <graphic>
@@ -160,6 +160,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Button>
+                                                <TextField fx:id="txtObservacion" promptText="Observación..." HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
                                        </children>

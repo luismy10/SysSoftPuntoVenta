@@ -1,34 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package model;
 
-/**
- *
- * @author Ruberfc
- */
 public class DetalleVentaTB {
-                
+    
+    private int id;
     private String idVenta;
     private String idArticulo;
-    private int cantidad;
+    private double cantidad;
     private double precioUnitario;
     private double descuento;
     private double importe;
-
-    public DetalleVentaTB(String idVenta, String idArticulo, int cantidad, double precioUnitario, double descuento, double importe) {
-        this.idVenta = idVenta;
-        this.idArticulo = idArticulo;
-        this.cantidad = cantidad;
-        this.precioUnitario = precioUnitario;
-        this.descuento = descuento;
-        this.importe = importe;
-    }   
+    private ArticuloTB articuloTB;
     
     public DetalleVentaTB(){
         
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getIdVenta() {
@@ -47,11 +40,11 @@ public class DetalleVentaTB {
         this.idArticulo = idArticulo;
     }
 
-    public int getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
 
@@ -77,6 +70,14 @@ public class DetalleVentaTB {
 
     public void setImporte(double importe) {
         this.importe = importe;
+    }
+
+    public ArticuloTB getArticuloTB() {
+        return articuloTB;
+    }
+
+    public void setArticuloTB(ArticuloTB articuloTB) {
+        this.articuloTB = articuloTB;
     }
 
     

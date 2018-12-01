@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -10,7 +11,9 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -18,6 +21,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.DBUtil;
@@ -80,12 +84,31 @@ public class FxClienteListaController implements Initializable {
         }
 
     }
+    
+    private void openWindowAddCliente() throws IOException {
+        URL url = getClass().getResource(Tools.FX_FILE_CLIENTE_PROCESO);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxClienteProcesoController controller = fXMLLoader.getController();
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Cliente", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.show();
+        controller.setValueAdd();
+    }
 
     @FXML
     private void onKeyPressedToSearh(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             tvList.requestFocus();
         }
+    }
+
+    @FXML
+    private void onActionReload(ActionEvent event) {
+        fillCustomersTable("");
     }
 
     @FXML
@@ -97,25 +120,43 @@ public class FxClienteListaController implements Initializable {
     private void onMouseClickedList(MouseEvent event) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (event.getClickCount() == 2) {
-                Tools.Dispose(window);
+                if (ventaController != null) {
+                    ventaController.setClienteVenta(tvList.getSelectionModel().getSelectedItem().getIdCliente(),
+                            tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres());
+                    Tools.Dispose(window);
+                }
+
             }
         }
     }
 
     @FXML
-    private void onActionReload(ActionEvent event) {
-        fillCustomersTable("");
+    private void onKeyPressedList(KeyEvent event) {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            if (ventaController != null) {
+                ventaController.setClienteVenta(tvList.getSelectionModel().getSelectedItem().getIdCliente(),
+                        tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres());
+                Tools.Dispose(window);
+            }
+        }
     }
-
-    void setInitVentasController(FxVentaController ventaController) {
-        this.ventaController = ventaController;
+    
+     @FXML
+    private void onKeyPressedAdd(KeyEvent event) throws IOException {
+        if(event.getCode() == KeyCode.ENTER){
+            openWindowAddCliente();
+        }
     }
 
     @FXML
-    private void onKeyPressedList(KeyEvent event) {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            Tools.Dispose(window);
-        }
+    private void onActionAdd(ActionEvent event) throws IOException {
+        openWindowAddCliente();
     }
+
+    public void setInitVentasController(FxVentaController ventaController) {
+        this.ventaController = ventaController;
+    }
+
+   
 
 }

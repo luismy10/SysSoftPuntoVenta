@@ -1,22 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import controller.Session;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 import javax.xml.bind.DatatypeConverter;
 
-/**
- *
- * @author Ruberfc
- */
 public class VentaADO {
 
     public static String CrudVenta(VentaTB ventaTB, TableView<ArticuloTB> tvList) {
@@ -57,9 +50,11 @@ public class VentaADO {
                     + "           ,[Gravada]\n"
                     + "           ,[Descuento]\n"
                     + "           ,[Igv]\n"
-                    + "           ,[Total])\n"
+                    + "           ,[Total]"
+                    + "           ,[Estado]"
+                    + "           ,[Observaciones])\n"
                     + "     VALUES\n"
-                    + "           (?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(Serie,Numeracion,FechaRegistro)VALUES(?,?,?)");
 
@@ -82,6 +77,8 @@ public class VentaADO {
             venta.setDouble(10, ventaTB.getDescuento());
             venta.setDouble(11, ventaTB.getIgv());
             venta.setDouble(12, ventaTB.getTotal());
+            venta.setString(13, ventaTB.getEstado());
+            venta.setString(14, ventaTB.getObservaciones());
             venta.addBatch();
 
             byte[] bytes = DatatypeConverter.parseHexBinary(id_comprabante[0]);
@@ -179,79 +176,128 @@ public class VentaADO {
         }
     }
 
-    private String InsertDetalleVenta(DetalleVentaTB detalleVentaTB, TableView<ArticuloTB> tableView, ObservableList<LoteTB> loteTBs) throws SQLException {
-
-        PreparedStatement venta = null;
-
-        CallableStatement codigo_venta = null;
-        PreparedStatement detalle_venta = null;
-
-        PreparedStatement articulo_update = null;
-
-        PreparedStatement lote_compra = null;
-
+    public static ObservableList<VentaTB> ListVentas(String value) {
+        String selectStmt = "{call Sp_Listar_Ventas(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<VentaTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
-            DBUtil.getConnection().setAutoCommit(false);
-            codigo_venta = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero_Generado()}");
-            codigo_venta.registerOutParameter(1, java.sql.Types.VARCHAR);
-            codigo_venta.execute();
-
-            String id_venta = codigo_venta.getString(1);
-
-            detalle_venta = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleVentaTB(IdVenta,IdArticulo,Cantidad,PrecioUnitario,Descuento,Importe)"
-                    + "VALUES(?,?,?,?,?,?)");
-            articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad + ? WHERE IdArticulo = ?");
-
-            for (int i = 0; i < tableView.getItems().size(); i++) {
-                detalle_venta.setString(1, id_venta);
-                detalle_venta.setString(2, tableView.getItems().get(i).getIdArticulo());
-                detalle_venta.setInt(3, detalleVentaTB.getCantidad());
-                detalle_venta.setDouble(4, detalleVentaTB.getPrecioUnitario());
-                detalle_venta.setDouble(5, detalleVentaTB.getDescuento());
-                detalle_venta.setDouble(6, detalleVentaTB.getImporte());
-                detalle_venta.addBatch();
-
-                articulo_update.setDouble(3, tableView.getItems().get(i).getCantidad());
-                //articulo_update.setString(4, tableView.getItems().get(i).getIdArticulo());
-                articulo_update.addBatch();
-
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+                VentaTB ventaTB = new VentaTB();
+                ventaTB.setId(rsEmps.getInt("Filas"));
+                ventaTB.setIdVenta(rsEmps.getString("IdVenta"));
+                ventaTB.setFechaRegistro(rsEmps.getTimestamp("FechaVenta").toLocalDateTime());
+                ventaTB.setCliente(rsEmps.getString("Cliente"));
+                ventaTB.setComprobanteName(rsEmps.getString("Comprobante")); 
+                ventaTB.setSerie(rsEmps.getString("Serie"));
+                ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
+                ventaTB.setEstado(rsEmps.getString("Estado"));
+                ventaTB.setTotal(rsEmps.getDouble("Total"));
+                ventaTB.setObservaciones(rsEmps.getString("Observaciones"));
+                empList.add(ventaTB);
             }
-
-            detalle_venta.executeBatch();
-            articulo_update.executeBatch();
-            DBUtil.getConnection().commit();
-            return "register";
 
         } catch (SQLException ex) {
-
-            try {
-                DBUtil.getConnection().rollback();
-                return ex.getLocalizedMessage();
-            } catch (SQLException ex1) {
-                return ex1.getLocalizedMessage();
-            }
+            System.out.println(ex.getLocalizedMessage());
         } finally {
             try {
-//                if (venta != null) {
-//                    venta.close();
-//                }
-                if (detalle_venta != null) {
-                    detalle_venta.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
                 }
-                if (articulo_update != null) {
-                    articulo_update.close();
+                if (rsEmps != null) {
+                    rsEmps.close();
                 }
-                if (codigo_venta != null) {
-                    codigo_venta.close();
-                }
-//                if (lote_compra != null) {
-//                    lote_compra.close();
-//                }
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {
             }
         }
+        return empList;
     }
+
+    public static ObservableList<VentaTB> ListVentasByDate(String fechaInicial, String fechaFinal) {
+        String selectStmt = "{call Sp_Listar_Ventas_By_Date(?,?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<VentaTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, fechaInicial);
+            preparedStatement.setString(2, fechaFinal);
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+                VentaTB ventaTB = new VentaTB();
+                ventaTB.setId(rsEmps.getInt("Filas"));
+                ventaTB.setIdVenta(rsEmps.getString("IdVenta")); 
+                ventaTB.setFechaRegistro(rsEmps.getTimestamp("FechaVenta").toLocalDateTime());
+                ventaTB.setCliente(rsEmps.getString("Cliente"));
+                ventaTB.setComprobanteName(rsEmps.getString("Comprobante")); 
+                ventaTB.setSerie(rsEmps.getString("Serie"));
+                ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
+                ventaTB.setEstado(rsEmps.getString("Estado"));
+                ventaTB.setTotal(rsEmps.getDouble("Total"));
+                ventaTB.setObservaciones(rsEmps.getString("Observaciones"));
+                empList.add(ventaTB);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException e) {
+            }
+        }
+        return empList;
+    }
+    
+    public static ObservableList<DetalleVentaTB> ListVentasDetalle(String value) {
+        String selectStmt = "{call Sp_Listar_Ventas_Detalle_By_Id(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<DetalleVentaTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+                DetalleVentaTB detalleVentaTB = new DetalleVentaTB();
+                detalleVentaTB.setId(rsEmps.getInt("Filas"));
+                detalleVentaTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                detalleVentaTB.setPrecioUnitario(rsEmps.getDouble("PrecioUnitario"));
+                detalleVentaTB.setDescuento(rsEmps.getDouble("Descuento"));
+                detalleVentaTB.setImporte(rsEmps.getDouble("Importe")); 
+                detalleVentaTB.setArticuloTB(new ArticuloTB(rsEmps.getString("NombreMarca"),rsEmps.getInt("UnidadVenta"))); 
+                empList.add(detalleVentaTB);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException e) {
+            }
+        }
+        return empList;
+    }
+
 
 }
