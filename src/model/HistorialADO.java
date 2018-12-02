@@ -30,7 +30,7 @@ public class HistorialADO {
                 HistorialTB historialTB = new HistorialTB();
                 
                 historialTB.setIdHistorial(rsEmps.getInt("Filas"));
-                historialTB.setFechaRegistro(rsEmps.getDate("FechaRegistro").toLocalDate());
+                historialTB.setFechaRegistro(rsEmps.getTimestamp("FechaRegistro").toLocalDateTime());
                 historialTB.setTipoOperacion(rsEmps.getString("TipoOperacion"));
                 historialTB.setEntrada(rsEmps.getDouble("Entrada"));
                 historialTB.setSalida(rsEmps.getDouble("Salida"));

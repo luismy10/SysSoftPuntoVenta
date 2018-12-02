@@ -1,10 +1,8 @@
 package model;
 
-import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Stack;
 import javafx.scene.image.Image;
 
 public class ImageADO {
@@ -101,39 +99,56 @@ public class ImageADO {
 
         return imagenTB;
     }
-
-    public static Stack<Image> GetImageList(String idRepresentante) {
-        String selectStmt = "SELECT Imagen FROM ImagenTB WHERE IdRelacionado = ?";
-        PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
-        Stack stacks = new Stack();
+    
+     public static String CrudImageArticulo(ImagenTB imagenTB) {
+        PreparedStatement preparedImagen = null;
+        PreparedStatement preparedValidation = null;
         try {
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, idRepresentante);
-            rsEmps = preparedStatement.executeQuery();
-
-            while (rsEmps.next()) {
-                InputStream stream = rsEmps.getBinaryStream("Imagen");
-                stacks.add(new Image(stream));
+            DBUtil.getConnection().setAutoCommit(false);
+            preparedValidation = DBUtil.getConnection().prepareStatement("select IdImagenArticulo from ImagenArticuloTB where IdImagen=? and IdRelacionado=?");
+            preparedValidation.setLong(1, imagenTB.getIdImage());
+            preparedValidation.setString(2, imagenTB.getIdRelacionado());
+            if (preparedValidation.executeQuery().next()) {
+                preparedImagen = DBUtil.getConnection().prepareCall("update ImagenArticuloTB set Imagen=? where IdImagen=? and IdRelacionado=?");
+                preparedImagen.setBinaryStream(1, imagenTB.getFile());
+                preparedImagen.setLong(2, imagenTB.getIdImage());
+                preparedImagen.setString(3, imagenTB.getIdRelacionado());
+                preparedImagen.addBatch();
+                preparedImagen.executeBatch();
+                DBUtil.getConnection().commit();
+                return "update";
+            } else {
+                preparedImagen = DBUtil.getConnection().prepareCall("insert into ImagenArticuloTB(Imagen,IdRelacionado) values(?,?)");
+                preparedImagen.setBinaryStream(1, imagenTB.getFile());
+                preparedImagen.setString(2, imagenTB.getIdRelacionado());
+                preparedImagen.addBatch();
+                preparedImagen.executeBatch();
+                DBUtil.getConnection().commit();
+                return "insert";
             }
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
 
+        } catch (SQLException ex) {
+            try {
+                DBUtil.getConnection().rollback();
+            } catch (SQLException exr) {
+                return exr.getLocalizedMessage();
+            }
+            return ex.getLocalizedMessage();
         } finally {
             try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
+                if (preparedImagen != null) {
+                    preparedImagen.close();
                 }
-                if (rsEmps != null) {
-                    rsEmps.close();
+                if (preparedValidation != null) {
+                    preparedValidation.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-
-        return stacks;
     }
+
+
 }

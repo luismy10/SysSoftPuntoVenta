@@ -17,6 +17,7 @@ public class SysSoft extends Application {
     private final int COUNT_LIMIT = 50000;
     private Parent parent;
     private Scene scene;
+    private FxLoginController loginController;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -27,7 +28,8 @@ public class SysSoft extends Application {
         primaryStage.centerOnScreen();
         primaryStage.setMaximized(true);
         primaryStage.show();
-        primaryStage.requestFocus();        
+        primaryStage.requestFocus();  
+        loginController.initComponents();
     }
 
     @Override
@@ -36,7 +38,7 @@ public class SysSoft extends Application {
         URL urllogin = getClass().getResource(Tools.FX_FILE_LOGIN);
         FXMLLoader fXMLLoaderLogin = FxWindow.LoaderWindow(urllogin);
         parent = fXMLLoaderLogin.load(urllogin.openStream());
-    
+        loginController = fXMLLoaderLogin.getController();
         Session.pane = new Pane();
         scene = new Scene(parent);
         for (int i = 0; i < COUNT_LIMIT; i++) {

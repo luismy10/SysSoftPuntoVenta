@@ -19,7 +19,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -57,8 +56,6 @@ public class FxArticuloProcesoController implements Initializable {
     private TextField txtPresentacion;
     @FXML
     private ComboBox<DetalleTB> cbEstado;
-    @FXML
-    private TextArea txtDescripcion;
     @FXML
     private ImageView lnPrincipal;
     @FXML
@@ -99,6 +96,8 @@ public class FxArticuloProcesoController implements Initializable {
     private int idMarca;
 
     private int idDepartmento;
+    
+    private FxArticulosController articulosController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -129,7 +128,6 @@ public class FxArticuloProcesoController implements Initializable {
             ArticuloTB articuloTB = list.get(0);
             txtNombreMarca.setText(articuloTB.getNombreMarca().get());
             txtNombreGenerico.setText(articuloTB.getNombreGenerico());
-            txtDescripcion.setText(articuloTB.getDescripcion());
 
             if (articuloTB.getCategoria() != 0) {
                 idCategoria = articuloTB.getCategoria();
@@ -186,7 +184,6 @@ public class FxArticuloProcesoController implements Initializable {
             txtClaveAlterna.setText(articuloTB.getClaveAlterna());
             txtNombreMarca.setText(articuloTB.getNombreMarca().get());
             txtNombreGenerico.setText(articuloTB.getNombreGenerico());
-            txtDescripcion.setText(articuloTB.getDescripcion());
 
             if (articuloTB.getCategoria() != 0) {
                 idCategoria = articuloTB.getCategoria();
@@ -268,7 +265,6 @@ public class FxArticuloProcesoController implements Initializable {
                 articuloTB.setClaveAlterna(txtClaveAlterna.getText().trim());
                 articuloTB.setNombreMarca(txtNombreMarca.getText().trim());
                 articuloTB.setNombreGenerico(txtNombreGenerico.getText().trim());
-                articuloTB.setDescripcion(txtDescripcion.getText().trim());
                 articuloTB.setImagenTB(new ImagenTB(selectFile != null
                         ? getFileResources(selectFile)
                         : getFileResources(null)));
@@ -341,15 +337,16 @@ public class FxArticuloProcesoController implements Initializable {
                 articuloTB.setUnidadVenta(rbUnidad.isSelected() ? 1 : 2);
                 articuloTB.setLote(cbLote.isSelected());
                 articuloTB.setInventario(cbInventario.isSelected());
-
                 String result = ArticuloADO.CrudArticulo(articuloTB);
                 switch (result) {
                     case "registered":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Registrado correctamente el artículo.", false);
-                        Tools.Dispose(window);
+                        Tools.Dispose(window);                        
                         break;
                     case "updated":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Actualizado correctamente el artículo.", false);
+                        Tools.Dispose(window); 
+                        articulosController.fillArticlesTable(txtClave.getText());                        
                         break;
                     case "duplicate":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puede haber 2 artículos con la misma clave.", false);
@@ -393,7 +390,7 @@ public class FxArticuloProcesoController implements Initializable {
         imagenTB.setFile(inputStream);
         imagenTB.setIdRelacionado(idArticulo);
         if (!idArticulo.equalsIgnoreCase("")) {
-            String result = ImageADO.CrudImage(imagenTB);
+            String result = ImageADO.CrudImageArticulo(imagenTB);
             if (result.equalsIgnoreCase("insert")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Registrado correctamente la imagen.", false);
                 loadViewImage(idArticulo);
@@ -661,6 +658,10 @@ public class FxArticuloProcesoController implements Initializable {
 
     public TextField getTxtDepartamento() {
         return txtDepartamento;
+    }
+
+    public void initControllerArticulos(FxArticulosController articulosController) {
+        this.articulosController = articulosController;
     }
 
 }

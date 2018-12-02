@@ -1,7 +1,7 @@
 
 package model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javafx.beans.property.SimpleIntegerProperty;
 
 
@@ -10,7 +10,7 @@ public class HistorialTB {
     private SimpleIntegerProperty idHistorial;
     private String idArticulo;
     private String tipoOperacion;    
-    private LocalDate fechaRegistro;
+    private LocalDateTime fechaRegistro;
     private Double entrada;
     private Double salida;
     private Double saldo;
@@ -44,11 +44,11 @@ public class HistorialTB {
         this.tipoOperacion = tipoOperacion;
     }
 
-    public LocalDate getFechaRegistro() {
+    public LocalDateTime getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(LocalDate fechaRegistro) {
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 

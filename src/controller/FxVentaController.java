@@ -68,6 +68,8 @@ public class FxVentaController implements Initializable {
     private TextField txtCliente;
     @FXML
     private Text lblTotalPagar;
+    @FXML
+    private TextField txtObservacion;
 
     private AnchorPane content;
 
@@ -76,6 +78,8 @@ public class FxVentaController implements Initializable {
     private double descuento;
 
     private String idCliente;
+
+    private String datodCliente;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -104,7 +108,7 @@ public class FxVentaController implements Initializable {
             }
 
         });
-        idCliente = "";
+        setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
         initTable();
     }
 
@@ -197,6 +201,8 @@ public class FxVentaController implements Initializable {
             ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
             ventaTB.setIgv(Double.parseDouble(lblIgv.getText()));
             ventaTB.setTotal(Double.parseDouble(lblTotalPagar.getText()));
+            ventaTB.setEstado("Completada");
+            ventaTB.setObservaciones(txtObservacion.getText().trim());
             controller.setInitComponents(ventaTB, tvList);
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventas", "Debes agregar artículos a la venta", false);
@@ -277,29 +283,41 @@ public class FxVentaController implements Initializable {
     }
 
     public void getAddArticulo(ArticuloTB articuloTB) {
-
-        if (articuloTB.getUnidadVenta() == 2) {
-            try {
-                tvList.getItems().add(articuloTB);
-                int index = tvList.getItems().size() - 1;
-                tvList.requestFocus();
-                tvList.getSelectionModel().select(index);
-
-                openWindowGranel("Cambiar precio al Artículo", false);
-            } catch (IOException ex) {
+        if (!validateDuplicateArticulo(tvList, articuloTB)) {
+            if (articuloTB.getUnidadVenta() == 2) {
+                try {
+                    int index = tvList.getItems().size() - 1;
+                    tvList.requestFocus();
+                    tvList.getSelectionModel().select(index);
+                    openWindowGranel("Cambiar precio al Artículo", false);
+                } catch (IOException ex) {
+                }
+            } else {
+                calculateTotales();
             }
-        } else {
-            tvList.getItems().add(articuloTB);
-            calculateTotales();
         }
 
+    }
+
+    private boolean validateDuplicateArticulo(TableView<ArticuloTB> view, ArticuloTB articuloTB) {
+        boolean ret = false;
+        for (int i = 0; i < view.getItems().size(); i++) {
+            if (view.getItems().get(i).getClave().get().equals(articuloTB.getClave().get())) {
+                ret = true;
+                break;
+            }
+        }
+        if (!ret) {
+            view.getItems().add(articuloTB);
+        }
+        return ret;
     }
 
     public void resetVenta() {
         String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
         lblSerie.setText(array[0]);
         lblNumeracion.setText(array[1]);
-      
+
         this.tvList.getItems().clear();
         lblTotal.setText("0.00");
         lblSubTotal.setText("0.00");
@@ -307,6 +325,22 @@ public class FxVentaController implements Initializable {
         lblGravada.setText("0.00");
         lblIgv.setText("0.00");
         lblTotalPagar.setText("0.00");
+        setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
+    }
+
+    private void removeArticulo() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Esta seguro de quitar el artículo?", true);
+            if (confirmation == 1) {
+                ObservableList<ArticuloTB> articuloSelect, allArticulos;
+                allArticulos = tvList.getItems();
+                articuloSelect = tvList.getSelectionModel().getSelectedItems();
+                articuloSelect.forEach(allArticulos::remove);
+                calculateTotales();
+            }
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Venta", "Seleccione un artículo para quitarlo", false);
+        }
     }
 
     @FXML
@@ -339,13 +373,20 @@ public class FxVentaController implements Initializable {
     }
 
     @FXML
-    private void onActionRemover(ActionEvent event) {
+    private void onKeyPressedRemover(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
 
+        }
+    }
+
+    @FXML
+    private void onActionRemover(ActionEvent event) {
+        removeArticulo();
     }
 
     @FXML
     private void onActionCancel(ActionEvent event) {
-
+        removeArticulo();
     }
 
     @FXML
@@ -469,6 +510,14 @@ public class FxVentaController implements Initializable {
     @FXML
     private void onActionPrecioSumar(ActionEvent event) throws IOException {
         openWindowGranel("Sumar precio al Artículo", true);
+    }
+
+    public void setClienteVenta(String id, String datos) {
+        idCliente = !id.equalsIgnoreCase("") ? id : Session.IDCLIENTE;
+        datodCliente = datos;
+        txtCliente.setText(datodCliente.equalsIgnoreCase("")
+                ? Session.DATOSCLIENTE
+                : datodCliente);
     }
 
     public TableView<ArticuloTB> getTvList() {

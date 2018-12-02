@@ -164,7 +164,7 @@ public class FxComprasController implements Initializable {
             compraTB.setGravada(Double.parseDouble(lblGravada.getText()));
             compraTB.setIgv(Double.parseDouble(lblIgv.getText()));
             compraTB.setTotal(Double.parseDouble(lblTotal.getText()));
-            String result = CompraADO.CrudEntity(compraTB, tvList, loteTBs);
+            String result = CompraADO.CrudCompra(compraTB, tvList, loteTBs);
             if (result.equalsIgnoreCase("register")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Compras", "Registrado correctamente la compra.", false);
                 idProveedor = idRepresentante = "";
@@ -259,7 +259,6 @@ public class FxComprasController implements Initializable {
                 ObservableList<ArticuloTB> observableList, articuloTBs;
                 observableList = tvList.getItems();
                 articuloTBs = tvList.getSelectionModel().getSelectedItems();
-
                 articuloTBs.forEach(e -> {
                     for (int i = 0; i < loteTBs.size(); i++) {
                         if (loteTBs.get(i).getIdArticulo().equals(e.getIdArticulo())) {
@@ -270,9 +269,7 @@ public class FxComprasController implements Initializable {
                     observableList.remove(e);
                 });
                 setCalculateTotals();
-
             }
-
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compras", "Seleccione un artículo para removerlo", false);
         }

@@ -1,34 +1,47 @@
-
 package model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class VentaTB {
-    
-    private long idVenta;
+
+    private int id;
+    private String idVenta;
     private String cliente;
     private String vendedor;
     private int comprobante;
+    private String comprobanteName;
     private String serie;
     private String numeracion;
     private Timestamp fechaVenta;
+    private LocalDateTime fechaRegistro;
     private double subTotal;
     private double gravada;
     private double descuento;
     private double igv;
     private double total;
+    private String estado;
+    private String observaciones;
     private ArticuloTB articuloTB;
 
     public VentaTB() {
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     
     
 
-    public long getIdVenta() {
+    public String getIdVenta() {
         return idVenta;
     }
 
-    public void setIdVenta(long idVenta) {
+    public void setIdVenta(String idVenta) {
         this.idVenta = idVenta;
     }
 
@@ -56,6 +69,14 @@ public class VentaTB {
         this.comprobante = comprobante;
     }
 
+    public String getComprobanteName() {
+        return comprobanteName;
+    }
+
+    public void setComprobanteName(String comprobanteName) {
+        this.comprobanteName = comprobanteName;
+    }
+
     public String getSerie() {
         return serie;
     }
@@ -78,6 +99,14 @@ public class VentaTB {
 
     public void setFechaVenta(Timestamp fechaVenta) {
         this.fechaVenta = fechaVenta;
+    }
+
+    public LocalDateTime getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
 
     public double getSubTotal() {
@@ -127,6 +156,21 @@ public class VentaTB {
     public void setArticuloTB(ArticuloTB articuloTB) {
         this.articuloTB = articuloTB;
     }
-    
-    
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
 }

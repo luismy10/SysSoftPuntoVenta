@@ -28,6 +28,14 @@
                            </image>
                         </ImageView>
                         <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Compras realizadas" />
+                        <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textOverrun="CLIP" visible="false">
+                           <font>
+                              <Font name="Roboto" size="14.0" />
+                           </font>
+                           <graphic>
+                              <ProgressIndicator prefHeight="30.0" prefWidth="30.0" style="-fx-progress-color: #23283a;" />
+                           </graphic>
+                        </Label>
                      </children>
                   </HBox>
                   <VBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
@@ -87,45 +95,38 @@
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                           </Label>
-                                          <DatePicker fx:id="dtFechaInicial" editable="false" prefHeight="30.0" prefWidth="200.0" />
+                                          <DatePicker fx:id="dtFechaInicial" editable="false" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="200.0" />
                                           <Label styleClass="labelRoboto14" text="Fecha final:" textFill="#1a2226">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                           </Label>
-                                          <DatePicker fx:id="dtFechaFinal" editable="false" prefHeight="30.0" prefWidth="200.0" />
+                                          <DatePicker fx:id="dtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="200.0" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Datos de la persona o documento" textFill="#1a2226">
+                                          <Label styleClass="labelRoboto14" text="Buscar por Proveedor o Serie/Numeración" textFill="#1a2226">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
-                                          </Label>
-                                          <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textOverrun="CLIP" visible="false">
-                                             <font>
-                                                <Font name="Roboto" size="14.0" />
-                                             </font>
-                                             <graphic>
-                                                <ProgressIndicator prefHeight="30.0" prefWidth="30.0" style="-fx-progress-color: #23283a;" />
-                                             </graphic>
                                           </Label>
                                        </children>
                                     </HBox>
                                     <HBox spacing="10.0">
                                        <children>
-                                          <TextField fx:id="txtSearch" onAction="#onActionSearch" prefHeight="30.0" promptText="Buscar...." HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSearch" onKeyReleased="#onKeyReleasedSeach" prefHeight="30.0" promptText="Buscar...." HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
                            </children>
                         </HBox>
-                        <TableView fx:id="tvList" fixedCellSize="-0.0" onMouseClicked="#onMouseClickedList" prefHeight="260.0" prefWidth="726.0" styleClass="tableView" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tvList" fixedCellSize="-0.0" onMouseClicked="#onMouseClickedList" prefHeight="260.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                              <TableColumn fx:id="tcFechaCompra" prefWidth="170.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de compra" />
+                              <TableColumn fx:id="tcFechaCompra" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de compra" />
+                              <TableColumn fx:id="tcNumeracion" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Serie/Numeración" />
                               <TableColumn fx:id="tcProveedor" prefWidth="300.0" text="Proveedor" />
                               <TableColumn fx:id="tcTotal" prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Total/Saldo" />
                            </columns>

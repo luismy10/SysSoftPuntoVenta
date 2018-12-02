@@ -166,6 +166,7 @@ public class FxArticulosController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxArticuloProcesoController controller = fXMLLoader.getController();
+            controller.initControllerArticulos(this);
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Artículo", window.getScene().getWindow());
             stage.setResizable(false);

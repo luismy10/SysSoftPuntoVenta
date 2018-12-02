@@ -26,6 +26,7 @@ import model.DBUtil;
 import model.DetalleADO;
 import model.EmpresaADO;
 import model.EmpresaTB;
+import model.FacturacionTB;
 
 public class FxPreloader extends Preloader {
 
@@ -90,9 +91,9 @@ public class FxPreloader extends Preloader {
             case BEFORE_INIT:
                 System.out.println("BEFORE_INIT");
                 TimerService service = new TimerService();
-                try {                    
+                try {
                     service.setPeriod(Duration.seconds(59));
-                    
+
                     service.setOnSucceeded((WorkerStateEvent t) -> {
                         try {
                             DBUtil.dbConnect();
@@ -105,7 +106,7 @@ public class FxPreloader extends Preloader {
                             Session.ARTICULOS_TOTAL = "" + tipos[0];
                             Session.CLIENTES_TOTAL = "" + tipos[1];
                             Session.PROVEEDORES_TOTAL = "" + tipos[2];
-                            Session.TRABAJADORES_TOTAL = "" + tipos[3];                            
+                            Session.TRABAJADORES_TOTAL = "" + tipos[3];
                             if (!exec.isShutdown()) {
                                 exec.shutdown();
                             }
@@ -118,7 +119,7 @@ public class FxPreloader extends Preloader {
                 } catch (Exception ex) {
 
                 } finally {
-                    
+
                 }
 
                 ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
@@ -138,6 +139,41 @@ public class FxPreloader extends Preloader {
                 if (clienteTB != null) {
                     Session.IDCLIENTE = clienteTB.getIdCliente();
                     Session.DATOSCLIENTE = clienteTB.getApellidos() + " " + clienteTB.getNombres();
+                } else {
+                    ClienteTB clienteInsert = new ClienteTB();
+                    clienteInsert.setTipoDocumento(1);
+                    clienteInsert.setNumeroDocumento("00000000");
+                    clienteInsert.setApellidos("PUBLICO");
+                    clienteInsert.setNombres("GENERAL");
+                    clienteInsert.setSexo(0);
+                    clienteInsert.setFechaNacimiento(null);
+                    clienteInsert.setTelefono("");
+                    clienteInsert.setCelular("");
+                    clienteInsert.setEmail("");
+                    clienteInsert.setDireccion("");
+                    clienteInsert.setEstado(1);
+                    clienteInsert.setUsuarioRegistro("");
+
+                    FacturacionTB facturacionTB = new FacturacionTB();
+                    facturacionTB.setTipoDocumentoFacturacion(0);
+                    facturacionTB.setNumeroDocumentoFacturacion("");
+                    facturacionTB.setRazonSocial("");
+                    facturacionTB.setNombreComercial("");
+                    facturacionTB.setPais("");
+                    facturacionTB.setDepartamento(0);
+                    facturacionTB.setProvincia(0);
+                    facturacionTB.setDistrito(0);
+
+                    clienteInsert.setFacturacionTB(facturacionTB);
+                    String result = ClienteADO.CrudCliente(clienteInsert);
+                    if (result.equalsIgnoreCase("registered")) {
+                        ClienteTB clienteSelect = ClienteADO.GetByIdClienteVenta("00000000");
+                        if (clienteTB != null) {
+                            Session.IDCLIENTE = clienteSelect.getIdCliente();
+                            Session.DATOSCLIENTE = clienteSelect.getApellidos() + " " + clienteTB.getNombres();
+                        }
+
+                    }
                 }
                 System.out.println("BEFORE_INIT");
                 break;

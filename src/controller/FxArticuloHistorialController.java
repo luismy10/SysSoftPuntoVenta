@@ -2,6 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -65,7 +67,7 @@ public class FxArticuloHistorialController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getIdHistorial().asObject());
-        tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaRegistro()));
+        tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaRegistro().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))));
         tcOperacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoOperacion()));
         tcEntrada.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEntrada()));
         tcSalida.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSalida()));
@@ -156,7 +158,7 @@ public class FxArticuloHistorialController implements Initializable {
         openWindowArticulos();
     }
 
-    void setContent(AnchorPane content) {
+    public void setContent(AnchorPane content) {
         this.content = content;
     }
 

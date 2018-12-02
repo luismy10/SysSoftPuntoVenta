@@ -128,7 +128,7 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         content.getChildren().add(node);
-        
+
     }
 
     @FXML
@@ -153,11 +153,6 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private void onActionProviders(ActionEvent event) throws IOException {
         openWindowProviders();
-    }
-
-    void setContent(AnchorPane windowinit, AnchorPane content) {
-        this.windowinit = windowinit;
-        this.content = content;
     }
 
     @FXML
@@ -219,6 +214,11 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private void onActionInventario(ActionEvent event) throws IOException {
         openWindowInventario();
+    }
+
+    public void setContent(AnchorPane windowinit, AnchorPane content) {
+        this.windowinit = windowinit;
+        this.content = content;
     }
 
 }
