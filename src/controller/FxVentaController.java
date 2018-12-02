@@ -284,36 +284,35 @@ public class FxVentaController implements Initializable {
     }
 
     public void getAddArticulo(ArticuloTB articulo) {
-        if (articulo != null) {
-            if (validateDuplicateArticulo(tvList, articulo)) {
-                for (int i = 0; i < tvList.getItems().size(); i++) {
-                    if (tvList.getItems().get(i).getIdArticulo().equalsIgnoreCase(articulo.getIdArticulo())) {
-                        ArticuloTB articuloTB = tvList.getItems().get(i);
-                        articuloTB.setCantidad(tvList.getItems().get(i).getCantidad() + 1);
-                        articuloTB.setSubTotal(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
-                        articuloTB.setImporte(
-                                articuloTB.getSubTotal().get()
-                                - articuloTB.getDescuento().get()
-                        );
-                        tvList.getItems().set(i, articuloTB);
-                        calculateTotales();
-                    }
-                }
-
-            } else {
-                if (articulo.getUnidadVenta() == 2) {
-                    try {
-                        int index = tvList.getItems().size() - 1;
-                        tvList.getItems().add(articulo);
-                        tvList.requestFocus();
-                        tvList.getSelectionModel().select(index);
-                        openWindowGranel("Cambiar precio al Artículo", false);
-                    } catch (IOException ex) {
-                    }
-                } else {
-                    tvList.getItems().add(articulo);
+        if (validateDuplicateArticulo(tvList, articulo)) {
+            for (int i = 0; i < tvList.getItems().size(); i++) {
+                if (tvList.getItems().get(i).getIdArticulo().equalsIgnoreCase(articulo.getIdArticulo())) {
+                    ArticuloTB articuloTB = tvList.getItems().get(i);
+                    articuloTB.setCantidad(tvList.getItems().get(i).getCantidad() + 1);
+                    articuloTB.setSubTotal(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+                    articuloTB.setImporte(
+                            articuloTB.getSubTotal().get()
+                            - articuloTB.getDescuento().get()
+                    );
+                    tvList.getItems().set(i, articuloTB);
                     calculateTotales();
                 }
+            }
+
+        } else {
+            
+            if (articulo.getUnidadVenta() == 2) {
+                try {
+                    tvList.getItems().add(articulo);
+                    int index = tvList.getItems().size() - 1;                    
+                    tvList.requestFocus();
+                    tvList.getSelectionModel().select(index);
+                    openWindowGranel("Cambiar precio al Artículo", false);
+                } catch (IOException ex) {
+                }
+            } else {
+                tvList.getItems().add(articulo);
+                calculateTotales();
             }
         }
 
