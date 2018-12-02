@@ -100,14 +100,23 @@ public class FxVentaController implements Initializable {
                         case F2:
                             openWindowArticulos();
                             break;
+                        case ESCAPE:
+                            short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Está seguro de borrar la venta?", true);
+                            if (value == 1) {
+                                resetVenta();
+                            }
+                            break;
+                        case DELETE:
+                            removeArticulo();
+                            break;
                         default:
+
                             break;
                     }
                 }
             } catch (IOException ex) {
                 System.out.println(ex.getLocalizedMessage());
             }
-
         });
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
         initTable();
@@ -300,11 +309,11 @@ public class FxVentaController implements Initializable {
             }
 
         } else {
-            
+
             if (articulo.getUnidadVenta() == 2) {
                 try {
                     tvList.getItems().add(articulo);
-                    int index = tvList.getItems().size() - 1;                    
+                    int index = tvList.getItems().size() - 1;
                     tvList.requestFocus();
                     tvList.getSelectionModel().select(index);
                     openWindowGranel("Cambiar precio al Artículo", false);
@@ -546,7 +555,10 @@ public class FxVentaController implements Initializable {
     @FXML
     private void onKeyPressedSearch(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            if (!tvList.getItems().isEmpty()) {
+                tvList.requestFocus();
+                tvList.getSelectionModel().select(0);
+            }
         }
     }
 
@@ -572,6 +584,7 @@ public class FxVentaController implements Initializable {
             txtSearch.clear();
             txtSearch.requestFocus();
         }
+        
     }
 
     public void setClienteVenta(String id, String datos) {

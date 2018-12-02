@@ -467,7 +467,7 @@ public class ArticuloADO {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, value);
-            rsEmps = preparedStatement.executeQuery();            
+            rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 articuloTB = new ArticuloTB();
                 articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
@@ -479,7 +479,7 @@ public class ArticuloADO {
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
-                articuloTB.setLote(rsEmps.getBoolean("Lote"));             
+                articuloTB.setLote(rsEmps.getBoolean("Lote"));
                 articuloTB.setInventario(rsEmps.getBoolean("Inventario"));
             }
         } catch (SQLException e) {
@@ -499,6 +499,36 @@ public class ArticuloADO {
             }
         }
         return articuloTB;
+    }
+
+    public static void ListArticulosPaginacion() {
+        PreparedStatement statementTotal = null;
+        ResultSet resultSet = null;
+        try {
+            DBUtil.dbConnect();
+            statementTotal = DBUtil.getConnection().prepareStatement("select count(*) as Total from ArticuloTB");
+            resultSet = statementTotal.executeQuery();
+            int total = 0;
+            if (resultSet.next()) {
+                total = resultSet.getInt("Total");
+            }
+            System.out.println(total);
+        } catch (SQLException e) {
+
+        } finally {
+            try {
+                if (statementTotal != null) {
+                    statementTotal.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+
+        }
     }
 
 }

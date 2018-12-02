@@ -161,6 +161,7 @@ public class FxArticuloListaController implements Initializable {
             articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
             Tools.Dispose(window);
             ventaController.getAddArticulo(articuloTB);
+            txtSearch.requestFocus();
         }
     }
 
@@ -222,27 +223,37 @@ public class FxArticuloListaController implements Initializable {
 
     @FXML
     private void onKeyReleasedToSearch(KeyEvent event) {
-        if(stateRequest)fillProvidersTable(txtSearch.getText());
+        if (stateRequest) {
+            fillProvidersTable(txtSearch.getText());
+        }
     }
 
     @FXML
     private void onKeyPressedToSearh(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            tvList.requestFocus();
+            if (!tvList.getItems().isEmpty()) {
+                tvList.requestFocus();
+                tvList.getSelectionModel().select(0);
+            }
         }
     }
 
     @FXML
     private void onKeyPressedReload(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if(stateRequest)fillProvidersTable("");
+            if (stateRequest) {
+                fillProvidersTable("");
+            }
         }
     }
 
     @FXML
     private void onActionReload(ActionEvent event) {
-        if(stateRequest)fillProvidersTable("");
-    }
+        if (stateRequest) {
+            fillProvidersTable("");
+        }
+    }   
+    
 
     public void setInitComprasController(FxComprasController comprasController) {
         this.comprasController = comprasController;
