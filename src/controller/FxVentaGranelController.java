@@ -54,7 +54,6 @@ public class FxVentaGranelController implements Initializable {
                     - articuloTB.getDescuento().get()
             );
             ventaController.getTvList().getItems().set(index, articuloTB);
-            ventaController.getTvList().getSelectionModel().select(index);
             ventaController.calculateTotales();
             Tools.Dispose(window);
         } else {
@@ -65,7 +64,6 @@ public class FxVentaGranelController implements Initializable {
                     - articuloTB.getDescuento().get()
             );
             ventaController.getTvList().getItems().set(index, articuloTB);
-            ventaController.getTvList().getSelectionModel().select(index);
             ventaController.calculateTotales();
             Tools.Dispose(window);
         }

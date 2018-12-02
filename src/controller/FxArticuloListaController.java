@@ -47,6 +47,8 @@ public class FxArticuloListaController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcUnidadVenta;
 
+    private boolean stateRequest;
+
     private FxComprasController comprasController;
 
     private FxVentaController ventaController;
@@ -68,6 +70,7 @@ public class FxArticuloListaController implements Initializable {
         tcUnidadVenta.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel"
         ));
+        stateRequest = false;
     }
 
     public void fillProvidersTable(String value) {
@@ -87,8 +90,15 @@ public class FxArticuloListaController implements Initializable {
 
         task.setOnSucceeded((WorkerStateEvent e) -> {
             tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
+            stateRequest = true;
         });
 
+        task.setOnFailed((WorkerStateEvent e) -> {
+            stateRequest = false;
+        });
+        task.setOnScheduled((WorkerStateEvent e) -> {
+            stateRequest = false;
+        });
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
@@ -150,7 +160,7 @@ public class FxArticuloListaController implements Initializable {
             articuloTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
             articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
             Tools.Dispose(window);
-            ventaController.getAddArticulo(articuloTB);            
+            ventaController.getAddArticulo(articuloTB);
         }
     }
 
@@ -198,8 +208,6 @@ public class FxArticuloListaController implements Initializable {
         }
     }
 
-    
-
     @FXML
     private void onKeyPressedAdd(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
@@ -214,7 +222,7 @@ public class FxArticuloListaController implements Initializable {
 
     @FXML
     private void onKeyReleasedToSearch(KeyEvent event) {
-        fillProvidersTable(txtSearch.getText());
+        if(stateRequest)fillProvidersTable(txtSearch.getText());
     }
 
     @FXML
@@ -227,13 +235,13 @@ public class FxArticuloListaController implements Initializable {
     @FXML
     private void onKeyPressedReload(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            fillProvidersTable("");
+            if(stateRequest)fillProvidersTable("");
         }
     }
 
     @FXML
     private void onActionReload(ActionEvent event) {
-        fillProvidersTable("");
+        if(stateRequest)fillProvidersTable("");
     }
 
     public void setInitComprasController(FxComprasController comprasController) {

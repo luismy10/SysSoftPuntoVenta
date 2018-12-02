@@ -32,7 +32,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.ArticuloADO;
 import model.ArticuloTB;
-import model.DBUtil;
 import model.ImageADO;
 import model.ImagenTB;
 import model.LoteADO;
@@ -65,6 +64,8 @@ public class FxArticulosController implements Initializable {
     private VBox vbOpciones;
 
     private AnchorPane content;
+    
+    private boolean stateRequest;
 
     private FxArticuloSeleccionadoController seleccionadoController;
 
@@ -86,11 +87,11 @@ public class FxArticulosController implements Initializable {
         tcLote.setCellValueFactory(new PropertyValueFactory<>("imageLote"));
 
         changeViewArticuloSeleccionado();
+        stateRequest=false;
 
     }
 
     public void fillArticlesTable(String value) {
-        if (DBUtil.StateConnection()) {
 
             ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
                 Thread t = new Thread(runnable);
@@ -108,20 +109,23 @@ public class FxArticulosController implements Initializable {
             task.setOnSucceeded((WorkerStateEvent e) -> {
                 tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
                 lblLoad.setVisible(false);
+                stateRequest=true;
             });
             task.setOnFailed((WorkerStateEvent event) -> {
                 lblLoad.setVisible(false);
+                stateRequest=false;
             });
 
             task.setOnScheduled((WorkerStateEvent event) -> {
                 lblLoad.setVisible(true);
+                stateRequest=false;
             });
             exec.execute(task);
 
             if (!exec.isShutdown()) {
                 exec.shutdown();
             }
-        }
+        
 
     }
 
@@ -208,14 +212,14 @@ public class FxArticulosController implements Initializable {
         }
 
     }
-    
+
     private void onViewArticuloUpdateStock() throws IOException {
         InitializationTransparentBackground();
         URL url = getClass().getResource(Tools.FX_FILE_ACTUALIZAR_STOCK);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
-        FxArticuloActualizarStockController controller = fXMLLoader.getController();      
+        FxArticuloActualizarStockController controller = fXMLLoader.getController();
         controller.setInitArticuloUpdateStock(this);
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Actualizar Stock", window.getScene().getWindow());
@@ -284,26 +288,29 @@ public class FxArticulosController implements Initializable {
 
     @FXML
     private void onActionReload(ActionEvent event) {
-        fillArticlesTable("");
+        if(stateRequest)fillArticlesTable("");
     }
 
     @FXML
     private void onKeyPressedReload(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            fillArticlesTable("");
+            if(stateRequest)fillArticlesTable("");
         }
     }
 
     @FXML
     private void onKerPressedSearch(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            tvList.requestFocus();
+            if (!tvList.getItems().isEmpty()) {
+                tvList.requestFocus();
+                tvList.getSelectionModel().select(0);
+            }
         }
     }
 
     @FXML
     private void onKeyReleasedSearch(KeyEvent event) {
-        fillArticlesTable(txtSearch.getText());
+        if(stateRequest)fillArticlesTable(txtSearch.getText().trim());
     }
 
     @FXML
@@ -348,12 +355,26 @@ public class FxArticulosController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedList(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            onViewArticuloEdit();
+        }
+    }
+
+    @FXML
     private void onKeyRelasedList(KeyEvent event) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            if (event.getCode() == KeyCode.UP) {
-                onViewDetailArticulo();
-            } else if (event.getCode() == KeyCode.DOWN) {
-                onViewDetailArticulo();
+            if (null != event.getCode()) {
+                switch (event.getCode()) {
+                    case UP:
+                        onViewDetailArticulo();
+                        break;
+                    case DOWN:
+                        onViewDetailArticulo();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
@@ -366,7 +387,7 @@ public class FxArticulosController implements Initializable {
     }
 
     @FXML
-    private void onActionCantidad(ActionEvent event) throws IOException{
+    private void onActionCantidad(ActionEvent event) throws IOException {
         onViewArticuloUpdateStock();
     }
 
@@ -374,7 +395,11 @@ public class FxArticulosController implements Initializable {
         return tvList;
     }
 
-    void setContent(AnchorPane content) {
+    public TextField getTxtSearch() {
+        return txtSearch;
+    }
+
+    public void setContent(AnchorPane content) {
         this.content = content;
     }
 

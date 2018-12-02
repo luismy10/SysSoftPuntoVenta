@@ -118,7 +118,7 @@
                                     </VBox>
                                  </children>
                               </HBox>
-                              <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyReleased="#onKeyRelasedList" onMouseClicked="#onMouseClickedList" prefHeight="327.0" VBox.vgrow="ALWAYS">
+                              <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyPressed="#onKeyPressedList" onKeyReleased="#onKeyRelasedList" onMouseClicked="#onMouseClickedList" prefHeight="327.0" VBox.vgrow="ALWAYS">
                                  <columns>
                                     <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                                     <TableColumn fx:id="tcDocument" prefWidth="280.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
