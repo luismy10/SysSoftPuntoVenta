@@ -15,6 +15,7 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -64,6 +65,10 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private Text lblSerie;
 
+    private String idVenta;
+
+    private double subTotal;
+
     private FxVentaRealizadasController ventaRealizadasController;
 
     @Override
@@ -94,14 +99,22 @@ public class FxVentaDetalleController implements Initializable {
         task.setOnSucceeded((WorkerStateEvent e) -> {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
+            for (int i = 0; i < tvList.getItems().size(); i++) {
+                subTotal += tvList.getItems().get(i).getImporte();
+            }
+            lblTotal.setText("S/. " + Tools.roundingValue(subTotal, 2));
+
         });
         task.setOnFailed((WorkerStateEvent event) -> {
             lblLoad.setVisible(false);
+
         });
 
         task.setOnScheduled((WorkerStateEvent event) -> {
             lblLoad.setVisible(true);
+
         });
+
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
@@ -115,7 +128,7 @@ public class FxVentaDetalleController implements Initializable {
         lblSerie.setText(serie + "-" + numeracion);
         lblEstado.setText(estado);
         lblObservaciones.setText(observaciones);
-        lblTotal.setText(total);
+        this.idVenta = idVenta;
         fillVentasDetalleTable(idVenta);
     }
 
@@ -128,7 +141,20 @@ public class FxVentaDetalleController implements Initializable {
 
     @FXML
     private void onActionCancelar(ActionEvent event) {
+        short validate = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Detalle de ventas", "¿Está seguro de cancelar la venta?", true);
+        if (validate == 1) {
+            String result = VentaADO.CancelTheSale(idVenta, tvList);
+            if (result.equalsIgnoreCase("update")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle de venta", "Se ha cancelado con éxito", false);
+                ventaRealizadasController.fillVentasTable("");
+                Tools.Dispose(window);
+            } else if (result.equalsIgnoreCase("scrambled")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de venta", "Ya está cancelada la venta!", false);
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle de venta", result, false);
 
+            }
+        }
     }
 
     public void setInitVentasController(FxVentaRealizadasController ventaRealizadasController) {

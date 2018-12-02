@@ -121,7 +121,7 @@
                                     <TableColumn fx:id="tcId" prefWidth="61.0" style="-fx-alignment: CENTER;" text="N°" />
                                     <TableColumn fx:id="tcDescripcion" prefWidth="240.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
                                     <TableColumn fx:id="tcCantidad" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
-                                    <TableColumn fx:id="tcMedida" prefWidth="110.0" text="Unidad" />
+                                    <TableColumn fx:id="tcMedida" prefWidth="110.0" style="-fx-alignment: CENTER-LEFT;" text="Unidad" />
                                     <TableColumn fx:id="tcPrecio" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="P. Unitario" />
                                     <TableColumn fx:id="tcDescuento" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Descuento" />
                                     <TableColumn fx:id="tcImporte" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />

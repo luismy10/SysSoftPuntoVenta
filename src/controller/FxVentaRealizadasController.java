@@ -76,7 +76,7 @@ public class FxVentaRealizadasController implements Initializable {
         tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getComprobanteName()+"\n"+cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getTotal(), 2)));
         tcObservacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getObservaciones()));
-        cbEstado.getItems().addAll("Completada","Devuelto Completamente","Devuelto Parcialmente");
+        cbEstado.getItems().addAll("Completada","Devuelto","Devuelto Parcialmente");
     }
 
     private void InitializationTransparentBackground() {
@@ -238,9 +238,23 @@ public class FxVentaRealizadasController implements Initializable {
     private void onActionMostrar(ActionEvent event) throws IOException {
         openWindowDetalleVenta();
     }
+    
+    @FXML
+    private void onKeyPressedRecargar(KeyEvent event) {
+         if (event.getCode() == KeyCode.ENTER) {
+             fillVentasTable("");
+         }
+    }
+
+    @FXML
+    private void onActionRecargar(ActionEvent event) {
+        fillVentasTable("");
+    }
 
     public void setContent(AnchorPane content) {
         this.content = content;
     }
+
+    
 
 }

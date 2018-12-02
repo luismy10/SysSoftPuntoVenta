@@ -64,6 +64,12 @@ public class ArticuloTB {
         this.unidadVenta = unidadVenta;
     }
 
+    public ArticuloTB(String idArticulo, String nombreMarca, int unidadVenta) {
+        this.idArticulo = idArticulo;
+        this.nombreMarca = new SimpleStringProperty(nombreMarca);
+        this.unidadVenta = unidadVenta;
+    }
+
     public ArticuloTB(String clave, String nombreMarca) {
         this.clave = new SimpleStringProperty(clave);
         this.nombreMarca = new SimpleStringProperty(nombreMarca);
