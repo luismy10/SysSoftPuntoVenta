@@ -150,7 +150,6 @@ public class FxArticuloListaController implements Initializable {
             articuloTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
             articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
             Tools.Dispose(window);
-//            System.out.println(validateDuplicateArticulo(ventaController.getTvList(),articuloTB));
             ventaController.getAddArticulo(articuloTB);            
         }
     }
@@ -237,15 +236,15 @@ public class FxArticuloListaController implements Initializable {
         fillProvidersTable("");
     }
 
-    void setInitComprasController(FxComprasController comprasController) {
+    public void setInitComprasController(FxComprasController comprasController) {
         this.comprasController = comprasController;
     }
 
-    void setInitVentasController(FxVentaController ventaController) {
+    public void setInitVentasController(FxVentaController ventaController) {
         this.ventaController = ventaController;
     }
 
-    void setInitArticuloHistorialController(FxArticuloHistorialController articuloHistorialController) {
+    public void setInitArticuloHistorialController(FxArticuloHistorialController articuloHistorialController) {
         this.articuloHistorialController = articuloHistorialController;
     }
 

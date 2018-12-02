@@ -414,7 +414,7 @@ public class ArticuloADO {
         }
         return empList;
     }
-    
+
     public static ObservableList<ArticuloTB> ListInventario() {
         String selectStmt = "{call Sp_Listar_Inventario_Articulos()}";
         PreparedStatement preparedStatement = null;
@@ -456,6 +456,49 @@ public class ArticuloADO {
             }
         }
         return empList;
+    }
+
+    public static ArticuloTB Get_Articulo_By_Search(String value) {
+        String selectStmt = "{call Sp_Listar_Articulo_By_Search(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ArticuloTB articuloTB = null;
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            rsEmps = preparedStatement.executeQuery();            
+            while (rsEmps.next()) {
+                articuloTB = new ArticuloTB();
+                articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
+                articuloTB.setClave(rsEmps.getString("Clave"));
+                articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                articuloTB.setMarcaName(rsEmps.getString("Marca"));
+                articuloTB.setPresentacionName(rsEmps.getString("Presentacion"));
+                articuloTB.setEstadoName(rsEmps.getString("Estado"));
+                articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
+                articuloTB.setLote(rsEmps.getBoolean("Lote"));             
+                articuloTB.setInventario(rsEmps.getBoolean("Inventario"));
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return articuloTB;
     }
 
 }

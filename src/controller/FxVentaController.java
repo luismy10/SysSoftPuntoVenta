@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.ArticuloADO;
 import model.ArticuloTB;
 import model.ComprobanteADO;
 import model.DetalleADO;
@@ -59,8 +60,6 @@ public class FxVentaController implements Initializable {
     @FXML
     private Text lblTotal;
     @FXML
-    private TextField txtArticulo;
-    @FXML
     private Text lblSerie;
     @FXML
     private Text lblNumeracion;
@@ -70,6 +69,8 @@ public class FxVentaController implements Initializable {
     private Text lblTotalPagar;
     @FXML
     private TextField txtObservacion;
+    @FXML
+    private TextField txtSearch;
 
     private AnchorPane content;
 
@@ -118,7 +119,7 @@ public class FxVentaController implements Initializable {
         });
         cbComprobante.getSelectionModel().select(0);
         txtCliente.setText(Session.DATOSCLIENTE);
-        txtArticulo.requestFocus();
+        txtSearch.requestFocus();
 
         String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
         lblSerie.setText(array[0]);
@@ -282,18 +283,37 @@ public class FxVentaController implements Initializable {
 
     }
 
-    public void getAddArticulo(ArticuloTB articuloTB) {
-        if (!validateDuplicateArticulo(tvList, articuloTB)) {
-            if (articuloTB.getUnidadVenta() == 2) {
-                try {
-                    int index = tvList.getItems().size() - 1;
-                    tvList.requestFocus();
-                    tvList.getSelectionModel().select(index);
-                    openWindowGranel("Cambiar precio al Artículo", false);
-                } catch (IOException ex) {
+    public void getAddArticulo(ArticuloTB articulo) {
+        if (articulo != null) {
+            if (validateDuplicateArticulo(tvList, articulo)) {
+                for (int i = 0; i < tvList.getItems().size(); i++) {
+                    if (tvList.getItems().get(i).getIdArticulo().equalsIgnoreCase(articulo.getIdArticulo())) {
+                        ArticuloTB articuloTB = tvList.getItems().get(i);
+                        articuloTB.setCantidad(tvList.getItems().get(i).getCantidad() + 1);
+                        articuloTB.setSubTotal(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+                        articuloTB.setImporte(
+                                articuloTB.getSubTotal().get()
+                                - articuloTB.getDescuento().get()
+                        );
+                        tvList.getItems().set(i, articuloTB);
+                        calculateTotales();
+                    }
                 }
+
             } else {
-                calculateTotales();
+                if (articulo.getUnidadVenta() == 2) {
+                    try {
+                        int index = tvList.getItems().size() - 1;
+                        tvList.getItems().add(articulo);
+                        tvList.requestFocus();
+                        tvList.getSelectionModel().select(index);
+                        openWindowGranel("Cambiar precio al Artículo", false);
+                    } catch (IOException ex) {
+                    }
+                } else {
+                    tvList.getItems().add(articulo);
+                    calculateTotales();
+                }
             }
         }
 
@@ -307,9 +327,6 @@ public class FxVentaController implements Initializable {
                 break;
             }
         }
-        if (!ret) {
-            view.getItems().add(articuloTB);
-        }
         return ret;
     }
 
@@ -317,7 +334,6 @@ public class FxVentaController implements Initializable {
         String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
         lblSerie.setText(array[0]);
         lblNumeracion.setText(array[1]);
-
         this.tvList.getItems().clear();
         lblTotal.setText("0.00");
         lblSubTotal.setText("0.00");
@@ -326,6 +342,9 @@ public class FxVentaController implements Initializable {
         lblIgv.setText("0.00");
         lblTotalPagar.setText("0.00");
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
+        txtObservacion.clear();
+        cbComprobante.getSelectionModel().select(0);
+        txtSearch.requestFocus();
     }
 
     private void removeArticulo() {
@@ -385,13 +404,26 @@ public class FxVentaController implements Initializable {
     }
 
     @FXML
-    private void onActionCancel(ActionEvent event) {
-        removeArticulo();
+    private void onKeyPressedCancelar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!tvList.getItems().isEmpty()) {
+                short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Está seguro de borrar la venta?", true);
+                if (value == 1) {
+                    resetVenta();
+                }
+            }
+
+        }
     }
 
     @FXML
-    private void onActionVendedor(ActionEvent event) {
-
+    private void onActionCancel(ActionEvent event) {
+        if (!tvList.getItems().isEmpty()) {
+            short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Está seguro de borrar la venta?", true);
+            if (value == 1) {
+                resetVenta();
+            }
+        }
     }
 
     @FXML
@@ -510,6 +542,37 @@ public class FxVentaController implements Initializable {
     @FXML
     private void onActionPrecioSumar(ActionEvent event) throws IOException {
         openWindowGranel("Sumar precio al Artículo", true);
+    }
+
+    @FXML
+    private void onKeyPressedSearch(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedSearch(KeyEvent event) {
+        ArticuloTB a = ArticuloADO.Get_Articulo_By_Search(txtSearch.getText().trim());
+        if (a != null) {
+            ArticuloTB articuloTB = new ArticuloTB();
+            articuloTB.setIdArticulo(a.getIdArticulo());
+            articuloTB.setClave(a.getClave().get());
+            articuloTB.setNombreMarca(a.getNombreMarca().get());
+            articuloTB.setCantidad(1);
+            articuloTB.setPrecioVenta(a.getPrecioVenta());
+            articuloTB.setDescuento(0);
+            articuloTB.setSubTotal(1 * a.getPrecioVenta());
+            articuloTB.setImporte(
+                    articuloTB.getSubTotal().get()
+                    - articuloTB.getDescuento().get()
+            );
+            articuloTB.setInventario(a.isInventario());
+            articuloTB.setUnidadVenta(a.getUnidadVenta());
+            getAddArticulo(articuloTB);
+            txtSearch.clear();
+            txtSearch.requestFocus();
+        }
     }
 
     public void setClienteVenta(String id, String datos) {

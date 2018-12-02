@@ -78,7 +78,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionCancel" styleClass="buttonLight" text="Cancelar(Esc)">
+                              <Button mnemonicParsing="false" onAction="#onActionCancel" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar(Esc)">
                                  <graphic>
                                     <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -115,7 +115,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <TextField fx:id="txtArticulo" prefHeight="30.0" promptText="Ingrese el código de barras o clave alterna... " HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Ingrese el código de barras o clave alterna... " HBox.hgrow="ALWAYS" />
                                                 <Button mnemonicParsing="false" onAction="#onActionArticulo" onKeyPressed="#onKeyPressedArticulo" styleClass="buttonBorder">
                                                    <graphic>
                                                       <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -207,29 +207,6 @@
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Datos del documento" />
                                                    </children>
                                                 </VBox>
-                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" textFill="#1a2226">
-                                                         <graphic>
-                                                            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                                               <image>
-                                                                  <Image url="@../seller.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                         </graphic>
-                                                      </Label>
-                                                      <TextField disable="true" prefHeight="30.0" promptText="Buscar vendedor..." />
-                                                      <Button mnemonicParsing="false" onAction="#onActionVendedor" styleClass="buttonBorder">
-                                                         <graphic>
-                                                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                                               <image>
-                                                                  <Image url="@../search.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                         </graphic>
-                                                      </Button>
-                                                   </children>
-                                                </HBox>
                                                 <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label styleClass="labelRoboto14" textFill="#1a2226">
