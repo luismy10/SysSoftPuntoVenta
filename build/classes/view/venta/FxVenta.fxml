@@ -151,7 +151,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Button>
-                                                <Button mnemonicParsing="false" styleClass="buttonLight" text="Imprimir">
+                                                <Button mnemonicParsing="false" onAction="#onActionImprimir" onKeyPressed="#onKeyPressedImprimir" styleClass="buttonLight" text="Imprimir(F8)">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>

@@ -18,7 +18,7 @@
          <children>
             <HBox alignment="CENTER" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;" styleClass="paddinContainer">
                <children>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold24" text="Comprobante: Factura" />
+                  <Text fx:id="lblComprobante" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold24" text="Comprobante: Factura" />
                </children>
             </HBox>
             <HBox VBox.vgrow="ALWAYS">
@@ -104,7 +104,8 @@
                                              </image>
                                           </ImageView>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular18" text="Vuelto:" />
-                                          <Label fx:id="lblVuelto" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold26" text=" S/ 00.00" textFill="#0754b9" HBox.hgrow="ALWAYS" />
+                                          <Label alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold26" text=" S/." textFill="#0754b9" HBox.hgrow="ALWAYS" />
+                                          <Label fx:id="lblVuelto" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold26" text="00.00" textFill="#0754b9" />
                                        </children>
                                     </HBox>
                                  </children>

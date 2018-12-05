@@ -93,23 +93,23 @@ public class FxCompraDetalleController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         tcId.setCellValueFactory(callData -> callData.getValue().getId().asObject());
-        
+
         tcDescripcion.setCellValueFactory(callData -> Bindings.concat(
                 callData.getValue().getClave().get() + "\n" + callData.getValue().getNombreMarca().get()
         ));
-        
+
         tcMedidad.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel"
         ));
-        
+
         tcCantidad.setCellValueFactory(callData -> new SimpleDoubleProperty(callData.getValue().getCantidad()).asObject());
-        
+
         tcPrecioCompra.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
 
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getDescuento().get(), 2)));
-        
+
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getImporte().get(), 2)));
 
@@ -147,19 +147,20 @@ public class FxCompraDetalleController implements Initializable {
 
     public void setLoadDetalle(String idCompra) {
         this.idCompra = idCompra;
-        ArrayList<CompraTB> compraTBs = CompraADO.ListCompra(idCompra);
-        if (!compraTBs.isEmpty()) {
-            CompraTB compraTB = compraTBs.get(0);
+        ArrayList<Object> objects = CompraADO.ListCompletaDetalleCompra(idCompra);
+        CompraTB compraTB = (CompraTB) objects.get(0);
+        ProveedorTB proveedorTB = (ProveedorTB) objects.get(1);
+        RepresentanteTB representanteTB = (RepresentanteTB) objects.get(2);
+
+        if (compraTB != null) {            
             lblFechaCompra.setText(compraTB.getFechaCompra().get().format(DateTimeFormatter.ofPattern("EEEE d 'de' MMMM 'de' yyyy")));
             lblComprobante.setText(compraTB.getComprobanteName());
             lblNumeracion.setText(compraTB.getNumeracion());
             lblTotal.setText("S/. " + Tools.roundingValue(compraTB.getTotal().get(), 2));
 
         }
-
-        ArrayList<ProveedorTB> proveedorTBs = CompraADO.ListCompraProveedor(idCompra);
-        if (!proveedorTBs.isEmpty()) {
-            ProveedorTB proveedorTB = proveedorTBs.get(0);
+        
+        if (proveedorTB != null) {
             lblDocumento.setText(proveedorTB.getNumeroDocumento().get());
             lblProveedor.setText(proveedorTB.getRazonSocial().get());
             lblDomicilio.setText(proveedorTB.getDireccion().equalsIgnoreCase("")
@@ -168,13 +169,14 @@ public class FxCompraDetalleController implements Initializable {
             lblContacto.setText("Tel: " + proveedorTB.getTelefono() + " Cel: " + proveedorTB.getCelular());
         }
 
-        ArrayList<RepresentanteTB> representanteTBs = CompraADO.ListCompraRepresentante(idCompra);
-        if (!representanteTBs.isEmpty()) {
-            RepresentanteTB representanteTB = representanteTBs.get(0);
+       
+        if (representanteTB != null) {
             lblRepresentante.setText(
                     representanteTB.getApellidos() + " " + representanteTB.getNombres() + " - "
                     + representanteTB.getTelefono() + " " + representanteTB.getCelular()
             );
+        }else{
+            lblRepresentante.setText("No tiene un representante registrado");
         }
 
         fillArticlesTable(idCompra);
@@ -230,6 +232,11 @@ public class FxCompraDetalleController implements Initializable {
 
     void setInitComptrasController(FxComprasRealizadasController comprascontroller) {
         this.comprascontroller = comprascontroller;
+    }
+
+    @FXML
+    private void onActionPrueba(ActionEvent event) {
+
     }
 
 }

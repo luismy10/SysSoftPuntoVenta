@@ -4,7 +4,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SysSoftProcess"/>
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="69"/>
+	<property name="ireport.y" value="21"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
@@ -133,15 +133,11 @@ where d.IdCompra =  $P{IDCOMPRA}]]>
 				<textFieldExpression><![CDATA[$P{PROEMAIL}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="380" y="145" width="175" height="15" uuid="b62092ec-9053-4f27-b387-9b25d2909a68"/>
-				<text><![CDATA[Ship state1]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="380" y="115" width="175" height="15" uuid="edbd74ac-0cbd-44c9-8a8e-ccf745191172"/>
+				<reportElement x="360" y="115" width="195" height="15" uuid="edbd74ac-0cbd-44c9-8a8e-ccf745191172"/>
 				<text><![CDATA[Ship name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="380" y="90" width="175" height="25" uuid="139ebe8d-25b0-411e-986c-270015400874">
+				<reportElement x="360" y="90" width="195" height="25" uuid="139ebe8d-25b0-411e-986c-270015400874">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -151,11 +147,7 @@ where d.IdCompra =  $P{IDCOMPRA}]]>
 				<text><![CDATA[Representante:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="380" y="160" width="175" height="15" uuid="dd52166a-1135-4931-adef-51e7972118bc"/>
-				<text><![CDATA[Ship state 2]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="380" y="130" width="175" height="15" uuid="2d2f365d-7b12-4a8f-990d-ff528a2660bc"/>
+				<reportElement x="360" y="130" width="195" height="15" uuid="2d2f365d-7b12-4a8f-990d-ff528a2660bc"/>
 				<text><![CDATA[Ship Address]]></text>
 			</staticText>
 			<staticText>
@@ -228,7 +220,7 @@ where d.IdCompra =  $P{IDCOMPRA}]]>
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" positionType="Float" x="300" y="0" width="80" height="20" forecolor="#000000" uuid="190695ea-37cd-419d-b09e-8f3e253335de">
+				<reportElement style="Column header" positionType="Float" x="300" y="0" width="90" height="20" forecolor="#000000" uuid="190695ea-37cd-419d-b09e-8f3e253335de">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2b25292f-79a9-45a3-ae86-6952829ec862"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -246,7 +238,7 @@ where d.IdCompra =  $P{IDCOMPRA}]]>
 				<text><![CDATA[Importe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="380" y="0" width="90" height="20" forecolor="#000000" uuid="6c9554d1-15a7-4029-8ffa-1ab8b81f9084"/>
+				<reportElement style="Column header" x="390" y="0" width="80" height="20" forecolor="#000000" uuid="6c9554d1-15a7-4029-8ffa-1ab8b81f9084"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
@@ -285,7 +277,7 @@ where d.IdCompra =  $P{IDCOMPRA}]]>
 				<textFieldExpression><![CDATA[$F{Cantidad}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="300" y="0" width="80" height="30" uuid="07014563-40fd-4804-bcc7-1b7e01ed4bee">
+				<reportElement style="Detail" positionType="Float" x="300" y="0" width="90" height="30" uuid="07014563-40fd-4804-bcc7-1b7e01ed4bee">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2b25292f-79a9-45a3-ae86-6952829ec862"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -303,7 +295,7 @@ where d.IdCompra =  $P{IDCOMPRA}]]>
 				<textFieldExpression><![CDATA[$F{Importe}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="380" y="0" width="90" height="30" uuid="bf20d0a2-1952-4f14-b6c7-9539d0628ffb"/>
+				<reportElement x="390" y="0" width="80" height="30" uuid="bf20d0a2-1952-4f14-b6c7-9539d0628ffb"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>

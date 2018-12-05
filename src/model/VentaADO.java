@@ -136,13 +136,13 @@ public class VentaADO {
             articulo_update.executeBatch();
             preparedHistorialArticulo.executeBatch();
             DBUtil.getConnection().commit();
-            return "register";
+            return "register/" + id_comprabante[0] +"-"+ id_comprabante[1];
         } catch (SQLException ex) {
             try {
                 DBUtil.getConnection().rollback();
-                return ex.getLocalizedMessage();
+                return ex.getLocalizedMessage()+"/";
             } catch (SQLException ex1) {
-                return ex1.getLocalizedMessage();
+                return ex1.getLocalizedMessage()+"/";
             }
         } finally {
             try {

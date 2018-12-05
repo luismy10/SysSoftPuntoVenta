@@ -1,5 +1,9 @@
 package controller;
 
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -100,6 +104,9 @@ public class FxVentaController implements Initializable {
                         case F2:
                             openWindowArticulos();
                             break;
+                        case F8:
+
+                            break;
                         case ESCAPE:
                             short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Está seguro de borrar la venta?", true);
                             if (value == 1) {
@@ -126,7 +133,7 @@ public class FxVentaController implements Initializable {
         DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> {
             cbComprobante.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
-        cbComprobante.getSelectionModel().select(0);
+        cbComprobante.getSelectionModel().select(2);
         txtCliente.setText(Session.DATOSCLIENTE);
         txtSearch.requestFocus();
 
@@ -203,6 +210,9 @@ public class FxVentaController implements Initializable {
                     ? cbComprobante.getSelectionModel().getSelectedItem().getIdDetalle().get()
                     : 0
             );
+            ventaTB.setComprobanteName(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbComprobante.getSelectionModel().getSelectedItem().getNombre().get()
+                    : "");
             ventaTB.setSerie(lblSerie.getText());
             ventaTB.setNumeracion(lblNumeracion.getText());
             ventaTB.setFechaVenta(Timestamp.valueOf(Tools.getDate() + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
@@ -351,8 +361,19 @@ public class FxVentaController implements Initializable {
         lblTotalPagar.setText("0.00");
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
         txtObservacion.clear();
-        cbComprobante.getSelectionModel().select(0);
+        cbComprobante.getSelectionModel().select(2);
         txtSearch.requestFocus();
+    }
+
+    public void imprimirVenta(VentaTB ventaTB, String efec, String vuel,String ticket) {
+        PrinterJob pj = PrinterJob.getPrinterJob();
+        pj.setPrintable(new BillPrintable(ventaTB.getSubTotal(), ventaTB.getDescuento(),
+                ventaTB.getGravada(), ventaTB.getIgv(), ventaTB.getTotal(), Double.parseDouble(efec), Double.parseDouble(vuel), ticket,tvList),
+                 getPageFormat(pj)); 
+        try {
+            pj.print();
+        } catch (PrinterException ex) {
+        }
     }
 
     private void removeArticulo() {
@@ -584,7 +605,19 @@ public class FxVentaController implements Initializable {
             txtSearch.clear();
             txtSearch.requestFocus();
         }
-        
+
+    }
+
+    @FXML
+    private void onKeyPressedImprimir(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActionImprimir(ActionEvent event) {
+
     }
 
     public void setClienteVenta(String id, String datos) {
@@ -595,12 +628,25 @@ public class FxVentaController implements Initializable {
                 : datodCliente);
     }
 
+    public TextField getTxtSearch() {
+        return txtSearch;
+    }
+
     public TableView<ArticuloTB> getTvList() {
         return tvList;
     }
 
     public void setContent(AnchorPane content) {
         this.content = content;
+    }
+
+    public PageFormat getPageFormat(PrinterJob pj) {
+        PageFormat pf = pj.defaultPage();
+        Paper paper = pf.getPaper();
+        paper.setImageableArea(0, 0, pf.getWidth(), pf.getImageableHeight());   //define boarder size    after that print area width is about 180 points
+        pf.setOrientation(PageFormat.PORTRAIT);           //select orientation portrait or landscape but for this time portrait
+        pf.setPaper(paper);
+        return pf;
     }
 
 }

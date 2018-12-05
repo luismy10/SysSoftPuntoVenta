@@ -226,145 +226,6 @@ public class CompraADO {
         return empList;
     }
 
-    public static ArrayList<CompraTB> ListCompra(String value) {
-        String selectStmtCompra = "select CAST(FechaCompra as date) as Fecha,dbo.Fc_Obtener_Nombre_Detalle(Comprobante,'0009') as Comprobante,Numeracion,Total from CompraTB\n"
-                + "where IdCompra = ? ";
-
-        PreparedStatement preparedStatementCompra = null;
-        ResultSet rsEmps = null;
-
-        ArrayList<CompraTB> listCompra = new ArrayList();
-        try {
-            DBUtil.dbConnect();
-            preparedStatementCompra = DBUtil.getConnection().prepareStatement(selectStmtCompra);
-            preparedStatementCompra.setString(1, value);
-
-            rsEmps = preparedStatementCompra.executeQuery();
-
-            while (rsEmps.next()) {
-                CompraTB compraTB = new CompraTB();
-                compraTB.setFechaCompra(rsEmps.getDate("Fecha").toLocalDate());
-                compraTB.setComprobanteName(rsEmps.getString("Comprobante"));
-                compraTB.setNumeracion(rsEmps.getString("Numeracion"));
-                compraTB.setTotal(rsEmps.getDouble("Total"));
-                listCompra.add(compraTB);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
-
-        } finally {
-            try {
-                if (preparedStatementCompra != null) {
-                    preparedStatementCompra.close();
-                }
-                if (rsEmps != null) {
-                    rsEmps.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-
-            }
-        }
-        return listCompra;
-    }
-
-    public static ArrayList<ProveedorTB> ListCompraProveedor(String value) {
-
-        String selectStmtProveedor = "select p.NumeroDocumento,p.RazonSocial as Proveedor,p.Telefono,p.Celular,p.Direccion from CompraTB as c inner join ProveedorTB as p\n"
-                + "on c.Proveedor = p.IdProveedor\n"
-                + "where c.IdCompra = ?";
-
-        PreparedStatement preparedStatementProveedor = null;
-        ResultSet rsEmpsProveedor = null;
-
-        ArrayList<ProveedorTB> listProveedor = new ArrayList();
-
-        try {
-            DBUtil.dbConnect();
-
-            preparedStatementProveedor = DBUtil.getConnection().prepareStatement(selectStmtProveedor);
-            preparedStatementProveedor.setString(1, value);
-
-            rsEmpsProveedor = preparedStatementProveedor.executeQuery();
-
-            while (rsEmpsProveedor.next()) {
-                ProveedorTB proveedorTB = new ProveedorTB();
-                proveedorTB.setNumeroDocumento(rsEmpsProveedor.getString("NumeroDocumento"));
-                proveedorTB.setRazonSocial(rsEmpsProveedor.getString("Proveedor"));
-                proveedorTB.setTelefono(rsEmpsProveedor.getString("Telefono"));
-                proveedorTB.setCelular(rsEmpsProveedor.getString("Celular"));
-                proveedorTB.setDireccion(rsEmpsProveedor.getString("Direccion"));
-                listProveedor.add(proveedorTB);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
-
-        } finally {
-            try {
-                if (preparedStatementProveedor != null) {
-                    preparedStatementProveedor.close();
-                }
-                if (rsEmpsProveedor != null) {
-                    rsEmpsProveedor.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-
-            }
-        }
-        return listProveedor;
-    }
-
-    public static ArrayList<RepresentanteTB> ListCompraRepresentante(String value) {
-
-        String selectStmtRepresentante = "select r.Apellidos,r.Nombres,r.Telefono,r.Celular\n"
-                + " from CompraTB as c inner join RepresentanteTB as r\n"
-                + "     on c.Representante = r.IdRepresentante\n"
-                + "          where c.IdCompra = ? ";
-
-        PreparedStatement preparedStatementRepresentante = null;
-        ResultSet rsEmpsRepresentante = null;
-
-        ArrayList<RepresentanteTB> listRepresentante = new ArrayList();
-
-        try {
-            DBUtil.dbConnect();
-            preparedStatementRepresentante = DBUtil.getConnection().prepareStatement(selectStmtRepresentante);
-            preparedStatementRepresentante.setString(1, value);
-
-            rsEmpsRepresentante = preparedStatementRepresentante.executeQuery();
-
-            while (rsEmpsRepresentante.next()) {
-                RepresentanteTB representanteTB = new RepresentanteTB();
-                representanteTB.setApellidos(rsEmpsRepresentante.getString("Apellidos"));
-                representanteTB.setNombres(rsEmpsRepresentante.getString("Nombres"));
-                representanteTB.setTelefono(rsEmpsRepresentante.getString("Telefono"));
-                representanteTB.setCelular(rsEmpsRepresentante.getString("Celular"));
-                listRepresentante.add(representanteTB);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
-
-        } finally {
-            try {
-                if (preparedStatementRepresentante != null) {
-                    preparedStatementRepresentante.close();
-                }
-
-                if (rsEmpsRepresentante != null) {
-                    rsEmpsRepresentante.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-
-            }
-        }
-        return listRepresentante;
-    }
-
     public static ObservableList<ArticuloTB> ListDetalleCompra(String value) {
         String selectStmt = "select a.Clave,a.NombreMarca, d.Cantidad,d.PrecioCompra,d.Descuento,d.Importe,a.UnidadVenta from DetalleCompraTB as d inner join ArticuloTB as a\n"
                 + "on d.IdArticulo = a.IdArticulo\n"
@@ -409,4 +270,86 @@ public class CompraADO {
         return empList;
     }
 
+    public static ArrayList<Object> ListCompletaDetalleCompra(String value) {
+        PreparedStatement statementCompra = null;
+        PreparedStatement statementProveedor = null;
+        PreparedStatement statementRepresentante = null;
+        ArrayList<Object> objects = new ArrayList<>();
+        
+        try {
+            DBUtil.dbConnect();
+            statementCompra = DBUtil.getConnection().prepareStatement("select CAST(FechaCompra as date) as Fecha,\n"
+                    + "dbo.Fc_Obtener_Nombre_Detalle(Comprobante,'0009') as Comprobante,\n"
+                    + "Numeracion,Total from CompraTB\n"
+                    + "where IdCompra = ? ");
+            statementCompra.setString(1, value);
+            ResultSet resultSet = statementCompra.executeQuery();
+            CompraTB compraTB = null;
+            if (resultSet.next()) {
+                compraTB = new CompraTB();
+                compraTB.setFechaCompra(resultSet.getDate("Fecha").toLocalDate());
+                compraTB.setComprobanteName(resultSet.getString("Comprobante"));
+                compraTB.setNumeracion(resultSet.getString("Numeracion"));
+                compraTB.setTotal(resultSet.getDouble("Total"));
+                objects.add(compraTB);
+            }else{
+                objects.add(compraTB);
+            }
+            statementProveedor = DBUtil.getConnection().prepareStatement("select p.NumeroDocumento,p.RazonSocial as Proveedor,p.Telefono,p.Celular,p.Direccion \n"
+                    + "from CompraTB as c inner join ProveedorTB as p\n"
+                    + "on c.Proveedor = p.IdProveedor\n"
+                    + "where c.IdCompra = ?");
+            statementProveedor.setString(1, value);
+            ResultSet resultSetProveedor = statementProveedor.executeQuery();
+            ProveedorTB proveedorTB = null;
+            if (resultSetProveedor.next()) {
+                proveedorTB = new ProveedorTB();
+                proveedorTB.setNumeroDocumento(resultSetProveedor.getString("NumeroDocumento"));
+                proveedorTB.setRazonSocial(resultSetProveedor.getString("Proveedor"));
+                proveedorTB.setTelefono(resultSetProveedor.getString("Telefono"));
+                proveedorTB.setCelular(resultSetProveedor.getString("Celular"));
+                proveedorTB.setDireccion(resultSetProveedor.getString("Direccion"));
+                objects.add(proveedorTB);
+            }else{
+                objects.add(proveedorTB);
+            }
+
+            statementRepresentante = DBUtil.getConnection().prepareStatement("select r.Apellidos,r.Nombres,r.Telefono,r.Celular\n"
+                    + "from CompraTB as c inner join RepresentanteTB as r\n"
+                    + "on c.Representante = r.IdRepresentante\n"
+                    + "where c.IdCompra = ?");
+            statementRepresentante.setString(1, value);
+            ResultSet resultSetRepresentante = statementRepresentante.executeQuery();
+            RepresentanteTB representanteTB = null;
+            if (resultSetRepresentante.next()) {
+                representanteTB = new RepresentanteTB();
+                representanteTB.setApellidos(resultSetRepresentante.getString("Apellidos"));
+                representanteTB.setNombres(resultSetRepresentante.getString("Nombres"));
+                representanteTB.setTelefono(resultSetRepresentante.getString("Telefono"));
+                representanteTB.setCelular(resultSetRepresentante.getString("Celular"));
+                objects.add(representanteTB);
+            }else{
+                 objects.add(representanteTB);
+            }
+
+        } catch (SQLException ex) {
+
+        } finally {
+            try {
+                if (statementCompra != null) {
+                    statementCompra.close();
+                }
+                if (statementProveedor != null) {
+                    statementProveedor.close();
+                }
+                if (statementRepresentante != null) {
+                    statementRepresentante.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return objects;
+    }
 }

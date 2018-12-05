@@ -125,6 +125,8 @@ public class FxPreloader extends Preloader {
                 ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
                 if (!list.isEmpty()) {
                     Session.EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();
+                    Session.NOMBREEMPRESA = list.get(0).getNombre();
+                    Session.RUC = list.get(0).getNumeroDocumento();
                     Session.TELEFONO = list.get(0).getTelefono();
                     Session.CELULAR = list.get(0).getCelular();
                     Session.PAGINAWEB = list.get(0).getPaginaWeb();

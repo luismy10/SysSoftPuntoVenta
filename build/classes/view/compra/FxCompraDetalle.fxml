@@ -53,47 +53,47 @@
                                        <children>
                                           <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
-                                                   <children>
-                                                      <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Representante:" textFill="#1a2226" />
-                                                      <Text fx:id="lblRepresentante" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
-                                                   <children>
-                                                      <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Documento:" textFill="#1a2226" />
-                                                      <Text fx:id="lblDocumento" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Proveedor:" textFill="#1a2226" />
                                                       <Text fx:id="lblProveedor" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
                                                    </children>
                                                 </HBox>
-                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                                   <children>
+                                                      <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Documento:" textFill="#1a2226" />
+                                                      <Text fx:id="lblDocumento" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Domicilio:" textFill="#1a2226" />
                                                       <Text fx:id="lblDomicilio" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                                   <children>
+                                                      <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Representante:" textFill="#1a2226" />
+                                                      <Text fx:id="lblRepresentante" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
                                                    </children>
                                                 </HBox>
                                              </children>
                                           </VBox>
                                           <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Numeración:" textFill="#1a2226" />
                                                       <Text fx:id="lblNumeracion" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
                                                    </children>
                                                 </HBox>
-                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Comprobante:" textFill="#1a2226" />
                                                       <Text fx:id="lblComprobante" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
                                                    </children>
                                                 </HBox>
-                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Contacto:" textFill="#1a2226" />
                                                       <Text fx:id="lblContacto" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
@@ -126,20 +126,25 @@
                            <children>
                               <VBox alignment="CENTER">
                                  <children>
-                                    <VBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
+                                    <HBox>
                                        <children>
-                                          <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionReporte" styleClass="buttonInfo" text="Reporte">
-                                             <graphic>
-                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../reports.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Visualizar" />
+                                          <VBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
+                                             <children>
+                                                <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionReporte" styleClass="buttonInfo" text="Reporte">
+                                                   <graphic>
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../reports.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Visualizar" />
+                                             </children>
+                                          </VBox>
+                                          <Button mnemonicParsing="false" onAction="#onActionPrueba" text="Button" />
                                        </children>
-                                    </VBox>
+                                    </HBox>
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER" HBox.hgrow="ALWAYS">

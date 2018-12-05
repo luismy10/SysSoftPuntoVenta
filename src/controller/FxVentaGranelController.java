@@ -56,6 +56,8 @@ public class FxVentaGranelController implements Initializable {
             ventaController.getTvList().getItems().set(index, articuloTB);
             ventaController.calculateTotales();
             Tools.Dispose(window);
+            ventaController.getTxtSearch().requestFocus();
+            ventaController.getTxtSearch().clear();
         } else {
             articuloTB.setPrecioVenta(Double.parseDouble(txtImporte.getText()));
             articuloTB.setSubTotal(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
@@ -66,8 +68,9 @@ public class FxVentaGranelController implements Initializable {
             ventaController.getTvList().getItems().set(index, articuloTB);
             ventaController.calculateTotales();
             Tools.Dispose(window);
+            ventaController.getTxtSearch().requestFocus();
+            ventaController.getTxtSearch().clear();
         }
-
     }
 
     @FXML
