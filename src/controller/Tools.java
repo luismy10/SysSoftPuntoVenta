@@ -83,6 +83,8 @@ public class Tools {
     static final String FX_FILE_VENTADESCUENTO = "/view/venta/FxVentaDescuento.fxml";
     static final String FX_FILE_VENTAGRANEL = "/view/venta/FxVentaGranel.fxml";
     static final String FX_FILE_INVENTARIOGENERAL = "/view/lote/FxInventarioGeneral.fxml";
+    static final String FX_FILE_REPORTES = "/view/inicio/FxReportes.fxml";
+    static final String FX_FILE_ARTICULOREPORTES = "/view/articulo/FxArticuloReportes.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
@@ -141,7 +143,7 @@ public class Tools {
         alert.setContentText(value);
         alert.getDialogPane().getStylesheets().add(url.toExternalForm());
 
-        ButtonType buttonTypeTwo = new ButtonType("Aceptar o no Imprimir", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonTypeTwo = new ButtonType("Aceptar y no Imprimir", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeOne = new ButtonType("Aceptar e Imprimir", ButtonBar.ButtonData.CANCEL_CLOSE);
 
         alert.getButtonTypes().setAll(buttonTypeTwo, buttonTypeOne);

@@ -52,12 +52,14 @@ public class FxInicioController implements Initializable {
     private HBox btnGraficos;
     @FXML
     private HBox btnConfiguracion;
-    
+
     private ScrollPane principal;
 
     private HBox operaciones;
 
     private HBox consultas;
+
+    private HBox reportes;
 
     private HBox configuracion;
 
@@ -77,23 +79,23 @@ public class FxInicioController implements Initializable {
                 btnInicio.setOnMouseClicked(this::onMouseClickedInicio);
                 btnInicio.getStyleClass().add("buttonContainerActivate");
             }
-            if (menuTBs.get(1).getIdMenu() != 0) {                
+            if (menuTBs.get(1).getIdMenu() != 0) {
                 btnOperaciones.setVisible(menuTBs.get(1).isEstado());
                 btnOperaciones.setOnMouseClicked(this::onMouseClickedOperaciones);
             }
-            if (menuTBs.get(2).getIdMenu() != 0) {                
+            if (menuTBs.get(2).getIdMenu() != 0) {
                 btnConsultas.setVisible(menuTBs.get(2).isEstado());
                 btnConsultas.setOnMouseClicked(this::onMouseClickedConsultas);
             }
-            if (menuTBs.get(3).getIdMenu() != 0) {              
+            if (menuTBs.get(3).getIdMenu() != 0) {
                 btnReportes.setVisible(menuTBs.get(3).isEstado());
                 btnReportes.setOnMouseClicked(this::onMouseClickedReportes);
             }
-            if (menuTBs.get(4).getIdMenu() != 0) {                
+            if (menuTBs.get(4).getIdMenu() != 0) {
                 btnGraficos.setVisible(menuTBs.get(4).isEstado());
                 btnGraficos.setOnMouseClicked(this::onMouseClickedGraficos);
             }
-            if (menuTBs.get(5).getIdMenu() != 0) {                
+            if (menuTBs.get(5).getIdMenu() != 0) {
                 btnConfiguracion.setVisible(menuTBs.get(5).isEstado());
                 btnConfiguracion.setOnMouseClicked(this::onMouseClickedConfiguracion);
             }
@@ -110,12 +112,15 @@ public class FxInicioController implements Initializable {
             FxConsultasController controllerConsultas = fXMLConsultas.getController();
             controllerConsultas.setContent(window, vbContent);
 
+            FXMLLoader fXMLReportes = new FXMLLoader(getClass().getResource(Tools.FX_FILE_REPORTES));
+            reportes = fXMLReportes.load();
+            FxReportesController controllerReportes = fXMLReportes.getController();
+            controllerReportes.setContent(window, vbContent);
+
             FXMLLoader fXMLConfiguracion = new FXMLLoader(getClass().getResource(Tools.FX_FILE_CONFIGURACION));
             configuracion = fXMLConfiguracion.load();
             FxConfiguracionController configuracionController = fXMLConfiguracion.getController();
             configuracionController.setContent(window, vbContent);
-
-            
 
         } catch (IOException ex) {
 
@@ -201,6 +206,7 @@ public class FxInicioController implements Initializable {
     }
 
     private void onMouseClickedReportes(MouseEvent event) {
+        setNode(reportes);
         btnInicio.getStyleClass().remove("buttonContainerActivate");
         btnOperaciones.getStyleClass().remove("buttonContainerActivate");
         btnConsultas.getStyleClass().remove("buttonContainerActivate");

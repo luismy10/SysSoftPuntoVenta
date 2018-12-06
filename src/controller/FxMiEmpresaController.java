@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -17,7 +16,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import model.CiudadADO;
 import model.CiudadTB;
-import model.DBUtil;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.DistritoADO;
@@ -63,8 +61,6 @@ public class FxMiEmpresaController implements Initializable {
     private ComboBox<ProvinciaTB> cbProvincia;
     @FXML
     private ComboBox<DistritoTB> cbCiudadDistrito;
-    @FXML
-    private Button btnRegister;
 
     private boolean validate;
 
@@ -184,77 +180,93 @@ public class FxMiEmpresaController implements Initializable {
         } else if (txtDomicilio.getText().isEmpty()) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese la dirección fiscal de la empresa, por favor.", false);
             txtDomicilio.requestFocus();
+        } else if (cbTipoDocumento.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Seleccione el tipo de documento, por favor.", false);
+            cbTipoDocumento.requestFocus();
+        } else if (txtNumeroDocumento.getText().isEmpty()) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese el número del documento, por favor.", false);
+            txtNumeroDocumento.requestFocus();
+        } else if (txtRazonSocial.getText().isEmpty()) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese la razón social, por favor.", false);
+            txtRazonSocial.requestFocus();
         } else {
-            if (DBUtil.StateConnection()) {
-                short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mi Empresa", "¿Esta seguro de continuar?", true);
-                if (confirmation == 1) {
-                    EmpresaTB empresaTB = new EmpresaTB();
-                    empresaTB.setIdEmpresa(validate == true ? idEmpresa : 0);
-                    empresaTB.setGiroComerial(cbGiroComercial.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                    empresaTB.setNombre(txtNombre.getText().trim());
-                    empresaTB.setTelefono(txtTelefono.getText().trim().isEmpty() ? "0000000" : txtTelefono.getText().trim());
-                    empresaTB.setCelular(txtCelular.getText().trim().isEmpty() ? "000000000" : txtCelular.getText().trim());
-                    empresaTB.setPaginaWeb(txtPaginasWeb.getText().trim());
-                    empresaTB.setEmail(txtEmail.getText().trim());
-                    empresaTB.setDomicilio(txtDomicilio.getText().trim());
-                    empresaTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get()
-                            : 0);
-                    empresaTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().isEmpty() ? "000000000000" : txtNumeroDocumento.getText().trim());
-                    empresaTB.setRazonSocial(txtRazonSocial.getText().trim().isEmpty() ? txtNombre.getText().trim() : txtRazonSocial.getText().trim());
-                    empresaTB.setNombreComercial(txtNombreComercial.getText().trim());
-                    empresaTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()
-                            : "");
-                    empresaTB.setCiudad(cbCiudad.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()
-                            : 0);
-                    empresaTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
-                    empresaTB.setDistrito(cbCiudadDistrito.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbCiudadDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
-                    String result = EmpresaADO.CrudEntity(empresaTB);
-                    switch (result) {
-                        case "registered":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Registrado correctamente.", false);
-
-                            break;
-                        case "updated":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Actualizado correctamente.", false);
-
-                            break;
-                        case "error":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "No se puedo completar la ejecución.", false);
-                            break;
-                        default:
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Mi Empresa", result, false);
-                            break;
-                    }
+            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mi Empresa", "¿Esta seguro de continuar?", true);
+            if (confirmation == 1) {
+                EmpresaTB empresaTB = new EmpresaTB();
+                empresaTB.setIdEmpresa(validate == true ? idEmpresa : 0);
+                empresaTB.setGiroComerial(cbGiroComercial.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                empresaTB.setNombre(txtNombre.getText().trim());
+                empresaTB.setTelefono(txtTelefono.getText().trim().isEmpty() ? "0000000" : txtTelefono.getText().trim());
+                empresaTB.setCelular(txtCelular.getText().trim().isEmpty() ? "000000000" : txtCelular.getText().trim());
+                empresaTB.setPaginaWeb(txtPaginasWeb.getText().trim());
+                empresaTB.setEmail(txtEmail.getText().trim());
+                empresaTB.setDomicilio(txtDomicilio.getText().trim());
+                empresaTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                        : 0);
+                empresaTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().isEmpty() ? "000000000000" : txtNumeroDocumento.getText().trim());
+                empresaTB.setRazonSocial(txtRazonSocial.getText().trim().isEmpty() ? txtNombre.getText().trim() : txtRazonSocial.getText().trim());
+                empresaTB.setNombreComercial(txtNombreComercial.getText().trim());
+                empresaTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()
+                        : "");
+                empresaTB.setCiudad(cbCiudad.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()
+                        : 0);
+                empresaTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
+                empresaTB.setDistrito(cbCiudadDistrito.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbCiudadDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
+                String result = EmpresaADO.CrudEntity(empresaTB);
+                switch (result) {
+                    case "registered":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Registrado correctamente.", false);
+                        Session.EMPRESA = txtRazonSocial.getText();
+                        Session.NOMBREEMPRESA = txtNombre.getText();
+                        Session.RUC = txtNumeroDocumento.getText();
+                        Session.TELEFONO = txtTelefono.getText();
+                        Session.CELULAR = txtCelular.getText();
+                        Session.PAGINAWEB = txtPaginasWeb.getText();
+                        Session.EMAIL = txtEmail.getText();
+                        Session.DIRECCION = txtDomicilio.getText();
+                        break;
+                    case "updated":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Actualizado correctamente.", false);
+                        Session.EMPRESA = txtRazonSocial.getText();
+                        Session.NOMBREEMPRESA = txtNombre.getText();
+                        Session.RUC = txtNumeroDocumento.getText();
+                        Session.TELEFONO = txtTelefono.getText();
+                        Session.CELULAR = txtCelular.getText();
+                        Session.PAGINAWEB = txtPaginasWeb.getText();
+                        Session.EMAIL = txtEmail.getText();
+                        Session.DIRECCION = txtDomicilio.getText();
+                        break;
+                    case "error":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "No se puedo completar la ejecución.", false);
+                        break;
+                    default:
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Mi Empresa", result, false);
+                        break;
                 }
-            } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Mi Empresa", "No hay conexión al servidor.", false);
-
             }
+
         }
     }
 
     @FXML
-    private void onActionToRegister(ActionEvent event
-    ) {
+    private void onActionToRegister(ActionEvent event) {
         aValidityProcess();
     }
 
     @FXML
-    private void onKeyPressedToRegister(KeyEvent event
-    ) {
+    private void onKeyPressedToRegister(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             aValidityProcess();
         }
     }
 
     @FXML
-    private void onActionPais(ActionEvent event
-    ) {
+    private void onActionPais(ActionEvent event) {
         if (cbPais.getSelectionModel().getSelectedIndex() >= 0) {
             cbCiudad.getItems().clear();
             CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
@@ -264,8 +276,7 @@ public class FxMiEmpresaController implements Initializable {
     }
 
     @FXML
-    private void onActionDepartamento(ActionEvent event
-    ) {
+    private void onActionDepartamento(ActionEvent event) {
         if (cbCiudad.getSelectionModel().getSelectedIndex() >= 0) {
             cbProvincia.getItems().clear();
             ProvinciaADO.ListProvincia(cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
@@ -275,8 +286,7 @@ public class FxMiEmpresaController implements Initializable {
     }
 
     @FXML
-    private void onActionProvincia(ActionEvent event
-    ) {
+    private void onActionProvincia(ActionEvent event) {
         if (cbProvincia.getSelectionModel().getSelectedIndex() >= 0) {
             cbCiudadDistrito.getItems().clear();
             DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
@@ -285,7 +295,7 @@ public class FxMiEmpresaController implements Initializable {
         }
     }
 
-    void setContent(AnchorPane content) {
+    public void setContent(AnchorPane content) {
         this.content = content;
     }
 

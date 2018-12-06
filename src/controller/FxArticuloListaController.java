@@ -54,6 +54,8 @@ public class FxArticuloListaController implements Initializable {
     private FxVentaController ventaController;
 
     private FxArticuloHistorialController articuloHistorialController;
+    
+    private FxArticuloReportesController articuloReportesController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -205,6 +207,8 @@ public class FxArticuloListaController implements Initializable {
                     Tools.Dispose(window);
                 }
 
+            }else if(articuloReportesController != null){                
+                Tools.Dispose(window);
             }
         }
     }
@@ -265,6 +269,10 @@ public class FxArticuloListaController implements Initializable {
 
     public void setInitArticuloHistorialController(FxArticuloHistorialController articuloHistorialController) {
         this.articuloHistorialController = articuloHistorialController;
+    }
+
+    public void setInitReporteArticuloController(FxArticuloReportesController articuloReportesController) {
+        this.articuloReportesController=articuloReportesController;
     }
 
 }

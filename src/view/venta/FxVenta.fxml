@@ -78,7 +78,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionCancel" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar(Esc)">
+                              <Button mnemonicParsing="false" onAction="#onActionCancel" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar(F9)">
                                  <graphic>
                                     <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                        <image>

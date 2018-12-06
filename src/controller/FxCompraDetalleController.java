@@ -198,14 +198,15 @@ public class FxCompraDetalleController implements Initializable {
             map.put("EMAIL", "EMAIL" + Session.EMAIL);
             map.put("TELEFONOCELULAR", "TEL:" + Session.TELEFONO + " CEL:" + Session.CELULAR);
             map.put("DIRECCION", Session.DIRECCION);
+            map.put("REPRESENTANTE", lblRepresentante.getText());
 
             map.put("FECHACOMPRA", lblFechaCompra.getText());
             map.put("PROVEEDOR", lblProveedor.getText());
             map.put("PRODIRECCION", lblDomicilio.getText());
             map.put("PROTELEFONOCELULAR", lblContacto.getText());
-            map.put("PROEMAIL", "");
-
-//            map.put("TOTAL", lblTotal.getText());
+            map.put("PROEMAIL", Session.EMAIL);
+            map.put("TOTAL", lblTotal.getText());
+            
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, DBUtil.getConnection());
 
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -230,13 +231,9 @@ public class FxCompraDetalleController implements Initializable {
         }
     }
 
-    void setInitComptrasController(FxComprasRealizadasController comprascontroller) {
+    public void setInitComptrasController(FxComprasRealizadasController comprascontroller) {
         this.comprascontroller = comprascontroller;
     }
 
-    @FXML
-    private void onActionPrueba(ActionEvent event) {
-
-    }
 
 }

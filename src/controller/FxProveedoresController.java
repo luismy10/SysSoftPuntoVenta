@@ -177,7 +177,7 @@ public class FxProveedoresController implements Initializable {
         fillCustomersTable("");
     }
 
-    void setContent(AnchorPane content) {
+    public void setContent(AnchorPane content) {
         this.content = content;
     }
 }

@@ -94,30 +94,37 @@ public class FxVentaController implements Initializable {
                     switch (event.getCode()) {
                         case F5:
                             openWindowGranel("Cambiar precio al Artículo", false);
+                            event.consume();
                             break;
                         case F7:
                             openWindowGranel("Sumar precio al Artículo", true);
+                            event.consume();
                             break;
                         case F1:
                             openWindowVentaProceso();
+                            event.consume();
                             break;
                         case F2:
                             openWindowArticulos();
+                            event.consume();
                             break;
                         case F8:
 
                             break;
-                        case ESCAPE:
+                        case F9:
                             short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Está seguro de borrar la venta?", true);
                             if (value == 1) {
                                 resetVenta();
+                                event.consume();
                             }
+                            event.consume();
                             break;
                         case DELETE:
                             removeArticulo();
+                            event.consume();
                             break;
                         default:
-
+                            
                             break;
                     }
                 }

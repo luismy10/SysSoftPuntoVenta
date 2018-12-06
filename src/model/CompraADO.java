@@ -275,7 +275,7 @@ public class CompraADO {
         PreparedStatement statementProveedor = null;
         PreparedStatement statementRepresentante = null;
         ArrayList<Object> objects = new ArrayList<>();
-        
+
         try {
             DBUtil.dbConnect();
             statementCompra = DBUtil.getConnection().prepareStatement("select CAST(FechaCompra as date) as Fecha,\n"
@@ -292,7 +292,7 @@ public class CompraADO {
                 compraTB.setNumeracion(resultSet.getString("Numeracion"));
                 compraTB.setTotal(resultSet.getDouble("Total"));
                 objects.add(compraTB);
-            }else{
+            } else {
                 objects.add(compraTB);
             }
             statementProveedor = DBUtil.getConnection().prepareStatement("select p.NumeroDocumento,p.RazonSocial as Proveedor,p.Telefono,p.Celular,p.Direccion \n"
@@ -310,7 +310,7 @@ public class CompraADO {
                 proveedorTB.setCelular(resultSetProveedor.getString("Celular"));
                 proveedorTB.setDireccion(resultSetProveedor.getString("Direccion"));
                 objects.add(proveedorTB);
-            }else{
+            } else {
                 objects.add(proveedorTB);
             }
 
@@ -328,8 +328,8 @@ public class CompraADO {
                 representanteTB.setTelefono(resultSetRepresentante.getString("Telefono"));
                 representanteTB.setCelular(resultSetRepresentante.getString("Celular"));
                 objects.add(representanteTB);
-            }else{
-                 objects.add(representanteTB);
+            } else {
+                objects.add(representanteTB);
             }
 
         } catch (SQLException ex) {
