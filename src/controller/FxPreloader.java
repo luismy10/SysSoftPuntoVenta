@@ -1,11 +1,12 @@
 package controller;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.application.Preloader;
 import javafx.concurrent.WorkerStateEvent;
@@ -91,37 +92,27 @@ public class FxPreloader extends Preloader {
             case BEFORE_INIT:
                 System.out.println("BEFORE_INIT");
                 TimerService service = new TimerService();
-                try {
-                    service.setPeriod(Duration.seconds(59));
-
-                    service.setOnSucceeded((WorkerStateEvent t) -> {
-                        try {
-                            DBUtil.dbConnect();
-                            Session.CONNECTION_SESSION = true;
-                            DBUtil.dbDisconnect();
-                            ExecutorService exec = Executors.newFixedThreadPool(1);
-                            ExecutorCompletionService completionService = new ExecutorCompletionService<>(exec);
-                            completionService.submit(ConsultasADO.TotalObjectInit());
-                            Long[] tipos = (Long[]) completionService.take().get();
-                            Session.ARTICULOS_TOTAL = "" + tipos[0];
-                            Session.CLIENTES_TOTAL = "" + tipos[1];
-                            Session.PROVEEDORES_TOTAL = "" + tipos[2];
-                            Session.TRABAJADORES_TOTAL = "" + tipos[3];
-                            if (!exec.isShutdown()) {
-                                exec.shutdown();
-                            }
-                        } catch (SQLException | InterruptedException | ExecutionException ex) {
-                            System.out.println(getClass().getName() + ":" + ex);
+                service.setPeriod(Duration.seconds(59));
+                service.setOnSucceeded((WorkerStateEvent t) -> {
+                    try {
+                        Session.CONNECTION_SESSION = true;
+                        ExecutorService exec = Executors.newFixedThreadPool(1);
+                        ExecutorCompletionService completionService = new ExecutorCompletionService<>(exec);
+                        completionService.submit(ConsultasADO.TotalObjectInit());
+                        Long[] tipos = (Long[]) completionService.take().get();
+                        Session.ARTICULOS_TOTAL = "" + tipos[0];
+                        Session.CLIENTES_TOTAL = "" + tipos[1];
+                        Session.PROVEEDORES_TOTAL = "" + tipos[2];
+                        Session.TRABAJADORES_TOTAL = "" + tipos[3];
+                        if (!exec.isShutdown()) {
+                            exec.shutdown();
                         }
+                    } catch (InterruptedException | ExecutionException ex) {
+                        Logger.getLogger(FxPreloader.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
-                    });
-                    service.start();
-                } catch (Exception ex) {
-
-                } finally {
-
-                }
-
+                });
+                service.start();
                 ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
                 if (!list.isEmpty()) {
                     Session.EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();
@@ -134,7 +125,6 @@ public class FxPreloader extends Preloader {
                 DetalleADO.GetDetailIdName("3", "0010", "").forEach(e -> {
                     Session.IMPUESTO = Double.parseDouble(e.getDescripcion().get());
                 });
-
                 ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");
                 if (clienteTB != null) {
                     Session.IDCLIENTE = clienteTB.getIdCliente();
@@ -175,6 +165,7 @@ public class FxPreloader extends Preloader {
 
                     }
                 }
+
                 System.out.println("BEFORE_INIT");
                 break;
             case BEFORE_START:

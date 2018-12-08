@@ -52,7 +52,5 @@ public class ConsultasADO {
             return tipos;
         };
         return callable;
-
     }
-
 }
