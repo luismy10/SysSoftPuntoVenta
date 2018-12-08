@@ -24,6 +24,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import model.DetalleVentaTB;
+import model.EmpleadoTB;
 import model.VentaADO;
 
 public class FxVentaDetalleController implements Initializable {
@@ -130,6 +131,10 @@ public class FxVentaDetalleController implements Initializable {
         lblObservaciones.setText(observaciones);
         this.idVenta = idVenta;
         fillVentasDetalleTable(idVenta);
+        EmpleadoTB empleadoTB = VentaADO.ListVentaDetalle(idVenta);
+        if(empleadoTB != null){
+            lblVendedor.setText(empleadoTB.getApellidos()+" "+empleadoTB.getNombres());
+        }
     }
 
     @FXML

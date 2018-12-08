@@ -10,6 +10,8 @@ public class Session {
     public static double HEIGHT_WINDOW;
     public static double IMPUESTO;
     public static String EMPRESA;
+    public static String NOMBREEMPRESA;
+    public static String RUC;
     public static String DIRECCION;
     public static String TELEFONO;
     public static String CELULAR;
@@ -24,6 +26,8 @@ public class Session {
     public static String CLIENTES_TOTAL;
     public static String PROVEEDORES_TOTAL;
     public static String TRABAJADORES_TOTAL;
+    
+    public static String MONEDA;
     
     public static int ROL;
     

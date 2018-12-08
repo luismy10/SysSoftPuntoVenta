@@ -1,5 +1,9 @@
 package controller;
 
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -68,9 +72,19 @@ public class FxVentaController implements Initializable {
     @FXML
     private Text lblTotalPagar;
     @FXML
-    private TextField txtObservacion;
-    @FXML
     private TextField txtSearch;
+    @FXML
+    private Text lblMoneda;
+    @FXML
+    private Text lblSubTotalMoneda;
+    @FXML
+    private Text lblDescuentoMoneda;
+    @FXML
+    private Text lblGravadaMoneda;
+    @FXML
+    private Text lblIgvMoneda;
+    @FXML
+    private Text lblTotalPagarMoneda;
 
     private AnchorPane content;
 
@@ -90,24 +104,34 @@ public class FxVentaController implements Initializable {
                     switch (event.getCode()) {
                         case F5:
                             openWindowGranel("Cambiar precio al Artículo", false);
+                            event.consume();
                             break;
                         case F7:
                             openWindowGranel("Sumar precio al Artículo", true);
+                            event.consume();
                             break;
                         case F1:
                             openWindowVentaProceso();
+                            event.consume();
                             break;
                         case F2:
                             openWindowArticulos();
+                            event.consume();
                             break;
-                        case ESCAPE:
+                        case F8:
+
+                            break;
+                        case F9:
                             short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Está seguro de borrar la venta?", true);
                             if (value == 1) {
                                 resetVenta();
+                                event.consume();
                             }
+                            event.consume();
                             break;
                         case DELETE:
                             removeArticulo();
+                            event.consume();
                             break;
                         default:
 
@@ -119,6 +143,12 @@ public class FxVentaController implements Initializable {
             }
         });
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
+        lblMoneda.setText(Session.MONEDA);
+        lblSubTotalMoneda.setText(Session.MONEDA);
+        lblDescuentoMoneda.setText(Session.MONEDA);
+        lblGravadaMoneda.setText(Session.MONEDA);
+        lblIgvMoneda.setText(Session.MONEDA);
+        lblTotalPagarMoneda.setText(Session.MONEDA);
         initTable();
     }
 
@@ -126,7 +156,7 @@ public class FxVentaController implements Initializable {
         DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> {
             cbComprobante.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
-        cbComprobante.getSelectionModel().select(0);
+        cbComprobante.getSelectionModel().select(2);
         txtCliente.setText(Session.DATOSCLIENTE);
         txtSearch.requestFocus();
 
@@ -203,6 +233,9 @@ public class FxVentaController implements Initializable {
                     ? cbComprobante.getSelectionModel().getSelectedItem().getIdDetalle().get()
                     : 0
             );
+            ventaTB.setComprobanteName(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbComprobante.getSelectionModel().getSelectedItem().getNombre().get()
+                    : "");
             ventaTB.setSerie(lblSerie.getText());
             ventaTB.setNumeracion(lblNumeracion.getText());
             ventaTB.setFechaVenta(Timestamp.valueOf(Tools.getDate() + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
@@ -212,8 +245,8 @@ public class FxVentaController implements Initializable {
             ventaTB.setIgv(Double.parseDouble(lblIgv.getText()));
             ventaTB.setTotal(Double.parseDouble(lblTotalPagar.getText()));
             ventaTB.setEstado("Completada");
-            ventaTB.setObservaciones(txtObservacion.getText().trim());
-            controller.setInitComponents(ventaTB, tvList);
+
+            controller.setInitComponents(ventaTB, txtCliente.getText(), tvList);
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventas", "Debes agregar artículos a la venta", false);
         }
@@ -343,6 +376,7 @@ public class FxVentaController implements Initializable {
         lblSerie.setText(array[0]);
         lblNumeracion.setText(array[1]);
         this.tvList.getItems().clear();
+        lblMoneda.setText(Session.MONEDA);
         lblTotal.setText("0.00");
         lblSubTotal.setText("0.00");
         lblDescuento.setText("0.00");
@@ -350,9 +384,20 @@ public class FxVentaController implements Initializable {
         lblIgv.setText("0.00");
         lblTotalPagar.setText("0.00");
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
-        txtObservacion.clear();
-        cbComprobante.getSelectionModel().select(0);
+
+        cbComprobante.getSelectionModel().select(2);
         txtSearch.requestFocus();
+    }
+
+    public void imprimirVenta(VentaTB ventaTB, String efec, String vuel, String ticket) {
+        PrinterJob pj = PrinterJob.getPrinterJob();
+        pj.setPrintable(new BillPrintable(ventaTB.getSubTotal(), ventaTB.getDescuento(),
+                ventaTB.getGravada(), ventaTB.getIgv(), ventaTB.getTotal(), Double.parseDouble(efec), Double.parseDouble(vuel), ticket, tvList),
+                getPageFormat(pj));
+        try {
+            pj.print();
+        } catch (PrinterException ex) {
+        }
     }
 
     private void removeArticulo() {
@@ -584,7 +629,19 @@ public class FxVentaController implements Initializable {
             txtSearch.clear();
             txtSearch.requestFocus();
         }
-        
+
+    }
+
+    @FXML
+    private void onKeyPressedImprimir(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActionImprimir(ActionEvent event) {
+
     }
 
     public void setClienteVenta(String id, String datos) {
@@ -595,12 +652,25 @@ public class FxVentaController implements Initializable {
                 : datodCliente);
     }
 
+    public TextField getTxtSearch() {
+        return txtSearch;
+    }
+
     public TableView<ArticuloTB> getTvList() {
         return tvList;
     }
 
     public void setContent(AnchorPane content) {
         this.content = content;
+    }
+
+    public PageFormat getPageFormat(PrinterJob pj) {
+        PageFormat pf = pj.defaultPage();
+        Paper paper = pf.getPaper();
+        paper.setImageableArea(0, 0, pf.getWidth(), pf.getImageableHeight());   //define boarder size    after that print area width is about 180 points
+        pf.setOrientation(PageFormat.PORTRAIT);           //select orientation portrait or landscape but for this time portrait
+        pf.setPaper(paper);
+        return pf;
     }
 
 }

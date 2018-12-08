@@ -86,6 +86,21 @@ public class FxConfiguracionController implements Initializable {
         controller.fillEmpleadosTable("");
     }
 
+    private void openWindowMoney() throws IOException {
+
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_MONEDA));
+        VBox node = fXMLPrincipal.load();
+        FxMonedaController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        content.getChildren().add(node);
+
+    }
+
     @FXML
     private void onKeyPressedTablasBasicas(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
@@ -135,7 +150,19 @@ public class FxConfiguracionController implements Initializable {
         openWindowEmpleados();
     }
 
-    void setContent(AnchorPane windowinit, AnchorPane content) {
+    @FXML
+    private void onKeyPressedMoney(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowMoney();
+        }
+    }
+
+    @FXML
+    private void onActionMoney(ActionEvent event) throws IOException {
+        openWindowMoney();
+    }
+
+    public void setContent(AnchorPane windowinit, AnchorPane content) {
         this.windowinit = windowinit;
         this.content = content;
     }

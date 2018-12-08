@@ -63,25 +63,25 @@
                                        <children>
                                           <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Cliente:" textFill="#1a2226" />
                                                       <Text fx:id="lblCliente" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
                                                    </children>
                                                 </HBox>
-                                                <HBox style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                                                    <children>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Comprobante:" textFill="#1a2226" />
                                                       <Text fx:id="lblComprobante" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
                                                    </children>
                                                 </HBox>
-                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Estado:" textFill="#1a2226" />
                                                       <Text fx:id="lblEstado" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
                                                    </children>
                                                 </HBox>
-                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Observaciones:" textFill="#1a2226" />
                                                       <Text fx:id="lblObservaciones" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
@@ -91,13 +91,13 @@
                                           </VBox>
                                           <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Vendedor" textFill="#1a2226" />
                                                       <Text fx:id="lblVendedor" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />
                                                    </children>
                                                 </HBox>
-                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="20.0" styleClass="labelRoboto14" text="Serie/Numeración:" textFill="#1a2226" />
                                                       <Text fx:id="lblSerie" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="-" />

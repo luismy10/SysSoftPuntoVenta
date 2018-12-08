@@ -81,7 +81,7 @@ public class FxArticulosController implements Initializable {
         tcMarca.setCellValueFactory(cellData -> cellData.getValue().getMarcaName());
         tcPresentacion.setCellValueFactory(cellData -> cellData.getValue().getPresentacionName());
         tcUnidadVenta.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel"
+                cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel(Peso)"
         ));
         tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
         tcLote.setCellValueFactory(new PropertyValueFactory<>("imageLote"));

@@ -531,4 +531,41 @@ public class ArticuloADO {
         }
     }
 
+    public static ObservableList<ArticuloTB> ListArticulosCodBar(int unidadVenta) {
+        String selectStmt = "{call Sp_Generar_Listardo_CodBar(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<ArticuloTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setInt(1, unidadVenta);
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+                ArticuloTB articuloTB = new ArticuloTB();
+                articuloTB.setId(rsEmps.getRow());
+                articuloTB.setClave(rsEmps.getString("Clave"));
+                articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
+                empList.add(articuloTB);
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+
 }

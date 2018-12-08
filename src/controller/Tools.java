@@ -83,7 +83,11 @@ public class Tools {
     static final String FX_FILE_VENTADESCUENTO = "/view/venta/FxVentaDescuento.fxml";
     static final String FX_FILE_VENTAGRANEL = "/view/venta/FxVentaGranel.fxml";
     static final String FX_FILE_INVENTARIOGENERAL = "/view/lote/FxInventarioGeneral.fxml";
-
+    static final String FX_FILE_REPORTES = "/view/inicio/FxReportes.fxml";
+    static final String FX_FILE_ARTICULOREPORTES = "/view/articulo/FxArticuloReportes.fxml";
+    static final String FX_FILE_MONEDA = "/view/mantenimiento/FxMoneda.fxml";
+    static final String FX_FILE_MONEDAPROCESO = "/view/mantenimiento/FxMonedaProceso.fxml";
+    
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);
@@ -127,6 +131,41 @@ public class Tools {
             Optional<ButtonType> optional = alert.showAndWait();
             return (short) (optional.get() == buttonTypeClose ? 1 : 0);
         }
+    }
+
+    public static short AlertMessage(Window window, AlertType type, String title, String value) {
+        final URL url = Tools.class.getClass().getResource("/view/alert.css");
+        Alert alert = new Alert(type);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("/view/icon.png"));
+        alert.setTitle(title);
+        alert.initModality(Modality.WINDOW_MODAL);
+        alert.initOwner(window);
+        alert.setHeaderText(null);
+        alert.setContentText(value);
+        alert.getDialogPane().getStylesheets().add(url.toExternalForm());
+
+        ButtonType buttonTypeTwo = new ButtonType("Aceptar y no Imprimir", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonTypeOne = new ButtonType("Aceptar e Imprimir", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypeTwo, buttonTypeOne);
+        Button buttonTwo = (Button) alert.getDialogPane().lookupButton(buttonTypeTwo);
+        buttonTwo.setDefaultButton(false);
+        Button buttonOne = (Button) alert.getDialogPane().lookupButton(buttonTypeOne);
+        buttonTwo.setOnKeyPressed((KeyEvent event) -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                alert.setResult(buttonTypeTwo);
+            }
+        });
+        buttonOne.setOnKeyPressed((KeyEvent event) -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                alert.setResult(buttonTypeOne);
+            }
+        });
+
+        Optional<ButtonType> optional = alert.showAndWait();
+        return (short) (optional.get() == buttonTypeTwo ? 0 : 1);
+
     }
 
     public static void DisposeWindow(AnchorPane window, EventType<KeyEvent> eventType) {

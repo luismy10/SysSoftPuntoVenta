@@ -136,13 +136,13 @@ public class VentaADO {
             articulo_update.executeBatch();
             preparedHistorialArticulo.executeBatch();
             DBUtil.getConnection().commit();
-            return "register";
+            return "register/" + id_comprabante[0] + "-" + id_comprabante[1];
         } catch (SQLException ex) {
             try {
                 DBUtil.getConnection().rollback();
-                return ex.getLocalizedMessage();
+                return ex.getLocalizedMessage() + "/";
             } catch (SQLException ex1) {
-                return ex1.getLocalizedMessage();
+                return ex1.getLocalizedMessage() + "/";
             }
         } finally {
             try {
@@ -368,6 +368,38 @@ public class VentaADO {
 
             }
         }
+    }
+
+    public static EmpleadoTB ListVentaDetalle(String value) {
+        PreparedStatement statementVendedor = null;
+        EmpleadoTB empleadoTB = null;
+        try {
+            DBUtil.dbConnect();
+            statementVendedor = DBUtil.getConnection().prepareStatement("select e.Apellidos,e.Nombres \n"
+                    + "from VentaTB as v inner join EmpleadoTB as e \n"
+                    + "on v.Vendedor = e.IdEmpleado\n"
+                    + "where v.IdVenta = ?");
+            statementVendedor.setString(1, value);
+            ResultSet resultSet = statementVendedor.executeQuery();
+            if (resultSet.next()) {
+                empleadoTB = new EmpleadoTB();
+                empleadoTB.setApellidos(resultSet.getString("Apellidos"));
+                empleadoTB.setNombres(resultSet.getString("Nombres"));
+            }
+        } catch (SQLException ex) {
+
+        } finally {
+            try {
+                if (statementVendedor != null) {
+                    statementVendedor.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+
+        }
+        return empleadoTB;
     }
 
 }

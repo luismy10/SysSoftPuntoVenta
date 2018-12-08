@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxMonedaController">
+   <children>
+      <HBox VBox.vgrow="ALWAYS">
+         <children>
+            <VBox HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;" styleClass="paddinContainer">
+                     <children>
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../moneda.png" />
+                           </image>
+                        </ImageView>
+                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Moneda" />
+                     </children>
+                  </HBox>
+                  <VBox minHeight="-Infinity" minWidth="-Infinity">
+                     <children>
+                        <HBox styleClass="paddinContainer">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../plus.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../edit.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionRemove" onKeyPressed="#onKeyPressedRemove" styleClass="buttonLight" text="Quitar">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../close.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <HBox style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc;" VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox styleClass="paddinContainer" HBox.hgrow="ALWAYS">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Moneda Predeterminada:" textFill="#1a2226" />
+                                    <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Moneda" />
+                                 </children>
+                              </HBox>
+                              <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="320.0" VBox.vgrow="ALWAYS">
+                                 <columns>
+                                    <TableColumn fx:id="tcMoneda" prefWidth="260.0" style="-fx-alignment: CENTER-LEFT;" text="Moneda" />
+                                    <TableColumn fx:id="tcTipoCambio" prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Tipo de cambio" />
+                                    <TableColumn fx:id="tcAbreviatura" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Abr" />
+                                    <TableColumn fx:id="tcPredeterminado" prefWidth="130.0" style="-fx-alignment: CENTER;" text="Predeterminado" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>
