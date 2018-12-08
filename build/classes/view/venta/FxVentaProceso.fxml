@@ -30,7 +30,7 @@
                               <VBox alignment="CENTER" styleClass="paddinContainer">
                                  <children>
                                     <Label styleClass="labelOpenSansRegular18" text="Total a Pagar" />
-                                    <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold26" text="S/ 100.00">
+                                    <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold28" text="S/ 100.00" textFill="#1a2226">
                                        <graphic>
                                           <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -40,7 +40,6 @@
                                        </graphic>
                                     </Label>
                                     <Label styleClass="labelRoboto18" text="( CIEN/ 100 SOLES )" />
-                                    <Label styleClass="labelRoboto16" text="Moneda: SOLES" />
                                  </children>
                               </VBox>
                            </children>
@@ -48,7 +47,7 @@
                         <Separator prefWidth="200.0" />
                         <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                            <children>
-                              <VBox alignment="CENTER" styleClass="paddinContainer">
+                              <VBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;" visible="false">
                                  <children>
                                     <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -59,18 +58,18 @@
                                     <ComboBox prefWidth="150.0" />
                                  </children>
                               </VBox>
-                              <VBox alignment="CENTER" styleClass="paddinContainer">
+                              <VBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
                                  <children>
                                     <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../efectivo.png" />
                                        </image>
                                     </ImageView>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Efectivo" />
+                                    <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Efectivo" />
                                     <TextField fx:id="txtEfectivo" onAction="#onActionAceptar" onKeyReleased="#onKeyReleasedEfectivo" onKeyTyped="#onKeyTypedEfectivo" />
                                  </children>
                               </VBox>
-                              <VBox alignment="CENTER" styleClass="paddinContainer">
+                              <VBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;" visible="false">
                                  <children>
                                     <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -83,11 +82,26 @@
                               </VBox>
                            </children>
                         </HBox>
+                        <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                           <children>
+                              <Label styleClass="labelOpenSansRegular14" text="Observación:" textFill="#1a2226">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../efectivo.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <TextField fx:id="txtObservacion" onAction="#onActionAceptar" promptText="Observación..." HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <Separator prefWidth="200.0" />
                         <HBox alignment="CENTER">
                            <children>
                               <VBox alignment="CENTER" styleClass="paddinContainer" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label alignment="CENTER" contentDisplay="TOP" styleClass="labelOpenSansRegular16" text="Cliente: Publico en General">
+                                    <Label fx:id="lblCliente" alignment="CENTER" contentDisplay="TOP" styleClass="labelOpenSansRegular16" text="Cliente: Publico en General" textFill="#1a2226">
                                        <graphic>
                                           <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -96,16 +110,23 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
-                                       <children>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label alignment="CENTER" styleClass="labelOpenSansRegular18" text="Vuelto" textFill="#1a2226">
+                                       <graphic>
                                           <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../vuelto.png" />
                                              </image>
                                           </ImageView>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular18" text="Vuelto:" />
-                                          <Label alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold26" text=" S/." textFill="#0754b9" HBox.hgrow="ALWAYS" />
-                                          <Label fx:id="lblVuelto" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold26" text="00.00" textFill="#0754b9" />
+                                       </graphic>
+                                    </Label>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <Label alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold26" text=" S/." textFill="#0754b9" />
+                                          <Label fx:id="lblVuelto" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold30" text="00.00" textFill="#0754b9" />
                                        </children>
                                     </HBox>
                                  </children>

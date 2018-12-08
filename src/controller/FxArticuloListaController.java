@@ -275,4 +275,6 @@ public class FxArticuloListaController implements Initializable {
         this.articuloReportesController=articuloReportesController;
     }
 
+    
+
 }

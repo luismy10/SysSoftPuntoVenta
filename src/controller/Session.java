@@ -27,6 +27,8 @@ public class Session {
     public static String PROVEEDORES_TOTAL;
     public static String TRABAJADORES_TOTAL;
     
+    public static String MONEDA;
+    
     public static int ROL;
     
     

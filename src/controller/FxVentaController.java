@@ -72,9 +72,19 @@ public class FxVentaController implements Initializable {
     @FXML
     private Text lblTotalPagar;
     @FXML
-    private TextField txtObservacion;
-    @FXML
     private TextField txtSearch;
+    @FXML
+    private Text lblMoneda;
+    @FXML
+    private Text lblSubTotalMoneda;
+    @FXML
+    private Text lblDescuentoMoneda;
+    @FXML
+    private Text lblGravadaMoneda;
+    @FXML
+    private Text lblIgvMoneda;
+    @FXML
+    private Text lblTotalPagarMoneda;
 
     private AnchorPane content;
 
@@ -124,7 +134,7 @@ public class FxVentaController implements Initializable {
                             event.consume();
                             break;
                         default:
-                            
+
                             break;
                     }
                 }
@@ -133,6 +143,12 @@ public class FxVentaController implements Initializable {
             }
         });
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
+        lblMoneda.setText(Session.MONEDA);
+        lblSubTotalMoneda.setText(Session.MONEDA);
+        lblDescuentoMoneda.setText(Session.MONEDA);
+        lblGravadaMoneda.setText(Session.MONEDA);
+        lblIgvMoneda.setText(Session.MONEDA);
+        lblTotalPagarMoneda.setText(Session.MONEDA);
         initTable();
     }
 
@@ -229,8 +245,8 @@ public class FxVentaController implements Initializable {
             ventaTB.setIgv(Double.parseDouble(lblIgv.getText()));
             ventaTB.setTotal(Double.parseDouble(lblTotalPagar.getText()));
             ventaTB.setEstado("Completada");
-            ventaTB.setObservaciones(txtObservacion.getText().trim());
-            controller.setInitComponents(ventaTB, tvList);
+
+            controller.setInitComponents(ventaTB, txtCliente.getText(), tvList);
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventas", "Debes agregar artículos a la venta", false);
         }
@@ -360,6 +376,7 @@ public class FxVentaController implements Initializable {
         lblSerie.setText(array[0]);
         lblNumeracion.setText(array[1]);
         this.tvList.getItems().clear();
+        lblMoneda.setText(Session.MONEDA);
         lblTotal.setText("0.00");
         lblSubTotal.setText("0.00");
         lblDescuento.setText("0.00");
@@ -367,16 +384,16 @@ public class FxVentaController implements Initializable {
         lblIgv.setText("0.00");
         lblTotalPagar.setText("0.00");
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
-        txtObservacion.clear();
+
         cbComprobante.getSelectionModel().select(2);
         txtSearch.requestFocus();
     }
 
-    public void imprimirVenta(VentaTB ventaTB, String efec, String vuel,String ticket) {
+    public void imprimirVenta(VentaTB ventaTB, String efec, String vuel, String ticket) {
         PrinterJob pj = PrinterJob.getPrinterJob();
         pj.setPrintable(new BillPrintable(ventaTB.getSubTotal(), ventaTB.getDescuento(),
-                ventaTB.getGravada(), ventaTB.getIgv(), ventaTB.getTotal(), Double.parseDouble(efec), Double.parseDouble(vuel), ticket,tvList),
-                 getPageFormat(pj)); 
+                ventaTB.getGravada(), ventaTB.getIgv(), ventaTB.getTotal(), Double.parseDouble(efec), Double.parseDouble(vuel), ticket, tvList),
+                getPageFormat(pj));
         try {
             pj.print();
         } catch (PrinterException ex) {

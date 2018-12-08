@@ -60,10 +60,10 @@ public class ImageADO {
     public static ImagenTB GetImage(String idRepresentante, boolean complete) {
         String selectStmt;
         if (complete) {
-            selectStmt = "SELECT IdImagen,Imagen FROM ImagenTB WHERE IdRelacionado = ?";
+            selectStmt = "SELECT IdImagenArticulo,Imagen FROM ImagenArticuloTB WHERE IdRelacionado = ?";
 
         } else {
-            selectStmt = "SELECT Imagen FROM ImagenTB WHERE IdRelacionado = ?";
+            selectStmt = "SELECT Imagen FROM ImagenArticuloTB WHERE IdRelacionado = ?";
         }
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -76,7 +76,7 @@ public class ImageADO {
 
             while (rsEmps.next()) {
                 if (complete) {
-                    imagenTB.setIdImage(rsEmps.getLong("IdImagen"));
+                    imagenTB.setIdImage(rsEmps.getLong("IdImagenArticulo"));
                 }
                 imagenTB.setImagen(new Image(rsEmps.getBinaryStream("Imagen")));
             }
@@ -99,25 +99,37 @@ public class ImageADO {
 
         return imagenTB;
     }
-    
-     public static String CrudImageArticulo(ImagenTB imagenTB) {
+
+    public static String CrudImageArticulo(ImagenTB imagenTB) {
         PreparedStatement preparedImagen = null;
         PreparedStatement preparedValidation = null;
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
-            preparedValidation = DBUtil.getConnection().prepareStatement("select IdImagenArticulo from ImagenArticuloTB where IdImagen=? and IdRelacionado=?");
-            preparedValidation.setLong(1, imagenTB.getIdImage());
-            preparedValidation.setString(2, imagenTB.getIdRelacionado());
+            preparedValidation = DBUtil.getConnection().prepareStatement("select IdImagenArticulo from ImagenArticuloTB where IdRelacionado=?");
+            preparedValidation.setString(1, imagenTB.getIdRelacionado());
             if (preparedValidation.executeQuery().next()) {
-                preparedImagen = DBUtil.getConnection().prepareCall("update ImagenArticuloTB set Imagen=? where IdImagen=? and IdRelacionado=?");
-                preparedImagen.setBinaryStream(1, imagenTB.getFile());
-                preparedImagen.setLong(2, imagenTB.getIdImage());
-                preparedImagen.setString(3, imagenTB.getIdRelacionado());
-                preparedImagen.addBatch();
-                preparedImagen.executeBatch();
-                DBUtil.getConnection().commit();
-                return "update";
+                preparedValidation = DBUtil.getConnection().prepareStatement("select IdImagenArticulo from ImagenArticuloTB where IdImagenArticulo=? and IdRelacionado=?");
+                preparedValidation.setLong(1, imagenTB.getIdImage());
+                preparedValidation.setString(2, imagenTB.getIdRelacionado());
+                if (preparedValidation.executeQuery().next()) {
+                    preparedImagen = DBUtil.getConnection().prepareCall("update ImagenArticuloTB set Imagen=? where IdImagenArticulo=? and IdRelacionado=?");
+                    preparedImagen.setBinaryStream(1, imagenTB.getFile());
+                    preparedImagen.setLong(2, imagenTB.getIdImage());
+                    preparedImagen.setString(3, imagenTB.getIdRelacionado());
+                    preparedImagen.addBatch();
+                    preparedImagen.executeBatch();
+                    DBUtil.getConnection().commit();
+                    return "update";
+                } else {
+                    preparedImagen = DBUtil.getConnection().prepareCall("insert into ImagenArticuloTB(Imagen,IdRelacionado) values(?,?)");
+                    preparedImagen.setBinaryStream(1, imagenTB.getFile());
+                    preparedImagen.setString(2, imagenTB.getIdRelacionado());
+                    preparedImagen.addBatch();
+                    preparedImagen.executeBatch();
+                    DBUtil.getConnection().commit();
+                    return "insert";
+                }
             } else {
                 preparedImagen = DBUtil.getConnection().prepareCall("insert into ImagenArticuloTB(Imagen,IdRelacionado) values(?,?)");
                 preparedImagen.setBinaryStream(1, imagenTB.getFile());
@@ -149,6 +161,5 @@ public class ImageADO {
             }
         }
     }
-
 
 }

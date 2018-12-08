@@ -136,6 +136,10 @@ public class FxPreloader extends Preloader {
                 DetalleADO.GetDetailIdName("3", "0010", "").forEach(e -> {
                     Session.IMPUESTO = Double.parseDouble(e.getDescripcion().get());
                 });
+                
+//                DetalleADO.GetDetailIdName("3", "0013", "").forEach(e -> {
+//                    Session.MONEDA = e.getDescripcion().get();
+//                });
 
                 ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");
                 if (clienteTB != null) {

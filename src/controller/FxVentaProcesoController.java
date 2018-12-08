@@ -29,6 +29,10 @@ public class FxVentaProcesoController implements Initializable {
     private Label lblVuelto;
     @FXML
     private Text lblComprobante;
+    @FXML
+    private Label lblCliente;
+    @FXML
+    private TextField txtObservacion;
 
     private TableView<ArticuloTB> tvList;
 
@@ -42,6 +46,7 @@ public class FxVentaProcesoController implements Initializable {
     @FXML
     private void onActionAceptar(ActionEvent event) {
         if (Tools.isNumeric(txtEfectivo.getText())) {
+            ventaTB.setObservaciones(txtObservacion.getText().trim());
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Esta seguro de continuar?", true);
             if (confirmation == 1) {
                 String[] result = VentaADO.CrudVenta(ventaTB, tvList).split("/");
@@ -49,7 +54,7 @@ public class FxVentaProcesoController implements Initializable {
                     case "register":
                         short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Venta", "Se realiazo la venta con éxito, ¿Desea imprimir el comprobante?");
                         if (value == 1) {
-                            ventaController.imprimirVenta(ventaTB,txtEfectivo.getText(),lblVuelto.getText(),result[1]);
+                            ventaController.imprimirVenta(ventaTB, txtEfectivo.getText(), lblVuelto.getText(), result[1]);
                             ventaController.resetVenta();
                             Tools.Dispose(window);
                         } else {
@@ -68,12 +73,14 @@ public class FxVentaProcesoController implements Initializable {
 
     }
 
-    public void setInitComponents(VentaTB ventaTB, TableView<ArticuloTB> tvList) {
+    public void setInitComponents(VentaTB ventaTB, String cliente, TableView<ArticuloTB> tvList) {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
         lblComprobante.setText(ventaTB.getComprobanteName());
+        lblCliente.setText("Cliente: " + cliente);
         lblTotal.setText("S/ " + Tools.roundingValue(ventaTB.getTotal(), 2));
         txtEfectivo.requestFocus();
+
     }
 
     @FXML

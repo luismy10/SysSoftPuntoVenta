@@ -85,7 +85,9 @@ public class Tools {
     static final String FX_FILE_INVENTARIOGENERAL = "/view/lote/FxInventarioGeneral.fxml";
     static final String FX_FILE_REPORTES = "/view/inicio/FxReportes.fxml";
     static final String FX_FILE_ARTICULOREPORTES = "/view/articulo/FxArticuloReportes.fxml";
-
+    static final String FX_FILE_MONEDA = "/view/mantenimiento/FxMoneda.fxml";
+    static final String FX_FILE_MONEDAPROCESO = "/view/mantenimiento/FxMonedaProceso.fxml";
+    
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);
