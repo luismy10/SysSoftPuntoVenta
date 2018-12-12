@@ -6,10 +6,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import model.MonedaADO;
+import model.MonedaTB;
 
 public class FxMonedaProcesoController implements Initializable {
 
@@ -21,16 +24,26 @@ public class FxMonedaProcesoController implements Initializable {
     private TextField txtSimbolo;
     @FXML
     private TextField txtTipoCambio;
-
+    @FXML
+    private Button btnGuardar;
+    
     private FxMonedaController monedaController;
+
+    private int idMoneda;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
+        idMoneda = 0;
     }
 
-    public void setUpdateMoney() {
-
+    public void setUpdateMoney(int idMoneda,String nombre,String simbolo,double tcambio) {
+        this.idMoneda = idMoneda;
+        btnGuardar.setText("Actualizar");
+        btnGuardar.getStyleClass().add("buttonLightWarning");
+        txtNombre.setText(nombre);
+        txtSimbolo.setText(simbolo);
+        txtTipoCambio.setText(""+tcambio);
     }
 
     private void processTheForm() {
@@ -44,7 +57,30 @@ public class FxMonedaProcesoController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "El tipo de cambio no puede estar vacío", false);
             txtTipoCambio.requestFocus();
         } else {
-            Tools.Dispose(window);
+            MonedaTB monedaTB = new MonedaTB();
+            monedaTB.setIdMoneda(idMoneda);
+            monedaTB.setNombre(txtNombre.getText().trim().toUpperCase());
+            monedaTB.setAbreviado(txtNombre.getText().trim().length() >= 3
+                    ? txtNombre.getText().trim().substring(0, 3).toUpperCase()
+                    : txtNombre.getText().trim().toUpperCase());
+            monedaTB.setSimbolo(txtSimbolo.getText().trim().toUpperCase());
+            monedaTB.setTipoCambio(Double.parseDouble(txtTipoCambio.getText().trim()));
+            monedaTB.setPredeterminado(false);
+            String result = MonedaADO.CrudMoneda(monedaTB);
+            if (result.equalsIgnoreCase("inserted")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Moneda", "Se ingreso correctamente.", false);
+                Tools.Dispose(window);
+                monedaController.fillTableMonedas();
+            } else if (result.equalsIgnoreCase("updated")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Moneda", "Se actualizo correctamente.", false);
+                Tools.Dispose(window);
+                monedaController.fillTableMonedas();
+            } else if (result.equalsIgnoreCase("duplicated")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "Hay una moneda con el mismo nombre.", false);
+                txtNombre.requestFocus();
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Moneda", result, false);
+            }
         }
     }
 

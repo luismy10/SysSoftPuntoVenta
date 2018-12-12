@@ -2,9 +2,7 @@ package controller;
 
 import java.awt.HeadlessException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -29,7 +27,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -43,8 +40,6 @@ import model.DBUtil;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class FxArticuloReportesController implements Initializable {
@@ -123,18 +118,17 @@ public class FxArticuloReportesController implements Initializable {
 
     private void openWindowReporte() {
         try {
+            
             DBUtil.dbConnect();
-            InputStream dir = getClass().getResourceAsStream("/report/GenerarCodBar.jasper");
 
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
             Map map = new HashMap();
             map.put("TYPEVENTA", cbUnidadVenta.getSelectionModel().getSelectedIndex());
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, DBUtil.getConnection());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(FxArticuloReportesController.class.getResourceAsStream("/report/GenerarCodBar.jasper"), map, DBUtil.getConnection());
 
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-            JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+            JasperViewer jasperViewer = new JasperViewer(jasperPrint);
             jasperViewer.setIconImage(new ImageIcon(getClass().getResource(Tools.FX_LOGO)).getImage());
             jasperViewer.setTitle("Lista de atículos");
             jasperViewer.setSize(840, 650);
@@ -146,11 +140,8 @@ public class FxArticuloReportesController implements Initializable {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(FxCompraDetalleController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-                Logger.getLogger(FxCompraDetalleController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            content.getChildren().remove(Session.pane);
+            DBUtil.dbDisconnect();
         }
     }
 
@@ -250,6 +241,7 @@ public class FxArticuloReportesController implements Initializable {
         if (event.getCode() == KeyCode.ENTER) {
             if (cbUnidadVenta.getSelectionModel().getSelectedIndex() >= 0) {
                 if (!tvList.getItems().isEmpty()) {
+                    InitializationTransparentBackground();
                     openWindowReporte();
                 } else {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte", "La lista está vacía", false);
@@ -263,15 +255,28 @@ public class FxArticuloReportesController implements Initializable {
     private void onActionVisualizar(ActionEvent event) {
         if (cbUnidadVenta.getSelectionModel().getSelectedIndex() >= 0) {
             if (!tvList.getItems().isEmpty()) {
+                InitializationTransparentBackground();
                 openWindowReporte();
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte", "La lista está vacía", false);
             }
         }
     }
+    
+    @FXML
+    private void onKeyPressedQuitar(KeyEvent event) {
+        
+    }
 
+    @FXML
+    private void onActionQuitar(ActionEvent event) {
+        
+    }
+    
     public void setContent(AnchorPane content) {
         this.content = content;
     }
+
+    
 
 }

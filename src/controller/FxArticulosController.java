@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,8 +31,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.ArticuloADO;
 import model.ArticuloTB;
-import model.ImageADO;
-import model.ImagenTB;
 import model.LoteADO;
 
 public class FxArticulosController implements Initializable {
@@ -64,7 +61,7 @@ public class FxArticulosController implements Initializable {
     private VBox vbOpciones;
 
     private AnchorPane content;
-    
+
     private boolean stateRequest;
 
     private FxArticuloSeleccionadoController seleccionadoController;
@@ -87,51 +84,45 @@ public class FxArticulosController implements Initializable {
         tcLote.setCellValueFactory(new PropertyValueFactory<>("imageLote"));
 
         changeViewArticuloSeleccionado();
-        stateRequest=false;
+        stateRequest = false;
 
     }
 
     public void fillArticlesTable(String value) {
 
-            ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
-                Thread t = new Thread(runnable);
-                t.setDaemon(true);
-                return t;
-            });
+        ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
 
-            Task<ObservableList<ArticuloTB>> task = new Task<ObservableList<ArticuloTB>>() {
-                @Override
-                public ObservableList<ArticuloTB> call() {
-                    return ArticuloADO.ListArticulos(value);
-                }
-            };
-
-            task.setOnSucceeded((WorkerStateEvent e) -> {
-                tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
-                lblLoad.setVisible(false);
-                stateRequest=true;
-            });
-            task.setOnFailed((WorkerStateEvent event) -> {
-                lblLoad.setVisible(false);
-                stateRequest=false;
-            });
-
-            task.setOnScheduled((WorkerStateEvent event) -> {
-                lblLoad.setVisible(true);
-                stateRequest=false;
-            });
-            exec.execute(task);
-
-            if (!exec.isShutdown()) {
-                exec.shutdown();
+        Task<ObservableList<ArticuloTB>> task = new Task<ObservableList<ArticuloTB>>() {
+            @Override
+            public ObservableList<ArticuloTB> call() {
+                return ArticuloADO.ListArticulos(value);
             }
-        
+        };
 
-    }
+        task.setOnSucceeded((WorkerStateEvent e) -> {
+            tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
+            lblLoad.setVisible(false);
+            stateRequest = true;
+        });
+        task.setOnFailed((WorkerStateEvent event) -> {
+            lblLoad.setVisible(false);
+            stateRequest = false;
+        });
 
-    private void loadViewImage(String idRepresentante) {
-        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante, false);
-        seleccionadoController.getIvPrincipal().setImage(imagenTB.getImagen());
+        task.setOnScheduled((WorkerStateEvent event) -> {
+            lblLoad.setVisible(true);
+            stateRequest = false;
+        });
+        exec.execute(task);
+
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+
     }
 
     private void InitializationTransparentBackground() {
@@ -288,13 +279,21 @@ public class FxArticulosController implements Initializable {
 
     @FXML
     private void onActionReload(ActionEvent event) {
-        if(stateRequest)fillArticlesTable("");
+        if (stateRequest) {
+            fillArticlesTable("");
+            if (!tvList.getItems().isEmpty()) 
+                tvList.getSelectionModel().select(0);
+        }
     }
 
     @FXML
     private void onKeyPressedReload(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            if(stateRequest)fillArticlesTable("");
+            if (stateRequest) {
+                fillArticlesTable("");
+                if (!tvList.getItems().isEmpty()) 
+                tvList.getSelectionModel().select(0);
+            }
         }
     }
 
@@ -310,7 +309,13 @@ public class FxArticulosController implements Initializable {
 
     @FXML
     private void onKeyReleasedSearch(KeyEvent event) {
-        if(stateRequest)fillArticlesTable(txtSearch.getText().trim());
+        if (stateRequest) {
+            fillArticlesTable(txtSearch.getText().trim());
+            if (!tvList.getItems().isEmpty()) {
+                tvList.getSelectionModel().select(0);
+                onViewDetailArticulo();
+            }
+        }
     }
 
     @FXML
@@ -326,13 +331,11 @@ public class FxArticulosController implements Initializable {
     }
 
     public void onViewDetailArticulo() {
-        loadViewImage(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
-        ArrayList<ArticuloTB> list = ArticuloADO.GetArticulosByIdView(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
-        if (!list.isEmpty()) {
-            ArticuloTB articuloTB = list.get(0);
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            ArticuloTB articuloTB = tvList.getSelectionModel().getSelectedItem();
+             seleccionadoController.getIvPrincipal().setImage(ArticuloADO.GetImageArticuloById(articuloTB.getIdArticulo()));
             seleccionadoController.getLblName().setText(articuloTB.getNombreMarca().get());
-            seleccionadoController.getLblName().setText(articuloTB.getNombreMarca().get());
-            seleccionadoController.getLblPrice().setText("S/. " + Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
+            seleccionadoController.getLblPrice().setText(Session.MONEDA + " " + Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
             seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad() % 1 == 0
                     ? Tools.roundingValue(articuloTB.getCantidad(), 0)
                     : Tools.roundingValue(articuloTB.getCantidad(), 2));

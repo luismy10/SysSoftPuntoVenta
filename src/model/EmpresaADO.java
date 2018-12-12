@@ -52,7 +52,7 @@ public class EmpresaADO {
     public static ArrayList<EmpresaTB> GetEmpresa() {
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
-        ArrayList<EmpresaTB> arrayList = new ArrayList<>();
+        ArrayList<EmpresaTB> arrayList = new ArrayList<>();        
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement("select * from EmpresaTB");

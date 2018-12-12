@@ -28,6 +28,7 @@ import model.DetalleADO;
 import model.EmpresaADO;
 import model.EmpresaTB;
 import model.FacturacionTB;
+import model.MonedaADO;
 
 public class FxPreloader extends Preloader {
 
@@ -91,88 +92,86 @@ public class FxPreloader extends Preloader {
                 break;
             case BEFORE_INIT:
                 System.out.println("BEFORE_INIT");
-                TimerService service = new TimerService();
-                service.setPeriod(Duration.seconds(59));
-                service.setOnSucceeded((WorkerStateEvent t) -> {
-                    try {
-                        Session.CONNECTION_SESSION = true;
-                        ExecutorService exec = Executors.newFixedThreadPool(1);
-                        ExecutorCompletionService completionService = new ExecutorCompletionService<>(exec);
-                        completionService.submit(ConsultasADO.TotalObjectInit());
-                        Long[] tipos = (Long[]) completionService.take().get();
-                        Session.ARTICULOS_TOTAL = "" + tipos[0];
-                        Session.CLIENTES_TOTAL = "" + tipos[1];
-                        Session.PROVEEDORES_TOTAL = "" + tipos[2];
-                        Session.TRABAJADORES_TOTAL = "" + tipos[3];
-                        if (!exec.isShutdown()) {
-                            exec.shutdown();
+                DBUtil.dbConnect();
+                if (DBUtil.getConnection() != null) {
+                    TimerService service = new TimerService();
+                    service.setPeriod(Duration.seconds(59));
+                    service.setOnSucceeded((WorkerStateEvent t) -> {
+                        try {
+                            Session.CONNECTION_SESSION = true;
+                            ExecutorService exec = Executors.newFixedThreadPool(1);
+                            ExecutorCompletionService completionService = new ExecutorCompletionService<>(exec);
+                            completionService.submit(ConsultasADO.TotalObjectInit());
+                            Long[] tipos = (Long[]) completionService.take().get();
+                            Session.ARTICULOS_TOTAL = "" + tipos[0];
+                            Session.CLIENTES_TOTAL = "" + tipos[1];
+                            Session.PROVEEDORES_TOTAL = "" + tipos[2];
+                            Session.TRABAJADORES_TOTAL = "" + tipos[3];
+                            if (!exec.isShutdown()) {
+                                exec.shutdown();
+                            }
+                        } catch (InterruptedException | ExecutionException ex) {
+                            Logger.getLogger(FxPreloader.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    } catch (InterruptedException | ExecutionException ex) {
-                        Logger.getLogger(FxPreloader.class.getName()).log(Level.SEVERE, null, ex);
+
+                    });
+                    service.start();
+                    ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
+                    if (!list.isEmpty()) {
+                        Session.EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();
+                        Session.NOMBREEMPRESA = list.get(0).getNombre();
+                        Session.RUC = list.get(0).getNumeroDocumento();
+                        Session.TELEFONO = list.get(0).getTelefono();
+                        Session.CELULAR = list.get(0).getCelular();
+                        Session.PAGINAWEB = list.get(0).getPaginaWeb();
+                        Session.EMAIL = list.get(0).getEmail();
+                        Session.DIRECCION = list.get(0).getDomicilio();
                     }
+                    DetalleADO.GetDetailIdName("3", "0010", "").forEach(e -> {
+                        Session.IMPUESTO = Double.parseDouble(e.getDescripcion().get());
+                    });
 
-                });
-                service.start();
-                ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
-                if (!list.isEmpty()) {
-                    Session.EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();
-                    Session.NOMBREEMPRESA = list.get(0).getNombre();
-                    Session.RUC = list.get(0).getNumeroDocumento();
-                    Session.TELEFONO = list.get(0).getTelefono();
-                    Session.CELULAR = list.get(0).getCelular();
-                    Session.PAGINAWEB = list.get(0).getPaginaWeb();
-                    Session.EMAIL = list.get(0).getEmail();
-                    Session.DIRECCION = list.get(0).getDomicilio();
-                }
-                DetalleADO.GetDetailIdName("3", "0010", "").forEach(e -> {
-                    Session.IMPUESTO = Double.parseDouble(e.getDescripcion().get());
-                });
-<<<<<<< HEAD
-=======
-                
-//                DetalleADO.GetDetailIdName("3", "0013", "").forEach(e -> {
-//                    Session.MONEDA = e.getDescripcion().get();
-//                });
+                    Session.MONEDA = MonedaADO.GetMonedaPredetermined();
 
->>>>>>> d75492744ae458e04337110b641d30fcacbe50bd
-                ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");
-                if (clienteTB != null) {
-                    Session.IDCLIENTE = clienteTB.getIdCliente();
-                    Session.DATOSCLIENTE = clienteTB.getApellidos() + " " + clienteTB.getNombres();
-                } else {
-                    ClienteTB clienteInsert = new ClienteTB();
-                    clienteInsert.setTipoDocumento(1);
-                    clienteInsert.setNumeroDocumento("00000000");
-                    clienteInsert.setApellidos("PUBLICO");
-                    clienteInsert.setNombres("GENERAL");
-                    clienteInsert.setSexo(0);
-                    clienteInsert.setFechaNacimiento(null);
-                    clienteInsert.setTelefono("");
-                    clienteInsert.setCelular("");
-                    clienteInsert.setEmail("");
-                    clienteInsert.setDireccion("");
-                    clienteInsert.setEstado(1);
-                    clienteInsert.setUsuarioRegistro("");
+                    ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");
+                    if (clienteTB != null) {
+                        Session.IDCLIENTE = clienteTB.getIdCliente();
+                        Session.DATOSCLIENTE = clienteTB.getApellidos() + " " + clienteTB.getNombres();
+                    } else {
+                        ClienteTB clienteInsert = new ClienteTB();
+                        clienteInsert.setTipoDocumento(1);
+                        clienteInsert.setNumeroDocumento("00000000");
+                        clienteInsert.setApellidos("PUBLICO");
+                        clienteInsert.setNombres("GENERAL");
+                        clienteInsert.setSexo(0);
+                        clienteInsert.setFechaNacimiento(null);
+                        clienteInsert.setTelefono("");
+                        clienteInsert.setCelular("");
+                        clienteInsert.setEmail("");
+                        clienteInsert.setDireccion("");
+                        clienteInsert.setEstado(1);
+                        clienteInsert.setUsuarioRegistro("");
 
-                    FacturacionTB facturacionTB = new FacturacionTB();
-                    facturacionTB.setTipoDocumentoFacturacion(0);
-                    facturacionTB.setNumeroDocumentoFacturacion("");
-                    facturacionTB.setRazonSocial("");
-                    facturacionTB.setNombreComercial("");
-                    facturacionTB.setPais("");
-                    facturacionTB.setDepartamento(0);
-                    facturacionTB.setProvincia(0);
-                    facturacionTB.setDistrito(0);
+                        FacturacionTB facturacionTB = new FacturacionTB();
+                        facturacionTB.setTipoDocumentoFacturacion(0);
+                        facturacionTB.setNumeroDocumentoFacturacion("");
+                        facturacionTB.setRazonSocial("");
+                        facturacionTB.setNombreComercial("");
+                        facturacionTB.setPais("");
+                        facturacionTB.setDepartamento(0);
+                        facturacionTB.setProvincia(0);
+                        facturacionTB.setDistrito(0);
 
-                    clienteInsert.setFacturacionTB(facturacionTB);
-                    String result = ClienteADO.CrudCliente(clienteInsert);
-                    if (result.equalsIgnoreCase("registered")) {
-                        ClienteTB clienteSelect = ClienteADO.GetByIdClienteVenta("00000000");
-                        if (clienteTB != null) {
-                            Session.IDCLIENTE = clienteSelect.getIdCliente();
-                            Session.DATOSCLIENTE = clienteSelect.getApellidos() + " " + clienteTB.getNombres();
+                        clienteInsert.setFacturacionTB(facturacionTB);
+                        String result = ClienteADO.CrudCliente(clienteInsert);
+                        if (result.equalsIgnoreCase("registered")) {
+                            ClienteTB clienteSelect = ClienteADO.GetByIdClienteVenta("00000000");
+                            if (clienteTB != null) {
+                                Session.IDCLIENTE = clienteSelect.getIdCliente();
+                                Session.DATOSCLIENTE = clienteSelect.getApellidos() + " " + clienteTB.getNombres();
+                            }
+
                         }
-
                     }
                 }
 

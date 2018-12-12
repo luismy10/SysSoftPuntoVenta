@@ -11,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import model.DBUtil;
 import model.MantenimientoADO;
 import model.MantenimientoTB;
 
@@ -44,7 +43,6 @@ public class FxMantenimientoController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mantenimiento", "Ingrese el nombre del mantenimiento, por favor.", false);
             txtName.requestFocus();
         } else {
-            if (DBUtil.StateConnection()) {
                 short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
                 if (confirmation == 1) {
                     MantenimientoTB mantenimientoTB = new MantenimientoTB();
@@ -71,7 +69,7 @@ public class FxMantenimientoController implements Initializable {
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Mantenimiento", result, false);
                             break;
                     }
-                }
+                
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Mantenimiento", "No hay conexión al servidor.", false);
             }

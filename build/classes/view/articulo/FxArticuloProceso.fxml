@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloProcesoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloProcesoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -133,6 +133,20 @@
                                                          </font>
                                                       </Label>
                                                       <TextField fx:id="txtMarca" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedMarca" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedMarca" prefHeight="30.0" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
+                                             <children>
+                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto14" text="Medida(Espacio):" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField fx:id="txtMarca" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedMedida" onKeyTyped="#onKeyTypedMedida" onMouseClicked="#onMouseClickedMarca" prefHeight="30.0" />
                                                    </children>
                                                 </VBox>
                                              </children>

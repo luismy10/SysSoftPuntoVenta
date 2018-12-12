@@ -30,7 +30,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.CiudadADO;
 import model.CiudadTB;
-import model.DBUtil;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.DistritoADO;
@@ -334,7 +333,6 @@ public class FxProveedorProcesoController implements Initializable {
 
             cbEstado.requestFocus();
         } else {
-            if (DBUtil.StateConnection()) {
                 short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mi Empresa", "¿Esta seguro de continuar?", true);
                 if (confirmation == 1) {
                     ProveedorTB proveedorTB = new ProveedorTB();
@@ -384,7 +382,7 @@ public class FxProveedorProcesoController implements Initializable {
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Proveedor", result, false);
                             break;
                     }
-                }
+                
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Proveedor", "No hay conexión al servidor.", false);
             }

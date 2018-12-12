@@ -11,15 +11,17 @@ public class ImagenTB {
     private String idRelacionado;
 
     public ImagenTB() {
-        
+
+    }
+
+    public ImagenTB(Image imagen) {
+        this.imagen = imagen;
     }
 
     public ImagenTB(InputStream file) {
         this.file = file;
     }
-    
-    
-    
+
     public long getIdImage() {
         return idImage;
     }
@@ -51,6 +53,5 @@ public class ImagenTB {
     public void setFile(InputStream file) {
         this.file = file;
     }
-    
-    
+
 }

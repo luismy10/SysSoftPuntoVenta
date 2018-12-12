@@ -27,7 +27,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.ClienteADO;
 import model.ClienteTB;
-import model.DBUtil;
 
 public class FxClienteController implements Initializable {
 
@@ -91,7 +90,6 @@ public class FxClienteController implements Initializable {
     }
 
     public void fillCustomersTable(String value) {
-        if (DBUtil.StateConnection()) {
 
             ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
                 Thread t = new Thread(runnable);
@@ -124,7 +122,7 @@ public class FxClienteController implements Initializable {
             if (!exec.isShutdown()) {
                 exec.shutdown();
             }
-        }
+        
 
     }
 

@@ -29,7 +29,6 @@ public class FxConfiguracionController implements Initializable {
     }
 
     private void openWindowTablasBasicas() throws IOException {
-
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_DETALLE_MATENIMIENTO));
         VBox node = fXMLPrincipal.load();
         FxDetalleMantenimientoController controller = fXMLPrincipal.getController();
@@ -40,7 +39,7 @@ public class FxConfiguracionController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         content.getChildren().add(node);
-        controller.initWindow();
+        controller.reloadListView();
     }
 
     private void openWindowMiEmpresa() throws IOException {
@@ -87,7 +86,6 @@ public class FxConfiguracionController implements Initializable {
     }
 
     private void openWindowMoney() throws IOException {
-
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_MONEDA));
         VBox node = fXMLPrincipal.load();
         FxMonedaController controller = fXMLPrincipal.getController();
@@ -98,7 +96,7 @@ public class FxConfiguracionController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         content.getChildren().add(node);
-
+        controller.fillTableMonedas();
     }
 
     @FXML

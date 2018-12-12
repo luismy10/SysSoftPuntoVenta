@@ -3,7 +3,6 @@ package controller;
 import java.awt.HeadlessException;
 import java.io.InputStream;
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -223,11 +222,7 @@ public class FxCompraDetalleController implements Initializable {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(FxCompraDetalleController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-                Logger.getLogger(FxCompraDetalleController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            DBUtil.dbDisconnect();
         }
     }
 

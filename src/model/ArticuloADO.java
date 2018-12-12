@@ -16,7 +16,6 @@ public class ArticuloADO {
 
     public static String CrudArticulo(ArticuloTB articuloTB) {
         PreparedStatement preparedArticulo = null;
-        PreparedStatement preparedImagen = null;
         PreparedStatement preparedHistorialArticulo = null;
         PreparedStatement preparedValidation = null;
         CallableStatement codigoArticulo = null;
@@ -33,7 +32,7 @@ public class ArticuloADO {
                     DBUtil.getConnection().rollback();
                     return "duplicate";
                 } else {
-                    preparedArticulo = DBUtil.getConnection().prepareStatement("update ArticuloTB set Clave = ?,ClaveAlterna=?, NombreMarca=UPPER(?),NombreGenerico=UPPER(?),Categoria=?,Marca=?,Presentacion=?,StockMinimo=?,StockMaximo=?,PrecioCompra=?, PrecioVenta=?,Margen=?,Utilidad=?,PrecioVentaMayoreo=?,MargenMayoreo=?,UtilidadMayoreo=?,UnidadVenta = ?,Departamento = ?,Estado=?,Lote=?,Inventario=? where IdArticulo = ?");
+                    preparedArticulo = DBUtil.getConnection().prepareStatement("update ArticuloTB set Clave = ?,ClaveAlterna=?, NombreMarca=UPPER(?),NombreGenerico=UPPER(?),Categoria=?,Marca=?,Presentacion=?,StockMinimo=?,StockMaximo=?,PrecioCompra=?, PrecioVenta=?,Margen=?,Utilidad=?,PrecioVentaMayoreo=?,MargenMayoreo=?,UtilidadMayoreo=?,UnidadVenta = ?,Departamento = ?,Estado=?,Lote=?,Inventario=?,Imagen=? where IdArticulo = ?");
                     preparedArticulo.setString(1, articuloTB.getClave().get());
                     preparedArticulo.setString(2, articuloTB.getClaveAlterna());
                     preparedArticulo.setString(3, articuloTB.getNombreMarca().get());
@@ -55,7 +54,8 @@ public class ArticuloADO {
                     preparedArticulo.setInt(19, articuloTB.getEstado());
                     preparedArticulo.setBoolean(20, articuloTB.isLote());
                     preparedArticulo.setBoolean(21, articuloTB.isInventario());
-                    preparedArticulo.setString(22, articuloTB.getIdArticulo());
+                    preparedArticulo.setBinaryStream(22, articuloTB.getImagenTB().getFile());
+                    preparedArticulo.setString(23, articuloTB.getIdArticulo());
 
                     preparedArticulo.addBatch();
                     preparedArticulo.executeBatch();
@@ -100,8 +100,9 @@ public class ArticuloADO {
                             + "Departamento,"
                             + "Estado,"
                             + "Lote,"
-                            + "Inventario)"
-                            + "values(?,?,?,UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,0,0,?,?,?,?,?)");
+                            + "Inventario,"
+                            + "Imagen)"
+                            + "values(?,?,?,UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,0,0,?,?,?,?,?,?)");
                     preparedArticulo.setString(1, idArticulo);
                     preparedArticulo.setString(2, articuloTB.getClave().get());
                     preparedArticulo.setString(3, articuloTB.getClaveAlterna());
@@ -124,12 +125,8 @@ public class ArticuloADO {
                     preparedArticulo.setInt(20, articuloTB.getEstado());
                     preparedArticulo.setBoolean(21, articuloTB.isLote());
                     preparedArticulo.setBoolean(22, articuloTB.isInventario());
+                    preparedArticulo.setBinaryStream(23, articuloTB.getImagenTB().getFile());
                     preparedArticulo.addBatch();
-
-                    preparedImagen = DBUtil.getConnection().prepareStatement("insert into ImagenArticuloTB(Imagen,IdRelacionado)values(?,?)");
-                    preparedImagen.setBinaryStream(1, articuloTB.getImagenTB().getFile());
-                    preparedImagen.setString(2, idArticulo);
-                    preparedImagen.addBatch();
 
                     preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("insert into HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
                             + "								values(?,GETDATE(),'Alta de Artículo',0,0,0,?)");
@@ -138,7 +135,6 @@ public class ArticuloADO {
                     preparedHistorialArticulo.addBatch();
 
                     preparedArticulo.executeBatch();
-                    preparedImagen.executeBatch();
                     preparedHistorialArticulo.executeBatch();
                     DBUtil.getConnection().commit();
                     return "registered";
@@ -155,9 +151,6 @@ public class ArticuloADO {
             try {
                 if (preparedArticulo != null) {
                     preparedArticulo.close();
-                }
-                if (preparedImagen != null) {
-                    preparedImagen.close();
                 }
                 if (preparedHistorialArticulo != null) {
                     preparedHistorialArticulo.close();
@@ -254,6 +247,73 @@ public class ArticuloADO {
                 articuloTB.setImageLote(rsEmps.getBoolean("Lote")
                         ? new ImageView(new Image("/view/lote-box.png", 28, 28, false, false))
                         : null);
+
+                empList.add(articuloTB);
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+
+    public static Image GetImageArticuloById(String id) {
+        PreparedStatement statementImage;
+        ImagenTB im = new ImagenTB();
+        try {
+            DBUtil.dbConnect();
+            statementImage = DBUtil.getConnection().prepareStatement("SELECT Imagen FROM ArticuloTB WHERE IdArticulo = ?");
+            statementImage.setString(1, id);
+            ResultSet resultSet = statementImage.executeQuery();
+            if (resultSet.next()) {                
+                im.setFile(resultSet.getBinaryStream("Imagen"));
+                if (im.getFile() != null) {
+                    im.setImagen(new Image(im.getFile()));
+                } else {
+                    im.setImagen(new Image("/view/no-image.png"));
+                }
+            }else{
+                 im.setImagen(new Image("/view/no-image.png"));
+            }
+        } catch (SQLException ex) {
+
+        }
+        return im.getImagen();
+    }
+
+    public static ObservableList<ArticuloTB> ListArticulosListaView(String value) {
+        String selectStmt = "{call Sp_Listar_Articulo_Lista_View(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<ArticuloTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            rsEmps = preparedStatement.executeQuery();
+
+            while (rsEmps.next()) {
+                ArticuloTB articuloTB = new ArticuloTB();
+                articuloTB.setId(rsEmps.getRow());
+                articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
+                articuloTB.setClave(rsEmps.getString("Clave"));
+                articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                articuloTB.setMarcaName(rsEmps.getString("Marca"));
+                articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 articuloTB.setInventario(rsEmps.getBoolean("Inventario"));
                 empList.add(articuloTB);
             }
@@ -314,46 +374,14 @@ public class ArticuloADO {
                 articuloTB.setEstado(rsEmps.getInt("Estado"));
                 articuloTB.setLote(rsEmps.getBoolean("Lote"));
                 articuloTB.setInventario(rsEmps.getBoolean("Inventario"));
-                empList.add(articuloTB);
-            }
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
-
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
+                ImagenTB im = new ImagenTB();
+                im.setFile(rsEmps.getBinaryStream("Imagen"));
+                if (im.getFile() != null) {
+                    im.setImagen(new Image(im.getFile()));
+                } else {
+                    im.setImagen(new Image("/view/no-image.png"));
                 }
-                if (rsEmps != null) {
-                    rsEmps.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-
-            }
-        }
-        return empList;
-    }
-
-    public static ArrayList<ArticuloTB> GetArticulosByIdView(String value) {
-//        String selectStmt = "{call Sp_Get_Articulo_By_Id_View(?)}";
-        String selectStmt = "select NombreMarca,NombreGenerico,PrecioVenta,Cantidad\n"
-                + "		from ArticuloTB\n"
-                + "		where IdArticulo=?";
-        PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
-        ArrayList<ArticuloTB> empList = new ArrayList<>();
-        try {
-            DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, value);
-            rsEmps = preparedStatement.executeQuery();
-            while (rsEmps.next()) {
-                ArticuloTB articuloTB = new ArticuloTB();
-                articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                articuloTB.setNombreGenerico(rsEmps.getString("NombreGenerico"));
-                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
-                articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                articuloTB.setImagenTB(im);
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {

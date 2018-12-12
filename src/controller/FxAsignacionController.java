@@ -13,7 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import model.DBUtil;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.DirectorioADO;
@@ -38,12 +37,9 @@ public class FxAsignacionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         idDirectorio = 0;
-        if (DBUtil.StateConnection()) {
-            DetalleADO.GetDetailIdName("2", "0002", "").forEach(e -> {
-                cbAtributo.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-            });
-
-        }
+        DetalleADO.GetDetailIdName("2", "0002", "").forEach(e -> {
+            cbAtributo.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
     }
 
     private void aValidityProcess() {
@@ -54,35 +50,34 @@ public class FxAsignacionController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Asignación", "Ingrese el valor, por favor.", false);
             txtValor.requestFocus();
         } else {
-            if (DBUtil.StateConnection()) {
-                short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Asignación", "¿Esta seguro de continuar?", true);
-                if (confirmation == 1) {
-                    DirectorioTB directorioTB = new DirectorioTB();
-                    directorioTB.setIdDirectorio(idDirectorio);
-                    directorioTB.setAtributo(cbAtributo.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                    directorioTB.setValor(txtValor.getText());
-                    directorioTB.setIdPersona(idPersona);
-                    String result = DirectorioADO.CrudEntity(directorioTB);
-                    switch (result) {
-                        case "registered":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Asignación", "Registrado correctamente.", false);
+            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Asignación", "¿Esta seguro de continuar?", true);
+            if (confirmation == 1) {
+                DirectorioTB directorioTB = new DirectorioTB();
+                directorioTB.setIdDirectorio(idDirectorio);
+                directorioTB.setAtributo(cbAtributo.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                directorioTB.setValor(txtValor.getText());
+                directorioTB.setIdPersona(idPersona);
+                String result = DirectorioADO.CrudEntity(directorioTB);
+                switch (result) {
+                    case "registered":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Asignación", "Registrado correctamente.", false);
 
-                            break;
-                        case "updated":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Asignación", "Actualizado correctamente.", false);
-                             
-                            Tools.Dispose(window);
-                            break;
-                        case "error":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Asignación", "No se puedo completar la ejecución.", false);
+                        break;
+                    case "updated":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Asignación", "Actualizado correctamente.", false);
 
-                            break;
-                        default:
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Asignación", result, false);
+                        Tools.Dispose(window);
+                        break;
+                    case "error":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Asignación", "No se puedo completar la ejecución.", false);
 
-                            break;
-                    }
+                        break;
+                    default:
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Asignación", result, false);
+
+                        break;
                 }
+
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Asignación", "No hay conexión al servidor.", false);
             }

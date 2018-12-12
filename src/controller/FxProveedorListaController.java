@@ -23,7 +23,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import model.DBUtil;
 import model.ProveedorADO;
 import model.ProveedorTB;
 
@@ -56,7 +55,6 @@ public class FxProveedorListaController implements Initializable {
     }
 
     public void fillCustomersTable(String value) {
-        if (DBUtil.StateConnection()) {
             ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
                 Thread t = new Thread(runnable);
                 t.setDaemon(true);
@@ -78,7 +76,7 @@ public class FxProveedorListaController implements Initializable {
             if (!exec.isShutdown()) {
                 exec.shutdown();
             }
-        }
+        
 
     }
 

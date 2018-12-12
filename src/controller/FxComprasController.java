@@ -137,7 +137,7 @@ public class FxComprasController implements Initializable {
     }
 
     private void onViewRegister() {
-        if (txtProveedor.getText().isEmpty()) {
+        if (txtProveedor.getText().isEmpty() && idProveedor.equalsIgnoreCase("")) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compras", "Ingrese un proveedor, por favor.", false);
             txtProveedor.requestFocus();
         } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {

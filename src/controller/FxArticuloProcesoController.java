@@ -33,7 +33,6 @@ import model.ArticuloADO;
 import model.ArticuloTB;
 import model.DetalleADO;
 import model.DetalleTB;
-import model.ImageADO;
 import model.ImagenTB;
 
 public class FxArticuloProcesoController implements Initializable {
@@ -96,7 +95,7 @@ public class FxArticuloProcesoController implements Initializable {
     private int idMarca;
 
     private int idDepartmento;
-    
+
     private FxArticulosController articulosController;
 
     @Override
@@ -207,10 +206,10 @@ public class FxArticuloProcesoController implements Initializable {
 
             if (articuloTB.getUnidadVenta() == 1) {
                 rbUnidad.setSelected(true);
-                 txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidad(), 2));
+                txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidad(), 2));
             } else {
                 rbGranel.setSelected(true);
-                 txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidadGranel(), 2));
+                txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidadGranel(), 2));
             }
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
@@ -226,23 +225,14 @@ public class FxArticuloProcesoController implements Initializable {
             cbLote.setSelected(articuloTB.isLote());
             cbInventario.setSelected(articuloTB.isInventario());
 
-           
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
             txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
             txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
             txtPrecioMayoreo.setText(Tools.roundingValue(articuloTB.getPrecioVentaMayoreo(), 2));
 
-            loadViewImage(idArticulo);
+            lnPrincipal.setImage(articuloTB.getImagenTB().getImagen());
 
-        }
-    }
-
-    private void loadViewImage(String idRepresentante) {
-        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante, true);
-        if (imagenTB.getIdImage() > 0) {
-            idImagen = imagenTB.getIdImage();
-            lnPrincipal.setImage(imagenTB.getImagen());
         }
     }
 
@@ -337,17 +327,18 @@ public class FxArticuloProcesoController implements Initializable {
                 articuloTB.setUnidadVenta(rbUnidad.isSelected() ? 1 : 2);
                 articuloTB.setLote(cbLote.isSelected());
                 articuloTB.setInventario(cbInventario.isSelected());
+
                 String result = ArticuloADO.CrudArticulo(articuloTB);
                 switch (result) {
                     case "registered":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Registrado correctamente el artículo.", false);
-                        Tools.Dispose(window);                        
+                        Tools.Dispose(window);
                         break;
                     case "updated":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Actualizado correctamente el artículo.", false);
-                        Tools.Dispose(window); 
+                        Tools.Dispose(window);
                         articulosController.getTxtSearch().requestFocus();
-                        articulosController.fillArticlesTable(articulosController.getTxtSearch().getText().trim());                        
+                        articulosController.fillArticlesTable(articulosController.getTxtSearch().getText().trim());
                         break;
                     case "duplicate":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puede haber 2 artículos con la misma clave.", false);
@@ -385,27 +376,6 @@ public class FxArticuloProcesoController implements Initializable {
         Tools.Dispose(window);
     }
 
-    private void inProcessImage(InputStream inputStream) {
-        ImagenTB imagenTB = new ImagenTB();
-        imagenTB.setIdImage(idImagen);
-        imagenTB.setFile(inputStream);
-        imagenTB.setIdRelacionado(idArticulo);
-        if (!idArticulo.equalsIgnoreCase("")) {
-            String result = ImageADO.CrudImageArticulo(imagenTB);
-            if (result.equalsIgnoreCase("insert")) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Registrado correctamente la imagen.", false);
-                loadViewImage(idArticulo);
-            } else if (result.equalsIgnoreCase("update")) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Actualizado correctamente la imagen.", false);
-            } else if (result.equalsIgnoreCase("error")) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puedo completar la ejecución.", false);
-            } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Articulo", result, false);
-            }
-        }
-
-    }
-
     @FXML
     private void onActionPhoto(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -416,13 +386,6 @@ public class FxArticuloProcesoController implements Initializable {
             selectFile = new File(selectFile.getAbsolutePath());
             if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg")) {
                 lnPrincipal.setImage(new Image(selectFile.toURI().toString()));
-                if (!idArticulo.equalsIgnoreCase("")) {
-                    try (InputStream inputStream = new FileInputStream(selectFile)) {
-                        inProcessImage(inputStream);
-                    } catch (Exception ex) {
-                    }
-                }
-
             }
         }
     }
@@ -430,8 +393,6 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private void onActionRemovePhoto(ActionEvent event) throws IOException {
         lnPrincipal.setImage(new Image("/view/no-image.png"));
-        InputStream is = getClass().getResourceAsStream("/view/no-image.png");
-        inProcessImage(is);
     }
 
     private InputStream getFileResources(File file) {
@@ -619,6 +580,19 @@ public class FxArticuloProcesoController implements Initializable {
 
     @FXML
     private void onKeyTypedDepartamento(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if (c != '\b') {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedMedida(KeyEvent event) {
+
+    }
+
+    @FXML
+    private void onKeyTypedMedida(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if (c != '\b') {
             event.consume();

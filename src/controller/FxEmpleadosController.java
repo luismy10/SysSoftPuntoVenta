@@ -26,7 +26,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import model.DBUtil;
 import model.EmpleadoADO;
 import model.EmpleadoTB;
 
@@ -79,7 +78,6 @@ public class FxEmpleadosController implements Initializable {
     }
 
     public void fillEmpleadosTable(String value) {
-        if (DBUtil.StateConnection()) {
 
             ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
                 Thread t = new Thread(runnable);
@@ -112,7 +110,7 @@ public class FxEmpleadosController implements Initializable {
             if (!exec.isShutdown()) {
                 exec.shutdown();
             }
-        }
+        
 
     }
 

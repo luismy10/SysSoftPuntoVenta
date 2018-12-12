@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.awt.Color;
@@ -20,10 +15,6 @@ import java.util.Date;
 import javafx.scene.control.TableView;
 import model.ArticuloTB;
 
-/**
- *
- * @author Aleza
- */
 public class BillPrintable implements Printable {
 
     private double subTotal;
@@ -70,28 +61,9 @@ public class BillPrintable implements Printable {
             FontMetrics metrics = g2d.getFontMetrics(new Font("Arial", Font.PLAIN, 9));
 
             try {
-                /*Draw Header*/
+
                 int y = 20;
                 int yShift = 12;
-                int headerRectHeight = 15;
-
-                ///////////////// Product names Get ///////////
-                String pn1a = "SHAMPOO SEDAL DE 60G";
-                String pn2a = "PAPEL SUAVE";
-                String pn3a = "TOALLA DE PAPEL MATRIZ";
-                String pn4a = "DETERGENTE ACE DE 500 GM";
-                String pn5a = "DETERGENTE ARIEL DE 500 GM";
-                String pn6a = "DETERGENTE OPAL DE 500 GM";
-                ///////////////// Product names Get ///////////
-
-                ///////////////// Product price Get ///////////
-                double pp1a = Double.valueOf("100.00");
-                double pp2a = Double.valueOf("100.00");
-                double pp3a = Double.valueOf("100.00");
-                double pp4a = Double.valueOf("100.00");
-                double pp5a = Double.valueOf("200.00");
-                double pp6a = Double.valueOf("140.00");
-                double sum = pp1a + pp2a + pp3a + pp4a;
                 ///////////////// Product price Get ///////////
                 Date date = new Date();
                 SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");

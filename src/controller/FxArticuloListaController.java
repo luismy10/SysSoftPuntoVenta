@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -83,15 +82,15 @@ public class FxArticuloListaController implements Initializable {
             return t;
         });
 
-        Task<List<ArticuloTB>> task = new Task<List<ArticuloTB>>() {
+        Task<ObservableList<ArticuloTB>> task = new Task<ObservableList<ArticuloTB>>() {
             @Override
             public ObservableList<ArticuloTB> call() {
-                return ArticuloADO.ListArticulos(value);
+                return ArticuloADO.ListArticulosListaView(value);
             }
         };
 
         task.setOnSucceeded((WorkerStateEvent e) -> {
-            tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
+            tvList.setItems(task.getValue());
             stateRequest = true;
         });
 

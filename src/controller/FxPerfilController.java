@@ -25,7 +25,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.DBUtil;
 import model.DirectorioADO;
 import model.DirectorioTB;
 import model.ImageADO;
@@ -87,7 +86,6 @@ public class FxPerfilController implements Initializable {
     }
 
     public void loadViewUpdate(String idPersona) {
-        if (DBUtil.StateConnection()) {
             try {
                 ArrayList<DirectorioTB> arrayList = DirectorioADO.GetIdDirectorio(idPersona);
                 for (int i = 0; i < arrayList.size(); i++) {
@@ -104,15 +102,15 @@ public class FxPerfilController implements Initializable {
             } catch (IOException ex) {
                 System.out.println(ex);
             }
-        }
+        
     }
 
     private void loadViewImage(String idRepresentante) {
-        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante,true);
-        if (imagenTB.getIdImage() != 0) {
-            idImagen = imagenTB.getIdImage();
-            ivPerfil.setImage(imagenTB.getImagen());
-        }
+//        ImagenTB imagenTB = ImageADO.GetImage(idRepresentante,true);
+//        if (imagenTB.getIdImage() != 0) {
+//            idImagen = imagenTB.getIdImage();
+//            ivPerfil.setImage(imagenTB.getImagen());
+//        }
     }
 
     @FXML

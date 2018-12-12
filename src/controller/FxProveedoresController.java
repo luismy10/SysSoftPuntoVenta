@@ -25,7 +25,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import model.DBUtil;
 import model.ProveedorADO;
 import model.ProveedorTB;
 
@@ -88,7 +87,6 @@ public class FxProveedoresController implements Initializable {
     }
 
     public void fillCustomersTable(String value) {
-        if (DBUtil.StateConnection()) {
 
             ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
                 Thread t = new Thread(runnable);
@@ -119,7 +117,7 @@ public class FxProveedoresController implements Initializable {
             if (!exec.isShutdown()) {
                 exec.shutdown();
             }
-        }
+        
 
     }
 

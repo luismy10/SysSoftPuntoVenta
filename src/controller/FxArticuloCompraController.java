@@ -108,13 +108,14 @@ public class FxArticuloCompraController implements Initializable {
         }
     }
 
-    void setLoadData(String value[], boolean lote) {
+    public void setLoadData(String value[], boolean lote) {
         idArticulo = value[0];
         lblClave.setText(value[1]);
         lblDescripcion.setText(value[2]);
         unidadventa = Integer.parseInt(value[3]);
         validarlote = lote;
         this.lote = lote;
+        
     }
 
     public void setLoadEdit(ArticuloTB articuloTB, int index, ObservableList<LoteTB> loteTBs) {

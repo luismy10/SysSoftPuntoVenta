@@ -11,7 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import model.DBUtil;
 import model.DetalleADO;
 import model.DetalleTB;
 
@@ -83,7 +82,6 @@ public class FxDetalleController implements Initializable {
             txtName.requestFocus();
         } else {
        
-            if (DBUtil.StateConnection()) {
                 short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
                 if (confirmation == 1) {
                     DetalleTB detalleTB = new DetalleTB();
@@ -109,7 +107,7 @@ public class FxDetalleController implements Initializable {
                     } else {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle", result, false);
                     }
-                }
+                
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle", "No hay conexión al servidor.", false);
             }

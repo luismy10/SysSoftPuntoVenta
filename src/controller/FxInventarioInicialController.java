@@ -30,7 +30,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.ArticuloADO;
 import model.ArticuloTB;
-import model.DBUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
@@ -97,7 +96,6 @@ public class FxInventarioInicialController implements Initializable {
     }
 
     public void fillArticlesTable() {
-        if (DBUtil.StateConnection()) {
 
             ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
                 Thread t = new Thread(runnable);
@@ -128,7 +126,7 @@ public class FxInventarioInicialController implements Initializable {
             if (!exec.isShutdown()) {
                 exec.shutdown();
             }
-        }
+        
 
     }
 
