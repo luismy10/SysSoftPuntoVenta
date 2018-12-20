@@ -23,6 +23,7 @@ public class DetalleADO {
             while (resultSet.next()) {
                 DetalleTB emp = new DetalleTB();
                 emp.setIdDetalle(resultSet.getInt("IdDetalle"));
+                emp.setIdAuxiliar(resultSet.getString("IdAuxiliar")); 
                 emp.setNombre(resultSet.getString("Nombre"));
                 emp.setDescripcion(resultSet.getString("Descripcion"));
                 emp.setEstado(resultSet.getString("Estado"));
@@ -49,13 +50,14 @@ public class DetalleADO {
     }
 
     public static String CrudEntity(DetalleTB detalleTB) {
-        String selectStmt = "{call Sp_Crud_Detalle(?,?,?,?,?,?,?)}";
+        String selectStmt = "{call Sp_Crud_Detalle(?,?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
             DBUtil.dbConnect();
             callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
             callableStatement.setInt("IdDetalle", detalleTB.getIdDetalle().get());
             callableStatement.setString("IdMantenimiento", detalleTB.getIdMantenimiento().get());
+            callableStatement.setString("IdAuxiliar", detalleTB.getIdAuxiliar().get());
             callableStatement.setString("Nombre", detalleTB.getNombre().get());
             callableStatement.setString("Descripcion", detalleTB.getDescripcion().get());
             callableStatement.setString("Estado", detalleTB.getEstado().get());

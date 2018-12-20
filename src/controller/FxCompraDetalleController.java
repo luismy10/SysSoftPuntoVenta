@@ -94,7 +94,7 @@ public class FxCompraDetalleController implements Initializable {
         tcId.setCellValueFactory(callData -> callData.getValue().getId().asObject());
 
         tcDescripcion.setCellValueFactory(callData -> Bindings.concat(
-                callData.getValue().getClave().get() + "\n" + callData.getValue().getNombreMarca().get()
+                callData.getValue().getClave() + "\n" + callData.getValue().getNombreMarca()
         ));
 
         tcMedidad.setCellValueFactory(cellData -> Bindings.concat(

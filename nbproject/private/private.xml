@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/SysSoftProcess/src/model/ImageADO.java</file>
-            <file>file:/D:/SysSoftProcess/src/model/ArticuloADO.java</file>
-            <file>file:/D:/SysSoftProcess/src/controller/FxArticulosController.java</file>
-            <file>file:/D:/SysSoftProcess/src/controller/FxArticuloProcesoController.java</file>
-            <file>file:/D:/SysSoftProcess/src/controller/FxPerfilController.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxArticuloSeleccionadoController.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxArticuloDetalleController.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaController.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxArticulosController.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/model/ArticuloADO.java</file>
         </group>
     </open-files>
 </project-private>

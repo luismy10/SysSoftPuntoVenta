@@ -134,7 +134,7 @@
                                     <Label styleClass="labelRoboto14" text="Sub Total" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblMonedaSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
                                           <Text fx:id="lblSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>
@@ -145,7 +145,7 @@
                                     <Label styleClass="labelRoboto14" text="Descuento" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/. -" />
+                                          <Text fx:id="lblMonedaDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/. -" />
                                           <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>
@@ -156,7 +156,7 @@
                                     <Label styleClass="labelRoboto14" text="Op. Gravada" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblMonedaGravada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
                                           <Text fx:id="lblGravada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>
@@ -167,7 +167,7 @@
                                     <Label styleClass="labelRoboto14" text="IGV" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblMonedaIgv" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
                                           <Text fx:id="lblIgv" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>
@@ -178,7 +178,7 @@
                                     <Label styleClass="labelRoboto14" text="Total" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
-                                          <Text fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblMonedaTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
                                           <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>

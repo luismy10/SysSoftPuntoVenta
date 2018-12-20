@@ -81,10 +81,10 @@ public class FxArticuloProcesoController implements Initializable {
     private TextField txtCantidadActual;
     @FXML
     private TextField txtPrecioMayoreo;
+    @FXML
+    private TextField txtMedida;
 
     private String idArticulo;
-
-    private long idImagen;
 
     private File selectFile;
 
@@ -96,12 +96,14 @@ public class FxArticuloProcesoController implements Initializable {
 
     private int idDepartmento;
 
+    private int idMedida;
+
     private FxArticulosController articulosController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idArticulo = "";
-        idImagen = 0;
+        idMedida = 0;
         idPresentacion = 0;
         idCategoria = 0;
         idMarca = 0;
@@ -125,7 +127,7 @@ public class FxArticuloProcesoController implements Initializable {
         ArrayList<ArticuloTB> list = ArticuloADO.GetArticulosById(value);
         if (!list.isEmpty()) {
             ArticuloTB articuloTB = list.get(0);
-            txtNombreMarca.setText(articuloTB.getNombreMarca().get());
+            txtNombreMarca.setText(articuloTB.getNombreMarca());
             txtNombreGenerico.setText(articuloTB.getNombreGenerico());
 
             if (articuloTB.getCategoria() != 0) {
@@ -136,6 +138,11 @@ public class FxArticuloProcesoController implements Initializable {
             if (articuloTB.getMarcar() != 0) {
                 idMarca = articuloTB.getMarcar();
                 txtMarca.setText(articuloTB.getMarcaName().get());
+            }
+
+            if (articuloTB.getMarcar() != 0) {
+                idMedida = articuloTB.getUnidadMedida();
+                txtMedida.setText(articuloTB.getUnidadMedidaName().get());
             }
 
             if (articuloTB.getPresentacion() != 0) {
@@ -179,9 +186,9 @@ public class FxArticuloProcesoController implements Initializable {
         if (!list.isEmpty()) {
             ArticuloTB articuloTB = list.get(0);
             idArticulo = articuloTB.getIdArticulo();
-            txtClave.setText(articuloTB.getClave().get());
+            txtClave.setText(articuloTB.getClave());
             txtClaveAlterna.setText(articuloTB.getClaveAlterna());
-            txtNombreMarca.setText(articuloTB.getNombreMarca().get());
+            txtNombreMarca.setText(articuloTB.getNombreMarca());
             txtNombreGenerico.setText(articuloTB.getNombreGenerico());
 
             if (articuloTB.getCategoria() != 0) {
@@ -192,6 +199,11 @@ public class FxArticuloProcesoController implements Initializable {
             if (articuloTB.getMarcar() != 0) {
                 idMarca = articuloTB.getMarcar();
                 txtMarca.setText(articuloTB.getMarcaName().get());
+            }
+
+            if (articuloTB.getUnidadMedida() != 0) {
+                idMedida = articuloTB.getUnidadMedida();
+                txtMedida.setText(articuloTB.getUnidadMedidaName().get());
             }
 
             if (articuloTB.getPresentacion() != 0) {
@@ -263,6 +275,9 @@ public class FxArticuloProcesoController implements Initializable {
                         : 0);
                 articuloTB.setMarcar(idMarca != 0
                         ? idMarca
+                        : 0);
+                articuloTB.setUnidadMedida(idMedida != 0
+                        ? idMedida
                         : 0);
                 articuloTB.setPresentacion(idPresentacion != 0
                         ? idPresentacion
@@ -567,14 +582,14 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private void onMouseClickedDepartamento(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
-            openWindowDetalle("Agregar Departamento", "0013");
+            openWindowDetalle("Agregar Departamento", "0014");
         }
     }
 
     @FXML
     private void onKeyReleasedDepartamento(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.SPACE) {
-            openWindowDetalle("Agregar Departamento", "0013");
+            openWindowDetalle("Agregar Departamento", "0014");
         }
     }
 
@@ -587,8 +602,17 @@ public class FxArticuloProcesoController implements Initializable {
     }
 
     @FXML
-    private void onKeyReleasedMedida(KeyEvent event) {
+    private void onMouseClickedMedida(MouseEvent event) throws IOException {
+        if (event.getClickCount() == 2) {
+            openWindowDetalle("Agregar Departamento", "0013");
+        }
+    }
 
+    @FXML
+    private void onKeyReleasedMedida(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.SPACE) {
+            openWindowDetalle("Agregar Departamento", "0013");
+        }
     }
 
     @FXML
@@ -615,6 +639,10 @@ public class FxArticuloProcesoController implements Initializable {
         this.idDepartmento = idDepartmento;
     }
 
+    public void setIdMedida(int idMedida) {
+        this.idMedida = idMedida;
+    }    
+
     public TextField getTxtPresentacion() {
         return txtPresentacion;
     }
@@ -634,6 +662,10 @@ public class FxArticuloProcesoController implements Initializable {
     public TextField getTxtDepartamento() {
         return txtDepartamento;
     }
+
+    public TextField getTxtMedida() {
+        return txtMedida;
+    }   
 
     public void initControllerArticulos(FxArticulosController articulosController) {
         this.articulosController = articulosController;

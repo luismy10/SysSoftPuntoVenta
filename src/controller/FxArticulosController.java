@@ -19,8 +19,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -31,7 +29,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.ArticuloADO;
 import model.ArticuloTB;
-import model.LoteADO;
 
 public class FxArticulosController implements Initializable {
 
@@ -50,13 +47,13 @@ public class FxArticulosController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcMarca;
     @FXML
-    private TableColumn<ArticuloTB, String> tcPresentacion;
+    private TableColumn<ArticuloTB, String> tcCantidad;
+    @FXML
+    private TableColumn<ArticuloTB, String> tcPrecio;
     @FXML
     private TableColumn<ArticuloTB, String> tcUnidadVenta;
     @FXML
     private TableColumn<ArticuloTB, String> tcEstado;
-    @FXML
-    private TableColumn<ArticuloTB, ImageView> tcLote;
     @FXML
     private VBox vbOpciones;
 
@@ -73,17 +70,21 @@ public class FxArticulosController implements Initializable {
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocument.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombreMarca().get()
+                cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()
         ));
         tcMarca.setCellValueFactory(cellData -> cellData.getValue().getMarcaName());
-        tcPresentacion.setCellValueFactory(cellData -> cellData.getValue().getPresentacionName());
         tcUnidadVenta.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel(Peso)"
         ));
+        tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getUnidadVenta() == 1
+                ? Tools.roundingValue(cellData.getValue().getCantidad(), 0)
+                : Tools.roundingValue(cellData.getValue().getCantidadGranel(), 2)
+        ));
+        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Session.MONEDA + "" + Tools.roundingValue(cellData.getValue().getPrecioVenta(), 2)));
         tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
-        tcLote.setCellValueFactory(new PropertyValueFactory<>("imageLote"));
 
-        changeViewArticuloSeleccionado();
+//        changeViewArticuloSeleccionado();
         stateRequest = false;
 
     }
@@ -171,7 +172,7 @@ public class FxArticulosController implements Initializable {
             });
             stage.show();
             controller.setInitArticulo();
-            controller.setValueEdit(tvList.getSelectionModel().getSelectedItem().getClave().get());
+            controller.setValueEdit(tvList.getSelectionModel().getSelectedItem().getClave());
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "Debe seleccionar un artículo para editarlo", false);
             tvList.requestFocus();
@@ -196,7 +197,7 @@ public class FxArticulosController implements Initializable {
             });
             stage.show();
             controller.setInitArticulo();
-            controller.setValueClone(tvList.getSelectionModel().getSelectedItem().getClave().get());
+            controller.setValueClone(tvList.getSelectionModel().getSelectedItem().getClave());
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "Debe seleccionar un artículo para clonarlo", false);
             tvList.requestFocus();
@@ -281,8 +282,9 @@ public class FxArticulosController implements Initializable {
     private void onActionReload(ActionEvent event) {
         if (stateRequest) {
             fillArticlesTable("");
-            if (!tvList.getItems().isEmpty()) 
+            if (!tvList.getItems().isEmpty()) {
                 tvList.getSelectionModel().select(0);
+            }
         }
     }
 
@@ -291,8 +293,9 @@ public class FxArticulosController implements Initializable {
         if (event.getCode() == KeyCode.ENTER) {
             if (stateRequest) {
                 fillArticlesTable("");
-                if (!tvList.getItems().isEmpty()) 
-                tvList.getSelectionModel().select(0);
+                if (!tvList.getItems().isEmpty()) {
+                    tvList.getSelectionModel().select(0);
+                }
             }
         }
     }
@@ -311,10 +314,10 @@ public class FxArticulosController implements Initializable {
     private void onKeyReleasedSearch(KeyEvent event) {
         if (stateRequest) {
             fillArticlesTable(txtSearch.getText().trim());
-            if (!tvList.getItems().isEmpty()) {
-                tvList.getSelectionModel().select(0);
-                onViewDetailArticulo();
-            }
+//            if (!tvList.getItems().isEmpty()) {
+//                tvList.getSelectionModel().select(0);
+//                onViewDetailArticulo();
+//            }
         }
     }
 
@@ -330,11 +333,12 @@ public class FxArticulosController implements Initializable {
         onViewArticuloClone();
     }
 
+    /*
     public void onViewDetailArticulo() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             ArticuloTB articuloTB = tvList.getSelectionModel().getSelectedItem();
-             seleccionadoController.getIvPrincipal().setImage(ArticuloADO.GetImageArticuloById(articuloTB.getIdArticulo()));
-            seleccionadoController.getLblName().setText(articuloTB.getNombreMarca().get());
+            seleccionadoController.getIvPrincipal().setImage(ArticuloADO.GetImageArticuloById(articuloTB.getIdArticulo()));
+            seleccionadoController.getLblName().setText(articuloTB.getNombreMarca());
             seleccionadoController.getLblPrice().setText(Session.MONEDA + " " + Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
             seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad() % 1 == 0
                     ? Tools.roundingValue(articuloTB.getCantidad(), 0)
@@ -344,12 +348,12 @@ public class FxArticulosController implements Initializable {
             }
         }
     }
-
+     */
     @FXML
     private void onMouseClickedList(MouseEvent event) throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (event.getClickCount() == 1) {
-                onViewDetailArticulo();
+//                onViewDetailArticulo();
             } else if (event.getClickCount() == 2) {
                 onViewArticuloEdit();
             }
@@ -370,10 +374,10 @@ public class FxArticulosController implements Initializable {
             if (null != event.getCode()) {
                 switch (event.getCode()) {
                     case UP:
-                        onViewDetailArticulo();
+//                        onViewDetailArticulo();
                         break;
                     case DOWN:
-                        onViewDetailArticulo();
+//                        onViewDetailArticulo();
                         break;
                     default:
                         break;
@@ -392,6 +396,55 @@ public class FxArticulosController implements Initializable {
     @FXML
     private void onActionCantidad(ActionEvent event) throws IOException {
         onViewArticuloUpdateStock();
+    }
+
+    @FXML
+    private void onKeyPressedRemove(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Artículo", "Está seguro de eliminar el artículo", true);
+                if (value == 1) {
+                    String result = ArticuloADO.RemoveArticulo(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
+                    if (result.equalsIgnoreCase("compra")) {
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "El artículo esta ligado a una compra, no se puede eliminar hasta que la compra sea borrada", false);
+                    } else if (result.equalsIgnoreCase("venta")) {
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "El artículo esta ligado a una venta, no se puede eliminar hasta que la venta sea borrada", false);
+                    } else if (result.equalsIgnoreCase("removed")) {
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Artículo", "Se elimino correctamente", false);
+                        fillArticlesTable(txtSearch.getText().trim());
+                    } else {
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Artículo", result, false);
+
+                    }
+                }
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "Seleccione un item para eliminarlo", false);
+            }
+
+        }
+    }
+
+    @FXML
+    private void onActionRemove(ActionEvent event) {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Artículo", "Está seguro de eliminar el artículo", true);
+            if (value == 1) {
+                String result = ArticuloADO.RemoveArticulo(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
+                if (result.equalsIgnoreCase("compra")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "El artículo esta ligado a una compra, no se puede eliminar hasta que la compra sea borrada", false);
+                } else if (result.equalsIgnoreCase("venta")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "El artículo esta ligado a una venta, no se puede eliminar hasta que la venta sea borrada", false);
+                } else if (result.equalsIgnoreCase("removed")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Artículo", "Se elimino correctamente", false);
+                    fillArticlesTable(txtSearch.getText().trim());
+                } else {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Artículo", result, false);
+
+                }
+            }
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "Seleccione un item para eliminarlo", false);
+        }
     }
 
     public TableView<ArticuloTB> getTvList() {

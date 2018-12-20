@@ -181,15 +181,15 @@
                                           <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium28" text="0.00" />
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER" styleClass="paddinContainer">
+                                    <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em;">
                                        <children>
-                                          <VBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
+                                          <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="SERIE" />
                                                 <Text fx:id="lblSerie" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="0000" />
                                              </children>
                                           </VBox>
-                                          <VBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
+                                          <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="N° DE VENTA" />
                                                 <Text fx:id="lblNumeracion" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="00000000" />
@@ -201,11 +201,6 @@
                                        <children>
                                           <VBox style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
-                                                <VBox>
-                                                   <children>
-                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Datos del documento" />
-                                                   </children>
-                                                </VBox>
                                                 <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Label styleClass="labelRoboto14" textFill="#1a2226">
@@ -241,6 +236,20 @@
                                                          </graphic>
                                                       </Label>
                                                       <ComboBox fx:id="cbComprobante" maxWidth="1.7976931348623157E308" prefHeight="30.0" promptText="Tipo de documento" HBox.hgrow="ALWAYS" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto14" textFill="#1a2226">
+                                                         <graphic>
+                                                            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../moneda.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Label>
+                                                      <ComboBox fx:id="cbMoneda" maxWidth="1.7976931348623157E308" prefHeight="30.0" promptText="Moneda" HBox.hgrow="ALWAYS" />
                                                    </children>
                                                 </HBox>
                                              </children>

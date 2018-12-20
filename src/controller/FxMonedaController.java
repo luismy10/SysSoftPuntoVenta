@@ -137,6 +137,7 @@ public class FxMonedaController implements Initializable {
             controller.setInitMoneyController(this);
             controller.setUpdateMoney(tvList.getSelectionModel().getSelectedItem().getIdMoneda(),
                     tvList.getSelectionModel().getSelectedItem().getNombre(),
+                    tvList.getSelectionModel().getSelectedItem().getAbreviado(),
                     tvList.getSelectionModel().getSelectedItem().getSimbolo(),
                     tvList.getSelectionModel().getSelectedItem().getTipoCambio()
             );

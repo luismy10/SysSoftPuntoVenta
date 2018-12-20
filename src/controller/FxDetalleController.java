@@ -30,10 +30,12 @@ public class FxDetalleController implements Initializable {
     public ComboBox<Estado> cbEstado;
     @FXML
     private Button btnToAction;
+    @FXML
+    private TextField txtCodigoAuxiliar;
     
     private int idDetalle;
-    
-     private FxDetalleMantenimientoController detalleMantenimientoController;
+
+    private FxDetalleMantenimientoController detalleMantenimientoController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -68,9 +70,10 @@ public class FxDetalleController implements Initializable {
         idDetalle = Integer.parseInt(values[2]);
         btnToAction.setText("Actualizar");
         btnToAction.getStyleClass().add("buttonLightWarning");
-        txtName.setText(values[3]);
-        txtDescripcion.setText(values[4]);
-        cbEstado.setValue(values[5].equals("1") ? new Estado("1", "Habilitado") : new Estado("0", "Inhabilitado"));
+        txtCodigoAuxiliar.setText(values[3]);
+        txtName.setText(values[4]);
+        txtDescripcion.setText(values[5]);
+        cbEstado.setValue(values[6].equals("1") ? new Estado("1", "Habilitado") : new Estado("0", "Inhabilitado"));
     }
 
     private void aValidityProcess() {
@@ -81,33 +84,34 @@ public class FxDetalleController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "Ingrese el nombre, por favor.", false);
             txtName.requestFocus();
         } else {
-       
-                short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
-                if (confirmation == 1) {
-                    DetalleTB detalleTB = new DetalleTB();
-                    detalleTB.setIdDetalle(idDetalle);
-                    detalleTB.setIdMantenimiento(txtCode.getText());
-                    detalleTB.setNombre(txtName.getText().trim());
-                    detalleTB.setDescripcion(txtDescripcion.getText().trim());
-                    detalleTB.setEstado(cbEstado.getValue().getId());
-                    detalleTB.setUsuarioRegistro(Session.USER_ID);
-                    String result = DetalleADO.CrudEntity(detalleTB);
-                    if (result.equalsIgnoreCase("registered")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Registrado correctamente.", false);
- 
-                    } else if (result.equalsIgnoreCase("updated")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Actualizado correctamente.", false);
-                        Tools.Dispose(window);
-                        detalleMantenimientoController.initDetail(txtCode.getText(),"");
-                    } else if (result.equalsIgnoreCase("duplicate")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "No se puede haber 2 detalles con el mismo nombre.", false);
-                        txtName.requestFocus();
-                    } else if (result.equalsIgnoreCase("error")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "No se puedo completar la ejecución.", false);
-                    } else {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle", result, false);
-                    }
-                
+
+            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
+            if (confirmation == 1) {
+                DetalleTB detalleTB = new DetalleTB();
+                detalleTB.setIdDetalle(idDetalle);
+                detalleTB.setIdMantenimiento(txtCode.getText());
+                detalleTB.setIdAuxiliar(txtCodigoAuxiliar.getText().trim());
+                detalleTB.setNombre(txtName.getText().trim());
+                detalleTB.setDescripcion(txtDescripcion.getText().trim());
+                detalleTB.setEstado(cbEstado.getValue().getId());
+                detalleTB.setUsuarioRegistro(Session.USER_ID);
+                String result = DetalleADO.CrudEntity(detalleTB);
+                if (result.equalsIgnoreCase("registered")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Registrado correctamente.", false);
+
+                } else if (result.equalsIgnoreCase("updated")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Actualizado correctamente.", false);
+                    Tools.Dispose(window);
+                    detalleMantenimientoController.initDetail(txtCode.getText(), "");
+                } else if (result.equalsIgnoreCase("duplicate")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "No se puede haber 2 detalles con el mismo nombre.", false);
+                    txtName.requestFocus();
+                } else if (result.equalsIgnoreCase("error")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "No se puedo completar la ejecución.", false);
+                } else {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle", result, false);
+                }
+
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle", "No hay conexión al servidor.", false);
             }
@@ -153,7 +157,7 @@ public class FxDetalleController implements Initializable {
             keyEvent.consume();
         }
     }
-    
+
     void initConfiguracion(FxDetalleMantenimientoController detalleMantenimientoController) {
         this.detalleMantenimientoController = detalleMantenimientoController;
     }

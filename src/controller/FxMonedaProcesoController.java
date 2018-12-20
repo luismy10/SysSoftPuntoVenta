@@ -21,12 +21,14 @@ public class FxMonedaProcesoController implements Initializable {
     @FXML
     private TextField txtNombre;
     @FXML
+    private TextField txtAbreviatura;
+    @FXML
     private TextField txtSimbolo;
     @FXML
     private TextField txtTipoCambio;
     @FXML
     private Button btnGuardar;
-    
+
     private FxMonedaController monedaController;
 
     private int idMoneda;
@@ -37,19 +39,23 @@ public class FxMonedaProcesoController implements Initializable {
         idMoneda = 0;
     }
 
-    public void setUpdateMoney(int idMoneda,String nombre,String simbolo,double tcambio) {
+    public void setUpdateMoney(int idMoneda, String nombre, String abreviado,String simbolo, double tcambio) {
         this.idMoneda = idMoneda;
         btnGuardar.setText("Actualizar");
         btnGuardar.getStyleClass().add("buttonLightWarning");
         txtNombre.setText(nombre);
+        txtAbreviatura.setText(abreviado); 
         txtSimbolo.setText(simbolo);
-        txtTipoCambio.setText(""+tcambio);
+        txtTipoCambio.setText("" + tcambio);
     }
 
     private void processTheForm() {
         if (txtNombre.getText().trim().isEmpty()) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "El nombre no puede estar vacío", false);
             txtNombre.requestFocus();
+        } else if (txtAbreviatura.getText().trim().isEmpty()) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "La abreviatura no puede estar vacío", false);
+            txtAbreviatura.requestFocus();
         } else if (txtSimbolo.getText().trim().isEmpty()) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "El simbolo no puede estar vacío", false);
             txtSimbolo.requestFocus();
@@ -60,11 +66,9 @@ public class FxMonedaProcesoController implements Initializable {
             MonedaTB monedaTB = new MonedaTB();
             monedaTB.setIdMoneda(idMoneda);
             monedaTB.setNombre(txtNombre.getText().trim().toUpperCase());
-            monedaTB.setAbreviado(txtNombre.getText().trim().length() >= 3
-                    ? txtNombre.getText().trim().substring(0, 3).toUpperCase()
-                    : txtNombre.getText().trim().toUpperCase());
+            monedaTB.setAbreviado(txtAbreviatura.getText().trim().toUpperCase());
             monedaTB.setSimbolo(txtSimbolo.getText().trim().toUpperCase());
-            monedaTB.setTipoCambio(Double.parseDouble(txtTipoCambio.getText().trim()));
+            monedaTB.setTipoCambio(Double.parseDouble(txtTipoCambio.getText()));
             monedaTB.setPredeterminado(false);
             String result = MonedaADO.CrudMoneda(monedaTB);
             if (result.equalsIgnoreCase("inserted")) {

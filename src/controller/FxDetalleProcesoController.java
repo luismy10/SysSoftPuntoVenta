@@ -44,6 +44,7 @@ public class FxDetalleProcesoController implements Initializable {
                 DetalleTB detalleTB = new DetalleTB();
                 detalleTB.setIdDetalle(idDetalle);
                 detalleTB.setIdMantenimiento(idMantenimiento);
+                detalleTB.setIdAuxiliar("");
                 detalleTB.setNombre(txtDetalle.getText().trim());
                 detalleTB.setDescripcion("");
                 detalleTB.setEstado("1");

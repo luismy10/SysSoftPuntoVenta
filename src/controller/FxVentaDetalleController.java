@@ -76,7 +76,7 @@ public class FxVentaDetalleController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-        tcDescripcion.setCellValueFactory(cellData -> cellData.getValue().getArticuloTB().getNombreMarca());
+        tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getArticuloTB().getNombreMarca()));
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
         tcMedida.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getArticuloTB().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel"));
         tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioUnitario(), 2)));

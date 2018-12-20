@@ -41,7 +41,7 @@ public class FxVentaGranelController implements Initializable {
         this.articuloTB = articuloTB;
         this.index = index;
         this.opcion = opcion;
-        lblArticulo.setText(articuloTB.getNombreMarca().get());
+        lblArticulo.setText(articuloTB.getNombreMarca());
     }
 
     @FXML

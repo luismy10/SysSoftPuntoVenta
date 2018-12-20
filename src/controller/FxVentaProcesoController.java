@@ -33,6 +33,8 @@ public class FxVentaProcesoController implements Initializable {
     private Label lblCliente;
     @FXML
     private TextField txtObservacion;
+    @FXML
+    private Label lblVueltoMoneda;
 
     private TableView<ArticuloTB> tvList;
 
@@ -41,6 +43,7 @@ public class FxVentaProcesoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        lblVueltoMoneda.setText(Session.MONEDA);
     }
 
     @FXML
@@ -78,7 +81,7 @@ public class FxVentaProcesoController implements Initializable {
         this.tvList = tvList;
         lblComprobante.setText(ventaTB.getComprobanteName());
         lblCliente.setText("Cliente: " + cliente);
-        lblTotal.setText("S/ " + Tools.roundingValue(ventaTB.getTotal(), 2));
+        lblTotal.setText(Session.MONEDA + "" + Tools.roundingValue(ventaTB.getTotal(), 2));
         txtEfectivo.requestFocus();
 
     }

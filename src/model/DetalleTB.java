@@ -2,7 +2,6 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -10,11 +9,11 @@ public class DetalleTB implements Serializable {
 
     private SimpleIntegerProperty idDetalle;
     private SimpleStringProperty idMantenimiento;
+    private SimpleStringProperty idAuxiliar;
     private SimpleStringProperty nombre;
     private SimpleStringProperty descripcion;
     private SimpleStringProperty estado;
     private SimpleStringProperty usuarioRegistro;
-    private Date fechaRegistro;
 
     public DetalleTB() {
     }
@@ -32,6 +31,14 @@ public class DetalleTB implements Serializable {
 
     public void setIdDetalle(int idDetalle) {
         this.idDetalle = new SimpleIntegerProperty(idDetalle);
+    }
+
+    public SimpleStringProperty getIdAuxiliar() {
+        return idAuxiliar;
+    }
+
+    public void setIdAuxiliar(String idAuxiliar) {
+        this.idAuxiliar = new SimpleStringProperty(idAuxiliar);
     }
 
     public SimpleStringProperty getIdMantenimiento() {
@@ -74,13 +81,6 @@ public class DetalleTB implements Serializable {
         this.usuarioRegistro = new SimpleStringProperty(usuarioRegistro);
     }
 
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
 
     @Override
     public String toString() {

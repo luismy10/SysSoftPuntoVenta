@@ -39,7 +39,7 @@ public class FxArticuloDetalleController implements Initializable {
     private void onMouseClickedSeleccionado(MouseEvent event) {
         articuloController.changeViewArticuloSeleccionado();
         if (articuloController.getTvList().getSelectionModel().getSelectedIndex() >= 0) {
-            articuloController.onViewDetailArticulo();
+//            articuloController.onViewDetailArticulo();
         }
     }
 

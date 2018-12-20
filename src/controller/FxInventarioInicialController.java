@@ -74,8 +74,8 @@ public class FxInventarioInicialController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getIdArticulo()));
-        tcClave.setCellValueFactory(cellData -> cellData.getValue().getClave());
-        tcArticulo.setCellValueFactory(cellData -> cellData.getValue().getNombreMarca());
+        tcClave.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClave()));
+        tcArticulo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreMarca()));
         tcLote.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().isLote() ? "SI" : "NO"
         ));

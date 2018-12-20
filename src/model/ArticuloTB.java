@@ -12,14 +12,16 @@ public class ArticuloTB {
 
     private SimpleIntegerProperty id;
     private String idArticulo;
-    private SimpleStringProperty clave;
+    private String clave;
     private String claveAlterna;
-    private SimpleStringProperty nombreMarca;
+    private String nombreMarca;
     private String nombreGenerico;
     private int categoria;
     private SimpleStringProperty categoriaName;
     private int marcar;
     private SimpleStringProperty marcaName;
+    private int unidadMedida;
+     private SimpleStringProperty unidadMedidaName;
     private int presentacion;
     private SimpleStringProperty presentacionName;
     private int unidadVenta;
@@ -60,19 +62,19 @@ public class ArticuloTB {
     }
 
     public ArticuloTB(String nombreMarca, int unidadVenta) {
-        this.nombreMarca = new SimpleStringProperty(nombreMarca);
+        this.nombreMarca = nombreMarca;
         this.unidadVenta = unidadVenta;
     }
 
     public ArticuloTB(String idArticulo, String nombreMarca, int unidadVenta) {
         this.idArticulo = idArticulo;
-        this.nombreMarca = new SimpleStringProperty(nombreMarca);
+        this.nombreMarca = nombreMarca;
         this.unidadVenta = unidadVenta;
     }
 
     public ArticuloTB(String clave, String nombreMarca) {
-        this.clave = new SimpleStringProperty(clave);
-        this.nombreMarca = new SimpleStringProperty(nombreMarca);
+        this.clave = clave;
+        this.nombreMarca = nombreMarca;
     }
 
     public SimpleIntegerProperty getId() {
@@ -91,12 +93,12 @@ public class ArticuloTB {
         this.idArticulo = idArticulo;
     }
 
-    public SimpleStringProperty getClave() {
+    public String getClave() {
         return clave;
     }
 
     public void setClave(String clave) {
-        this.clave = new SimpleStringProperty(clave);
+        this.clave = clave;
     }
 
     public String getClaveAlterna() {
@@ -107,12 +109,12 @@ public class ArticuloTB {
         this.claveAlterna = claveAlterna;
     }
 
-    public SimpleStringProperty getNombreMarca() {
+    public String getNombreMarca() {
         return nombreMarca;
     }
 
     public void setNombreMarca(String nombreMarca) {
-        this.nombreMarca = new SimpleStringProperty(nombreMarca);
+        this.nombreMarca = nombreMarca;
     }
 
     public String getNombreGenerico() {
@@ -161,6 +163,22 @@ public class ArticuloTB {
 
     public void setMarcaName(String marcaName) {
         this.marcaName = new SimpleStringProperty(marcaName);
+    }
+
+    public int getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(int unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+
+    public SimpleStringProperty getUnidadMedidaName() {
+        return unidadMedidaName;
+    }
+
+    public void setUnidadMedidaName(String unidadMedidaName) {
+        this.unidadMedidaName = new SimpleStringProperty(unidadMedidaName);
     }
 
     public int getPresentacion() {

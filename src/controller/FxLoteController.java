@@ -58,7 +58,7 @@ public class FxLoteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcNumeroLote.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroLote()));
-        tcArticulo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getArticuloTB().getClave().get() + "\n" + cellData.getValue().getArticuloTB().getNombreMarca().get()));
+        tcArticulo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getArticuloTB().getClave() + "\n" + cellData.getValue().getArticuloTB().getNombreMarca()));
         tcFabricacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaFabricacion().format(DateTimeFormatter.ofPattern("E, MMM dd yyyy"))));
         tcCaducidad.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCaducidad().format(DateTimeFormatter.ofPattern("E, MMM dd yyyy"))));
         tcInicial.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getExistenciaInicial()));
@@ -83,8 +83,8 @@ public class FxLoteController implements Initializable {
         //Controlller here
         FxLoteCambiarController controller = fXMLLoader.getController();
         controller.setEditBatchRealizado(new String[]{tvList.getSelectionModel().getSelectedItem().getNumeroLote(),
-            tvList.getSelectionModel().getSelectedItem().getArticuloTB().getClave().get(),
-            tvList.getSelectionModel().getSelectedItem().getArticuloTB().getNombreMarca().get(),
+            tvList.getSelectionModel().getSelectedItem().getArticuloTB().getClave(),
+            tvList.getSelectionModel().getSelectedItem().getArticuloTB().getNombreMarca(),
             tvList.getSelectionModel().getSelectedItem().getExistenciaActual() + "",
             tvList.getSelectionModel().getSelectedItem().getFechaCaducidad() + "",
             tvList.getSelectionModel().getSelectedItem().getFechaFabricacion() + ""

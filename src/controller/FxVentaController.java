@@ -42,6 +42,8 @@ public class FxVentaController implements Initializable {
     @FXML
     private ComboBox<DetalleTB> cbComprobante;
     @FXML
+    private ComboBox<?> cbMoneda;
+    @FXML
     private TableView<ArticuloTB> tvList;
     @FXML
     private TableColumn<ArticuloTB, String> tcArticulo;
@@ -84,7 +86,7 @@ public class FxVentaController implements Initializable {
     @FXML
     private Text lblIgvMoneda;
     @FXML
-    private Text lblTotalPagarMoneda;
+    private Text lblTotalPagarMoneda;    
 
     private AnchorPane content;
 
@@ -168,7 +170,7 @@ public class FxVentaController implements Initializable {
 
     private void initTable() {
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombreMarca().get()
+                cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()
         ));
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
@@ -363,7 +365,7 @@ public class FxVentaController implements Initializable {
     private boolean validateDuplicateArticulo(TableView<ArticuloTB> view, ArticuloTB articuloTB) {
         boolean ret = false;
         for (int i = 0; i < view.getItems().size(); i++) {
-            if (view.getItems().get(i).getClave().get().equals(articuloTB.getClave().get())) {
+            if (view.getItems().get(i).getClave().equals(articuloTB.getClave())) {
                 ret = true;
                 break;
             }
@@ -500,8 +502,8 @@ public class FxVentaController implements Initializable {
                 articuloTBs.forEach(e -> {
                     ArticuloTB articuloTB = new ArticuloTB();
                     articuloTB.setIdArticulo(e.getIdArticulo());
-                    articuloTB.setClave(e.getClave().get());
-                    articuloTB.setNombreMarca(e.getNombreMarca().get());
+                    articuloTB.setClave(e.getClave());
+                    articuloTB.setNombreMarca(e.getNombreMarca());
                     articuloTB.setCantidad(e.getCantidad() + 1);
                     articuloTB.setPrecioVenta(e.getPrecioVenta());
                     articuloTB.setDescuento(e.getDescuento().get());
@@ -525,8 +527,8 @@ public class FxVentaController implements Initializable {
                 articuloTBs.forEach(e -> {
                     ArticuloTB articuloTB = new ArticuloTB();
                     articuloTB.setIdArticulo(e.getIdArticulo());
-                    articuloTB.setClave(e.getClave().get());
-                    articuloTB.setNombreMarca(e.getNombreMarca().get());
+                    articuloTB.setClave(e.getClave());
+                    articuloTB.setNombreMarca(e.getNombreMarca());
                     articuloTB.setCantidad(e.getCantidad() - 1);
                     articuloTB.setPrecioVenta(e.getPrecioVenta());
                     if (articuloTB.getCantidad() < 1) {
@@ -613,8 +615,8 @@ public class FxVentaController implements Initializable {
         if (a != null) {
             ArticuloTB articuloTB = new ArticuloTB();
             articuloTB.setIdArticulo(a.getIdArticulo());
-            articuloTB.setClave(a.getClave().get());
-            articuloTB.setNombreMarca(a.getNombreMarca().get());
+            articuloTB.setClave(a.getClave());
+            articuloTB.setNombreMarca(a.getNombreMarca());
             articuloTB.setCantidad(1);
             articuloTB.setPrecioVenta(a.getPrecioVenta());
             articuloTB.setDescuento(0);

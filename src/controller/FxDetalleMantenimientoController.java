@@ -52,6 +52,8 @@ public class FxDetalleMantenimientoController implements Initializable {
     @FXML
     private TableColumn<DetalleTB, Integer> tcNumero;
     @FXML
+    private TableColumn<DetalleTB, String> tcCodAuxiliar;
+    @FXML
     private TableColumn<DetalleTB, String> tcNombre;
     @FXML
     private TableColumn<DetalleTB, String> tcDescripcion;
@@ -67,11 +69,13 @@ public class FxDetalleMantenimientoController implements Initializable {
     private boolean onAnimationStart, onAnimationFinished;
 
     private AnchorPane content;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         onAnimationFinished = false;
         tcNumero.setCellValueFactory(cellData -> cellData.getValue().getIdDetalle().asObject());
+        tcCodAuxiliar.setCellValueFactory(cellData -> cellData.getValue().getIdAuxiliar());
         tcNombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
         tcDescripcion.setCellValueFactory(cellData -> cellData.getValue().getDescripcion());
         tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstado());
@@ -112,7 +116,6 @@ public class FxDetalleMantenimientoController implements Initializable {
         ObservableList<DetalleTB> listDetail = ListDetail(value);
         tvDetail.setItems(listDetail);
         lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");
-
     }
 
     @FXML
@@ -227,6 +230,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             controller.setValueUpdate(lvMaintenance.getSelectionModel().getSelectedItem().getNombre(),
                     lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(),
                     tvDetail.getSelectionModel().getSelectedItem().getIdDetalle().getValue().toString(),
+                    tvDetail.getSelectionModel().getSelectedItem().getIdAuxiliar().get(),
                     tvDetail.getSelectionModel().getSelectedItem().getNombre().get(),
                     tvDetail.getSelectionModel().getSelectedItem().getDescripcion().get(),
                     tvDetail.getSelectionModel().getSelectedItem().getEstado().get());

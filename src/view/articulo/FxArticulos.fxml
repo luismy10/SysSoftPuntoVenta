@@ -60,7 +60,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" styleClass="buttonLight" text="Eliminar">
+                              <Button mnemonicParsing="false" onAction="#onActionRemove" onKeyPressed="#onKeyPressedRemove" styleClass="buttonLight" text="Eliminar">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -123,17 +123,9 @@
                                     <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                                     <TableColumn fx:id="tcDocument" prefWidth="280.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
                                     <TableColumn fx:id="tcMarca" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Marca" />
-                                    <TableColumn fx:id="tcPresentacion" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Presentación" />
-                                    <TableColumn fx:id="tcLote" prefWidth="60.0" style="-fx-alignment: CENTER;">
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../lote-box.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </TableColumn>
-                                    <TableColumn fx:id="tcUnidadVenta" prefWidth="110.0" style="-fx-alignment: CENTER-LEFT;" text="Medida" />
+                                    <TableColumn fx:id="tcCantidad" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Existencia" />
+                                    <TableColumn fx:id="tcUnidadVenta" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Medida" />
+                                    <TableColumn fx:id="tcPrecio" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Precio" />
                                     <TableColumn fx:id="tcEstado" prefWidth="90.0" style="-fx-alignment: CENTER;" text="Estado" />
                                  </columns>
                               </TableView>

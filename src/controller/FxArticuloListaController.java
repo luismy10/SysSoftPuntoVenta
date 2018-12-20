@@ -53,7 +53,7 @@ public class FxArticuloListaController implements Initializable {
     private FxVentaController ventaController;
 
     private FxArticuloHistorialController articuloHistorialController;
-    
+
     private FxArticuloReportesController articuloReportesController;
 
     @Override
@@ -62,7 +62,7 @@ public class FxArticuloListaController implements Initializable {
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombreMarca().get()
+                cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()
         )
         );
         tcMarca.setCellValueFactory(cellData -> cellData.getValue().getMarcaName());
@@ -134,8 +134,8 @@ public class FxArticuloListaController implements Initializable {
             stage.sizeToScene();
             stage.show();
             controller.setLoadData(new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
-                tvList.getSelectionModel().getSelectedItem().getClave().get(),
-                tvList.getSelectionModel().getSelectedItem().getNombreMarca().get(),
+                tvList.getSelectionModel().getSelectedItem().getClave(),
+                tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
                 "" + tvList.getSelectionModel().getSelectedItem().getUnidadVenta()
             },
                     tvList.getSelectionModel().getSelectedItem().isLote()
@@ -148,8 +148,8 @@ public class FxArticuloListaController implements Initializable {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             ArticuloTB articuloTB = new ArticuloTB();
             articuloTB.setIdArticulo(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
-            articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave().get());
-            articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca().get());
+            articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave());
+            articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
             articuloTB.setCantidad(1);
             articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
             articuloTB.setDescuento(0);
@@ -177,10 +177,19 @@ public class FxArticuloListaController implements Initializable {
                 if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                     articuloHistorialController.getElemetsArticulo(
                             new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
-                                tvList.getSelectionModel().getSelectedItem().getClave().get(),
-                                tvList.getSelectionModel().getSelectedItem().getNombreMarca().get(),
+                                tvList.getSelectionModel().getSelectedItem().getClave(),
+                                tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
                                 "" + tvList.getSelectionModel().getSelectedItem().getCantidad(),
                                 "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta()});
+                    Tools.Dispose(window);
+                }
+            } else if (articuloReportesController != null) {
+                if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                    ArticuloTB articuloTB = new ArticuloTB();
+                    articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave());
+                    articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
+                    articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
+                    articuloReportesController.getTvList().getItems().add(articuloTB);
                     Tools.Dispose(window);
                 }
             }
@@ -199,15 +208,23 @@ public class FxArticuloListaController implements Initializable {
                 if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                     articuloHistorialController.getElemetsArticulo(
                             new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
-                                tvList.getSelectionModel().getSelectedItem().getClave().get(),
-                                tvList.getSelectionModel().getSelectedItem().getNombreMarca().get(),
+                                tvList.getSelectionModel().getSelectedItem().getClave(),
+                                tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
                                 "" + tvList.getSelectionModel().getSelectedItem().getCantidad(),
                                 "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta()});
                     Tools.Dispose(window);
                 }
 
-            }else if(articuloReportesController != null){                
-                Tools.Dispose(window);
+            } else if (articuloReportesController != null) {
+                if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                    ArticuloTB articuloTB = new ArticuloTB();
+                    articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave());
+                    articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
+                    articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
+                    articuloReportesController.getTvList().getItems().add(articuloTB);
+                    Tools.Dispose(window);
+                }
+
             }
         }
     }
@@ -255,8 +272,7 @@ public class FxArticuloListaController implements Initializable {
         if (stateRequest) {
             fillProvidersTable("");
         }
-    }   
-    
+    }
 
     public void setInitComprasController(FxComprasController comprasController) {
         this.comprasController = comprasController;
@@ -271,9 +287,7 @@ public class FxArticuloListaController implements Initializable {
     }
 
     public void setInitReporteArticuloController(FxArticuloReportesController articuloReportesController) {
-        this.articuloReportesController=articuloReportesController;
+        this.articuloReportesController = articuloReportesController;
     }
-
-    
 
 }

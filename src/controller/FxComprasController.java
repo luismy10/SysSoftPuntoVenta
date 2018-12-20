@@ -76,6 +76,16 @@ public class FxComprasController implements Initializable {
     private Text lblTotal;
     @FXML
     private Button btnArticulo;
+    @FXML
+    private Text lblMonedaSubTotal;
+    @FXML
+    private Text lblMonedaDescuento;
+    @FXML
+    private Text lblMonedaGravada;
+    @FXML
+    private Text lblMonedaIgv;
+    @FXML
+    private Text lblMonedaTotal;
 
     private AnchorPane content;
 
@@ -110,11 +120,16 @@ public class FxComprasController implements Initializable {
             }
         });
         initTable();
+        lblMonedaSubTotal.setText(Session.MONEDA);
+        lblMonedaDescuento.setText(Session.MONEDA);
+        lblMonedaGravada.setText(Session.MONEDA);
+        lblMonedaIgv.setText(Session.MONEDA);
+        lblMonedaTotal.setText(Session.MONEDA);
     }
 
     private void initTable() {
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombreMarca().get()
+                cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()
         ));
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
@@ -224,8 +239,8 @@ public class FxComprasController implements Initializable {
                     stage.show();
                     ArticuloTB articuloTB = new ArticuloTB();
                     articuloTB.setIdArticulo(e.getIdArticulo());
-                    articuloTB.setClave(e.getClave().get());
-                    articuloTB.setNombreMarca(e.getNombreMarca().get());
+                    articuloTB.setClave(e.getClave());
+                    articuloTB.setNombreMarca(e.getNombreMarca());
                     articuloTB.setCantidad(e.getCantidad());
                     articuloTB.setCantidadGranel(e.getCantidadGranel());
                     articuloTB.setPrecioCompra(e.getPrecioCompra());

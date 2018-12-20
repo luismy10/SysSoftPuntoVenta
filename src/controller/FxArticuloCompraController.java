@@ -97,12 +97,12 @@ public class FxArticuloCompraController implements Initializable {
         stage.sizeToScene();
         stage.show();
         if (!loteedit) {
-            controller.setLoadData(articuloTB.getIdArticulo(), articuloTB.getClave().get(),
-                    articuloTB.getNombreMarca().get(),
+            controller.setLoadData(articuloTB.getIdArticulo(), articuloTB.getClave(),
+                    articuloTB.getNombreMarca(),
                     String.valueOf(articuloTB.getCantidad()));
         } else {
-            controller.setEditData(new String[]{articuloTB.getIdArticulo(), articuloTB.getClave().get(),
-                articuloTB.getNombreMarca().get(),
+            controller.setEditData(new String[]{articuloTB.getIdArticulo(), articuloTB.getClave(),
+                articuloTB.getNombreMarca(),
                 String.valueOf(articuloTB.getCantidad())},
                     loteTBs);
         }
@@ -120,8 +120,8 @@ public class FxArticuloCompraController implements Initializable {
 
     public void setLoadEdit(ArticuloTB articuloTB, int index, ObservableList<LoteTB> loteTBs) {
         idArticulo = articuloTB.getIdArticulo();
-        lblClave.setText(articuloTB.getClave().get());
-        lblDescripcion.setText(articuloTB.getNombreMarca().get());
+        lblClave.setText(articuloTB.getClave());
+        lblDescripcion.setText(articuloTB.getNombreMarca());
         txtCantidad.setText("" + articuloTB.getCantidad());
         unidadventa = articuloTB.getUnidadVenta();
         txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompraReal(), 2));
@@ -219,7 +219,7 @@ public class FxArticuloCompraController implements Initializable {
     private boolean validateStock(TableView<ArticuloTB> view, ArticuloTB articuloTB) throws IOException {
         boolean ret = false;
         for (int i = 0; i < view.getItems().size(); i++) {
-            if (view.getItems().get(i).getClave().get().equals(articuloTB.getClave().get())) {
+            if (view.getItems().get(i).getClave().equals(articuloTB.getClave())) {
                 ret = true;
                 break;
             }

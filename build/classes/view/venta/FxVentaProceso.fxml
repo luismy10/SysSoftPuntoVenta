@@ -125,7 +125,7 @@
                                     </Label>
                                     <HBox alignment="CENTER">
                                        <children>
-                                          <Label alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold26" text=" S/." textFill="#0754b9" />
+                                          <Label fx:id="lblVueltoMoneda" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold26" text=" S/." textFill="#0754b9" />
                                           <Label fx:id="lblVuelto" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold30" text="00.00" textFill="#0754b9" />
                                        </children>
                                     </HBox>

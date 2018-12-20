@@ -46,7 +46,7 @@ public class FxInventarioGeneralController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getClave().get() + "\n" + cellData.getValue().getNombreMarca().get()
+                cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()
         ));
         tcCosto.setCellValueFactory(cellData -> Bindings.concat("S/. "+Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
         tcPrecioVenta.setCellValueFactory(cellData -> Bindings.concat("S/. "+Tools.roundingValue(cellData.getValue().getPrecioVenta(), 2)));
