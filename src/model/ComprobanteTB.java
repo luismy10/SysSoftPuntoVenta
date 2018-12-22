@@ -13,32 +13,48 @@ package model;
 import java.sql.Timestamp;
 
 public class ComprobanteTB {
+  
     
-    private byte[] serie;
+    //private byte[] serie;
+    private String serie_b;
+    private String serie_f;
+    private String serie_t;
     private String numeracion;
     private Timestamp facha;
 
     public ComprobanteTB() {
     }
 
-    public ComprobanteTB(byte[] serie, String numeracion) {
-        this.serie = serie;
-        this.numeracion = numeracion;
-    }
-
-    public ComprobanteTB(byte[] serie, String numeracion, Timestamp facha) {
-        this.serie = serie;
+    public ComprobanteTB(String serie_b, String serie_f, String serie_t, String numeracion, Timestamp facha) {
+        this.serie_b = serie_b;
+        this.serie_f = serie_f;
+        this.serie_t = serie_t;
         this.numeracion = numeracion;
         this.facha = facha;
     }
 
-    
-    public byte[] getSerie() {
-        return serie;
+    public String getSerie_b() {
+        return serie_b;
     }
 
-    public void setSerie(byte[] serie) {
-        this.serie = serie;
+    public void setSerie_b(String serie_b) {
+        this.serie_b = serie_b;
+    }
+
+    public String getSerie_f() {
+        return serie_f;
+    }
+
+    public void setSerie_f(String serie_f) {
+        this.serie_f = serie_f;
+    }
+
+    public String getSerie_t() {
+        return serie_t;
+    }
+
+    public void setSerie_t(String serie_t) {
+        this.serie_t = serie_t;
     }
 
     public String getNumeracion() {
@@ -56,6 +72,7 @@ public class ComprobanteTB {
     public void setFacha(Timestamp facha) {
         this.facha = facha;
     }
+
     
     
 }
