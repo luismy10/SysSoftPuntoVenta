@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -47,10 +49,6 @@ public class FxArticulosController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcMarca;
     @FXML
-    private TableColumn<ArticuloTB, String> tcCantidad;
-    @FXML
-    private TableColumn<ArticuloTB, String> tcPrecio;
-    @FXML
     private TableColumn<ArticuloTB, String> tcUnidadVenta;
     @FXML
     private TableColumn<ArticuloTB, String> tcEstado;
@@ -76,15 +74,9 @@ public class FxArticulosController implements Initializable {
         tcUnidadVenta.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel(Peso)"
         ));
-        tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getUnidadVenta() == 1
-                ? Tools.roundingValue(cellData.getValue().getCantidad(), 0)
-                : Tools.roundingValue(cellData.getValue().getCantidadGranel(), 2)
-        ));
-        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Session.MONEDA + "" + Tools.roundingValue(cellData.getValue().getPrecioVenta(), 2)));
         tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
 
-//        changeViewArticuloSeleccionado();
+        changeViewArticuloSeleccionado();
         stateRequest = false;
 
     }
@@ -302,22 +294,54 @@ public class FxArticulosController implements Initializable {
 
     @FXML
     private void onKerPressedSearch(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            if (!tvList.getItems().isEmpty()) {
-                tvList.requestFocus();
-                tvList.getSelectionModel().select(0);
+        if (stateRequest) {
+            if (event.getCode() != KeyCode.ESCAPE
+                    && event.getCode() != KeyCode.F1
+                    && event.getCode() != KeyCode.F2
+                    && event.getCode() != KeyCode.F3
+                    && event.getCode() != KeyCode.F4
+                    && event.getCode() != KeyCode.F5
+                    && event.getCode() != KeyCode.F6
+                    && event.getCode() != KeyCode.F7
+                    && event.getCode() != KeyCode.F8
+                    && event.getCode() != KeyCode.F9
+                    && event.getCode() != KeyCode.F10
+                    && event.getCode() != KeyCode.F11
+                    && event.getCode() != KeyCode.F12
+                    && event.getCode() != KeyCode.ALT
+                    && event.getCode() != KeyCode.CONTROL
+                    && event.getCode() != KeyCode.UP
+                    && event.getCode() != KeyCode.DOWN
+                    && event.getCode() != KeyCode.RIGHT
+                    && event.getCode() != KeyCode.LEFT
+                    && event.getCode() != KeyCode.TAB
+                    && event.getCode() != KeyCode.CAPS
+                    && event.getCode() != KeyCode.SHIFT
+                    && event.getCode() != KeyCode.HOME
+                    && event.getCode() != KeyCode.WINDOWS
+                    && event.getCode() != KeyCode.ALT_GRAPH
+                    && event.getCode() != KeyCode.CONTEXT_MENU
+                    && event.getCode() != KeyCode.END
+                    && event.getCode() != KeyCode.INSERT
+                    && event.getCode() != KeyCode.PAGE_UP
+                    && event.getCode() != KeyCode.PAGE_DOWN
+                    && event.getCode() != KeyCode.NUM_LOCK
+                    && event.getCode() != KeyCode.PRINTSCREEN
+                    && event.getCode() != KeyCode.SCROLL_LOCK
+                    && event.getCode() != KeyCode.PAUSE) {
+                fillArticlesTable(txtSearch.getText().trim());
             }
+
         }
     }
 
     @FXML
     private void onKeyReleasedSearch(KeyEvent event) {
         if (stateRequest) {
-            fillArticlesTable(txtSearch.getText().trim());
-//            if (!tvList.getItems().isEmpty()) {
-//                tvList.getSelectionModel().select(0);
-//                onViewDetailArticulo();
-//            }
+            if (!tvList.getItems().isEmpty()) {
+                tvList.getSelectionModel().select(0);
+                onViewDetailArticulo();
+            }
         }
     }
 
@@ -333,27 +357,28 @@ public class FxArticulosController implements Initializable {
         onViewArticuloClone();
     }
 
-    /*
     public void onViewDetailArticulo() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             ArticuloTB articuloTB = tvList.getSelectionModel().getSelectedItem();
-            seleccionadoController.getIvPrincipal().setImage(ArticuloADO.GetImageArticuloById(articuloTB.getIdArticulo()));
+            seleccionadoController.getIvPrincipal().setImage(new Image(articuloTB.getImagenTB().equalsIgnoreCase("")
+                    ? "/view/no-image.png"
+                    : new File(articuloTB.getImagenTB()).toURI().toString()));
             seleccionadoController.getLblName().setText(articuloTB.getNombreMarca());
             seleccionadoController.getLblPrice().setText(Session.MONEDA + " " + Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
-            seleccionadoController.getLblQuantity().setText(articuloTB.getCantidad() % 1 == 0
+            seleccionadoController.getLblQuantity().setText(articuloTB.getUnidadVenta() == 1
                     ? Tools.roundingValue(articuloTB.getCantidad(), 0)
-                    : Tools.roundingValue(articuloTB.getCantidad(), 2));
-            if (detalleController != null) {
-                detalleController.getTvList().setItems(LoteADO.ListByIdLote(tvList.getSelectionModel().getSelectedItem().getIdArticulo()));
-            }
+                    : Tools.roundingValue(articuloTB.getCantidadGranel(), 2));
+//            if (detalleController != null) {
+//                detalleController.getTvList().setItems(LoteADO.ListByIdLote(tvList.getSelectionModel().getSelectedItem().getIdArticulo()));
+//            }
         }
     }
-     */
+
     @FXML
     private void onMouseClickedList(MouseEvent event) throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (event.getClickCount() == 1) {
-//                onViewDetailArticulo();
+                onViewDetailArticulo();
             } else if (event.getClickCount() == 2) {
                 onViewArticuloEdit();
             }
@@ -374,10 +399,10 @@ public class FxArticulosController implements Initializable {
             if (null != event.getCode()) {
                 switch (event.getCode()) {
                     case UP:
-//                        onViewDetailArticulo();
+                        onViewDetailArticulo();
                         break;
                     case DOWN:
-//                        onViewDetailArticulo();
+                        onViewDetailArticulo();
                         break;
                     default:
                         break;

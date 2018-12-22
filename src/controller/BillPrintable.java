@@ -72,8 +72,8 @@ public class BillPrintable implements Printable {
                 g2d.setFont(new Font("Arial", Font.PLAIN, 9));
                 g2d.setPaint(Color.BLACK);
                 g2d.drawString(Session.NOMBREEMPRESA, centerText(width, metrics, Session.NOMBREEMPRESA), y);
-                y += yShift;
-                g2d.drawString(Session.DIRECCION, centerText(width, metrics, Session.DIRECCION), y);
+//                y += yShift;
+//                g2d.drawString(Session.DIRECCION, centerText(width, metrics, Session.DIRECCION), y);
                 y += yShift;
                 g2d.drawString("TEL: " + Session.TELEFONO + " CEL:" + Session.CELULAR, centerText(width, metrics, "TEL: " + Session.TELEFONO + " CEL:" + Session.CELULAR), y);
                 y += yShift;
@@ -89,9 +89,9 @@ public class BillPrintable implements Printable {
                 for (int i = 0; i < tvList.getItems().size(); i++) {
                     y += yShift;
                     g2d.drawString(
-                            (tvList.getItems().get(i).getCantidad() + "." + tvList.getItems().get(i).getNombreMarca()).length() >= 25
-                            ? (tvList.getItems().get(i).getCantidad() + "." + tvList.getItems().get(i).getNombreMarca()).substring(0, 25)
-                            : (tvList.getItems().get(i).getCantidad() + "." + tvList.getItems().get(i).getNombreMarca()),
+                            (tvList.getItems().get(i).getCantidad() + " " + tvList.getItems().get(i).getNombreMarca()).length() >= 25
+                            ? (tvList.getItems().get(i).getCantidad() + " " + tvList.getItems().get(i).getNombreMarca()).substring(0, 25)
+                            : (tvList.getItems().get(i).getCantidad() + " " + tvList.getItems().get(i).getNombreMarca()),
                             0, y);
                     g2d.drawString(getText(tvList.getItems().get(i).getImporte().get()), rightText(width, metrics, getText(tvList.getItems().get(i).getImporte().get())), y);
                 }
@@ -125,20 +125,17 @@ public class BillPrintable implements Printable {
                 g2d.drawString(getText(vuelto), rightText(width, metrics, getText(vuelto)), y);
 //                y += yShift;
 //                g2d.drawString("Son: CIENTO CUARENTA Y NUEVE SOLES", 0, y);
+//                y += yShift;
+//                g2d.drawString("\n", 0, y);
+//                y += yShift;
+//                g2d.drawString("¡Que tengas un buen dia!", centerText(width, metrics, "¡Que tengas un buen dia!"), y);
                 y += yShift;
                 g2d.drawString("\n", 0, y);
                 y += yShift;
-                g2d.drawString("¡Que tengas un buen dia!", centerText(width, metrics, "¡Que tengas un buen dia!"), y);
-                y += yShift;
-                g2d.drawString("\n", 0, y);
-                y += yShift;
-                g2d.drawString("Fecha de Venta: " + fecha.format(date), centerText(width, metrics, "Fecha de Venta: " + fecha.format(date)), y);
-                y += yShift;
-                g2d.drawString("Hora: " + hora.format(date), centerText(width, metrics, "Hora: " + hora.format(date)), y);
-                y += yShift;
-                g2d.drawString("\n", 0, y);
-                y += yShift;
-                g2d.drawString("\n", 0, y);
+                g2d.drawString("Fecha de Venta: " + fecha.format(date), 0, y);             
+                g2d.drawString("Hora: " + hora.format(date), rightText(width, metrics, "Hora: " + hora.format(date)), y);
+                
+                
             } catch (NumberFormatException r) {
             }
 

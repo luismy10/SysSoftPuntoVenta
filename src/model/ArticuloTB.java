@@ -21,7 +21,7 @@ public class ArticuloTB {
     private int marcar;
     private SimpleStringProperty marcaName;
     private int unidadMedida;
-     private SimpleStringProperty unidadMedidaName;
+    private SimpleStringProperty unidadMedidaName;
     private int presentacion;
     private SimpleStringProperty presentacionName;
     private int unidadVenta;
@@ -54,7 +54,7 @@ public class ArticuloTB {
     private SimpleDoubleProperty subTotal;
     private SimpleDoubleProperty importe;
     private boolean impuesto;
-    private ImagenTB imagenTB;
+    private String imagenTB;
     private ObjectProperty<LocalDate> fechaRegistro;
 
     public ArticuloTB() {
@@ -125,12 +125,12 @@ public class ArticuloTB {
         this.nombreGenerico = nombreGenerico;
     }
 
-    public ImagenTB getImagenTB() {
+    public String getImagenTB() {
         return imagenTB;
     }
 
-    public void setImagenTB(ImagenTB imagenTB) {
-        this.imagenTB = imagenTB;
+    public void setImagenTB(String imagenTB) {
+        this.imagenTB = imagenTB == null ? "" : imagenTB;
     }
 
     public int getCategoria() {

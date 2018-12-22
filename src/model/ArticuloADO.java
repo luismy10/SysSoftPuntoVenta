@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
-import javafx.scene.image.Image;
 
 public class ArticuloADO {
 
@@ -54,7 +53,7 @@ public class ArticuloADO {
                     preparedArticulo.setInt(20, articuloTB.getEstado());
                     preparedArticulo.setBoolean(21, articuloTB.isLote());
                     preparedArticulo.setBoolean(22, articuloTB.isInventario());
-                    preparedArticulo.setBinaryStream(23, articuloTB.getImagenTB().getFile());
+                    preparedArticulo.setString(23, articuloTB.getImagenTB());
                     preparedArticulo.setString(24, articuloTB.getIdArticulo());
 
                     preparedArticulo.addBatch();
@@ -127,7 +126,8 @@ public class ArticuloADO {
                     preparedArticulo.setInt(21, articuloTB.getEstado());
                     preparedArticulo.setBoolean(22, articuloTB.isLote());
                     preparedArticulo.setBoolean(23, articuloTB.isInventario());
-                    preparedArticulo.setBinaryStream(24, articuloTB.getImagenTB().getFile());
+//                    preparedArticulo.setBinaryStream(24, articuloTB.getImagenTB().getFile());
+                    preparedArticulo.setString(24, articuloTB.getImagenTB());
                     preparedArticulo.addBatch();
 
                     preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("insert into HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
@@ -239,12 +239,13 @@ public class ArticuloADO {
                 articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
                 articuloTB.setClave(rsEmps.getString("Clave"));
                 articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                articuloTB.setMarcaName(rsEmps.getString("Marca"));
-                articuloTB.setEstadoName(rsEmps.getString("Estado"));
+                articuloTB.setMarcaName(rsEmps.getString("Marca"));                
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setCantidadGranel(rsEmps.getDouble("CantidadGranel"));
                 articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
+                articuloTB.setEstadoName(rsEmps.getString("Estado"));
+                articuloTB.setImagenTB(rsEmps.getString("Imagen"));
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {
@@ -264,30 +265,6 @@ public class ArticuloADO {
             }
         }
         return empList;
-    }
-
-    public static Image GetImageArticuloById(String id) {
-        PreparedStatement statementImage;
-        ImagenTB im = new ImagenTB();
-        try {
-            DBUtil.dbConnect();
-            statementImage = DBUtil.getConnection().prepareStatement("SELECT Imagen FROM ArticuloTB WHERE IdArticulo = ?");
-            statementImage.setString(1, id);
-            ResultSet resultSet = statementImage.executeQuery();
-            if (resultSet.next()) {
-                im.setFile(resultSet.getBinaryStream("Imagen"));
-                if (im.getFile() != null) {
-                    im.setImagen(new Image(im.getFile()));
-                } else {
-                    im.setImagen(new Image("/view/no-image.png"));
-                }
-            } else {
-                im.setImagen(new Image("/view/no-image.png"));
-            }
-        } catch (SQLException ex) {
-
-        }
-        return im.getImagen();
     }
 
     public static ObservableList<ArticuloTB> ListArticulosListaView(String value) {
@@ -372,15 +349,8 @@ public class ArticuloADO {
                 articuloTB.setCantidadGranel(rsEmps.getDouble("CantidadGranel"));
                 articuloTB.setEstado(rsEmps.getInt("Estado"));
                 articuloTB.setLote(rsEmps.getBoolean("Lote"));
-                articuloTB.setInventario(rsEmps.getBoolean("Inventario"));
-                ImagenTB im = new ImagenTB();
-                im.setFile(rsEmps.getBinaryStream("Imagen"));
-                if (im.getFile() != null) {
-                    im.setImagen(new Image(im.getFile()));
-                } else {
-                    im.setImagen(new Image("/view/no-image.png"));
-                }
-                articuloTB.setImagenTB(im);
+                articuloTB.setInventario(rsEmps.getBoolean("Inventario"));               
+                articuloTB.setImagenTB(rsEmps.getString("Imagen"));
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {
@@ -600,7 +570,6 @@ public class ArticuloADO {
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             PreparedStatement statementArticulo = null;
-            PreparedStatement statementImagen = null;
             PreparedStatement statementHistorial = null;
 
             PreparedStatement statementCompra = null;
@@ -623,15 +592,12 @@ public class ArticuloADO {
                     statementArticulo.setString(1, idArticulo);
                     statementArticulo.addBatch();
 
-                    statementImagen = DBUtil.getConnection().prepareStatement("DELETE FROM ImagenArticuloTB WHERE IdRelacionado = ?");
-                    statementImagen.setString(1, idArticulo);
-                    statementImagen.addBatch();
-
                     statementHistorial = DBUtil.getConnection().prepareStatement("DELETE FROM HistorialArticuloTB WHERE IdArticulo = ?");
                     statementHistorial.setString(1, idArticulo);
                     statementHistorial.addBatch();
 
                     statementArticulo.executeBatch();
+                    statementHistorial.executeBatch();
                     DBUtil.getConnection().commit();
                     result = "removed";
                 }
@@ -653,9 +619,6 @@ public class ArticuloADO {
                     }
                     if (statementArticulo != null) {
                         statementArticulo.close();
-                    }
-                    if (statementImagen != null) {
-                        statementImagen.close();
                     }
                     if (statementHistorial != null) {
                         statementHistorial.close();

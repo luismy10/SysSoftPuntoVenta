@@ -2,12 +2,13 @@ package controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,7 +34,6 @@ import model.ArticuloADO;
 import model.ArticuloTB;
 import model.DetalleADO;
 import model.DetalleTB;
-import model.ImagenTB;
 
 public class FxArticuloProcesoController implements Initializable {
 
@@ -111,6 +111,7 @@ public class FxArticuloProcesoController implements Initializable {
         ToggleGroup group = new ToggleGroup();
         rbUnidad.setToggleGroup(group);
         rbGranel.setToggleGroup(group);
+
     }
 
     public void setInitArticulo() {
@@ -243,7 +244,11 @@ public class FxArticuloProcesoController implements Initializable {
             txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
             txtPrecioMayoreo.setText(Tools.roundingValue(articuloTB.getPrecioVentaMayoreo(), 2));
 
-            lnPrincipal.setImage(articuloTB.getImagenTB().getImagen());
+            if (articuloTB.getImagenTB().equalsIgnoreCase("")) {
+                lnPrincipal.setImage(new Image("/view/no-image.png"));
+            } else {
+                lnPrincipal.setImage(new Image(new File("" + articuloTB.getImagenTB()).toURI().toString()));
+            }
 
         }
     }
@@ -267,9 +272,9 @@ public class FxArticuloProcesoController implements Initializable {
                 articuloTB.setClaveAlterna(txtClaveAlterna.getText().trim());
                 articuloTB.setNombreMarca(txtNombreMarca.getText().trim());
                 articuloTB.setNombreGenerico(txtNombreGenerico.getText().trim());
-                articuloTB.setImagenTB(new ImagenTB(selectFile != null
-                        ? getFileResources(selectFile)
-                        : getFileResources(null)));
+                articuloTB.setImagenTB(selectFile != null
+                        ? "./img/" + selectFile.getName()
+                        : "");
                 articuloTB.setCategoria(idCategoria != 0
                         ? idCategoria
                         : 0);
@@ -393,14 +398,36 @@ public class FxArticuloProcesoController implements Initializable {
 
     @FXML
     private void onActionPhoto(ActionEvent event) {
+        //idArticulo
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Importar una imagen");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Elija una imagen", "*.png", "*.jpg", "*.jpeg"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Elija una imagen", "*.png", "*.jpg", "*.jpeg", "*.gif"));
         selectFile = fileChooser.showOpenDialog(window.getScene().getWindow());
         if (selectFile != null) {
             selectFile = new File(selectFile.getAbsolutePath());
-            if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg")) {
+            if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith(".gif")) {
                 lnPrincipal.setImage(new Image(selectFile.toURI().toString()));
+                FileInputStream inputStream = null;
+                byte[] buffer = new byte[1024];
+                try (FileOutputStream outputStream = new FileOutputStream("." + File.separator + "img" + File.separator + selectFile.getName())) {
+                    inputStream = new FileInputStream(selectFile.getAbsolutePath());
+                    int byteRead;
+                    while ((byteRead = inputStream.read(buffer)) != 1) {
+                        outputStream.write(buffer, 0, byteRead);
+                    }
+                } catch (Exception e) {
+                    if (e.getMessage() != null) {
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Artículo", e.getLocalizedMessage() + ": Consulte con el proveedor del sistema del problema :D", false);
+                    }
+                } finally {
+                    if (inputStream != null) {
+                        try {
+                            inputStream.close();
+                        } catch (IOException ex) {
+                            Logger.getLogger(FxArticuloProcesoController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
             }
         }
     }
@@ -408,19 +435,8 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private void onActionRemovePhoto(ActionEvent event) throws IOException {
         lnPrincipal.setImage(new Image("/view/no-image.png"));
-    }
+        selectFile = null;
 
-    private InputStream getFileResources(File file) {
-        InputStream inputStream = null;
-        try {
-            if (file != null) {
-                inputStream = new FileInputStream(file);
-            } else {
-                inputStream = getClass().getResourceAsStream("/view/no-image.png");
-            }
-        } catch (FileNotFoundException ex) {
-        }
-        return inputStream;
     }
 
     @FXML
@@ -641,7 +657,7 @@ public class FxArticuloProcesoController implements Initializable {
 
     public void setIdMedida(int idMedida) {
         this.idMedida = idMedida;
-    }    
+    }
 
     public TextField getTxtPresentacion() {
         return txtPresentacion;
@@ -665,7 +681,7 @@ public class FxArticuloProcesoController implements Initializable {
 
     public TextField getTxtMedida() {
         return txtMedida;
-    }   
+    }
 
     public void initControllerArticulos(FxArticulosController articulosController) {
         this.articulosController = articulosController;
