@@ -39,6 +39,8 @@ public class FxVentaProcesoController implements Initializable {
     private TableView<ArticuloTB> tvList;
 
     private VentaTB ventaTB;
+    
+    private String tipo_comprobante;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -47,12 +49,14 @@ public class FxVentaProcesoController implements Initializable {
     }
 
     @FXML
-    private void onActionAceptar(ActionEvent event) {
+    private void onActionAceptar(ActionEvent event) {        
+        
         if (Tools.isNumeric(txtEfectivo.getText())) {
             ventaTB.setObservaciones(txtObservacion.getText().trim());
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Esta seguro de continuar?", true);
             if (confirmation == 1) {
-                String[] result = VentaADO.CrudVenta(ventaTB, tvList).split("/");
+                tipo_comprobante = ventaController.obtenerTipoComprobante().toLowerCase();
+                String[] result = VentaADO.CrudVenta(ventaTB, tvList,tipo_comprobante).split("/");
                 switch (result[0]) {
                     case "register":
                         short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Venta", "Se realiazo la venta con éxito, ¿Desea imprimir el comprobante?");

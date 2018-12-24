@@ -374,7 +374,7 @@ public class FxVentaController implements Initializable {
     }
 
     public void resetVenta() {
-        String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
+        String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre().get()).split("-");
         lblSerie.setText(array[0]);
         lblNumeracion.setText(array[1]);
         this.tvList.getItems().clear();
@@ -574,6 +574,12 @@ public class FxVentaController implements Initializable {
         lblIgv.setText(Tools.roundingValue(impuesto, 2));
 
     }
+    
+    // Metodo para obtener Tipo Comprobante
+    public String obtenerTipoComprobante(){
+    
+        return this.cbComprobante.getSelectionModel().getSelectedItem().getNombre().get();
+    }
 
     @FXML
     private void onKeyPressedPrecio(KeyEvent event) throws IOException {
@@ -673,6 +679,29 @@ public class FxVentaController implements Initializable {
         pf.setOrientation(PageFormat.PORTRAIT);           //select orientation portrait or landscape but for this time portrait
         pf.setPaper(paper);
         return pf;
+    }
+
+    @FXML
+    private void onActionComprobante(ActionEvent event) {
+        
+        String[] array;
+        
+        if(this.cbComprobante.getSelectionModel().getSelectedIndex() == 0){
+            array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre().get()).split("-");
+            lblSerie.setText(array[0]);
+            lblNumeracion.setText(array[1]);
+            //System.out.println(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre().get());
+        }
+        else if(this.cbComprobante.getSelectionModel().getSelectedIndex() == 1){
+            array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre().get()).split("-");
+            lblSerie.setText(array[0]);
+            lblNumeracion.setText(array[1]);
+        }
+        else if(this.cbComprobante.getSelectionModel().getSelectedIndex() == 2){
+            array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre().get()).split("-");
+            lblSerie.setText(array[0]);
+            lblNumeracion.setText(array[1]);
+        }
     }
 
 }

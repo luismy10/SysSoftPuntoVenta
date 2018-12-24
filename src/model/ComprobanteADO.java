@@ -20,8 +20,37 @@ public class ComprobanteADO {
         try {
 
             DBUtil.dbConnect();
-            callableStatement = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero_Generado()}");
+            callableStatement = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero(?)}");          
             callableStatement.registerOutParameter(1, Types.VARCHAR);
+            callableStatement.setString(2, "ticket");
+            callableStatement.execute();
+            return callableStatement.getString(1);
+
+        } catch (SQLException ex) {
+            System.out.println("ComprobanteADO:" + ex.getLocalizedMessage());
+        } finally {
+            try {
+                if (callableStatement != null) {
+                    callableStatement.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+
+        }
+
+        return "";
+    }
+    
+    public static String GetSerieNumeracionEspecifico(String tipo) {
+        CallableStatement callableStatement = null;
+        try {
+
+            DBUtil.dbConnect();
+            callableStatement = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero(?)}");          
+            callableStatement.registerOutParameter(1, Types.VARCHAR);
+            callableStatement.setString(2, tipo);
             callableStatement.execute();
             return callableStatement.getString(1);
 

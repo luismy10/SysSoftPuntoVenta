@@ -8,11 +8,10 @@ import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
-import javax.xml.bind.DatatypeConverter;
 
 public class VentaADO {
 
-    public static String CrudVenta(VentaTB ventaTB, TableView<ArticuloTB> tvList) {
+    public static String CrudVenta(VentaTB ventaTB, TableView<ArticuloTB> tvList, String tipo_comprobante) {
 
         CallableStatement serie_numeracion = null;
         PreparedStatement venta = null;
@@ -27,8 +26,9 @@ public class VentaADO {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
 
-            serie_numeracion = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero_Generado()}");
+            serie_numeracion = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero(?)}");
             serie_numeracion.registerOutParameter(1, java.sql.Types.VARCHAR);
+            serie_numeracion.setString(2, tipo_comprobante);
             serie_numeracion.execute();
             String[] id_comprabante = serie_numeracion.getString(1).split("-");
 
@@ -56,7 +56,13 @@ public class VentaADO {
                     + "     VALUES\n"
                     + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-            comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(Serie,Numeracion,FechaRegistro)VALUES(?,?,?)");
+            if (tipo_comprobante.equalsIgnoreCase("boleta")) {
+                comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(serie_b,Numeracion,FechaRegistro)VALUES(?,?,?)");
+            } else if (tipo_comprobante.equalsIgnoreCase("factura")) {
+                comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(serie_f,Numeracion,FechaRegistro)VALUES(?,?,?)");
+            } else if (tipo_comprobante.equalsIgnoreCase("ticket")) {
+                comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(serie_t,Numeracion,FechaRegistro)VALUES(?,?,?)");
+            }
 
             detalle_venta = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleVentaTB(IdVenta,IdArticulo,Cantidad,PrecioUnitario,Descuento,Importe)VALUES(?,?,?,?,?,?)");
 
@@ -81,9 +87,11 @@ public class VentaADO {
             venta.setString(14, ventaTB.getObservaciones());
             venta.addBatch();
 
-            byte[] bytes = DatatypeConverter.parseHexBinary(id_comprabante[0]);
+            System.out.println(tipo_comprobante);
+            System.out.println(id_comprabante[0]);
+            System.out.println(id_comprabante[1]);
 
-            comprobante.setBytes(1, bytes);
+            comprobante.setString(1, id_comprabante[0]);
             comprobante.setString(2, id_comprabante[1]);
             comprobante.setTimestamp(3, ventaTB.getFechaVenta());
             comprobante.addBatch();
