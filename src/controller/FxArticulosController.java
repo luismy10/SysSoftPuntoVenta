@@ -337,11 +337,9 @@ public class FxArticulosController implements Initializable {
 
     @FXML
     private void onKeyReleasedSearch(KeyEvent event) {
-        if (stateRequest) {
-            if (!tvList.getItems().isEmpty()) {
-                tvList.getSelectionModel().select(0);
-                onViewDetailArticulo();
-            }
+        if (!tvList.getItems().isEmpty()) {
+            tvList.getSelectionModel().select(0);
+            onViewDetailArticulo();
         }
     }
 

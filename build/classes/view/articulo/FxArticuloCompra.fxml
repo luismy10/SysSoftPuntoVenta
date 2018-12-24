@@ -2,7 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
@@ -50,23 +50,17 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </VBox>
-            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <Label styleClass="labelRoboto14" text="Importe:" textFill="#23283a">
-                     <font>
-                        <Font name="Roboto" size="14.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="txtImporte" onAction="#onActionImporte" onKeyTyped="#onKeyTypedImporte" prefHeight="30.0" />
                   <Label styleClass="labelRoboto14" text="Cantidad:" textFill="#23283a">
                      <font>
                         <Font size="14.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="10.0" />
+                        <Insets />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="txtCantidad" onAction="#onActionCantidad" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" />
+                  <TextField fx:id="txtCantidad" onAction="#onActionCantidad" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" HBox.hgrow="ALWAYS" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -74,35 +68,20 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <HBox alignment="CENTER_LEFT" style="-fx-border-color: #cccccc;">
-                     <children>
-                        <VBox alignment="CENTER_LEFT">
-                           <children>
-                              <HBox spacing="10.0" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
-                                 <children>
-                                    <Label styleClass="labelRoboto14" text="Incluye IGV:" textFill="#23283a">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                    </Label>
-                                    <CheckBox fx:id="cbImpuesto" ellipsisString="" mnemonicParsing="false" onAction="#onActionImpuesto" selected="true" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <Separator orientation="VERTICAL" />
                   <VBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
                         <HBox style="-fx-spacing: 0.8333333333333334em;">
                            <children>
+                              <VBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Impuesto" textFill="#23283a">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="cbImpuesto" prefWidth="150.0" />
+                                 </children>
+                              </VBox>
                               <VBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="labelRoboto14" text="Costo del artículo:" textFill="#23283a">

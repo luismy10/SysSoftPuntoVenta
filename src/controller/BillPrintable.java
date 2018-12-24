@@ -74,10 +74,10 @@ public class BillPrintable implements Printable {
                 g2d.drawString(Session.NOMBREEMPRESA, centerText(width, metrics, Session.NOMBREEMPRESA), y);
 //                y += yShift;
 //                g2d.drawString(Session.DIRECCION, centerText(width, metrics, Session.DIRECCION), y);
-                y += yShift;
-                g2d.drawString("TEL: " + Session.TELEFONO + " CEL:" + Session.CELULAR, centerText(width, metrics, "TEL: " + Session.TELEFONO + " CEL:" + Session.CELULAR), y);
-                y += yShift;
-                g2d.drawString("RUC " + Session.RUC, centerText(width, metrics, "RUC " + Session.RUC), y);
+//                y += yShift;
+//                g2d.drawString("TEL: " + Session.TELEFONO + " CEL:" + Session.CELULAR, centerText(width, metrics, "TEL: " + Session.TELEFONO + " CEL:" + Session.CELULAR), y);
+//                y += yShift;
+//                g2d.drawString("RUC " + Session.RUC, centerText(width, metrics, "RUC " + Session.RUC), y);
                 y += yShift;
                 g2d.drawString("N° Ticket: " + tickt, centerText(width, metrics, "N° Ticket: " + tickt), y);
                 y += yShift;
@@ -132,7 +132,7 @@ public class BillPrintable implements Printable {
                 y += yShift;
                 g2d.drawString("\n", 0, y);
                 y += yShift;
-                g2d.drawString("Fecha de Venta: " + fecha.format(date), 0, y);             
+                g2d.drawString("Fecha: " + fecha.format(date), 0, y);             
                 g2d.drawString("Hora: " + hora.format(date), rightText(width, metrics, "Hora: " + hora.format(date)), y);
                 
                 

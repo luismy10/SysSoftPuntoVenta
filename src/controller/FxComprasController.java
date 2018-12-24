@@ -86,6 +86,12 @@ public class FxComprasController implements Initializable {
     private Text lblMonedaIgv;
     @FXML
     private Text lblMonedaTotal;
+    @FXML
+    private ComboBox<?> cbMoneda;
+    @FXML
+    private Text lblMonedaInafectada;
+    @FXML
+    private Text lblInafectada;
 
     private AnchorPane content;
 

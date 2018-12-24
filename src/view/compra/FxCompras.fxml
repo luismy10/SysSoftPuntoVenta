@@ -96,6 +96,8 @@
                                                 <TextField fx:id="txtProveedor" prefHeight="30.0" promptText="Buscar...." HBox.hgrow="ALWAYS" />
                                                 <Label styleClass="labelRoboto14" text="Representante:" textFill="#1a2226" />
                                                 <ComboBox fx:id="cbRepresentante" onAction="#onActionRepresentante" prefHeight="30.0" prefWidth="204.0" />
+                                                <Label styleClass="labelRoboto14" text="Moneda:" textFill="#1a2226" />
+                                                <ComboBox fx:id="cbMoneda" prefHeight="30.0" prefWidth="204.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
@@ -147,6 +149,17 @@
                                        <children>
                                           <Text fx:id="lblMonedaDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/. -" />
                                           <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Op. Inafacta" textFill="#1a2226" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fx:id="lblMonedaInafectada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblInafectada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>
                                  </children>
