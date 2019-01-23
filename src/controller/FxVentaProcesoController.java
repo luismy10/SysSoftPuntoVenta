@@ -39,7 +39,7 @@ public class FxVentaProcesoController implements Initializable {
     private TableView<ArticuloTB> tvList;
 
     private VentaTB ventaTB;
-    
+
     private String tipo_comprobante;
 
     @Override
@@ -49,19 +49,18 @@ public class FxVentaProcesoController implements Initializable {
     }
 
     @FXML
-    private void onActionAceptar(ActionEvent event) {        
-        
+    private void onActionAceptar(ActionEvent event) {
         if (Tools.isNumeric(txtEfectivo.getText())) {
             ventaTB.setObservaciones(txtObservacion.getText().trim());
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Esta seguro de continuar?", true);
             if (confirmation == 1) {
                 tipo_comprobante = ventaController.obtenerTipoComprobante().toLowerCase();
-                String[] result = VentaADO.CrudVenta(ventaTB, tvList,tipo_comprobante).split("/");
+                String[] result = VentaADO.CrudVenta(ventaTB, tvList, tipo_comprobante).split("/");
                 switch (result[0]) {
                     case "register":
                         short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Venta", "Se realiazo la venta con éxito, ¿Desea imprimir el comprobante?");
                         if (value == 1) {
-                            ventaController.imprimirVenta(ventaTB, txtEfectivo.getText(), lblVuelto.getText(), result[1]);
+                            ventaController.imprimirVenta(ventaTB, Tools.roundingValue(Double.parseDouble(txtEfectivo.getText()), 2), lblVuelto.getText(), result[1]);
                             ventaController.resetVenta();
                             Tools.Dispose(window);
                         } else {

@@ -106,7 +106,7 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                                              <children>
-                                                <Button mnemonicParsing="false" onAction="#onActionGenerar" onKeyPressed="#onKeyPressedGenerar" styleClass="buttonInfo" text="Generar">
+                                                <Button mnemonicParsing="false" onAction="#onActionGenerar" onKeyPressed="#onKeyPressedGenerar" styleClass="buttonLightDefault" text="Generar lista">
                                                    <graphic>
                                                       <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -115,7 +115,16 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Button>
-                                                <Button mnemonicParsing="false" onAction="#onActionVisualizar" onKeyPressed="#onKeyPressedVisualizar" styleClass="buttonLight" text="Visualizar">
+                                                <Button mnemonicParsing="false" onAction="#onActionVizualizarAlterna" onKeyPressed="#onKeyPressedVizualizarAlterna" styleClass="buttonLightWarning" text="Vizualizar Clave Alterna">
+                                                   <graphic>
+                                                      <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../reports.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                                <Button mnemonicParsing="false" onAction="#onActionVisualizar" onKeyPressed="#onKeyPressedVisualizar" styleClass="buttonLight" text="Visualizar Código de barras">
                                                    <graphic>
                                                       <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -141,8 +150,10 @@
                               </HBox>
                               <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="327.0" VBox.vgrow="ALWAYS">
                                  <columns>
-                                    <TableColumn fx:id="tcDocument" prefWidth="450.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
-                                    <TableColumn fx:id="tcUnidadVenta" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Medida" />
+                                    <TableColumn fx:id="tcClave" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Clave" />
+                                    <TableColumn fx:id="tcClaveAlterna" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Clave Alterna" />
+                                    <TableColumn fx:id="tcDocument" prefWidth="426.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
+                                    <TableColumn fx:id="tcUnidadVenta" prefWidth="250.0" style="-fx-alignment: CENTER-LEFT;" text="Medida" />
                                  </columns>
                               </TableView>
                            </children>

@@ -43,6 +43,7 @@ public class VentaADO {
                     + "           ,[Cliente]\n"
                     + "           ,[Vendedor]\n"
                     + "           ,[Comprobante]\n"
+                    + "           ,[Moneda]\n"
                     + "           ,[Serie]\n"
                     + "           ,[Numeracion]\n"
                     + "           ,[FechaVenta]\n"
@@ -54,7 +55,7 @@ public class VentaADO {
                     + "           ,[Estado]"
                     + "           ,[Observaciones])\n"
                     + "     VALUES\n"
-                    + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             if (tipo_comprobante.equalsIgnoreCase("boleta")) {
                 comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(serie_b,Numeracion,FechaRegistro)VALUES(?,?,?)");
@@ -75,21 +76,18 @@ public class VentaADO {
             venta.setString(2, ventaTB.getCliente());
             venta.setString(3, ventaTB.getVendedor());
             venta.setInt(4, ventaTB.getComprobante());
-            venta.setString(5, id_comprabante[0]);
-            venta.setString(6, id_comprabante[1]);
-            venta.setTimestamp(7, ventaTB.getFechaVenta());
-            venta.setDouble(8, ventaTB.getSubTotal());
-            venta.setDouble(9, ventaTB.getGravada());
-            venta.setDouble(10, ventaTB.getDescuento());
-            venta.setDouble(11, ventaTB.getIgv());
-            venta.setDouble(12, ventaTB.getTotal());
-            venta.setString(13, ventaTB.getEstado());
-            venta.setString(14, ventaTB.getObservaciones());
+            venta.setInt(5, ventaTB.getMoneda());
+            venta.setString(6, id_comprabante[0]);
+            venta.setString(7, id_comprabante[1]);
+            venta.setTimestamp(8, ventaTB.getFechaVenta());
+            venta.setDouble(9, ventaTB.getSubTotal());
+            venta.setDouble(10, ventaTB.getGravada());
+            venta.setDouble(11, ventaTB.getDescuento());
+            venta.setDouble(12, ventaTB.getIgv());
+            venta.setDouble(13, ventaTB.getTotal());
+            venta.setString(14, ventaTB.getEstado());
+            venta.setString(15, ventaTB.getObservaciones());
             venta.addBatch();
-
-            System.out.println(tipo_comprobante);
-            System.out.println(id_comprabante[0]);
-            System.out.println(id_comprabante[1]);
 
             comprobante.setString(1, id_comprabante[0]);
             comprobante.setString(2, id_comprabante[1]);
@@ -204,6 +202,7 @@ public class VentaADO {
                 ventaTB.setSerie(rsEmps.getString("Serie"));
                 ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
                 ventaTB.setEstado(rsEmps.getString("Estado"));
+                ventaTB.setMonedaName(rsEmps.getString("Abreviado")); 
                 ventaTB.setTotal(rsEmps.getDouble("Total"));
                 ventaTB.setObservaciones(rsEmps.getString("Observaciones"));
                 empList.add(ventaTB);
@@ -269,41 +268,26 @@ public class VentaADO {
         return empList;
     }
 
-    public static ObservableList<DetalleVentaTB> ListVentasDetalle(String value) {
+    public static ObservableList<DetalleVentaTB> ListVentasDetalle(String value) throws SQLException {
         String selectStmt = "{call Sp_Listar_Ventas_Detalle_By_Id(?)}";
-        PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
+        PreparedStatement preparedStatement;
+        ResultSet rsEmps;
         ObservableList<DetalleVentaTB> empList = FXCollections.observableArrayList();
-        try {
-            DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, value);
-            rsEmps = preparedStatement.executeQuery();
-            while (rsEmps.next()) {
-                DetalleVentaTB detalleVentaTB = new DetalleVentaTB();
-                detalleVentaTB.setId(rsEmps.getInt("Filas"));
-                detalleVentaTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                detalleVentaTB.setPrecioUnitario(rsEmps.getDouble("PrecioUnitario"));
-                detalleVentaTB.setDescuento(rsEmps.getDouble("Descuento"));
-                detalleVentaTB.setImporte(rsEmps.getDouble("Importe"));
-                detalleVentaTB.setArticuloTB(new ArticuloTB(rsEmps.getString("IdArticulo"), rsEmps.getString("NombreMarca"), rsEmps.getInt("UnidadVenta")));
-                empList.add(detalleVentaTB);
-            }
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (rsEmps != null) {
-                    rsEmps.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException e) {
-            }
+        preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+        preparedStatement.setString(1, value);
+        rsEmps = preparedStatement.executeQuery();
+        while (rsEmps.next()) {
+            DetalleVentaTB detalleVentaTB = new DetalleVentaTB();
+            detalleVentaTB.setId(rsEmps.getInt("Filas"));
+            detalleVentaTB.setCantidad(rsEmps.getDouble("Cantidad"));
+            detalleVentaTB.setPrecioUnitario(rsEmps.getDouble("PrecioUnitario"));
+            detalleVentaTB.setDescuento(rsEmps.getDouble("Descuento"));
+            detalleVentaTB.setImporte(rsEmps.getDouble("Importe"));
+            detalleVentaTB.setArticuloTB(new ArticuloTB(rsEmps.getString("IdArticulo"), rsEmps.getString("NombreMarca"), rsEmps.getInt("UnidadVenta")));
+            empList.add(detalleVentaTB);
         }
+        preparedStatement.close();  
+        rsEmps.close();
         return empList;
     }
 
@@ -378,35 +362,23 @@ public class VentaADO {
         }
     }
 
-    public static EmpleadoTB ListVentaDetalle(String value) {
-        PreparedStatement statementVendedor = null;
+    public static EmpleadoTB CabeceraVenta(String value) throws SQLException {
+        PreparedStatement statementVendedor;
         EmpleadoTB empleadoTB = null;
-        try {
-            DBUtil.dbConnect();
-            statementVendedor = DBUtil.getConnection().prepareStatement("select e.Apellidos,e.Nombres \n"
-                    + "from VentaTB as v inner join EmpleadoTB as e \n"
-                    + "on v.Vendedor = e.IdEmpleado\n"
-                    + "where v.IdVenta = ?");
-            statementVendedor.setString(1, value);
-            ResultSet resultSet = statementVendedor.executeQuery();
+        statementVendedor = DBUtil.getConnection().prepareStatement("select e.Apellidos,e.Nombres \n"
+                + "from VentaTB as v inner join EmpleadoTB as e \n"
+                + "on v.Vendedor = e.IdEmpleado\n"
+                + "where v.IdVenta = ?");
+        statementVendedor.setString(1, value);
+        try (ResultSet resultSet = statementVendedor.executeQuery()) {
             if (resultSet.next()) {
                 empleadoTB = new EmpleadoTB();
                 empleadoTB.setApellidos(resultSet.getString("Apellidos"));
                 empleadoTB.setNombres(resultSet.getString("Nombres"));
             }
-        } catch (SQLException ex) {
-
-        } finally {
-            try {
-                if (statementVendedor != null) {
-                    statementVendedor.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-
-            }
-
+            statementVendedor.close();
         }
+        statementVendedor.close();
         return empleadoTB;
     }
 

@@ -88,30 +88,38 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                    <HBox>
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
-                                             <children>
-                                                <Label styleClass="labelRoboto14" text="Proveedor:" textFill="#1a2226" />
-                                                <TextField fx:id="txtProveedor" prefHeight="30.0" promptText="Buscar...." HBox.hgrow="ALWAYS" />
-                                                <Label styleClass="labelRoboto14" text="Representante:" textFill="#1a2226" />
-                                                <ComboBox fx:id="cbRepresentante" onAction="#onActionRepresentante" prefHeight="30.0" prefWidth="204.0" />
-                                                <Label styleClass="labelRoboto14" text="Moneda:" textFill="#1a2226" />
-                                                <ComboBox fx:id="cbMoneda" prefHeight="30.0" prefWidth="204.0" />
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                          <VBox alignment="CENTER_LEFT">
                                              <children>
                                                 <Label styleClass="labelRoboto14" text="Comprobante:" textFill="#1a2226" />
-                                                <ComboBox fx:id="cbComprobante" prefHeight="30.0" prefWidth="160.0" HBox.hgrow="ALWAYS" />
-                                                <Label styleClass="labelRoboto14" text="Numeración:" textFill="#1a2226" />
-                                                <TextField fx:id="cbNumeracion" onKeyTyped="#onKeyTypedNumeracion" prefHeight="30.0" prefWidth="160.0" HBox.hgrow="ALWAYS" />
-                                                <Label styleClass="labelRoboto14" text="Fecha de compra:" textFill="#1a2226" />
-                                                <DatePicker fx:id="tpFechaCompra" editable="false" prefHeight="30.0" prefWidth="204.0" />
+                                                <Label styleClass="labelRoboto14" text="Moneda:" textFill="#1a2226" />
+                                                <Label styleClass="labelRoboto14" text="Proveedor:" textFill="#1a2226" />
                                              </children>
-                                          </HBox>
+                                          </VBox>
+                                          <VBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <ComboBox fx:id="cbComprobante" prefHeight="30.0" prefWidth="160.0" />
+                                                <ComboBox fx:id="cbMoneda" prefHeight="30.0" prefWidth="160.0" />
+                                                <TextField fx:id="txtProveedor" prefHeight="30.0" promptText="Buscar...." />
+                                             </children>
+                                          </VBox>
+                                          <VBox>
+                                             <children>
+                                                <Label styleClass="labelRoboto14" text="Representante:" textFill="#1a2226" />
+                                                <Label styleClass="labelRoboto14" text="Fecha de compra:" textFill="#1a2226" />
+                                                <Label styleClass="labelRoboto14" text="Numeración:" textFill="#1a2226" />
+                                             </children>
+                                          </VBox>
+                                          <VBox>
+                                             <children>
+                                                <ComboBox fx:id="cbRepresentante" onAction="#onActionRepresentante" prefHeight="30.0" prefWidth="204.0" />
+                                                <DatePicker fx:id="tpFechaCompra" editable="false" prefHeight="30.0" prefWidth="204.0" />
+                                                <TextField fx:id="cbNumeracion" onKeyTyped="#onKeyTypedNumeracion" prefHeight="30.0" />
+                                             </children>
+                                          </VBox>
                                        </children>
-                                    </VBox>
+                                    </HBox>
                                  </children>
                               </HBox>
                               <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="320.0" VBox.vgrow="ALWAYS">

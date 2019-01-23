@@ -10,6 +10,8 @@ public class VentaTB {
     private String cliente;
     private String vendedor;
     private int comprobante;
+    private int moneda;
+    private String monedaName;
     private String comprobanteName;
     private String serie;
     private String numeracion;
@@ -69,6 +71,22 @@ public class VentaTB {
         this.comprobante = comprobante;
     }
 
+    public int getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(int moneda) {
+        this.moneda = moneda;
+    }
+
+    public String getMonedaName() {
+        return monedaName;
+    }
+
+    public void setMonedaName(String monedaName) {
+        this.monedaName = monedaName;
+    }
+    
     public String getComprobanteName() {
         return comprobanteName;
     }

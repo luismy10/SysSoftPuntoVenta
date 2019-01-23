@@ -3,6 +3,8 @@ package model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
@@ -243,7 +245,7 @@ public class MonedaADO {
                 return "M";
             }
         } catch (SQLException ex) {
-            System.out.println("Error Moneda: "+ex.getLocalizedMessage());
+            System.out.println("Error Moneda: " + ex.getLocalizedMessage());
         } finally {
             try {
                 if (statement != null) {
@@ -251,9 +253,45 @@ public class MonedaADO {
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {
-                System.out.println("Error Moneda: "+e.getLocalizedMessage());
+                System.out.println("Error Moneda: " + e.getLocalizedMessage());
             }
         }
         return "M";
     }
+
+    public static List<MonedaTB> GetMonedasCombBox() {
+        List<MonedaTB> list = new ArrayList<>();
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statement = null;
+            ResultSet resultSet = null;            
+            try {
+                statement = DBUtil.getConnection().prepareStatement("SELECT IdMoneda,Nombre,Predeterminado FROM MonedaTB");
+                resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    MonedaTB monedaTB = new MonedaTB();
+                    monedaTB.setIdMoneda(resultSet.getInt("IdMoneda"));
+                    monedaTB.setNombre(resultSet.getString("Nombre"));
+                    monedaTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
+                    list.add(monedaTB);
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error Moneda: " + ex.getLocalizedMessage());
+            } finally {
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    System.out.println("Error Moneda: " + ex.getLocalizedMessage());
+                }
+            }
+        }
+        return list;
+    }
+
 }

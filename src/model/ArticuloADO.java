@@ -244,6 +244,53 @@ public class ArticuloADO {
                 articuloTB.setCantidadGranel(rsEmps.getDouble("CantidadGranel"));
                 articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
+                articuloTB.setCategoriaName(rsEmps.getString("Categoria")); 
+                articuloTB.setEstadoName(rsEmps.getString("Estado"));
+                articuloTB.setImagenTB(rsEmps.getString("Imagen"));
+                empList.add(articuloTB);
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+    
+    public static ObservableList<ArticuloTB> ListArticulosCategoria(int value) {
+        String selectStmt = "{call Sp_Listar_Articulo_Categoria(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<ArticuloTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setInt(1, value);
+            rsEmps = preparedStatement.executeQuery();
+
+            while (rsEmps.next()) {
+                ArticuloTB articuloTB = new ArticuloTB();
+                articuloTB.setId(rsEmps.getRow());
+                articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
+                articuloTB.setClave(rsEmps.getString("Clave"));
+                articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                articuloTB.setMarcaName(rsEmps.getString("Marca"));                
+                articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                articuloTB.setCantidadGranel(rsEmps.getDouble("CantidadGranel"));
+                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
+                articuloTB.setCategoriaName(rsEmps.getString("Categoria")); 
                 articuloTB.setEstadoName(rsEmps.getString("Estado"));
                 articuloTB.setImagenTB(rsEmps.getString("Imagen"));
                 empList.add(articuloTB);
@@ -267,6 +314,7 @@ public class ArticuloADO {
         return empList;
     }
 
+    
     public static ObservableList<ArticuloTB> ListArticulosListaView(String value) {
         String selectStmt = "{call Sp_Listar_Articulo_Lista_View(?)}";
         PreparedStatement preparedStatement = null;
@@ -465,7 +513,7 @@ public class ArticuloADO {
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, value);
             rsEmps = preparedStatement.executeQuery();
-            while (rsEmps.next()) {
+            if (rsEmps.next()) {
                 articuloTB = new ArticuloTB();
                 articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
                 articuloTB.setClave(rsEmps.getString("Clave"));
@@ -542,13 +590,13 @@ public class ArticuloADO {
             while (rsEmps.next()) {
                 ArticuloTB articuloTB = new ArticuloTB();
                 articuloTB.setClave(rsEmps.getString("Clave"));
+                articuloTB.setClaveAlterna(rsEmps.getString("ClaveAlterna")); 
                 articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
-
         } finally {
             try {
                 if (preparedStatement != null) {
@@ -559,7 +607,6 @@ public class ArticuloADO {
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
             }
         }
         return empList;

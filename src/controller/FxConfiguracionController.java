@@ -43,7 +43,6 @@ public class FxConfiguracionController implements Initializable {
     }
 
     private void openWindowMiEmpresa() throws IOException {
-
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_MIEMPRESA));
         ScrollPane node = fXMLPrincipal.load();
         FxMiEmpresaController controller = fXMLPrincipal.getController();
@@ -97,6 +96,20 @@ public class FxConfiguracionController implements Initializable {
         AnchorPane.setBottomAnchor(node, 0d);
         content.getChildren().add(node);
         controller.fillTableMonedas();
+    }
+
+    private void openWindowVoucher() throws IOException {
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_TIPODOCUMENTO));
+        VBox node = fXMLPrincipal.load();
+        FxTipoDocumentoController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        content.getChildren().add(node);
+        controller.fillTabletTipoDocumento();
     }
 
     @FXML
@@ -158,6 +171,18 @@ public class FxConfiguracionController implements Initializable {
     @FXML
     private void onActionMoney(ActionEvent event) throws IOException {
         openWindowMoney();
+    }
+
+    @FXML
+    private void onKeyPressedVoucher(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowVoucher();
+        }
+    }
+
+    @FXML
+    private void onActionVoucher(ActionEvent event) throws IOException {
+        openWindowVoucher();
     }
 
     public void setContent(AnchorPane windowinit, AnchorPane content) {

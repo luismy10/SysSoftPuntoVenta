@@ -15,6 +15,19 @@ public class MonedaTB {
     public MonedaTB() {
     }
 
+    public MonedaTB(int idMoneda, String nombre) {
+        this.idMoneda = idMoneda;
+        this.nombre = nombre;
+    }
+
+    public MonedaTB(int idMoneda, String nombre, Boolean predeterminado) {
+        this.idMoneda = idMoneda;
+        this.nombre = nombre;
+        this.predeterminado = predeterminado;
+    }
+    
+    
+
     public int getIdMoneda() {
         return idMoneda;
     }
@@ -70,6 +83,12 @@ public class MonedaTB {
     public void setImagePredeterminado(ImageView imagePredeterminado) {
         this.imagePredeterminado = imagePredeterminado;
     }
+
+    @Override
+    public String toString() {
+        return  nombre ;
+    }
+    
     
     
     

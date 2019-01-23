@@ -1,15 +1,12 @@
 package controller;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.application.Preloader;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -19,10 +16,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 import model.ClienteADO;
 import model.ClienteTB;
-import model.ConsultasADO;
 import model.DBUtil;
 import model.DetalleADO;
 import model.EmpresaADO;
@@ -94,28 +89,66 @@ public class FxPreloader extends Preloader {
                 System.out.println("BEFORE_INIT");
                 DBUtil.dbConnect();
                 if (DBUtil.getConnection() != null) {
-                    TimerService service = new TimerService();
-                    service.setPeriod(Duration.seconds(59));
-                    service.setOnSucceeded((WorkerStateEvent t) -> {
-                        try {
-                            Session.CONNECTION_SESSION = true;
-                            ExecutorService exec = Executors.newFixedThreadPool(1);
-                            ExecutorCompletionService completionService = new ExecutorCompletionService<>(exec);
-                            completionService.submit(ConsultasADO.TotalObjectInit());
-                            Long[] tipos = (Long[]) completionService.take().get();
-                            Session.ARTICULOS_TOTAL = "" + tipos[0];
-                            Session.CLIENTES_TOTAL = "" + tipos[1];
-                            Session.PROVEEDORES_TOTAL = "" + tipos[2];
-                            Session.TRABAJADORES_TOTAL = "" + tipos[3];
-                            if (!exec.isShutdown()) {
-                                exec.shutdown();
-                            }
-                        } catch (InterruptedException | ExecutionException ex) {
-                            Logger.getLogger(FxPreloader.class.getName()).log(Level.SEVERE, null, ex);
+                    Session.CONNECTION_SESSION = true;
+                    File archivo;
+                    FileReader fr = null;
+                    BufferedReader br = null;
+                    try {
+                        archivo = new File("./archivos/impresoraticket.txt");
+                        if (archivo.exists()) {
+                            Session.STATE_IMPRESORA = true;
+                            // Apertura del fichero y creacion de BufferedReader para poder
+                            // hacer una lectura comoda (disponer del metodo readLine()).
+                            fr = new FileReader(archivo);
+                            br = new BufferedReader(fr);
+                            // Lectura del fichero                           
+                            Session.NAME_IMPRESORA = br.readLine();
+                            Session.CORTA_PAPEL = br.readLine();
+                            System.out.println(Session.NAME_IMPRESORA);
+                            System.out.println(Session.CORTA_PAPEL);
+                        } else {
+                            Session.STATE_IMPRESORA = false;
                         }
 
-                    });
-                    service.start();
+                    } catch (IOException e) {
+                        Session.STATE_IMPRESORA = false;
+                    } finally {
+                        // En el finally cerramos el fichero, para asegurarnos
+                        // que se cierra tanto si todo va bien como si salta 
+                        // una excepcion.
+                        try {
+                            if (null != fr) {
+                                fr.close();
+                            }
+                            if (null != br) {
+                                br.close();
+                            }
+                        } catch (IOException e2) {
+                        }
+                    }
+
+//                    TimerService service = new TimerService();
+//                    service.setPeriod(Duration.seconds(59));
+//                    service.setOnSucceeded((WorkerStateEvent t) -> {
+//                        try {
+//                            
+//                            ExecutorService exec = Executors.newFixedThreadPool(1);
+//                            ExecutorCompletionService completionService = new ExecutorCompletionService<>(exec);
+//                            completionService.submit(ConsultasADO.TotalObjectInit()); 
+//                            Long[] tipos = (Long[]) completionService.take().get();
+//                            Session.ARTICULOS_TOTAL = "" + tipos[0];
+//                            Session.CLIENTES_TOTAL = "" + tipos[1];
+//                            Session.PROVEEDORES_TOTAL = "" + tipos[2];
+//                            Session.TRABAJADORES_TOTAL = "" + tipos[3];
+//                            if (!exec.isShutdown()) {
+//                                exec.shutdown();
+//                            }
+//                        } catch (InterruptedException | ExecutionException ex) {
+//                            Logger.getLogger(FxPreloader.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//
+//                    });
+//                    service.start();
                     ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
                     if (!list.isEmpty()) {
                         Session.EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();

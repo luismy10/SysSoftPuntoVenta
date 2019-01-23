@@ -1,17 +1,13 @@
 package controller;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,6 +19,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import model.DBUtil;
 import model.DetalleVentaTB;
 import model.EmpleadoTB;
 import model.VentaADO;
@@ -84,42 +81,13 @@ public class FxVentaDetalleController implements Initializable {
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getImporte(), 2)));
     }
 
-    public void fillVentasDetalleTable(String value) {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
+    private void fillVentasDetalleTable(String value) throws SQLException {
+        tvList.setItems(VentaADO.ListVentasDetalle(value));
+        lblLoad.setVisible(false);
+        tvList.getItems().forEach(e -> {
+            subTotal += e.getImporte();
         });
-        Task<ObservableList<DetalleVentaTB>> task = new Task<ObservableList<DetalleVentaTB>>() {
-            @Override
-            public ObservableList<DetalleVentaTB> call() {
-                return VentaADO.ListVentasDetalle(value);
-            }
-        };
-
-        task.setOnSucceeded((WorkerStateEvent e) -> {
-            tvList.setItems(task.getValue());
-            lblLoad.setVisible(false);
-            for (int i = 0; i < tvList.getItems().size(); i++) {
-                subTotal += tvList.getItems().get(i).getImporte();
-            }
-            lblTotal.setText("S/. " + Tools.roundingValue(subTotal, 2));
-
-        });
-        task.setOnFailed((WorkerStateEvent event) -> {
-            lblLoad.setVisible(false);
-
-        });
-
-        task.setOnScheduled((WorkerStateEvent event) -> {
-            lblLoad.setVisible(true);
-
-        });
-
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
-        }
+        lblTotal.setText("S/. " + Tools.roundingValue(subTotal, 2));
     }
 
     public void setInitComponents(LocalDateTime fechaRegistro, String cliente, String comprobanteName, String serie, String numeracion, String estado, String observaciones, String total, String idVenta) {
@@ -130,11 +98,21 @@ public class FxVentaDetalleController implements Initializable {
         lblEstado.setText(estado);
         lblObservaciones.setText(observaciones);
         this.idVenta = idVenta;
-        fillVentasDetalleTable(idVenta);
-        EmpleadoTB empleadoTB = VentaADO.ListVentaDetalle(idVenta);
-        if(empleadoTB != null){
-            lblVendedor.setText(empleadoTB.getApellidos()+" "+empleadoTB.getNombres());
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            try {
+                EmpleadoTB empleadoTB = VentaADO.CabeceraVenta(idVenta);
+                if (empleadoTB != null) {
+                    lblVendedor.setText(empleadoTB.getApellidos() + " " + empleadoTB.getNombres());
+                }
+                fillVentasDetalleTable(idVenta);
+            } catch (SQLException ex) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle de venta", "No se pudo completar la petición, intente nuevamente.\n Error en: " + ex.getLocalizedMessage(), false);
+            } finally {
+                DBUtil.dbDisconnect();
+            }
         }
+
     }
 
     @FXML

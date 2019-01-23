@@ -3,6 +3,8 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,13 +27,24 @@ public class FxOperacionesController implements Initializable {
 
     private AnchorPane content;
 
+    private FXMLLoader fXMLVenta;
+
+    private VBox nodeVenta;
+
+    private FxVentaController controllerVenta;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        try {
+            fXMLVenta = new FXMLLoader(getClass().getResource(Tools.FX_FILE_VENTA));
+            nodeVenta = fXMLVenta.load();
+            controllerVenta = fXMLVenta.getController();
+        } catch (IOException ex) {
+            Logger.getLogger(FxOperacionesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void openWindowCustomers() throws IOException {
-
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_CLIENTE));
         VBox node = fXMLPrincipal.load();
         FxClienteController controller = fXMLPrincipal.getController();
@@ -86,7 +99,7 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         content.getChildren().add(node);
-
+        System.out.println(controller);
     }
 
     private void openWindowLote() throws IOException {
@@ -103,18 +116,15 @@ public class FxOperacionesController implements Initializable {
         controller.fillLoteTable("");
     }
 
-    private void openWindowVenta() throws IOException {
-        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_VENTA));
-        VBox node = fXMLPrincipal.load();
-        FxVentaController controller = fXMLPrincipal.getController();
-        controller.setContent(windowinit);
+    private void openWindowVenta() throws IOException {       
+        controllerVenta.setContent(windowinit);
         content.getChildren().clear();
-        AnchorPane.setLeftAnchor(node, 0d);
-        AnchorPane.setTopAnchor(node, 0d);
-        AnchorPane.setRightAnchor(node, 0d);
-        AnchorPane.setBottomAnchor(node, 0d);
-        content.getChildren().add(node);
-        controller.loadWindow();
+        AnchorPane.setLeftAnchor(nodeVenta, 0d);
+        AnchorPane.setTopAnchor(nodeVenta, 0d);
+        AnchorPane.setRightAnchor(nodeVenta, 0d);
+        AnchorPane.setBottomAnchor(nodeVenta, 0d);
+        content.getChildren().add(nodeVenta);
+        controllerVenta.getTxtSearch().requestFocus();
     }
 
     private void openWindowInventario() throws IOException {

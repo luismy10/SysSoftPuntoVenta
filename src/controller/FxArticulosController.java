@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -16,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -31,6 +34,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.ArticuloADO;
 import model.ArticuloTB;
+import model.DetalleADO;
+import model.DetalleTB;
 
 public class FxArticulosController implements Initializable {
 
@@ -51,9 +56,13 @@ public class FxArticulosController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcUnidadVenta;
     @FXML
+    private TableColumn<ArticuloTB, String> tcCategoria;
+    @FXML
     private TableColumn<ArticuloTB, String> tcEstado;
     @FXML
     private VBox vbOpciones;
+    @FXML
+    private ComboBox<DetalleTB> cbCategoria;
 
     private AnchorPane content;
 
@@ -74,15 +83,21 @@ public class FxArticulosController implements Initializable {
         tcUnidadVenta.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel(Peso)"
         ));
+        tcCategoria.setCellValueFactory(cellData -> cellData.getValue().getCategoriaName());
         tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
 
+        cbCategoria.getItems().add(new DetalleTB(new SimpleIntegerProperty(0), new SimpleStringProperty("-- Seleccione --")));
+        DetalleADO.GetDetailId("0006").forEach(e -> {
+            cbCategoria.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
+        cbCategoria.getSelectionModel().select(0);
+        
         changeViewArticuloSeleccionado();
         stateRequest = false;
 
     }
 
     public void fillArticlesTable(String value) {
-
         ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -467,6 +482,45 @@ public class FxArticulosController implements Initializable {
             }
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "Seleccione un item para eliminarlo", false);
+        }
+    }
+
+    @FXML
+    private void onActionCategoria(ActionEvent event) {
+        if (cbCategoria.getSelectionModel().getSelectedIndex() >= 1) {
+            
+            ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
+                Thread t = new Thread(runnable);
+                t.setDaemon(true);
+                return t;
+            });
+
+            Task<ObservableList<ArticuloTB>> task = new Task<ObservableList<ArticuloTB>>() {
+                @Override
+                public ObservableList<ArticuloTB> call() {
+                    return ArticuloADO.ListArticulosCategoria(cbCategoria.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                }
+            };
+
+            task.setOnSucceeded((WorkerStateEvent e) -> {
+                tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
+                lblLoad.setVisible(false);
+                stateRequest = true;
+            });
+            task.setOnFailed((WorkerStateEvent e) -> {
+                lblLoad.setVisible(false);
+                stateRequest = false;
+            });
+
+            task.setOnScheduled((WorkerStateEvent e) -> {
+                lblLoad.setVisible(true);
+                stateRequest = false;
+            });
+            exec.execute(task);
+
+            if (!exec.isShutdown()) {
+                exec.shutdown();
+            }
         }
     }
 

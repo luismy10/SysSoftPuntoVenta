@@ -87,19 +87,19 @@
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                           </Label>
-                                          <DatePicker fx:id="dtFechaInicial" editable="false" onAction="#onActionFechaInicial" />
+                                          <DatePicker fx:id="dtFechaInicial" editable="false" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="200.0" />
                                           <Label styleClass="labelRoboto14" text="Fecha final:" textFill="#1a2226">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                           </Label>
-                                          <DatePicker fx:id="dtFechaFinal" editable="false" maxWidth="1.7976931348623157E308" onAction="#onActionFechaFinal" prefHeight="30.0" />
+                                          <DatePicker fx:id="dtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="200.0" />
                                           <Label styleClass="labelRoboto14" text="Estado" textFill="#1a2226">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox fx:id="cbEstado" prefWidth="150.0" />
+                                          <ComboBox fx:id="cbEstado" prefHeight="30.0" prefWidth="200.0" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
@@ -123,12 +123,13 @@
                         <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="298.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                              <TableColumn fx:id="tcFechaVenta" prefWidth="170.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de venta" />
+                              <TableColumn fx:id="tcFechaVenta" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de venta" />
                               <TableColumn fx:id="tcCliente" prefWidth="184.0" style="-fx-alignment: CENTER-LEFT;" text="Cliente" />
-                              <TableColumn fx:id="tcSerie" prefWidth="163.0" style="-fx-alignment: CENTER-LEFT;" text="Serie/Numeración" />
+                              <TableColumn fx:id="tcSerie" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Serie/Numeración" />
                               <TableColumn fx:id="tcEstado" prefWidth="169.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
-                              <TableColumn fx:id="tcTotal" prefWidth="154.0" style="-fx-alignment: CENTER-RIGHT;" text="Total/Saldo" />
-                              <TableColumn fx:id="tcObservacion" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Observación" />
+                              <TableColumn fx:id="tcMoneda" prefWidth="72.0" style="-fx-alignment: CENTER;" text="Moneda" />
+                              <TableColumn fx:id="tcTotal" prefWidth="160.0" style="-fx-alignment: CENTER-RIGHT;" text="Total/Saldo" />
+                              <TableColumn fx:id="tcObservacion" prefWidth="167.0" style="-fx-alignment: CENTER-LEFT;" text="Observación" />
                            </columns>
                         </TableView>
                      </children>

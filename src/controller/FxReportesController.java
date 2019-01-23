@@ -3,6 +3,8 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,22 +24,31 @@ public class FxReportesController implements Initializable {
 
     private AnchorPane content;
 
+    private FXMLLoader fXMLPrincipal;
+
+    private VBox node;
+
+    private FxArticuloReportesController controller;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        try {
+            fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_ARTICULOREPORTES));
+            node = fXMLPrincipal.load();
+            controller = fXMLPrincipal.getController();
+        } catch (IOException ex) {
+            Logger.getLogger(FxReportesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void openWindowReportes() throws IOException {
-        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_ARTICULOREPORTES));
-        VBox node = fXMLPrincipal.load();
-        FxArticuloReportesController controller = fXMLPrincipal.getController();
         controller.setContent(windowinit);
         content.getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
-        content.getChildren().add(node);       
+        content.getChildren().add(node);
     }
 
     @FXML

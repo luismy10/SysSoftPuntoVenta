@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -157,6 +158,46 @@ public class FxMonedaController implements Initializable {
 
     }
 
+    private void onEventProdeteminado() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            if (stateRequest) {
+                String result = MonedaADO.ChangeDefaultState(true, tvList.getSelectionModel().getSelectedItem().getIdMoneda());
+                if (result.equalsIgnoreCase("updated")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Moneda", "Se cambio el estado correctamente.", false);
+                    fillTableMonedas();
+                    List<MonedaTB> list = MonedaADO.GetMonedasCombBox();
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getPredeterminado() == true) {
+                            Session.DEFAULT_MONEDA = i;
+                            break;
+                        }
+                    }
+                } else {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Moneda", "Error: " + result, false);
+                }
+            }
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "Seleccione un elemento de la lista.", false);
+        }
+    }
+
+    private void onEventRemover() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            String result = MonedaADO.RemoveElement(tvList.getSelectionModel().getSelectedItem().getIdMoneda());
+            if (result.equalsIgnoreCase("error")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "No se puedo eliminar ya que está predeterminado la moneda.", false);
+                fillTableMonedas();
+            } else if (result.equalsIgnoreCase("removed")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Moneda", "Se eliminó correctamente la moneda.", false);
+                fillTableMonedas();
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Moneda", "Error: " + result, false);
+            }
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "Seleccione un elemento de la lista.", false);
+        }
+    }
+
     @FXML
     private void onKeyPressedAdd(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
@@ -186,76 +227,25 @@ public class FxMonedaController implements Initializable {
     @FXML
     private void onKeyPressedRemove(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                String result = MonedaADO.RemoveElement(tvList.getSelectionModel().getSelectedItem().getIdMoneda());
-                if (result.equalsIgnoreCase("error")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "No se puedo eliminar ya que está predeterminado la moneda.", false);
-                    fillTableMonedas();
-                } else if (result.equalsIgnoreCase("removed")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Moneda", "Se eliminó correctamente la moneda.", false);
-                    fillTableMonedas();
-                } else {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Moneda", "Error: " + result, false);
-                }
-            } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "Seleccione un elemento de la lista.", false);
-            }
+            onEventRemover();
         }
     }
 
     @FXML
     private void onActionRemove(ActionEvent event) {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            String result = MonedaADO.RemoveElement(tvList.getSelectionModel().getSelectedItem().getIdMoneda());
-            if (result.equalsIgnoreCase("error")) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "No se puedo eliminar ya que está predeterminado la moneda.", false);
-                fillTableMonedas();
-            } else if (result.equalsIgnoreCase("removed")) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Moneda", "Se eliminó correctamente la moneda.", false);
-                fillTableMonedas();
-            } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Moneda", "Error: " + result, false);
-            }
-        } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "Seleccione un elemento de la lista.", false);
-        }
+        onEventRemover();
     }
 
     @FXML
     private void onKeyPressedPredetermined(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                if (stateRequest) {
-                    String result = MonedaADO.ChangeDefaultState(true, tvList.getSelectionModel().getSelectedItem().getIdMoneda());
-                    if (result.equalsIgnoreCase("updated")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Moneda", "Se cambio el estado correctamente.", false);
-                        fillTableMonedas();
-                    } else {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Moneda", "Error: " + result, false);
-                    }
-                }
-            } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "Seleccione un elemento de la lista.", false);
-            }
+            onEventProdeteminado();
         }
     }
 
     @FXML
     private void onActionPredetermined(ActionEvent event) {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            if (stateRequest) {
-                String result = MonedaADO.ChangeDefaultState(true, tvList.getSelectionModel().getSelectedItem().getIdMoneda());
-                if (result.equalsIgnoreCase("updated")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Moneda", "Se cambio el estado correctamente.", false);
-                    Session.MONEDA = tvList.getSelectionModel().getSelectedItem().getSimbolo();
-                    fillTableMonedas();
-                } else {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Moneda", "Error: " + result, false);
-                }
-            }
-        } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "Seleccione un elemento de la lista.", false);
-        }
+        onEventProdeteminado();
     }
 
     @FXML

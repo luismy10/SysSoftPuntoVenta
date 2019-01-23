@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.MenuADO;
 import model.MenuTB;
+import model.SubMenusTB;
 
 public class FxInicioController implements Initializable {
 
@@ -74,10 +75,12 @@ public class FxInicioController implements Initializable {
                 : new Image("/view/disconnected.png"));
         try {
             ObservableList<MenuTB> menuTBs = MenuADO.GetMenus(Session.ROL);
+            ObservableList<SubMenusTB> subMenuTBs = MenuADO.GetSubMenus(Session.ROL,0);
             if (menuTBs.get(0).getIdMenu() != 0) {
                 btnInicio.setVisible(menuTBs.get(0).isEstado());
                 btnInicio.setOnMouseClicked(this::onMouseClickedInicio);
                 btnInicio.getStyleClass().add("buttonContainerActivate");
+                
             }
             if (menuTBs.get(1).getIdMenu() != 0) {
                 btnOperaciones.setVisible(menuTBs.get(1).isEstado());

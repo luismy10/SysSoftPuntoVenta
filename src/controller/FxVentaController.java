@@ -1,12 +1,15 @@
 package controller;
 
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
+import br.com.adilson.util.PrinterMatrix;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -28,11 +31,22 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintException;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.SimpleDoc;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
 import model.ArticuloADO;
 import model.ArticuloTB;
 import model.ComprobanteADO;
-import model.DetalleADO;
-import model.DetalleTB;
+import model.MonedaADO;
+import model.MonedaTB;
+import model.TipoDocumentoADO;
+import model.TipoDocumentoTB;
 import model.VentaTB;
 
 public class FxVentaController implements Initializable {
@@ -40,9 +54,9 @@ public class FxVentaController implements Initializable {
     @FXML
     private VBox window;
     @FXML
-    private ComboBox<DetalleTB> cbComprobante;
+    private ComboBox<TipoDocumentoTB> cbComprobante;
     @FXML
-    private ComboBox<?> cbMoneda;
+    private ComboBox<MonedaTB> cbMoneda;
     @FXML
     private TableView<ArticuloTB> tvList;
     @FXML
@@ -82,11 +96,15 @@ public class FxVentaController implements Initializable {
     @FXML
     private Text lblDescuentoMoneda;
     @FXML
+    private Text lblExonerado;
+    @FXML
+    private Text lblExoneradoMoneda;
+    @FXML
     private Text lblGravadaMoneda;
     @FXML
     private Text lblIgvMoneda;
     @FXML
-    private Text lblTotalPagarMoneda;    
+    private Text lblTotalPagarMoneda;
 
     private AnchorPane content;
 
@@ -97,6 +115,7 @@ public class FxVentaController implements Initializable {
     private String idCliente;
 
     private String datodCliente;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -148,24 +167,49 @@ public class FxVentaController implements Initializable {
         lblMoneda.setText(Session.MONEDA);
         lblSubTotalMoneda.setText(Session.MONEDA);
         lblDescuentoMoneda.setText(Session.MONEDA);
+        lblExoneradoMoneda.setText(Session.MONEDA);
         lblGravadaMoneda.setText(Session.MONEDA);
         lblIgvMoneda.setText(Session.MONEDA);
         lblTotalPagarMoneda.setText(Session.MONEDA);
         initTable();
+        loadWindow();
     }
 
-    public void loadWindow() {
-        DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> {
-            cbComprobante.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+    private void loadWindow() {
+        cbComprobante.getItems().clear();
+        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
+            cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado()));
         });
-        cbComprobante.getSelectionModel().select(2);
+        if (!cbComprobante.getItems().isEmpty()) {
+            for (int i = 0; i < cbComprobante.getItems().size(); i++) {
+                if (cbComprobante.getItems().get(i).isPredeterminado() == true) {
+                    cbComprobante.getSelectionModel().select(i);
+                    Session.DEFAULT_COMPROBANTE = i;
+                    break;
+                }
+            }
+        }
+
         txtCliente.setText(Session.DATOSCLIENTE);
-        txtSearch.requestFocus();
+
+        cbMoneda.getItems().clear();
+        MonedaADO.GetMonedasCombBox().forEach(e -> {
+            cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getPredeterminado()));
+        });
+
+        if (!cbMoneda.getItems().isEmpty()) {
+            for (int i = 0; i < cbMoneda.getItems().size(); i++) {
+                if (cbMoneda.getItems().get(i).getPredeterminado() == true) {
+                    cbMoneda.getSelectionModel().select(i);
+                    Session.DEFAULT_MONEDA = i;
+                    break;
+                }
+            }
+        }
 
         String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
         lblSerie.setText(array[0]);
         lblNumeracion.setText(array[1]);
-
     }
 
     private void initTable() {
@@ -232,12 +276,13 @@ public class FxVentaController implements Initializable {
             ventaTB.setCliente(idCliente);
             ventaTB.setVendedor(Session.USER_ID);
             ventaTB.setComprobante(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
-                    ? cbComprobante.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                    ? cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()
                     : 0
             );
             ventaTB.setComprobanteName(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
-                    ? cbComprobante.getSelectionModel().getSelectedItem().getNombre().get()
+                    ? cbComprobante.getSelectionModel().getSelectedItem().getNombre()
                     : "");
+            ventaTB.setMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 0 ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
             ventaTB.setSerie(lblSerie.getText());
             ventaTB.setNumeracion(lblNumeracion.getText());
             ventaTB.setFechaVenta(Timestamp.valueOf(Tools.getDate() + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
@@ -252,6 +297,25 @@ public class FxVentaController implements Initializable {
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventas", "Debes agregar artículos a la venta", false);
         }
+
+    }
+
+    private void openWindowImpresora() throws IOException {
+        InitializationTransparentBackground();
+        URL url = getClass().getResource(Tools.FX_FILE_IMPRESORATICKET);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxImpresoraTicketController controller = fXMLLoader.getController();
+        controller.setInitVentasController(this);
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Configurar impresora", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.setOnHiding((WindowEvent WindowEvent) -> {
+            content.getChildren().remove(Session.pane);
+        });
+        stage.show();
 
     }
 
@@ -331,20 +395,25 @@ public class FxVentaController implements Initializable {
         if (validateDuplicateArticulo(tvList, articulo)) {
             for (int i = 0; i < tvList.getItems().size(); i++) {
                 if (tvList.getItems().get(i).getIdArticulo().equalsIgnoreCase(articulo.getIdArticulo())) {
-                    ArticuloTB articuloTB = tvList.getItems().get(i);
-                    articuloTB.setCantidad(tvList.getItems().get(i).getCantidad() + 1);
-                    articuloTB.setSubTotal(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
-                    articuloTB.setImporte(
-                            articuloTB.getSubTotal().get()
-                            - articuloTB.getDescuento().get()
-                    );
-                    tvList.getItems().set(i, articuloTB);
-                    calculateTotales();
+                    if (articulo.getUnidadVenta() == 2) {
+                        tvList.getSelectionModel().select(i);
+                        txtSearch.requestFocus();
+                    } else {
+                        ArticuloTB articuloTB = tvList.getItems().get(i);
+                        articuloTB.setCantidad(tvList.getItems().get(i).getCantidad() + 1);
+                        articuloTB.setSubTotal(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+                        articuloTB.setImporte(
+                                articuloTB.getSubTotal().get()
+                                - articuloTB.getDescuento().get()
+                        );
+                        tvList.getItems().set(i, articuloTB);
+                        calculateTotales();
+                        txtSearch.requestFocus();
+                    }
                 }
             }
 
         } else {
-
             if (articulo.getUnidadVenta() == 2) {
                 try {
                     tvList.getItems().add(articulo);
@@ -357,6 +426,7 @@ public class FxVentaController implements Initializable {
             } else {
                 tvList.getItems().add(articulo);
                 calculateTotales();
+                txtSearch.requestFocus();
             }
         }
 
@@ -374,11 +444,17 @@ public class FxVentaController implements Initializable {
     }
 
     public void resetVenta() {
-        String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre().get()).split("-");
+        String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
         lblSerie.setText(array[0]);
         lblNumeracion.setText(array[1]);
         this.tvList.getItems().clear();
         lblMoneda.setText(Session.MONEDA);
+        lblSubTotalMoneda.setText(Session.MONEDA);
+        lblDescuentoMoneda.setText(Session.MONEDA);
+        lblExoneradoMoneda.setText(Session.MONEDA);
+        lblGravadaMoneda.setText(Session.MONEDA);
+        lblIgvMoneda.setText(Session.MONEDA);
+        
         lblTotal.setText("0.00");
         lblSubTotal.setText("0.00");
         lblDescuento.setText("0.00");
@@ -387,19 +463,205 @@ public class FxVentaController implements Initializable {
         lblTotalPagar.setText("0.00");
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
 
-        cbComprobante.getSelectionModel().select(2);
+        cbMoneda.getSelectionModel().select(Session.DEFAULT_MONEDA);
+        cbComprobante.getSelectionModel().select(Session.DEFAULT_COMPROBANTE);
         txtSearch.requestFocus();
     }
 
     public void imprimirVenta(VentaTB ventaTB, String efec, String vuel, String ticket) {
-        PrinterJob pj = PrinterJob.getPrinterJob();
-        pj.setPrintable(new BillPrintable(ventaTB.getSubTotal(), ventaTB.getDescuento(),
-                ventaTB.getGravada(), ventaTB.getIgv(), ventaTB.getTotal(), Double.parseDouble(efec), Double.parseDouble(vuel), ticket, tvList),
-                getPageFormat(pj));
-        try {
-            pj.print();
-        } catch (PrinterException ex) {
+        if (Session.STATE_IMPRESORA && Session.NAME_IMPRESORA != null && Session.CORTA_PAPEL != null) {
+//            PrinterJob pj = PrinterJob.getPrinterJob();
+//            
+//            Book book = new Book();
+//            book.append(new BillPrintable(ventaTB.getSubTotal(), ventaTB.getDescuento(),
+//                    ventaTB.getGravada(), ventaTB.getIgv(), ventaTB.getTotal(), Double.parseDouble(efec), Double.parseDouble(vuel), ticket, tvList),
+//                    getPageFormat(pj));
+//            pj.setPageable(book);
+//            try {
+//                pj.print();
+//            } catch (PrinterException ex) {
+//            }
+
+            Date date = new Date();
+            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss aa");
+
+            try {
+                String ruc = "RUC " + Session.RUC;
+                String telcel = "TEL: " + Session.TELEFONO + " CEL:" + Session.CELULAR;
+                String documento = "";
+                if (ticket.substring(0, 1).equalsIgnoreCase("b")) {
+                    documento = "BOLETA DE VENTA ELECTRONICA";
+                } else if (ticket.substring(0, 1).equalsIgnoreCase("f")) {
+                    documento = "FACTURA DE VENTA ELECTRONICA";
+                } else if (ticket.substring(0, 1).equalsIgnoreCase("t")) {
+                    documento = "TICKET DE VENTA";
+                }
+                String efectivo = "EFECTIVO SOLES  " + Session.MONEDA + " " + efec;
+                String vuelto = "Cambio  " + Session.MONEDA + " " + vuel;
+                String total = Session.MONEDA + " " + Tools.roundingValue(ventaTB.getTotal(), 2);
+                PrinterMatrix p = new PrinterMatrix();
+
+                int filas = tvList.getItems().size();
+
+                int count = 13;
+
+                p.setOutSize(getSizePaper(filas, count), 40);
+
+                p.printTextWrap(1, 0, (int) (40 - Session.NOMBREEMPRESA.length()) / 2, 40, Session.NOMBREEMPRESA);
+                p.printTextWrap(2, 0, (int) (40 - ruc.length()) / 2, 40, ruc);
+                p.printTextWrap(3, 1, 0, 40, Session.DIRECCION);
+                p.printTextWrap(5, 0, (int) (40 - telcel.length()) / 2, 40, telcel);
+
+                p.printTextWrap(6, 0, (int) (40 - documento.length()) / 2, 40, documento);
+                p.printTextWrap(7, 0, (int) (40 - ticket.length()) / 2, 40, ticket);
+                p.printTextWrap(8, 0, 0, 40, "FECHA DE EMISION:" + fecha.format(date) + " " + hora.format(date));
+
+                p.printCharAtCol(10, 0, 40, "=");
+
+                p.printTextWrap(10, 1, 0, 40, "Descripcion");
+                p.printTextWrap(11, 0, 0, "Cantidad x P.Unitario".length(), "Cantidad x P.Unitario");
+                p.printTextWrap(11, 0, (40 - "Importe".length()), 40, "Importe");
+
+                p.printCharAtCol(13, 0, 40, "=");
+
+                for (int i = 0; i < filas; i++) {
+                    p.printTextWrap(count, 1, 0, 40, tvList.getItems().get(i).getNombreMarca());
+                    count += 2;
+                    p.printTextWrap(count, 0, 0, 40, tvList.getItems().get(i).getCantidad() + " x " + Tools.roundingValue(tvList.getItems().get(i).getPrecioVenta(), 2));
+                    p.printTextWrap(count, 0, 40 - Tools.roundingValue(tvList.getItems().get(i).getImporte().get(), 2).length(), 40, Tools.roundingValue(tvList.getItems().get(i).getImporte().get(), 2));
+                    count++;
+                }
+                count++;
+
+                p.printCharAtCol(count, 0, 40, "=");
+
+                p.printTextWrap(count, 1, 0, 40, "IMPORTE TOTAL");
+                p.printTextWrap(count, 1, 40 - total.length(), 40, total);
+
+                count += 2;
+                p.printCharAtCol(count, 0, 40, "=");
+
+                p.printTextWrap(count, 1, 40 - efectivo.length(), 40, efectivo);
+
+                count++;
+                p.printTextWrap(count, 0, 40 - vuelto.length(), 40, vuelto);
+
+                count += 2;
+                p.printCharAtCol(count, 0, 40, "=");
+
+                p.printTextWrap(count, 1, (int) (40 - "Representacion Impresa del Documento".length()) / 2, 40, "Representacion Impresa del Documento");
+
+                count++;
+                p.printTextWrap(count, 0, (int) (40 - "de Venta Electronica".length()) / 2, 40, "de Venta Electronica");
+
+                count++;
+                p.printTextWrap(count, 0, 0, 40, "GRACIAS POR SU COMPRA...");
+
+                count++;
+                p.printTextWrap(count, 0, 0, 40, "\n");
+
+                count++;
+                p.printTextWrap(count, 0, 0, 40, "\n");
+
+                count++;
+                p.printTextWrap(count, 0, 0, 40, "\n");
+
+                count++;
+                p.printTextWrap(count, 0, 0, 40, "\n");
+
+                count++;
+                p.printTextWrap(count, 0, 0, 40, "\n");
+
+                p.toFile("c:\\temp\\impresion.txt");
+                File file = new File("c:\\temp\\impresion.txt");
+                FileInputStream inputStream = null;
+                try {
+                    try {
+                        inputStream = new FileInputStream(file);
+                    } catch (FileNotFoundException ex) {
+
+                    }
+                    if (inputStream == null) {
+                        return;
+                    }
+                    DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
+                    PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+                    PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
+                    PrintService service = findPrintService(Session.NAME_IMPRESORA, printService);
+                    DocPrintJob job = service.createPrintJob();
+
+                    byte[] bytes = readFileToByteArray(file);
+                    byte[] cutP = new byte[]{0x1d, 'V', 1};
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    outputStream.write(bytes);
+                    outputStream.write(cutP);
+                    byte c[] = outputStream.toByteArray();
+
+                    Doc doc = new SimpleDoc(c, flavor, null);
+
+                    job.print(doc, null);
+                } catch (IOException | PrintException e) {
+                    // TODO Auto-generated catch block
+
+                } finally {
+                    if (inputStream != null) {
+                        try {
+                            inputStream.close();
+                        } catch (IOException ex) {
+
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Venta", "Error al imprimir, configure correctamente su impresora.", false);
+            }
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Venta", "No esta configurado la impresora :D", false);
+
         }
+
+    }
+
+    private int getSizePaper(int filas, int inicial) {
+        int recorrido = inicial;
+        for (int i = 0; i < filas; i++) {
+            recorrido += 2;
+            recorrido++;
+        }
+        recorrido++;
+        recorrido += 2;
+        recorrido++;
+        recorrido += 2;
+        recorrido++;
+        recorrido++;
+        recorrido++;
+        recorrido++;
+        recorrido++;
+        recorrido++;
+        recorrido++;
+        recorrido++;
+        return recorrido;
+    }
+
+    private PrintService findPrintService(String printerName, PrintService[] services) {
+        for (PrintService service : services) {
+            if (service.getName().equalsIgnoreCase(printerName)) {
+                return service;
+            }
+        }
+        return null;
+    }
+
+    private static byte[] readFileToByteArray(File file) {
+        byte[] bArray = new byte[(int) file.length()];
+        try (FileInputStream fis = new FileInputStream(file)) {
+            fis.read(bArray);
+            fis.close();
+
+        } catch (IOException ioExp) {
+        }
+        return bArray;
     }
 
     private void removeArticulo() {
@@ -449,7 +711,7 @@ public class FxVentaController implements Initializable {
     @FXML
     private void onKeyPressedRemover(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            removeArticulo();
         }
     }
 
@@ -494,7 +756,6 @@ public class FxVentaController implements Initializable {
     @FXML
     private void onKeyReleasedList(KeyEvent event) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-
             if (event.getCode() == KeyCode.PLUS || event.getCode() == KeyCode.ADD) {
                 ObservableList<ArticuloTB> articuloTBs;
                 articuloTBs = tvList.getSelectionModel().getSelectedItems();
@@ -574,11 +835,10 @@ public class FxVentaController implements Initializable {
         lblIgv.setText(Tools.roundingValue(impuesto, 2));
 
     }
-    
+
     // Metodo para obtener Tipo Comprobante
-    public String obtenerTipoComprobante(){
-    
-        return this.cbComprobante.getSelectionModel().getSelectedItem().getNombre().get();
+    public String obtenerTipoComprobante() {
+        return this.cbComprobante.getSelectionModel().getSelectedItem().getNombre();
     }
 
     @FXML
@@ -606,50 +866,78 @@ public class FxVentaController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedSearch(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            if (!tvList.getItems().isEmpty()) {
-                tvList.requestFocus();
-                tvList.getSelectionModel().select(0);
+    private void onKeyReleasedSearch(KeyEvent event) {
+        if (event.getCode() != KeyCode.ESCAPE
+                && event.getCode() != KeyCode.F1
+                && event.getCode() != KeyCode.F2
+                && event.getCode() != KeyCode.F3
+                && event.getCode() != KeyCode.F4
+                && event.getCode() != KeyCode.F5
+                && event.getCode() != KeyCode.F6
+                && event.getCode() != KeyCode.F7
+                && event.getCode() != KeyCode.F8
+                && event.getCode() != KeyCode.F9
+                && event.getCode() != KeyCode.F10
+                && event.getCode() != KeyCode.F11
+                && event.getCode() != KeyCode.F12
+                && event.getCode() != KeyCode.ALT
+                && event.getCode() != KeyCode.CONTROL
+                && event.getCode() != KeyCode.UP
+                && event.getCode() != KeyCode.DOWN
+                && event.getCode() != KeyCode.RIGHT
+                && event.getCode() != KeyCode.LEFT
+                && event.getCode() != KeyCode.TAB
+                && event.getCode() != KeyCode.CAPS
+                && event.getCode() != KeyCode.SHIFT
+                && event.getCode() != KeyCode.HOME
+                && event.getCode() != KeyCode.WINDOWS
+                && event.getCode() != KeyCode.ALT_GRAPH
+                && event.getCode() != KeyCode.CONTEXT_MENU
+                && event.getCode() != KeyCode.END
+                && event.getCode() != KeyCode.INSERT
+                && event.getCode() != KeyCode.PAGE_UP
+                && event.getCode() != KeyCode.PAGE_DOWN
+                && event.getCode() != KeyCode.NUM_LOCK
+                && event.getCode() != KeyCode.PRINTSCREEN
+                && event.getCode() != KeyCode.SCROLL_LOCK
+                && event.getCode() != KeyCode.PAUSE) {
+            ArticuloTB a = ArticuloADO.Get_Articulo_By_Search(txtSearch.getText().trim());
+            if (a != null) {
+                ArticuloTB articuloTB = new ArticuloTB();
+                articuloTB.setIdArticulo(a.getIdArticulo());
+                articuloTB.setClave(a.getClave());
+                articuloTB.setNombreMarca(a.getNombreMarca());
+                articuloTB.setCantidad(1);
+                articuloTB.setPrecioVenta(a.getPrecioVenta());
+                articuloTB.setDescuento(0);
+                articuloTB.setSubTotal(1 * a.getPrecioVenta());
+                articuloTB.setImporte(
+                        articuloTB.getSubTotal().get()
+                        - articuloTB.getDescuento().get()
+                );
+                articuloTB.setInventario(a.isInventario());
+                articuloTB.setUnidadVenta(a.getUnidadVenta());
+                getAddArticulo(articuloTB);
+                txtSearch.clear();
+                txtSearch.requestFocus();
+            } else {
+                txtSearch.selectAll();
+                txtSearch.requestFocus();
             }
         }
-    }
-
-    @FXML
-    private void onKeyReleasedSearch(KeyEvent event) {
-        ArticuloTB a = ArticuloADO.Get_Articulo_By_Search(txtSearch.getText().trim());
-        if (a != null) {
-            ArticuloTB articuloTB = new ArticuloTB();
-            articuloTB.setIdArticulo(a.getIdArticulo());
-            articuloTB.setClave(a.getClave());
-            articuloTB.setNombreMarca(a.getNombreMarca());
-            articuloTB.setCantidad(1);
-            articuloTB.setPrecioVenta(a.getPrecioVenta());
-            articuloTB.setDescuento(0);
-            articuloTB.setSubTotal(1 * a.getPrecioVenta());
-            articuloTB.setImporte(
-                    articuloTB.getSubTotal().get()
-                    - articuloTB.getDescuento().get()
-            );
-            articuloTB.setInventario(a.isInventario());
-            articuloTB.setUnidadVenta(a.getUnidadVenta());
-            getAddArticulo(articuloTB);
-            txtSearch.clear();
-            txtSearch.requestFocus();
-        }
 
     }
 
     @FXML
-    private void onKeyPressedImprimir(KeyEvent event) {
+    private void onKeyPressedImprimir(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-
+            openWindowImpresora();
         }
     }
 
     @FXML
-    private void onActionImprimir(ActionEvent event) {
-
+    private void onActionImprimir(ActionEvent event) throws IOException {
+        openWindowImpresora();
     }
 
     public void setClienteVenta(String id, String datos) {
@@ -658,6 +946,42 @@ public class FxVentaController implements Initializable {
         txtCliente.setText(datodCliente.equalsIgnoreCase("")
                 ? Session.DATOSCLIENTE
                 : datodCliente);
+    }
+
+//    public PageFormat getPageFormat(PrinterJob pj) {
+//        PageFormat pf = pj.defaultPage();
+//        Paper paper = pf.getPaper();
+//        paper.setImageableArea(0, 0, pf.getWidth(), pf.getImageableHeight());   //define boarder size    after that print area width is about 180 points
+//        pf.setOrientation(PageFormat.PORTRAIT);           //select orientation portrait or landscape but for this time portrait
+//        pf.setPaper(paper);
+//        return pf;
+//    }
+
+    @FXML
+    private void onActionComprobante(ActionEvent event) {
+
+        String[] array;
+
+        switch (this.cbComprobante.getSelectionModel().getSelectedIndex()) {
+            case 0:
+                array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
+                lblSerie.setText(array[0]);
+                lblNumeracion.setText(array[1]);
+                //System.out.println(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre().get());
+                break;
+            case 1:
+                array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
+                lblSerie.setText(array[0]);
+                lblNumeracion.setText(array[1]);
+                break;
+            case 2:
+                array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
+                lblSerie.setText(array[0]);
+                lblNumeracion.setText(array[1]);
+                break;
+            default:
+                break;
+        }
     }
 
     public TextField getTxtSearch() {
@@ -670,38 +994,6 @@ public class FxVentaController implements Initializable {
 
     public void setContent(AnchorPane content) {
         this.content = content;
-    }
-
-    public PageFormat getPageFormat(PrinterJob pj) {
-        PageFormat pf = pj.defaultPage();
-        Paper paper = pf.getPaper();
-        paper.setImageableArea(0, 0, pf.getWidth(), pf.getImageableHeight());   //define boarder size    after that print area width is about 180 points
-        pf.setOrientation(PageFormat.PORTRAIT);           //select orientation portrait or landscape but for this time portrait
-        pf.setPaper(paper);
-        return pf;
-    }
-
-    @FXML
-    private void onActionComprobante(ActionEvent event) {
-        
-        String[] array;
-        
-        if(this.cbComprobante.getSelectionModel().getSelectedIndex() == 0){
-            array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre().get()).split("-");
-            lblSerie.setText(array[0]);
-            lblNumeracion.setText(array[1]);
-            //System.out.println(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre().get());
-        }
-        else if(this.cbComprobante.getSelectionModel().getSelectedIndex() == 1){
-            array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre().get()).split("-");
-            lblSerie.setText(array[0]);
-            lblNumeracion.setText(array[1]);
-        }
-        else if(this.cbComprobante.getSelectionModel().getSelectedIndex() == 2){
-            array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre().get()).split("-");
-            lblSerie.setText(array[0]);
-            lblNumeracion.setText(array[1]);
-        }
     }
 
 }

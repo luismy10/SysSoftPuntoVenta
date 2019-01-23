@@ -23,8 +23,6 @@ public class DetalleTB implements Serializable {
         this.nombre = nombre;
     }
     
-    
-
     public SimpleIntegerProperty getIdDetalle() {
         return idDetalle;
     }

@@ -34,7 +34,7 @@ public class FxLoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        
     }
 
     @FXML
@@ -50,7 +50,7 @@ public class FxLoginController implements Initializable {
         } else if (Tools.isText(txtClave.getText())) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Iniciar Sesión", "Ingrese su contraseña", false);
             txtClave.requestFocus();
-        } else {            
+        } else {
             DBUtil.dbConnect();
             if (DBUtil.getConnection() != null) {
                 EmpleadoTB empleadoTB = EmpleadoADO.GetValidateUser(txtUsuario.getText().trim(), txtClave.getText().trim());
@@ -93,5 +93,7 @@ public class FxLoginController implements Initializable {
     public void initComponents() {
         txtUsuario.requestFocus();
     }
+
+   
 
 }

@@ -31,6 +31,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.DetalleADO;
+import model.DetalleTB;
 import model.VentaADO;
 import model.VentaTB;
 
@@ -57,15 +59,18 @@ public class FxVentaRealizadasController implements Initializable {
     @FXML
     private TableColumn<VentaTB, String> tcSerie;
     @FXML
+    private TableColumn<VentaTB, String> tcMoneda;
+    @FXML
     private TableColumn<VentaTB, String> tcTotal;
     @FXML
     private TableColumn<VentaTB, String> tcObservacion;
     @FXML
-    private ComboBox<String> cbEstado;
+    private ComboBox<DetalleTB> cbEstado;
     @FXML
     private TextField txtSearch;
 
     private AnchorPane content;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -74,9 +79,12 @@ public class FxVentaRealizadasController implements Initializable {
         tcCliente.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCliente()));
         tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstado()));
         tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getComprobanteName()+"\n"+cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));
+        tcMoneda.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName()));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getTotal(), 2)));
         tcObservacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getObservaciones()));
-        cbEstado.getItems().addAll("Completada","Devuelto","Devuelto Parcialmente");
+        DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> {
+            cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
     }
 
     private void InitializationTransparentBackground() {

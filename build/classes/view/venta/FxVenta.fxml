@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentaController">
+<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentaController">
    <children>
       <HBox VBox.vgrow="ALWAYS">
          <children>
@@ -115,7 +115,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Ingrese el código de barras o clave alterna... " HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="txtSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Ingrese el código de barras o clave alterna... " HBox.hgrow="ALWAYS" />
                                                 <Button mnemonicParsing="false" onAction="#onActionArticulo" onKeyPressed="#onKeyPressedArticulo" styleClass="buttonBorder">
                                                    <graphic>
                                                       <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -151,7 +151,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Button>
-                                                <Button mnemonicParsing="false" onAction="#onActionImprimir" onKeyPressed="#onKeyPressedImprimir" styleClass="buttonLight" text="Imprimir(F8)" visible="false">
+                                                <Button mnemonicParsing="false" onAction="#onActionImprimir" onKeyPressed="#onKeyPressedImprimir" styleClass="buttonLight" text="Impresora(F8)">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -181,7 +181,7 @@
                                           <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium28" text="0.00" />
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em;">
+                                    <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
@@ -265,7 +265,7 @@
                                                       <Label styleClass="labelRoboto14" text="Sub Total" textFill="#1a2226" />
                                                       <HBox spacing="5.0">
                                                          <children>
-                                                            <Text fx:id="lblSubTotalMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                                            <Text fx:id="lblSubTotalMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M" />
                                                             <Text fx:id="lblSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                                          </children>
                                                       </HBox>
@@ -276,8 +276,19 @@
                                                       <Label styleClass="labelRoboto14" text="Descuento" textFill="#1a2226" />
                                                       <HBox spacing="5.0">
                                                          <children>
-                                                            <Text fx:id="lblDescuentoMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/. -" />
+                                                            <Text fx:id="lblDescuentoMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M -" />
                                                             <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto14" text="Exonerado(0%)" textFill="#1a2226" />
+                                                      <HBox spacing="5.0">
+                                                         <children>
+                                                            <Text fx:id="lblExoneradoMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M" />
+                                                            <Text fx:id="lblExonerado" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                                          </children>
                                                       </HBox>
                                                    </children>
@@ -287,7 +298,7 @@
                                                       <Label styleClass="labelRoboto14" text="Op. Gravada" textFill="#1a2226" />
                                                       <HBox spacing="5.0">
                                                          <children>
-                                                            <Text fx:id="lblGravadaMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                                            <Text fx:id="lblGravadaMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M" />
                                                             <Text fx:id="lblGravada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                                          </children>
                                                       </HBox>
@@ -298,7 +309,7 @@
                                                       <Label styleClass="labelRoboto14" text="IGV" textFill="#1a2226" />
                                                       <HBox spacing="5.0">
                                                          <children>
-                                                            <Text fx:id="lblIgvMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                                            <Text fx:id="lblIgvMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M" />
                                                             <Text fx:id="lblIgv" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                                          </children>
                                                       </HBox>
@@ -307,7 +318,7 @@
                                                 <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium22" text="Total a pagar:" />
-                                                      <Text fx:id="lblTotalPagarMoneda" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium22" text="S/." />
+                                                      <Text fx:id="lblTotalPagarMoneda" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium22" text="M" />
                                                       <Text fx:id="lblTotalPagar" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium24" text="0.00" />
                                                    </children>
                                                    <padding>

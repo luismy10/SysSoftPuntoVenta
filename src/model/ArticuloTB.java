@@ -76,6 +76,11 @@ public class ArticuloTB {
         this.clave = clave;
         this.nombreMarca = nombreMarca;
     }
+    
+    public ArticuloTB(String claveAlterna, String nombreMarca,boolean estado) {
+        this.claveAlterna = claveAlterna;
+        this.nombreMarca = nombreMarca;
+    }
 
     public SimpleIntegerProperty getId() {
         return id;

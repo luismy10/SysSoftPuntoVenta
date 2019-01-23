@@ -58,6 +58,10 @@ public class FxArticuloReportesController implements Initializable {
     @FXML
     private TableView<ArticuloTB> tvList;
     @FXML
+    private TableColumn<ArticuloTB, String> tcClave;
+    @FXML
+    private TableColumn<ArticuloTB, String> tcClaveAlterna;
+    @FXML
     private TableColumn<ArticuloTB, String> tcDocument;
     @FXML
     private TableColumn<ArticuloTB, String> tcUnidadVenta;
@@ -70,8 +74,14 @@ public class FxArticuloReportesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        tcClave.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getClave()
+        ));
+        tcClaveAlterna.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getClaveAlterna()
+        ));
         tcDocument.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()
+                cellData.getValue().getNombreMarca()
         ));
         tcUnidadVenta.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel(Peso)"
@@ -121,7 +131,7 @@ public class FxArticuloReportesController implements Initializable {
 
     }
 
-    private void openWindowReporte() {
+    private void openWindowReporte(boolean validar) {
         if (txtTitulo.getText().isEmpty()) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte artículos", "Ingrese el título del documento", false);
             txtTitulo.requestFocus();
@@ -129,13 +139,15 @@ public class FxArticuloReportesController implements Initializable {
             try {
                 ArrayList<ArticuloTB> list = new ArrayList();
                 for (int i = 0; i < tvList.getItems().size(); i++) {
-                    list.add(new ArticuloTB(tvList.getItems().get(i).getClave(), tvList.getItems().get(i).getNombreMarca()));
+                    list.add(validar
+                            ? new ArticuloTB(tvList.getItems().get(i).getClave(), tvList.getItems().get(i).getNombreMarca())
+                            : new ArticuloTB(tvList.getItems().get(i).getClaveAlterna(), tvList.getItems().get(i).getNombreMarca(), true));
                 }
 
                 Map map = new HashMap();
                 map.put("TITLE", txtTitulo.getText());
 
-                JasperPrint jasperPrint = JasperFillManager.fillReport(FxArticuloReportesController.class.getResourceAsStream("/report/GenerarCodBar.jasper"), map, new JRBeanCollectionDataSource(list));
+                JasperPrint jasperPrint = JasperFillManager.fillReport(FxArticuloReportesController.class.getResourceAsStream(validar ? "/report/GenerarCodBar.jasper" : "/report/GenerarClaveAlt.jasper"), map, new JRBeanCollectionDataSource(list));
 
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
@@ -261,11 +273,31 @@ public class FxArticuloReportesController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedVizualizarAlterna(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!tvList.getItems().isEmpty()) {
+                openWindowReporte(false);
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte", "La lista está vacía", false);
+            }
+        }
+    }
+
+    @FXML
+    private void onActionVizualizarAlterna(ActionEvent event) {
+        if (!tvList.getItems().isEmpty()) {
+            openWindowReporte(false);
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte", "La lista está vacía", false);
+        }
+    }
+
+    @FXML
     private void onKeyPressedVisualizar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (cbUnidadVenta.getSelectionModel().getSelectedIndex() >= 0) {
                 if (!tvList.getItems().isEmpty()) {
-                    openWindowReporte();
+                    openWindowReporte(true);
                 } else {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte", "La lista está vacía", false);
                 }
@@ -278,7 +310,7 @@ public class FxArticuloReportesController implements Initializable {
     private void onActionVisualizar(ActionEvent event) {
         if (cbUnidadVenta.getSelectionModel().getSelectedIndex() >= 0) {
             if (!tvList.getItems().isEmpty()) {
-                openWindowReporte();
+                openWindowReporte(true);
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte", "La lista está vacía", false);
             }

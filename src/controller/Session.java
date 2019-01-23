@@ -31,6 +31,11 @@ public class Session {
     
     public static int ROL;
     
+    public static boolean STATE_IMPRESORA;
+    public static String NAME_IMPRESORA;
+    public static String CORTA_PAPEL;
     
+    public static int DEFAULT_COMPROBANTE;
+    public static int DEFAULT_MONEDA;
     
 }

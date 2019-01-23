@@ -75,7 +75,6 @@ public class FxArticuloListaController implements Initializable {
     }
 
     public void fillProvidersTable(String value) {
-
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);

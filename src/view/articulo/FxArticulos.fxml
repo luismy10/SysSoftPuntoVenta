@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
@@ -116,6 +117,16 @@
                                           <TextField fx:id="txtSearch" onKeyPressed="#onKerPressedSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Buscar...." />
                                        </children>
                                     </VBox>
+                                    <VBox spacing="10.0">
+                                       <children>
+                                          <Label styleClass="labelRoboto14" text="Categoría" textFill="#1a2226">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="cbCategoria" onAction="#onActionCategoria" prefHeight="30.0" prefWidth="210.0" />
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
                               <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyPressed="#onKeyPressedList" onKeyReleased="#onKeyRelasedList" onMouseClicked="#onMouseClickedList" prefHeight="327.0" VBox.vgrow="ALWAYS">
@@ -124,6 +135,7 @@
                                     <TableColumn fx:id="tcDocument" prefWidth="280.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
                                     <TableColumn fx:id="tcMarca" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Marca" />
                                     <TableColumn fx:id="tcUnidadVenta" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Medida" />
+                                    <TableColumn fx:id="tcCategoria" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Categoría" />
                                     <TableColumn fx:id="tcEstado" prefWidth="90.0" style="-fx-alignment: CENTER;" text="Estado" />
                                  </columns>
                               </TableView>
@@ -136,49 +148,53 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em;">
+                  <HBox alignment="CENTER_LEFT" style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em;">
                      <children>
-                        <HBox alignment="CENTER" style="-fx-background-color: #cccccc;">
+                        <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                            <children>
-                              <Button mnemonicParsing="false" styleClass="buttonLight" text="Anterior">
-                                 <font>
-                                    <Font name="Calibri" size="14.0" />
-                                 </font>
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../left.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Label styleClass="labelBorder" text="0">
-                                 <font>
-                                    <Font name="Calibri" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label styleClass="labelForm" text="de">
-                                 <font>
-                                    <Font name="Calibri" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label styleClass="labelBorder" text="0">
-                                 <font>
-                                    <Font name="Calibri" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Siguiente">
-                                 <font>
-                                    <Font name="Calibri" size="14.0" />
-                                 </font>
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../right.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
+                              <HBox alignment="CENTER" style="-fx-background-color: #cccccc;">
+                                 <children>
+                                    <Button mnemonicParsing="false" styleClass="buttonLight" text="Anterior">
+                                       <font>
+                                          <Font name="Calibri" size="14.0" />
+                                       </font>
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../left.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Label styleClass="labelBorder" text="0">
+                                       <font>
+                                          <Font name="Calibri" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label styleClass="labelForm" text="de">
+                                       <font>
+                                          <Font name="Calibri" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label styleClass="labelBorder" text="0">
+                                       <font>
+                                          <Font name="Calibri" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Siguiente">
+                                       <font>
+                                          <Font name="Calibri" size="14.0" />
+                                       </font>
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../right.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </HBox>
                            </children>
                         </HBox>
                      </children>

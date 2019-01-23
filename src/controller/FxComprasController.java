@@ -31,12 +31,14 @@ import javafx.stage.WindowEvent;
 import model.ArticuloTB;
 import model.CompraADO;
 import model.CompraTB;
-import model.DetalleADO;
-import model.DetalleTB;
 import model.LoteTB;
+import model.MonedaADO;
+import model.MonedaTB;
 import model.ProveedorADO;
 import model.RepresentanteADO;
 import model.RepresentanteTB;
+import model.TipoDocumentoADO;
+import model.TipoDocumentoTB;
 
 public class FxComprasController implements Initializable {
 
@@ -47,7 +49,7 @@ public class FxComprasController implements Initializable {
     @FXML
     private ComboBox<RepresentanteTB> cbRepresentante;
     @FXML
-    private ComboBox<DetalleTB> cbComprobante;
+    private ComboBox<TipoDocumentoTB> cbComprobante;
     @FXML
     private TextField cbNumeracion;
     @FXML
@@ -87,7 +89,7 @@ public class FxComprasController implements Initializable {
     @FXML
     private Text lblMonedaTotal;
     @FXML
-    private ComboBox<?> cbMoneda;
+    private ComboBox<MonedaTB> cbMoneda;
     @FXML
     private Text lblMonedaInafectada;
     @FXML
@@ -110,10 +112,36 @@ public class FxComprasController implements Initializable {
         idProveedor = idRepresentante = "";
         loteTBs = FXCollections.observableArrayList();
         Tools.actualDate(Tools.getDate(), tpFechaCompra);
-        DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> {
-            cbComprobante.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        
+        cbComprobante.getItems().clear();
+        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
+            cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado()));
         });
-        cbComprobante.getSelectionModel().select(0);
+        if (!cbComprobante.getItems().isEmpty()) {
+            for (int i = 0; i < cbComprobante.getItems().size(); i++) {
+                if (cbComprobante.getItems().get(i).isPredeterminado() == true) {
+                    cbComprobante.getSelectionModel().select(i);
+                    Session.DEFAULT_COMPROBANTE = i;
+                    break;
+                }
+            }
+        }
+        
+        cbMoneda.getItems().clear();
+        MonedaADO.GetMonedasCombBox().forEach(e -> {
+            cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getPredeterminado()));
+        });
+
+        if (!cbMoneda.getItems().isEmpty()) {
+            for (int i = 0; i < cbMoneda.getItems().size(); i++) {
+                if (cbMoneda.getItems().get(i).getPredeterminado() == true) {
+                    cbMoneda.getSelectionModel().select(i);
+                    Session.DEFAULT_MONEDA = i;
+                    break;
+                }
+            }
+        }
+        
         cbRepresentante.setConverter(new javafx.util.StringConverter<RepresentanteTB>() {
             @Override
             public String toString(RepresentanteTB object) {
@@ -177,7 +205,7 @@ public class FxComprasController implements Initializable {
             CompraTB compraTB = new CompraTB();
             compraTB.setProveedor(idProveedor);
             compraTB.setRepresentante(idRepresentante);
-            compraTB.setComprobante(cbComprobante.getSelectionModel().getSelectedItem().getIdDetalle().get());
+            compraTB.setComprobante(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento());
             compraTB.setNumeracion(cbNumeracion.getText().trim());
             compraTB.setFechaRegistro(Timestamp.valueOf(Tools.getDatePicker(tpFechaCompra) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
             compraTB.setSubTotal(Double.parseDouble(lblSubTotal.getText()));
