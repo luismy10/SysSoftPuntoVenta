@@ -60,7 +60,7 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="txtCantidad" onAction="#onActionCantidad" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtCantidad" onAction="#onActionCantidad" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -79,7 +79,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="cbImpuesto" prefWidth="150.0" />
+                                    <ComboBox fx:id="cbImpuesto" onAction="#onActionImpuesto" prefWidth="150.0" />
                                  </children>
                               </VBox>
                               <VBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
@@ -126,7 +126,7 @@
                            <children>
                               <VBox alignment="CENTER">
                                  <children>
-                                    <Label styleClass="labelRoboto16" text="Precio Normal" />
+                                    <Label styleClass="labelRoboto16" text="Precio General" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.4166666666666667em;">
@@ -157,46 +157,6 @@
                                        </font>
                                     </Label>
                                     <TextField fx:id="txtUtilidad" disable="true" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </VBox>
-                        <Separator orientation="VERTICAL" />
-                        <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                           <children>
-                              <VBox alignment="CENTER">
-                                 <children>
-                                    <Label styleClass="labelRoboto16" text="Precio por Mayoreo" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.4166666666666667em;">
-                                 <children>
-                                    <Label styleClass="labelRoboto14" text="Margen de utilidad %" textFill="#23283a">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField fx:id="txtMargenMayoreo" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedMargenMayoreo" onKeyTyped="#onKeyTypedMargenMayoreo" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.4166666666666667em;">
-                                 <children>
-                                    <Label prefWidth="134.0" styleClass="labelRoboto14" text="Precio de venta:" textFill="#23283a">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField fx:id="txtPrecioMayoreo" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedPrecioMayoreo" onKeyTyped="#onKeyTypedPrecioMayoreo" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.4166666666666667em;">
-                                 <children>
-                                    <Label prefWidth="134.0" styleClass="labelRoboto14" text="Utilidad generada:" textFill="#23283a">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField fx:id="txtUtilidadMayoreo" disable="true" />
                                  </children>
                               </VBox>
                            </children>

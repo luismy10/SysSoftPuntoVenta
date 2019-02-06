@@ -22,7 +22,8 @@ public class VentaTB {
     private double descuento;
     private double igv;
     private double total;
-    private String estado;
+    private int estado;
+    private String estadoName;
     private String observaciones;
     private ArticuloTB articuloTB;
 
@@ -175,12 +176,20 @@ public class VentaTB {
         this.articuloTB = articuloTB;
     }
 
-    public String getEstado() {
+    public int getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(int estado) {
         this.estado = estado;
+    }
+
+    public String getEstadoName() {
+        return estadoName;
+    }
+
+    public void setEstadoName(String estadoName) {
+        this.estadoName = estadoName;
     }
 
     public String getObservaciones() {

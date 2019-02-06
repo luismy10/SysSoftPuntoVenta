@@ -33,8 +33,8 @@ public class CompraADO {
             compra = DBUtil.getConnection().prepareStatement("INSERT INTO CompraTB(IdCompra,Proveedor,Representante,Comprobante,Numeracion,FechaCompra,SubTotal,Descuento,Gravada,Igv,Total) "
                     + "VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 
-            detalle_compra = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleCompraTB(IdCompra,IdArticulo,Cantidad,PrecioCompra,Descuento,PrecioVenta,Margen,Utilidad,PrecioVentaMayoreo,MargenMayoreo,UtilidadMayoreo,Importe)"
-                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+            detalle_compra = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleCompraTB(IdCompra,IdArticulo,Cantidad,PrecioCompra,Descuento,PrecioVenta,Margen,Utilidad,Importe)"
+                    + "VALUES(?,?,?,?,?,?,?,?,?)");
 
             articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET PrecioCompra = ?, PrecioVenta = ?, Cantidad = Cantidad + ? ,CantidadGranel = CantidadGranel + ? WHERE IdArticulo = ?");
 
@@ -65,11 +65,8 @@ public class CompraADO {
                 detalle_compra.setDouble(5, tableView.getItems().get(i).getDescuento().get());
                 detalle_compra.setDouble(6, tableView.getItems().get(i).getPrecioVenta());
                 detalle_compra.setShort(7, tableView.getItems().get(i).getMargen());
-                detalle_compra.setDouble(8, tableView.getItems().get(i).getUtilidad());
-                detalle_compra.setDouble(9, tableView.getItems().get(i).getPrecioVentaMayoreo());
-                detalle_compra.setShort(10, tableView.getItems().get(i).getMargenMayoreo());
-                detalle_compra.setDouble(11, tableView.getItems().get(i).getUtilidadMayoreo());
-                detalle_compra.setDouble(12, tableView.getItems().get(i).getImporte().get());
+                detalle_compra.setDouble(8, tableView.getItems().get(i).getUtilidad());            
+                detalle_compra.setDouble(9, tableView.getItems().get(i).getImporte().get());
                 detalle_compra.addBatch();
 
                 articulo_update.setDouble(1, tableView.getItems().get(i).getPrecioCompra());

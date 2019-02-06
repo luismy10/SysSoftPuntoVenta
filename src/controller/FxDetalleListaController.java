@@ -137,13 +137,13 @@ public class FxDetalleListaController implements Initializable {
                     procesoController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
                     procesoController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
                     Tools.Dispose(window);
-                } else if (idMantenimiento.equalsIgnoreCase("0014")) {
-                    procesoController.setIdDepartmento(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                    procesoController.getTxtDepartamento().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
-                    Tools.Dispose(window);
-                }else if (idMantenimiento.equalsIgnoreCase("0013")) {
+                } else if (idMantenimiento.equalsIgnoreCase("0013")) {
                     procesoController.setIdMedida(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
                     procesoController.getTxtMedida().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                    Tools.Dispose(window);
+                } else if (idMantenimiento.equalsIgnoreCase("0010")) {
+                    procesoController.setIdImpuesto(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    procesoController.getTxtImpuesto().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
                     Tools.Dispose(window);
                 }
 
@@ -167,16 +167,16 @@ public class FxDetalleListaController implements Initializable {
                     procesoController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
                     procesoController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
                     Tools.Dispose(window);
-                } else if (idMantenimiento.equalsIgnoreCase("0013")) {
-                    procesoController.setIdDepartmento(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                    procesoController.getTxtDepartamento().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                } else if (idMantenimiento.equalsIgnoreCase("0010")) {
+                    procesoController.setIdImpuesto(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    procesoController.getTxtImpuesto().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
                     Tools.Dispose(window);
                 }
             }
         }
     }
 
-    void setControllerArticulo(FxArticuloProcesoController procesoController) {
+    public void setControllerArticulo(FxArticuloProcesoController procesoController) {
         this.procesoController = procesoController;
     }
 

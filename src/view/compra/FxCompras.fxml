@@ -88,34 +88,34 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <HBox>
+                                    <HBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <VBox alignment="CENTER_LEFT">
+                                          <VBox alignment="CENTER_RIGHT" style="-fx-spacing: 1.25em;">
                                              <children>
+                                                <Label styleClass="labelRoboto14" text="Proveedor:" textFill="#1a2226" />
                                                 <Label styleClass="labelRoboto14" text="Comprobante:" textFill="#1a2226" />
                                                 <Label styleClass="labelRoboto14" text="Moneda:" textFill="#1a2226" />
-                                                <Label styleClass="labelRoboto14" text="Proveedor:" textFill="#1a2226" />
                                              </children>
                                           </VBox>
-                                          <VBox alignment="CENTER_LEFT">
+                                          <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <ComboBox fx:id="cbComprobante" prefHeight="30.0" prefWidth="160.0" />
-                                                <ComboBox fx:id="cbMoneda" prefHeight="30.0" prefWidth="160.0" />
                                                 <TextField fx:id="txtProveedor" prefHeight="30.0" promptText="Buscar...." />
+                                                <ComboBox fx:id="cbComprobante" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" />
+                                                <ComboBox fx:id="cbMoneda" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" />
                                              </children>
                                           </VBox>
-                                          <VBox>
+                                          <VBox alignment="CENTER_RIGHT" style="-fx-spacing: 1.25em;">
                                              <children>
                                                 <Label styleClass="labelRoboto14" text="Representante:" textFill="#1a2226" />
                                                 <Label styleClass="labelRoboto14" text="Fecha de compra:" textFill="#1a2226" />
                                                 <Label styleClass="labelRoboto14" text="Numeración:" textFill="#1a2226" />
                                              </children>
                                           </VBox>
-                                          <VBox>
+                                          <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <ComboBox fx:id="cbRepresentante" onAction="#onActionRepresentante" prefHeight="30.0" prefWidth="204.0" />
-                                                <DatePicker fx:id="tpFechaCompra" editable="false" prefHeight="30.0" prefWidth="204.0" />
-                                                <TextField fx:id="cbNumeracion" onKeyTyped="#onKeyTypedNumeracion" prefHeight="30.0" />
+                                                <ComboBox fx:id="cbRepresentante" maxWidth="1.7976931348623157E308" onAction="#onActionRepresentante" prefHeight="30.0" prefWidth="220.0" />
+                                                <DatePicker fx:id="tpFechaCompra" editable="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" />
+                                                <TextField fx:id="cbNumeracion" onKeyTyped="#onKeyTypedNumeracion" prefHeight="30.0" prefWidth="220.0" VBox.vgrow="ALWAYS" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -163,17 +163,6 @@
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Op. Inafacta" textFill="#1a2226" />
-                                    <HBox spacing="5.0">
-                                       <children>
-                                          <Text fx:id="lblMonedaInafectada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
-                                          <Text fx:id="lblInafectada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.8333333333333334em;">
-                                 <children>
                                     <Label styleClass="labelRoboto14" text="Op. Gravada" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
@@ -185,7 +174,18 @@
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="IGV" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="Op. Exonerada" textFill="#1a2226" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fx:id="lblMonedaInafectada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                          <Text fx:id="lblInafectada" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="I.G.V" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
                                           <Text fx:id="lblMonedaIgv" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />

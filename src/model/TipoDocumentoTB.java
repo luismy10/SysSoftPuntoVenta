@@ -12,6 +12,13 @@ public class TipoDocumentoTB {
     public TipoDocumentoTB() {
     }
 
+    public TipoDocumentoTB(int idTipoDocumento, String nombre) {
+        this.idTipoDocumento = idTipoDocumento;
+        this.nombre = nombre;
+    }
+    
+    
+
     public TipoDocumentoTB(int idTipoDocumento, String nombre, boolean predeterminado) {
         this.idTipoDocumento = idTipoDocumento;
         this.nombre = nombre;

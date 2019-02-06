@@ -66,11 +66,11 @@ public class FxArticulosController implements Initializable {
 
     private AnchorPane content;
 
-    private boolean stateRequest;
-
     private FxArticuloSeleccionadoController seleccionadoController;
 
     private FxArticuloDetalleController detalleController;
+    @FXML
+    private TableColumn<?, ?> tcEstado1;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -91,9 +91,8 @@ public class FxArticulosController implements Initializable {
             cbCategoria.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
         cbCategoria.getSelectionModel().select(0);
-        
+
         changeViewArticuloSeleccionado();
-        stateRequest = false;
 
     }
 
@@ -114,16 +113,17 @@ public class FxArticulosController implements Initializable {
         task.setOnSucceeded((WorkerStateEvent e) -> {
             tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
             lblLoad.setVisible(false);
-            stateRequest = true;
+            if (!tvList.getItems().isEmpty()) {
+                tvList.getSelectionModel().select(0);
+                onViewDetailArticulo();
+            }
         });
         task.setOnFailed((WorkerStateEvent event) -> {
             lblLoad.setVisible(false);
-            stateRequest = false;
         });
 
         task.setOnScheduled((WorkerStateEvent event) -> {
             lblLoad.setVisible(true);
-            stateRequest = false;
         });
         exec.execute(task);
 
@@ -287,7 +287,15 @@ public class FxArticulosController implements Initializable {
 
     @FXML
     private void onActionReload(ActionEvent event) {
-        if (stateRequest) {
+        fillArticlesTable("");
+        if (!tvList.getItems().isEmpty()) {
+            tvList.getSelectionModel().select(0);
+        }
+    }
+
+    @FXML
+    private void onKeyPressedReload(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
             fillArticlesTable("");
             if (!tvList.getItems().isEmpty()) {
                 tvList.getSelectionModel().select(0);
@@ -296,65 +304,47 @@ public class FxArticulosController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedReload(KeyEvent event) throws IOException {
-        if (event.getCode() == KeyCode.ENTER) {
-            if (stateRequest) {
-                fillArticlesTable("");
-                if (!tvList.getItems().isEmpty()) {
-                    tvList.getSelectionModel().select(0);
-                }
-            }
-        }
-    }
-
-    @FXML
     private void onKerPressedSearch(KeyEvent event) {
-        if (stateRequest) {
-            if (event.getCode() != KeyCode.ESCAPE
-                    && event.getCode() != KeyCode.F1
-                    && event.getCode() != KeyCode.F2
-                    && event.getCode() != KeyCode.F3
-                    && event.getCode() != KeyCode.F4
-                    && event.getCode() != KeyCode.F5
-                    && event.getCode() != KeyCode.F6
-                    && event.getCode() != KeyCode.F7
-                    && event.getCode() != KeyCode.F8
-                    && event.getCode() != KeyCode.F9
-                    && event.getCode() != KeyCode.F10
-                    && event.getCode() != KeyCode.F11
-                    && event.getCode() != KeyCode.F12
-                    && event.getCode() != KeyCode.ALT
-                    && event.getCode() != KeyCode.CONTROL
-                    && event.getCode() != KeyCode.UP
-                    && event.getCode() != KeyCode.DOWN
-                    && event.getCode() != KeyCode.RIGHT
-                    && event.getCode() != KeyCode.LEFT
-                    && event.getCode() != KeyCode.TAB
-                    && event.getCode() != KeyCode.CAPS
-                    && event.getCode() != KeyCode.SHIFT
-                    && event.getCode() != KeyCode.HOME
-                    && event.getCode() != KeyCode.WINDOWS
-                    && event.getCode() != KeyCode.ALT_GRAPH
-                    && event.getCode() != KeyCode.CONTEXT_MENU
-                    && event.getCode() != KeyCode.END
-                    && event.getCode() != KeyCode.INSERT
-                    && event.getCode() != KeyCode.PAGE_UP
-                    && event.getCode() != KeyCode.PAGE_DOWN
-                    && event.getCode() != KeyCode.NUM_LOCK
-                    && event.getCode() != KeyCode.PRINTSCREEN
-                    && event.getCode() != KeyCode.SCROLL_LOCK
-                    && event.getCode() != KeyCode.PAUSE) {
-                fillArticlesTable(txtSearch.getText().trim());
-            }
 
-        }
     }
 
     @FXML
     private void onKeyReleasedSearch(KeyEvent event) {
-        if (!tvList.getItems().isEmpty()) {
-            tvList.getSelectionModel().select(0);
-            onViewDetailArticulo();
+        if (event.getCode() != KeyCode.ESCAPE
+                && event.getCode() != KeyCode.F1
+                && event.getCode() != KeyCode.F2
+                && event.getCode() != KeyCode.F3
+                && event.getCode() != KeyCode.F4
+                && event.getCode() != KeyCode.F5
+                && event.getCode() != KeyCode.F6
+                && event.getCode() != KeyCode.F7
+                && event.getCode() != KeyCode.F8
+                && event.getCode() != KeyCode.F9
+                && event.getCode() != KeyCode.F10
+                && event.getCode() != KeyCode.F11
+                && event.getCode() != KeyCode.F12
+                && event.getCode() != KeyCode.ALT
+                && event.getCode() != KeyCode.CONTROL
+                && event.getCode() != KeyCode.UP
+                && event.getCode() != KeyCode.DOWN
+                && event.getCode() != KeyCode.RIGHT
+                && event.getCode() != KeyCode.LEFT
+                && event.getCode() != KeyCode.TAB
+                && event.getCode() != KeyCode.CAPS
+                && event.getCode() != KeyCode.SHIFT
+                && event.getCode() != KeyCode.HOME
+                && event.getCode() != KeyCode.WINDOWS
+                && event.getCode() != KeyCode.ALT_GRAPH
+                && event.getCode() != KeyCode.CONTEXT_MENU
+                && event.getCode() != KeyCode.END
+                && event.getCode() != KeyCode.INSERT
+                && event.getCode() != KeyCode.PAGE_UP
+                && event.getCode() != KeyCode.PAGE_DOWN
+                && event.getCode() != KeyCode.NUM_LOCK
+                && event.getCode() != KeyCode.PRINTSCREEN
+                && event.getCode() != KeyCode.SCROLL_LOCK
+                && event.getCode() != KeyCode.PAUSE) {
+            fillArticlesTable(txtSearch.getText().trim());
         }
     }
 
@@ -488,7 +478,7 @@ public class FxArticulosController implements Initializable {
     @FXML
     private void onActionCategoria(ActionEvent event) {
         if (cbCategoria.getSelectionModel().getSelectedIndex() >= 1) {
-            
+
             ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
                 Thread t = new Thread(runnable);
                 t.setDaemon(true);
@@ -505,16 +495,13 @@ public class FxArticulosController implements Initializable {
             task.setOnSucceeded((WorkerStateEvent e) -> {
                 tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
                 lblLoad.setVisible(false);
-                stateRequest = true;
             });
             task.setOnFailed((WorkerStateEvent e) -> {
                 lblLoad.setVisible(false);
-                stateRequest = false;
             });
 
             task.setOnScheduled((WorkerStateEvent e) -> {
                 lblLoad.setVisible(true);
-                stateRequest = false;
             });
             exec.execute(task);
 

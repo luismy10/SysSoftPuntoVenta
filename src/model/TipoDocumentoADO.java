@@ -22,7 +22,7 @@ public class TipoDocumentoADO {
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 observableList.add(new TipoDocumentoTB(
-                        resultSet.getInt("IdTipoDocumento"), 
+                        resultSet.getInt("IdTipoDocumento"),
                         resultSet.getString("Nombre"),
                         resultSet.getBoolean("Predeterminado"),
                         resultSet.getBoolean("Predeterminado")
@@ -30,7 +30,7 @@ public class TipoDocumentoADO {
                         : new ImageView(new Image("/view/unchecked.png", 22, 22, false, false))));
             }
         } catch (SQLException ex) {
-
+            System.out.println("Tipo de Documento ADO:" + ex.getLocalizedMessage());
         } finally {
             try {
                 if (statement != null) {
@@ -41,7 +41,7 @@ public class TipoDocumentoADO {
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                System.out.println("Tipo de Documento ADO:" + ex.getLocalizedMessage());
             }
         }
         return observableList;
@@ -109,13 +109,13 @@ public class TipoDocumentoADO {
         }
         return result;
     }
-    
+
     public static List<TipoDocumentoTB> GetDocumentoCombBox() {
         List<TipoDocumentoTB> list = new ArrayList<>();
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             PreparedStatement statement = null;
-            ResultSet resultSet = null;            
+            ResultSet resultSet = null;
             try {
                 statement = DBUtil.getConnection().prepareStatement("SELECT IdTipoDocumento,Nombre,Predeterminado FROM TipoDocumentoTB");
                 resultSet = statement.executeQuery();
@@ -145,5 +145,5 @@ public class TipoDocumentoADO {
         return list;
     }
 
-
+ 
 }

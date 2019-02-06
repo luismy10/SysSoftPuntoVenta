@@ -158,6 +158,28 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </HBox>
+            <HBox alignment="CENTER" styleClass="paddinContainer">
+               <children>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionTax" onKeyPressed="#onKeyPressedTax" styleClass="buttonTransparent" text="Impuestos">
+                           <graphic>
+                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../impuestos.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Árticulos">
+                           <font>
+                              <Font name="Roboto" size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>

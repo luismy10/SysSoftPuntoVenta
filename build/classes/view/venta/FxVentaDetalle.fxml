@@ -171,7 +171,7 @@
                                           </VBox>
                                           <VBox alignment="CENTER">
                                              <children>
-                                                <Button mnemonicParsing="false" styleClass="buttonLight" text="Imprimir">
+                                                <Button mnemonicParsing="false" onAction="#onActionImprimir" onKeyPressed="#onKeyPressedImprimir" styleClass="buttonLight" text="Imprimir">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -194,7 +194,7 @@
                                     <HBox alignment="CENTER_RIGHT" spacing="10.0">
                                        <children>
                                           <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium22" text="Total:" />
-                                          <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium22" text="S/. 0.00" />
+                                          <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium22" text="M. 0.00" />
                                        </children>
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

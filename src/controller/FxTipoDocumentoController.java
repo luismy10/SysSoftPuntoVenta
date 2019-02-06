@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -40,15 +39,18 @@ public class FxTipoDocumentoController implements Initializable {
     @FXML
     private TableColumn<TipoDocumentoTB, ImageView> tcPredeterminado;
 
-    private AnchorPane content;
-
     private boolean stateRequest;
+
+    private boolean stateUpdate;
+
+    private AnchorPane content;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcMoneda.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombre()));
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
         stateRequest = false;
+        stateUpdate = false;
     }
 
     public void fillTabletTipoDocumento() {
@@ -64,11 +66,20 @@ public class FxTipoDocumentoController implements Initializable {
                 return TipoDocumentoADO.ListTipoDocumento();
             }
         };
-
         task.setOnSucceeded((WorkerStateEvent e) -> {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
             stateRequest = true;
+            if (stateUpdate) {
+                List<TipoDocumentoTB> list = TipoDocumentoADO.GetDocumentoCombBox();
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).isPredeterminado() == true) {
+                        Session.DEFAULT_COMPROBANTE = i;
+                        break;
+                    }
+                }
+                stateUpdate=false;
+            }
 
         });
         task.setOnFailed((WorkerStateEvent event) -> {
@@ -81,29 +92,21 @@ public class FxTipoDocumentoController implements Initializable {
             stateRequest = false;
         });
         exec.execute(task);
-
         if (!exec.isShutdown()) {
             exec.shutdown();
         }
+
     }
 
     private void onEventPredeterminado() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            if (stateRequest) {
-                String result = TipoDocumentoADO.ChangeDefaultState(true, tvList.getSelectionModel().getSelectedItem().getIdTipoDocumento());
-                if (result.equalsIgnoreCase("updated")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Tipo de comprobante", "Se cambio el estado correctamente.", false);
-                    fillTabletTipoDocumento();
-                    List<TipoDocumentoTB> list = TipoDocumentoADO.GetDocumentoCombBox();
-                    for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i).isPredeterminado() == true) {
-                            Session.DEFAULT_COMPROBANTE = i;
-                            break;
-                        }
-                    }
-                } else {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Tipo de comprobante", "Error: " + result, false);
-                }
+            String result = TipoDocumentoADO.ChangeDefaultState(true, tvList.getSelectionModel().getSelectedItem().getIdTipoDocumento());
+            if (result.equalsIgnoreCase("updated")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Tipo de comprobante", "Se cambio el estado correctamente.", false);
+                stateUpdate = true;
+                fillTabletTipoDocumento();
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Tipo de comprobante", "Error: " + result, false);
             }
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Tipo de comprobante", "Seleccione un elemento de la lista.", false);

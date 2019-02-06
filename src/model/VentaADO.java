@@ -85,7 +85,7 @@ public class VentaADO {
             venta.setDouble(11, ventaTB.getDescuento());
             venta.setDouble(12, ventaTB.getIgv());
             venta.setDouble(13, ventaTB.getTotal());
-            venta.setString(14, ventaTB.getEstado());
+            venta.setInt(14, ventaTB.getEstado());
             venta.setString(15, ventaTB.getObservaciones());
             venta.addBatch();
 
@@ -201,8 +201,8 @@ public class VentaADO {
                 ventaTB.setComprobanteName(rsEmps.getString("Comprobante"));
                 ventaTB.setSerie(rsEmps.getString("Serie"));
                 ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
-                ventaTB.setEstado(rsEmps.getString("Estado"));
-                ventaTB.setMonedaName(rsEmps.getString("Abreviado")); 
+                ventaTB.setEstadoName(rsEmps.getString("Estado"));
+                ventaTB.setMonedaName(rsEmps.getString("Abreviado"));
                 ventaTB.setTotal(rsEmps.getDouble("Total"));
                 ventaTB.setObservaciones(rsEmps.getString("Observaciones"));
                 empList.add(ventaTB);
@@ -225,8 +225,8 @@ public class VentaADO {
         return empList;
     }
 
-    public static ObservableList<VentaTB> ListVentasByDate(String fechaInicial, String fechaFinal) {
-        String selectStmt = "{call Sp_Listar_Ventas_By_Date(?,?)}";
+    public static ObservableList<VentaTB> ListVentasByDate(String fechaInicial, String fechaFinal, int comprobante, int estado) {
+        String selectStmt = "{call Sp_Listar_Ventas_By_Date(?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<VentaTB> empList = FXCollections.observableArrayList();
@@ -235,6 +235,8 @@ public class VentaADO {
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, fechaInicial);
             preparedStatement.setString(2, fechaFinal);
+            preparedStatement.setInt(3, comprobante);
+            preparedStatement.setInt(4, estado);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 VentaTB ventaTB = new VentaTB();
@@ -245,7 +247,8 @@ public class VentaADO {
                 ventaTB.setComprobanteName(rsEmps.getString("Comprobante"));
                 ventaTB.setSerie(rsEmps.getString("Serie"));
                 ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
-                ventaTB.setEstado(rsEmps.getString("Estado"));
+                ventaTB.setEstadoName(rsEmps.getString("Estado"));
+                ventaTB.setMonedaName(rsEmps.getString("Abreviado"));
                 ventaTB.setTotal(rsEmps.getDouble("Total"));
                 ventaTB.setObservaciones(rsEmps.getString("Observaciones"));
                 empList.add(ventaTB);
@@ -286,7 +289,7 @@ public class VentaADO {
             detalleVentaTB.setArticuloTB(new ArticuloTB(rsEmps.getString("IdArticulo"), rsEmps.getString("NombreMarca"), rsEmps.getInt("UnidadVenta")));
             empList.add(detalleVentaTB);
         }
-        preparedStatement.close();  
+        preparedStatement.close();
         rsEmps.close();
         return empList;
     }
@@ -362,7 +365,27 @@ public class VentaADO {
         }
     }
 
-    public static EmpleadoTB CabeceraVenta(String value) throws SQLException {
+    public static VentaTB GetVenta(String value) throws SQLException {
+        PreparedStatement statementVendedor;
+        VentaTB ventaTB = null;
+        statementVendedor = DBUtil.getConnection().prepareStatement("select  dbo.Fc_Obtener_Nombre_Detalle(v.Estado,'0009') Estado,m.Simbolo,v.Total\n"
+                + "from VentaTB as v inner join MonedaTB as m on v.Moneda = m.IdMoneda\n"
+                + "where v.IdVenta = ?");
+        statementVendedor.setString(1, value);
+        try (ResultSet resultSet = statementVendedor.executeQuery()) {
+            if (resultSet.next()) {
+                ventaTB = new VentaTB();
+                ventaTB.setEstadoName(resultSet.getString("Estado"));
+                ventaTB.setMonedaName(resultSet.getString("Simbolo"));
+                ventaTB.setTotal(resultSet.getDouble("Total")); 
+            }
+            statementVendedor.close();
+        }
+        statementVendedor.close();
+        return ventaTB;
+    }
+
+    public static EmpleadoTB GetEmpleadoVenta(String value) throws SQLException {
         PreparedStatement statementVendedor;
         EmpleadoTB empleadoTB = null;
         statementVendedor = DBUtil.getConnection().prepareStatement("select e.Apellidos,e.Nombres \n"

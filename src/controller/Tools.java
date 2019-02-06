@@ -27,7 +27,6 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -90,6 +89,8 @@ public class Tools {
     static final String FX_FILE_MONEDAPROCESO = "/view/mantenimiento/FxMonedaProceso.fxml";
     static final String FX_FILE_IMPRESORATICKET= "/view/venta/FxImpresoraTicket.fxml";
     static final String FX_FILE_TIPODOCUMENTO = "/view/mantenimiento/FxTipoDocumento.fxml";
+    static final String FX_FILE_IMPUESTO = "/view/mantenimiento/FxImpuesto.fxml";
+    static final String FX_FILE_IMPUESTOPROCESO = "/view/mantenimiento/FxImpuestoProceso.fxml";
     
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
@@ -286,8 +287,6 @@ public class Tools {
         }
     }
 
-    static void DisposeWindow(VBox window, EventType<KeyEvent> KEY_RELEASED) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   
 
 }

@@ -37,5 +37,6 @@ public class Session {
     
     public static int DEFAULT_COMPROBANTE;
     public static int DEFAULT_MONEDA;
+    public static int DEFAULT_IMPUESTO;
     
 }

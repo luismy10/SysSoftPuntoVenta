@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -33,6 +34,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.DetalleADO;
 import model.DetalleTB;
+import model.TipoDocumentoADO;
+import model.TipoDocumentoTB;
 import model.VentaADO;
 import model.VentaTB;
 
@@ -68,23 +71,41 @@ public class FxVentaRealizadasController implements Initializable {
     private ComboBox<DetalleTB> cbEstado;
     @FXML
     private TextField txtSearch;
+    @FXML
+    private ComboBox<TipoDocumentoTB> cbComprobante;
 
     private AnchorPane content;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         tcFechaVenta.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaRegistro().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))));
         tcCliente.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCliente()));
-        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstado()));
-        tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getComprobanteName()+"\n"+cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));
+        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName()));
+        tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getComprobanteName() + "\n" + cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));
         tcMoneda.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName()));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getTotal(), 2)));
         tcObservacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getObservaciones()));
+
+        cbEstado.getItems().add(new DetalleTB(new SimpleIntegerProperty(0), new SimpleStringProperty("TODOS")));
         DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> {
             cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
+        cbEstado.getSelectionModel().select(0);
+
+        cbComprobante.getItems().add(new TipoDocumentoTB(0, "TODOS"));
+        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
+            cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre()));
+        });
+        cbComprobante.getSelectionModel().select(0);
+
+        Tools.actualDate(Tools.getDate(), dtFechaInicial);
+        Tools.actualDate(Tools.getDate(), dtFechaFinal);
+        if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
+            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+                    cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
+                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+        }
     }
 
     private void InitializationTransparentBackground() {
@@ -97,7 +118,7 @@ public class FxVentaRealizadasController implements Initializable {
         content.getChildren().add(Session.pane);
     }
 
-    public void fillVentasTable(String value) {
+    private void fillVentasTable(String value) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -127,7 +148,7 @@ public class FxVentaRealizadasController implements Initializable {
         }
     }
 
-    private void fillVentasTableByDate(String fechaInicial, String fechaFinal) {
+    private void fillVentasTableByDate(String fechaInicial, String fechaFinal, int comprobante, int estado) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -136,7 +157,7 @@ public class FxVentaRealizadasController implements Initializable {
         Task<ObservableList<VentaTB>> task = new Task<ObservableList<VentaTB>>() {
             @Override
             public ObservableList<VentaTB> call() {
-                return VentaADO.ListVentasByDate(fechaInicial, fechaFinal);
+                return VentaADO.ListVentasByDate(fechaInicial, fechaFinal, comprobante, estado);
             }
         };
 
@@ -156,8 +177,6 @@ public class FxVentaRealizadasController implements Initializable {
             exec.shutdown();
         }
     }
-
-    
 
     private void openWindowDetalleVenta() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
@@ -182,9 +201,7 @@ public class FxVentaRealizadasController implements Initializable {
                     tvList.getSelectionModel().getSelectedItem().getComprobanteName(),
                     tvList.getSelectionModel().getSelectedItem().getSerie(),
                     tvList.getSelectionModel().getSelectedItem().getNumeracion(),
-                    tvList.getSelectionModel().getSelectedItem().getEstado(),
                     tvList.getSelectionModel().getSelectedItem().getObservaciones(),
-                    Tools.roundingValue(tvList.getSelectionModel().getSelectedItem().getTotal(), 2),
                     tvList.getSelectionModel().getSelectedItem().getIdVenta());
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
@@ -209,17 +226,20 @@ public class FxVentaRealizadasController implements Initializable {
     @FXML
     private void onActionFechaInicial(ActionEvent event) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
+            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+                    cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
+                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
         }
     }
 
     @FXML
     private void onActionFechaFinal(ActionEvent event) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
+            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+                    cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
+                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
         }
     }
-
 
     @FXML
     private void onKeyPressedList(KeyEvent event) throws IOException {
@@ -246,12 +266,12 @@ public class FxVentaRealizadasController implements Initializable {
     private void onActionMostrar(ActionEvent event) throws IOException {
         openWindowDetalleVenta();
     }
-    
+
     @FXML
     private void onKeyPressedRecargar(KeyEvent event) {
-         if (event.getCode() == KeyCode.ENTER) {
-             fillVentasTable("");
-         }
+        if (event.getCode() == KeyCode.ENTER) {
+            fillVentasTable("");
+        }
     }
 
     @FXML
@@ -259,10 +279,26 @@ public class FxVentaRealizadasController implements Initializable {
         fillVentasTable("");
     }
 
+    @FXML
+    private void onActionComprobante(ActionEvent event) {
+        if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
+            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+                    cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
+                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());           
+        }
+    }
+
+    @FXML
+    private void onActionEstado(ActionEvent event) {
+        if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
+            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+                    cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
+                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+        }
+    }
+
     public void setContent(AnchorPane content) {
         this.content = content;
     }
-
-    
 
 }

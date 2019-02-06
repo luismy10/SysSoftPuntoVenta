@@ -9,18 +9,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxMonedaProcesoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxImpuestoProcesoController">
    <children>
-      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;" VBox.vgrow="ALWAYS">
                <children>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../cantidad.png" />
+                        <Image url="@../impuestos.png" />
                      </image>
                   </ImageView>
-                  <Label styleClass="labelOpenSansRegular16" text="Moneda" textFill="#1a2226" />
+                  <Label styleClass="labelOpenSansRegular16" text="Impuesto" textFill="#1a2226" />
                </children>
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em;">
@@ -37,8 +37,8 @@
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Abreviatura" textFill="#1a2226" />
-                        <TextField fx:id="txtAbreviatura" onAction="#onActionGuardar" VBox.vgrow="ALWAYS" />
+                        <Label styleClass="labelRoboto14" text="Valor" textFill="#1a2226" />
+                        <TextField fx:id="txtValor" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedValor" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>
@@ -47,18 +47,8 @@
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Simbolo" textFill="#1a2226" />
-                        <TextField fx:id="txtSimbolo" onAction="#onActionGuardar" VBox.vgrow="ALWAYS" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox style="-fx-padding: 0.8333333333333334em;">
-               <children>
-                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="labelRoboto14" text="Tipo de cambio" textFill="#1a2226" />
-                        <TextField fx:id="txtTipoCambio" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedTipoCambio" />
+                        <Label styleClass="labelRoboto14" text="Codigo alterno" textFill="#1a2226" />
+                        <TextField fx:id="txtCodigoAlterno" onAction="#onActionGuardar" />
                      </children>
                   </VBox>
                </children>

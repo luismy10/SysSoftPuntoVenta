@@ -20,7 +20,7 @@
                         <Image url="@../cantidad.png" />
                      </image>
                   </ImageView>
-                  <Label styleClass="labelOpenSansRegular16" text="Agregar moneda" textFill="#1a2226" />
+                  <Label styleClass="labelOpenSansRegular16" text="Moneda" textFill="#1a2226" />
                </children>
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em;">

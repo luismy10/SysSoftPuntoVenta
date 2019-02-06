@@ -290,8 +290,7 @@ public class FxVentaController implements Initializable {
             ventaTB.setGravada(Double.parseDouble(lblGravada.getText()));
             ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
             ventaTB.setIgv(Double.parseDouble(lblIgv.getText()));
-            ventaTB.setTotal(Double.parseDouble(lblTotalPagar.getText()));
-            ventaTB.setEstado("Completada");
+            ventaTB.setTotal(Double.parseDouble(lblTotalPagar.getText()));            
 
             controller.setInitComponents(ventaTB, txtCliente.getText(), tvList);
         } else {
@@ -920,9 +919,8 @@ public class FxVentaController implements Initializable {
                 getAddArticulo(articuloTB);
                 txtSearch.clear();
                 txtSearch.requestFocus();
-            } else {
-                txtSearch.selectAll();
-                txtSearch.requestFocus();
+            } else {                
+                
             }
         }
 

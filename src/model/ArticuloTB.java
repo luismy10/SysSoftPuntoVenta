@@ -26,8 +26,6 @@ public class ArticuloTB {
     private SimpleStringProperty presentacionName;
     private int unidadVenta;
     private SimpleStringProperty unidadVentaName;
-    private int departamento;
-    private SimpleStringProperty departamentoName;
     private int estado;
 
     private double stockMinimo;
@@ -41,21 +39,18 @@ public class ArticuloTB {
     private short margen;
     private double utilidad;
 
-    private double precioVentaMayoreo;
-    private short margenMayoreo;
-
-    private double utilidadMayoreo;
-
     private boolean lote;
     private boolean inventario;
     private ImageView imageLote;
     private SimpleStringProperty estadoName;
     private SimpleDoubleProperty descuento;
     private SimpleDoubleProperty subTotal;
-    private SimpleDoubleProperty importe;
-    private boolean impuesto;
+    private SimpleDoubleProperty importe;   
     private String imagenTB;
     private ObjectProperty<LocalDate> fechaRegistro;
+    
+    private int impuestoArticulo;
+    private String impuestoArticuloName;
 
     public ArticuloTB() {
 
@@ -314,14 +309,6 @@ public class ArticuloTB {
         this.utilidad = utilidad;
     }
 
-    public boolean isImpuesto() {
-        return impuesto;
-    }
-
-    public void setImpuesto(boolean impuesto) {
-        this.impuesto = impuesto;
-    }
-
     public ImageView getImageLote() {
         return imageLote;
     }
@@ -336,22 +323,6 @@ public class ArticuloTB {
 
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = new SimpleObjectProperty(fechaRegistro);
-    }
-
-    public int getDepartamento() {
-        return departamento;
-    }
-
-    public void setDepartamento(int departamento) {
-        this.departamento = departamento;
-    }
-
-    public SimpleStringProperty getDepartamentoName() {
-        return departamentoName;
-    }
-
-    public void setDepartamentoName(String departamentoName) {
-        this.departamentoName = new SimpleStringProperty(departamentoName);
     }
 
     public boolean isInventario() {
@@ -386,28 +357,22 @@ public class ArticuloTB {
         this.margen = margen;
     }
 
-    public double getPrecioVentaMayoreo() {
-        return precioVentaMayoreo;
+    public int getImpuestoArticulo() {
+        return impuestoArticulo;
     }
 
-    public void setPrecioVentaMayoreo(double precioVentaMayoreo) {
-        this.precioVentaMayoreo = precioVentaMayoreo;
+    public void setImpuestoArticulo(int impuestoArticulo) {
+        this.impuestoArticulo = impuestoArticulo;
     }
 
-    public short getMargenMayoreo() {
-        return margenMayoreo;
+    public String getImpuestoArticuloName() {
+        return impuestoArticuloName;
     }
 
-    public void setMargenMayoreo(short margenMayoreo) {
-        this.margenMayoreo = margenMayoreo;
+    public void setImpuestoArticuloName(String impuestoArticuloName) {
+        this.impuestoArticuloName = impuestoArticuloName;
     }
-
-    public double getUtilidadMayoreo() {
-        return utilidadMayoreo;
-    }
-
-    public void setUtilidadMayoreo(double utilidadMayoreo) {
-        this.utilidadMayoreo = utilidadMayoreo;
-    }
+    
+    
 
 }

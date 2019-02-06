@@ -68,9 +68,7 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private TextField txtPrecioVenta;
     @FXML
-    private CheckBox cbLote;
-    @FXML
-    private TextField txtDepartamento;
+    private CheckBox cbLote;   
     @FXML
     private CheckBox cbInventario;
     @FXML
@@ -78,11 +76,11 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private RadioButton rbGranel;
     @FXML
-    private TextField txtCantidadActual;
-    @FXML
-    private TextField txtPrecioMayoreo;
+    private TextField txtCantidadActual;    
     @FXML
     private TextField txtMedida;
+    @FXML
+    private TextField txtImpuesto;
 
     private String idArticulo;
 
@@ -94,9 +92,9 @@ public class FxArticuloProcesoController implements Initializable {
 
     private int idMarca;
 
-    private int idDepartmento;
-
     private int idMedida;
+
+    private int idImpuesto;
 
     private FxArticulosController articulosController;
 
@@ -107,7 +105,7 @@ public class FxArticuloProcesoController implements Initializable {
         idPresentacion = 0;
         idCategoria = 0;
         idMarca = 0;
-        idDepartmento = 0;
+        idImpuesto = 0;
         ToggleGroup group = new ToggleGroup();
         rbUnidad.setToggleGroup(group);
         rbGranel.setToggleGroup(group);
@@ -149,11 +147,6 @@ public class FxArticuloProcesoController implements Initializable {
             if (articuloTB.getPresentacion() != 0) {
                 idPresentacion = articuloTB.getPresentacion();
                 txtPresentacion.setText(articuloTB.getPresentacionName().get());
-            }
-
-            if (articuloTB.getDepartamento() != 0) {
-                idDepartmento = articuloTB.getDepartamento();
-                txtDepartamento.setText(articuloTB.getDepartamentoName().get());
             }
 
             if (articuloTB.getUnidadVenta() == 1) {
@@ -212,11 +205,6 @@ public class FxArticuloProcesoController implements Initializable {
                 txtPresentacion.setText(articuloTB.getPresentacionName().get());
             }
 
-            if (articuloTB.getDepartamento() != 0) {
-                idDepartmento = articuloTB.getDepartamento();
-                txtDepartamento.setText(articuloTB.getDepartamentoName().get());
-            }
-
             if (articuloTB.getUnidadVenta() == 1) {
                 rbUnidad.setSelected(true);
                 txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidad(), 2));
@@ -242,12 +230,16 @@ public class FxArticuloProcesoController implements Initializable {
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
             txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
             txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
-            txtPrecioMayoreo.setText(Tools.roundingValue(articuloTB.getPrecioVentaMayoreo(), 2));
 
             if (articuloTB.getImagenTB().equalsIgnoreCase("")) {
                 lnPrincipal.setImage(new Image("/view/no-image.png"));
             } else {
                 lnPrincipal.setImage(new Image(new File("" + articuloTB.getImagenTB()).toURI().toString()));
+            }
+
+            if (articuloTB.getImpuestoArticulo() != 0) {
+                idImpuesto = articuloTB.getImpuestoArticulo();
+                txtImpuesto.setText(articuloTB.getImpuestoArticuloName());
             }
 
         }
@@ -263,6 +255,9 @@ public class FxArticuloProcesoController implements Initializable {
         } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Selecciona el estado del artículo, por favor.", false);
             cbEstado.requestFocus();
+        } else if (txtImpuesto.getText().isEmpty()) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el nombre del impuesto, por favor.", false);
+            txtImpuesto.requestFocus();
         } else {
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Articulo", "¿Esta seguro de continuar?", true);
             if (confirmation == 1) {
@@ -286,9 +281,6 @@ public class FxArticuloProcesoController implements Initializable {
                         : 0);
                 articuloTB.setPresentacion(idPresentacion != 0
                         ? idPresentacion
-                        : 0);
-                articuloTB.setDepartamento(idDepartmento != 0
-                        ? idDepartmento
                         : 0);
 
                 articuloTB.setStockMinimo(Tools.isNumeric(txtStockMinimo.getText())
@@ -321,32 +313,13 @@ public class FxArticuloProcesoController implements Initializable {
                     articuloTB.setUtilidad(0);
                 }
 
-                articuloTB.setPrecioVentaMayoreo(Tools.isNumeric(txtPrecioMayoreo.getText())
-                        ? Double.parseDouble(txtPrecioMayoreo.getText())
-                        : 0);
-
-                if (articuloTB.getPrecioCompra() > 0) {
-                    Double porcentajeMayoreo = (articuloTB.getPrecioVentaMayoreo() * 100) / articuloTB.getPrecioCompra();
-                    int recalculadoMayoreo = (int) Math.abs((100
-                            - (Double.parseDouble(
-                                    Tools.roundingValue(Double.parseDouble(
-                                            Tools.roundingValue(porcentajeMayoreo, 2)), 0)))));
-
-                    articuloTB.setMargenMayoreo((short) recalculadoMayoreo);
-                    articuloTB.setUtilidadMayoreo(articuloTB.getPrecioVentaMayoreo() - articuloTB.getPrecioCompra());
-
-                } else {
-                    articuloTB.setMargenMayoreo((short) 0);
-                    articuloTB.setUtilidadMayoreo(0);
-
-                }
-
                 articuloTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
                         ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get()
                         : 0);
                 articuloTB.setUnidadVenta(rbUnidad.isSelected() ? 1 : 2);
                 articuloTB.setLote(cbLote.isSelected());
                 articuloTB.setInventario(cbInventario.isSelected());
+                articuloTB.setImpuestoArticulo(idImpuesto != 0 ? idImpuesto : 0);
 
                 String result = ArticuloADO.CrudArticulo(articuloTB);
                 switch (result) {
@@ -357,7 +330,7 @@ public class FxArticuloProcesoController implements Initializable {
                     case "updated":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Actualizado correctamente el artículo.", false);
                         Tools.Dispose(window);
-                        articulosController.getTxtSearch().requestFocus();                        
+                        articulosController.getTxtSearch().requestFocus();
                         break;
                     case "duplicate":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puede haber 2 artículos con la misma clave.", false);
@@ -498,16 +471,6 @@ public class FxArticuloProcesoController implements Initializable {
         }
     }
 
-    @FXML
-    private void onKeyTypedPrecioVentaMayoreo(KeyEvent event) {
-        char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
-            event.consume();
-        }
-        if (c == '.' && txtPrecioMayoreo.getText().contains(".") || c == '-' && txtPrecioMayoreo.getText().contains("-")) {
-            event.consume();
-        }
-    }
 
     @FXML
     private void onKeyTypedDetalle(KeyEvent event) {
@@ -595,28 +558,6 @@ public class FxArticuloProcesoController implements Initializable {
     }
 
     @FXML
-    private void onMouseClickedDepartamento(MouseEvent event) throws IOException {
-        if (event.getClickCount() == 2) {
-            openWindowDetalle("Agregar Departamento", "0014");
-        }
-    }
-
-    @FXML
-    private void onKeyReleasedDepartamento(KeyEvent event) throws IOException {
-        if (event.getCode() == KeyCode.SPACE) {
-            openWindowDetalle("Agregar Departamento", "0014");
-        }
-    }
-
-    @FXML
-    private void onKeyTypedDepartamento(KeyEvent event) {
-        char c = event.getCharacter().charAt(0);
-        if (c != '\b') {
-            event.consume();
-        }
-    }
-
-    @FXML
     private void onMouseClickedMedida(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
             openWindowDetalle("Agregar Departamento", "0013");
@@ -638,6 +579,28 @@ public class FxArticuloProcesoController implements Initializable {
         }
     }
 
+    @FXML
+    private void onMouseClickedImpuesto(MouseEvent event) throws IOException {
+        if (event.getClickCount() == 2) {
+            openWindowDetalle("Agregar Departamento", "0010");
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedImpuesto(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.SPACE) {
+            openWindowDetalle("Agregar Departamento", "0010");
+        }
+    }
+
+    @FXML
+    private void onKeyTypedImpuesto(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if (c != '\b') {
+            event.consume();
+        }
+    }
+
     public void setIdPresentacion(int idPresentacion) {
         this.idPresentacion = idPresentacion;
     }
@@ -650,12 +613,13 @@ public class FxArticuloProcesoController implements Initializable {
         this.idMarca = idMarca;
     }
 
-    public void setIdDepartmento(int idDepartmento) {
-        this.idDepartmento = idDepartmento;
-    }
 
     public void setIdMedida(int idMedida) {
         this.idMedida = idMedida;
+    }
+
+    public void setIdImpuesto(int idImpuesto) {
+        this.idImpuesto = idImpuesto;
     }
 
     public TextField getTxtPresentacion() {
@@ -674,12 +638,12 @@ public class FxArticuloProcesoController implements Initializable {
         return txtClave;
     }
 
-    public TextField getTxtDepartamento() {
-        return txtDepartamento;
-    }
-
     public TextField getTxtMedida() {
         return txtMedida;
+    }
+
+    public TextField getTxtImpuesto() {
+        return txtImpuesto;
     }
 
     public void initControllerArticulos(FxArticulosController articulosController) {

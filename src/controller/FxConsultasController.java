@@ -79,8 +79,7 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
-        content.getChildren().add(node);
-        controller.fillVentasTable("");
+        content.getChildren().add(node);     
     }
 
     private void openWindowInvetario() throws IOException {

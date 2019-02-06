@@ -112,6 +112,20 @@ public class FxConfiguracionController implements Initializable {
         controller.fillTabletTipoDocumento();
     }
 
+    private void openWindowTex() throws IOException {
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_IMPUESTO));
+        VBox node = fXMLPrincipal.load();
+        FxImpuestoController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        content.getChildren().add(node);
+        controller.fillTabletTax();
+    }
+
     @FXML
     private void onKeyPressedTablasBasicas(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
@@ -183,6 +197,18 @@ public class FxConfiguracionController implements Initializable {
     @FXML
     private void onActionVoucher(ActionEvent event) throws IOException {
         openWindowVoucher();
+    }
+
+    @FXML
+    private void onKeyPressedTax(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowTex();
+        }
+    }
+
+    @FXML
+    private void onActionTax(ActionEvent event) throws IOException {
+        openWindowTex();
     }
 
     public void setContent(AnchorPane windowinit, AnchorPane content) {
