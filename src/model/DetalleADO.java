@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -178,5 +179,39 @@ public class DetalleADO {
         }
         return empList;
     }
+    
+    public static ObservableList<DetalleTB> GetDetailNameImpuesto(){
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ObservableList<DetalleTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement("select IdImpuesto,Nombre from ImpuestoTB");
+            resultSet = preparedStatement.executeQuery();
 
+            while (resultSet.next()) {
+                DetalleTB detalleTB = new DetalleTB();
+                detalleTB.setIdDetalle(resultSet.getInt("IdImpuesto"));
+                detalleTB.setNombre(resultSet.getString("Nombre"));
+                empList.add(detalleTB);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+        
+    }
 }

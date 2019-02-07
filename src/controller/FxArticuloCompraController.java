@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -44,6 +45,8 @@ public class FxArticuloCompraController implements Initializable {
     private TextField txtMargen;
     @FXML
     private ComboBox<ImpuestoTB> cbImpuesto;
+    @FXML
+    private RadioButton rbPorcentaje;
 
     private FxComprasController comprasController;
 
@@ -64,6 +67,8 @@ public class FxArticuloCompraController implements Initializable {
     private ObservableList<LoteTB> loteTBs;
 
     private double cantidadinicial;
+    
+    private double impuesto;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -83,16 +88,6 @@ public class FxArticuloCompraController implements Initializable {
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
             this.cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
         });
-
-        if (!cbImpuesto.getItems().isEmpty()) {
-            for (int i = 0; i < cbImpuesto.getItems().size(); i++) {
-                if (cbImpuesto.getItems().get(i).getPredeterminado() == true) {
-                    cbImpuesto.getSelectionModel().select(i);
-                    Session.DEFAULT_IMPUESTO = i;
-                    break;
-                }
-            }
-        }
     }
 
     private void openWindowLote(ArticuloTB articuloTB) throws IOException {
@@ -124,7 +119,16 @@ public class FxArticuloCompraController implements Initializable {
         lblClave.setText(value[1]);
         lblDescripcion.setText(value[2]);
         unidadventa = Integer.parseInt(value[3]);
-        txtCosto.setText(""+Double.parseDouble(value[4])); 
+        txtCosto.setText("" + Double.parseDouble(value[4]));
+        int impuesto = Integer.parseInt(value[5]);
+        if (impuesto != 0) {
+            for (int i = 0; i < cbImpuesto.getItems().size(); i++) {
+                if (cbImpuesto.getItems().get(i).getIdImpuesto() == impuesto) {
+                    cbImpuesto.getSelectionModel().select(i);
+                    break;
+                }
+            }
+        }
         validarlote = lote;
         this.lote = lote;
 
@@ -136,14 +140,23 @@ public class FxArticuloCompraController implements Initializable {
         lblDescripcion.setText(articuloTB.getNombreMarca());
         txtCantidad.setText("" + articuloTB.getCantidad());
         unidadventa = articuloTB.getUnidadVenta();
-        txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompraReal(), 2));
+        txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
         txtDescuento.setText(Tools.roundingValue(articuloTB.getDescuento().get(), 2));
 
         txtPrecio.setText(Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
         txtMargen.setText("" + articuloTB.getMargen());
         txtUtilidad.setText(Tools.roundingValue(articuloTB.getUtilidad(), 2));
 
-//        cbImpuesto.setSelected(articuloTB.isImpuesto());
+        int impuesto = articuloTB.getImpuestoArticulo();
+        if (impuesto != 0) {
+            for (int i = 0; i < cbImpuesto.getItems().size(); i++) {
+                if (cbImpuesto.getItems().get(i).getIdImpuesto() == impuesto) {
+                    cbImpuesto.getSelectionModel().select(i);
+                    break;
+                }
+            }
+        }
+
         validationelemnt = true;
         validarlote = articuloTB.isLote();
         lote = articuloTB.isLote();
@@ -153,7 +166,7 @@ public class FxArticuloCompraController implements Initializable {
         cantidadinicial = articuloTB.getCantidad();
     }
 
-    private void addArticulo(double costo, double costoreal) throws IOException {
+    private void addArticulo(double costo) throws IOException {
         ArticuloTB articuloTB = new ArticuloTB();
         articuloTB.setIdArticulo(idArticulo);
         articuloTB.setClave(lblClave.getText());
@@ -161,7 +174,6 @@ public class FxArticuloCompraController implements Initializable {
         articuloTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
         articuloTB.setUnidadVenta(unidadventa);
         articuloTB.setPrecioCompra(costo);
-        articuloTB.setPrecioCompraReal(costoreal);
 
         articuloTB.setDescuento(txtDescuento.getText().isEmpty() ? 0
                 : Double.parseDouble(txtDescuento.getText()) * articuloTB.getCantidad());
@@ -178,6 +190,7 @@ public class FxArticuloCompraController implements Initializable {
         );
 
         articuloTB.setImpuestoArticulo(cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto());
+        articuloTB.setImpuestoArticuloName(cbImpuesto.getSelectionModel().getSelectedItem().getNombre());
         articuloTB.setPrecioVenta(Double.parseDouble(txtPrecio.getText()));
         articuloTB.setMargen(Short.parseShort(txtMargen.getText()));
         articuloTB.setUtilidad(Double.parseDouble(txtUtilidad.getText()));
@@ -231,13 +244,7 @@ public class FxArticuloCompraController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el precio", false);
             txtPrecio.requestFocus();
         } else {
-//            if (cbImpuesto.isSelected()) {
-//                addArticulo(Double.parseDouble(txtCosto.getText()), Double.parseDouble(txtCosto.getText()));
-//            } else {
-//                double igv = Tools.calculateTax(Session.IMPUESTO, Double.parseDouble(txtCosto.getText()));
-//                double precioigv = (Double.parseDouble(txtCosto.getText()) + igv);
-//                addArticulo(precioigv, Double.parseDouble(txtCosto.getText()));
-//            }
+            addArticulo(Double.parseDouble(txtCosto.getText()));
         }
     }
 
@@ -308,6 +315,13 @@ public class FxArticuloCompraController implements Initializable {
 //        if (Tools.isNumeric(txtImporte.getText()) && Tools.isNumeric(txtCantidad.getText())) {
 //            generationPrice();
 //        }
+    }
+
+    @FXML
+    private void onKeyReleasedDescuento(KeyEvent event) {
+        if (Tools.isNumeric(txtDescuento.getText()) && Tools.isNumeric(txtCosto.getText())) {
+            
+        }
     }
 
     @FXML
@@ -387,6 +401,11 @@ public class FxArticuloCompraController implements Initializable {
                     preciocompra));
             txtUtilidad.setText(Tools.roundingValue((Double.parseDouble(txtPrecio.getText()) - preciocompra), 2));
         }
+    }
+
+    @FXML
+    private void onActionPorcentaje(ActionEvent event) {
+        rbPorcentaje.setText(rbPorcentaje.isSelected() ? "Por porcentaje %" : "Por costo");
     }
 
     public void setValidarlote(boolean validarlote) {

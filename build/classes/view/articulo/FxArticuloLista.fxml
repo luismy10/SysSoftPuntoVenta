@@ -60,7 +60,7 @@
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="61.0" style="-fx-alignment: CENTER;" text="N°" />
                               <TableColumn fx:id="tcArticulo" prefWidth="344.0" text="Clave/Descripción" />
-                              <TableColumn fx:id="tcMarca" prefWidth="158.0" text="Marca" />
+                              <TableColumn fx:id="tcMarca" prefWidth="158.0" style="-fx-alignment: CENTER-LEFT;" text="Marca" />
                               <TableColumn fx:id="tcExistencias" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Existencias" />
                               <TableColumn fx:id="tcPrecio" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Precio" />
                               <TableColumn fx:id="tcUnidadVenta" prefWidth="110.0" style="-fx-alignment: CENTER-LEFT;" text="Medida" />

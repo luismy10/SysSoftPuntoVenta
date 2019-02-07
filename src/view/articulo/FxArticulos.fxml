@@ -137,7 +137,6 @@
                                     <TableColumn fx:id="tcUnidadVenta" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Medida" />
                                     <TableColumn fx:id="tcCategoria" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Categoría" />
                                     <TableColumn fx:id="tcEstado" prefWidth="90.0" style="-fx-alignment: CENTER;" text="Estado" />
-                                    <TableColumn fx:id="tcEstado1" prefWidth="90.0" style="-fx-alignment: CENTER;" text="Impuesto" />
                                  </columns>
                               </TableView>
                            </children>

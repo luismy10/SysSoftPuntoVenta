@@ -480,7 +480,7 @@ public class FxArticuloProcesoController implements Initializable {
         }
     }
 
-    private void openWindowDetalle(String title, String idDetalle) throws IOException {
+    private void openWindowDetalle(String title, String idDetalle, boolean valor) throws IOException {
         URL url = getClass().getResource(Tools.FX_FILE_DETALLELISTA);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
@@ -492,7 +492,14 @@ public class FxArticuloProcesoController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.show();
-        controller.initListDetalle(idDetalle, "");
+        
+        if(valor == true){
+            controller.initListNameImpuesto(idDetalle);    
+        }
+        else{
+            controller.initListDetalle(idDetalle, "");
+        }
+        
     }
 
     private void openWindowGerarCodigoBarras() throws IOException {
@@ -513,42 +520,42 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private void onKeyReleasedCategoria(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.SPACE) {
-            openWindowDetalle("Agregar Categoría", "0006");
+            openWindowDetalle("Agregar Categoría", "0006", false);
         }
     }
 
     @FXML
     private void onKeyReleasedMarca(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.SPACE) {
-            openWindowDetalle("Agregar Marca", "0007");
+            openWindowDetalle("Agregar Marca", "0007", false);
         }
     }
 
     @FXML
     private void onKeyReleasedPresentacion(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.SPACE) {
-            openWindowDetalle("Agregar Presentación", "0008");
+            openWindowDetalle("Agregar Presentación", "0008", false);
         }
     }
 
     @FXML
     private void onMouseClickedCategoria(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
-            openWindowDetalle("Agregar Categoría", "0006");
+            openWindowDetalle("Agregar Categoría", "0006", false);
         }
     }
 
     @FXML
     private void onMouseClickedMarca(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
-            openWindowDetalle("Agregar Marca", "0007");
+            openWindowDetalle("Agregar Marca", "0007", false);
         }
     }
 
     @FXML
     private void onMouseClickedPresentacion(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
-            openWindowDetalle("Agregar Presentación", "0008");
+            openWindowDetalle("Agregar Presentación", "0008", false);
         }
     }
 
@@ -560,14 +567,14 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private void onMouseClickedMedida(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
-            openWindowDetalle("Agregar Departamento", "0013");
+            openWindowDetalle("Agregar Departamento", "0013", false);
         }
     }
 
     @FXML
     private void onKeyReleasedMedida(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.SPACE) {
-            openWindowDetalle("Agregar Departamento", "0013");
+            openWindowDetalle("Agregar Departamento", "0013", false);
         }
     }
 
@@ -582,14 +589,14 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private void onMouseClickedImpuesto(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
-            openWindowDetalle("Agregar Departamento", "0010");
+            openWindowDetalle("Agregar Impuestoto", "0",true);
         }
     }
 
     @FXML
     private void onKeyReleasedImpuesto(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.SPACE) {
-            openWindowDetalle("Agregar Departamento", "0010");
+            openWindowDetalle("Agregar Impuesto", "0",true);
         }
     }
 

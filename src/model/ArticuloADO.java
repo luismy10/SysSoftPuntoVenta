@@ -96,7 +96,7 @@ public class ArticuloADO {
                             + "Inventario,"
                             + "Imagen,"
                             + "Impuesto)"
-                            + "values(?,?,?,UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,0,?,?,?,?,?,?,?)");
+                            + "values(?,?,?,UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                     preparedArticulo.setString(1, idArticulo);
                     preparedArticulo.setString(2, articuloTB.getClave());
                     preparedArticulo.setString(3, articuloTB.getClaveAlterna());
@@ -110,15 +110,17 @@ public class ArticuloADO {
                     preparedArticulo.setDouble(11, articuloTB.getPrecioCompra());
                     preparedArticulo.setDouble(12, articuloTB.getPrecioVenta());
                     preparedArticulo.setShort(13, articuloTB.getMargen());
-                    preparedArticulo.setDouble(14, articuloTB.getUtilidad());      
-                    preparedArticulo.setInt(15, articuloTB.getUnidadMedida());
-                    preparedArticulo.setInt(16, articuloTB.getUnidadVenta());                    
-                    preparedArticulo.setInt(17, articuloTB.getEstado());
-                    preparedArticulo.setBoolean(18, articuloTB.isLote());
-                    preparedArticulo.setBoolean(19, articuloTB.isInventario());
+                    preparedArticulo.setDouble(14, articuloTB.getUtilidad());
+                    preparedArticulo.setDouble(15, 0);
+                    preparedArticulo.setDouble(16, articuloTB.getCantidadGranel());
+                    preparedArticulo.setInt(17, articuloTB.getUnidadMedida());
+                    preparedArticulo.setInt(18, articuloTB.getUnidadVenta());                    
+                    preparedArticulo.setInt(19, articuloTB.getEstado());
+                    preparedArticulo.setBoolean(20, articuloTB.isLote());
+                    preparedArticulo.setBoolean(21, articuloTB.isInventario());
 //                    preparedArticulo.setBinaryStream(24, articuloTB.getImagenTB().getFile());
-                    preparedArticulo.setString(20, articuloTB.getImagenTB());
-                    preparedArticulo.setInt(21, articuloTB.getImpuestoArticulo());
+                    preparedArticulo.setString(22, articuloTB.getImagenTB());
+                    preparedArticulo.setInt(23, articuloTB.getImpuestoArticulo());
                     preparedArticulo.addBatch();
 
                     preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("insert into HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
@@ -329,6 +331,7 @@ public class ArticuloADO {
                 articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 articuloTB.setInventario(rsEmps.getBoolean("Inventario"));
+                articuloTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {

@@ -18,6 +18,10 @@ public class DetalleTB implements Serializable {
     public DetalleTB() {
     }
 
+    public DetalleTB(SimpleStringProperty nombre){
+        this.nombre = nombre;
+    }
+    
     public DetalleTB(SimpleIntegerProperty idDetalle, SimpleStringProperty nombre) {
         this.idDetalle = idDetalle;
         this.nombre = nombre;

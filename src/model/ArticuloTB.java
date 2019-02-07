@@ -33,7 +33,6 @@ public class ArticuloTB {
     private double cantidad;
     private double cantidadGranel;
     private double precioCompra;
-    private double precioCompraReal;
 
     private double precioVenta;
     private short margen;
@@ -243,14 +242,6 @@ public class ArticuloTB {
 
     public void setPrecioCompra(double precioCompra) {
         this.precioCompra = precioCompra;
-    }
-
-    public double getPrecioCompraReal() {
-        return precioCompraReal;
-    }
-
-    public void setPrecioCompraReal(double precioCompraReal) {
-        this.precioCompraReal = precioCompraReal;
     }
 
     public double getPrecioVenta() {

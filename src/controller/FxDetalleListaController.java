@@ -29,6 +29,8 @@ public class FxDetalleListaController implements Initializable {
     private ListView<DetalleTB> lvList;
 
     private String idMantenimiento;
+    
+    private boolean esVerdadero;
 
     private FxArticuloProcesoController procesoController;
 
@@ -43,6 +45,14 @@ public class FxDetalleListaController implements Initializable {
         lvList.getItems().clear();
         DetalleADO.GetDetailIdName("4", idMantenimiento, nombre).forEach(e -> {
             lvList.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
+    }
+    
+    public void initListNameImpuesto(String idDetalle){
+        this.idMantenimiento = idDetalle;
+        this.lvList.getItems().clear();
+        DetalleADO.GetDetailNameImpuesto().forEach(e ->{
+            this.lvList.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
     }
 
@@ -141,7 +151,13 @@ public class FxDetalleListaController implements Initializable {
                     procesoController.setIdMedida(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
                     procesoController.getTxtMedida().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
                     Tools.Dispose(window);
-                } else if (idMantenimiento.equalsIgnoreCase("0010")) {
+                } 
+//                else if (idMantenimiento.equalsIgnoreCase("0010")) {
+//                    procesoController.setIdImpuesto(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
+//                    procesoController.getTxtImpuesto().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+//                    Tools.Dispose(window);
+//                }
+                else if (idMantenimiento.equalsIgnoreCase("0")) {
                     procesoController.setIdImpuesto(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
                     procesoController.getTxtImpuesto().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
                     Tools.Dispose(window);

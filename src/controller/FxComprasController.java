@@ -65,35 +65,30 @@ public class FxComprasController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcDescuento;
     @FXML
+    private TableColumn<ArticuloTB, String> tcImpuesto;
+    @FXML
     private TableColumn<ArticuloTB, String> tcImporte;
     @FXML
     private Text lblSubTotal;
     @FXML
     private Text lblDescuento;
-    @FXML
-    private Text lblGravada;
-    @FXML
-    private Text lblIgv;
+//    private Text lblGravada;
+//    private Text lblIgv;
     @FXML
     private Text lblTotal;
-    @FXML
-    private Button btnArticulo;
+
     @FXML
     private Text lblMonedaSubTotal;
     @FXML
     private Text lblMonedaDescuento;
-    @FXML
-    private Text lblMonedaGravada;
-    @FXML
-    private Text lblMonedaIgv;
+//    private Text lblMonedaGravada;
+//    private Text lblMonedaIgv;
     @FXML
     private Text lblMonedaTotal;
     @FXML
+    private Button btnArticulo;
+    @FXML
     private ComboBox<MonedaTB> cbMoneda;
-    @FXML
-    private Text lblMonedaInafectada;
-    @FXML
-    private Text lblInafectada;
 
     private AnchorPane content;
 
@@ -112,7 +107,7 @@ public class FxComprasController implements Initializable {
         idProveedor = idRepresentante = "";
         loteTBs = FXCollections.observableArrayList();
         Tools.actualDate(Tools.getDate(), tpFechaCompra);
-        
+
         cbComprobante.getItems().clear();
         TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
             cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado()));
@@ -126,7 +121,7 @@ public class FxComprasController implements Initializable {
                 }
             }
         }
-        
+
         cbMoneda.getItems().clear();
         MonedaADO.GetMonedasCombBox().forEach(e -> {
             cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getPredeterminado()));
@@ -141,7 +136,7 @@ public class FxComprasController implements Initializable {
                 }
             }
         }
-        
+
         cbRepresentante.setConverter(new javafx.util.StringConverter<RepresentanteTB>() {
             @Override
             public String toString(RepresentanteTB object) {
@@ -156,8 +151,8 @@ public class FxComprasController implements Initializable {
         initTable();
         lblMonedaSubTotal.setText(Session.MONEDA);
         lblMonedaDescuento.setText(Session.MONEDA);
-        lblMonedaGravada.setText(Session.MONEDA);
-        lblMonedaIgv.setText(Session.MONEDA);
+//        lblMonedaGravada.setText(Session.MONEDA);
+//        lblMonedaIgv.setText(Session.MONEDA);
         lblMonedaTotal.setText(Session.MONEDA);
     }
 
@@ -171,6 +166,7 @@ public class FxComprasController implements Initializable {
                 Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getDescuento().get(), 2)));
+        tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getImpuestoArticuloName()));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getImporte().get(), 2)));
     }
@@ -210,8 +206,8 @@ public class FxComprasController implements Initializable {
             compraTB.setFechaRegistro(Timestamp.valueOf(Tools.getDatePicker(tpFechaCompra) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
             compraTB.setSubTotal(Double.parseDouble(lblSubTotal.getText()));
             compraTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
-            compraTB.setGravada(Double.parseDouble(lblGravada.getText()));
-            compraTB.setIgv(Double.parseDouble(lblIgv.getText()));
+//            compraTB.setGravada(Double.parseDouble(lblGravada.getText()));
+//            compraTB.setIgv(Double.parseDouble(lblIgv.getText()));
             compraTB.setTotal(Double.parseDouble(lblTotal.getText()));
             String result = CompraADO.CrudCompra(compraTB, tvList, loteTBs);
             if (result.equalsIgnoreCase("register")) {
@@ -226,8 +222,8 @@ public class FxComprasController implements Initializable {
                 initTable();
                 lblSubTotal.setText("0.00");
                 lblDescuento.setText("0.00");
-                lblGravada.setText("0.00");
-                lblIgv.setText("0.00");
+//                lblGravada.setText("0.00");
+//                lblIgv.setText("0.00");
                 lblTotal.setText("0.00");
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Compras", result, false);
@@ -278,13 +274,12 @@ public class FxComprasController implements Initializable {
                     articuloTB.setCantidad(e.getCantidad());
                     articuloTB.setCantidadGranel(e.getCantidadGranel());
                     articuloTB.setPrecioCompra(e.getPrecioCompra());
-                    articuloTB.setPrecioCompraReal(e.getPrecioCompraReal());
                     articuloTB.setPrecioVenta(e.getPrecioVenta());
                     articuloTB.setMargen(e.getMargen());
-                    articuloTB.setUtilidad(e.getUtilidad());                    
+                    articuloTB.setUtilidad(e.getUtilidad());
                     articuloTB.setDescuento(e.getDescuento().get());
                     articuloTB.setImporte(e.getImporte().get());
-                    articuloTB.setImpuesto(e.isImpuesto());
+                    articuloTB.setImpuestoArticulo(e.getImpuestoArticulo());
                     articuloTB.setLote(e.isLote());
                     articuloTB.setUnidadVenta(e.getUnidadVenta());
                     controller.setLoadEdit(articuloTB, tvList.getSelectionModel().getSelectedIndex(), loteTBs);
@@ -450,10 +445,10 @@ public class FxComprasController implements Initializable {
         lblTotal.setText(Tools.roundingValue(total, 2));
 
         double gravada = Tools.calculateValueNeto(Session.IMPUESTO, total);
-        lblGravada.setText(Tools.roundingValue(gravada, 2));
+//        lblGravada.setText(Tools.roundingValue(gravada, 2));
 
         double impuesto = Tools.calculateTax(Session.IMPUESTO, gravada);
-        lblIgv.setText(Tools.roundingValue(impuesto, 2));
+//        lblIgv.setText(Tools.roundingValue(impuesto, 2));
 
     }
 
