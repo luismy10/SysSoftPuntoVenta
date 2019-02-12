@@ -62,11 +62,11 @@ public class CompraADO {
                 detalle_compra.setString(2, tableView.getItems().get(i).getIdArticulo());
                 detalle_compra.setDouble(3, tableView.getItems().get(i).getCantidad());
                 detalle_compra.setDouble(4, tableView.getItems().get(i).getPrecioCompra());
-                detalle_compra.setDouble(5, tableView.getItems().get(i).getDescuento().get());
+                detalle_compra.setDouble(5, tableView.getItems().get(i).getDescuento());
                 detalle_compra.setDouble(6, tableView.getItems().get(i).getPrecioVenta());
                 detalle_compra.setShort(7, tableView.getItems().get(i).getMargen());
                 detalle_compra.setDouble(8, tableView.getItems().get(i).getUtilidad());            
-                detalle_compra.setDouble(9, tableView.getItems().get(i).getImporte().get());
+                detalle_compra.setDouble(9, tableView.getItems().get(i).getTotalImporte());
                 detalle_compra.addBatch();
 
                 articulo_update.setDouble(1, tableView.getItems().get(i).getPrecioCompra());
@@ -245,7 +245,7 @@ public class CompraADO {
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
                 articuloTB.setDescuento(rsEmps.getDouble("Descuento"));
-                articuloTB.setImporte(rsEmps.getDouble("Importe"));
+                articuloTB.setTotalImporte(rsEmps.getDouble("Importe"));
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {

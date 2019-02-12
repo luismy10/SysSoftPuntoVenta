@@ -99,13 +99,13 @@ public class VentaADO {
                 detalle_venta.setString(2, tvList.getItems().get(i).getIdArticulo());
                 detalle_venta.setDouble(3, tvList.getItems().get(i).getCantidad());
                 detalle_venta.setDouble(4, tvList.getItems().get(i).getPrecioVenta());
-                detalle_venta.setDouble(5, tvList.getItems().get(i).getDescuento().get());
-                detalle_venta.setDouble(6, tvList.getItems().get(i).getImporte().get());
+                detalle_venta.setDouble(5, tvList.getItems().get(i).getDescuento());
+                detalle_venta.setDouble(6, tvList.getItems().get(i).getTotalImporte());
                 detalle_venta.addBatch();
 
                 if (tvList.getItems().get(i).isInventario()) {
                     articulo_update.setDouble(1, tvList.getItems().get(i).getCantidad());
-                    articulo_update.setDouble(2, tvList.getItems().get(i).getImporte().get());
+                    articulo_update.setDouble(2, tvList.getItems().get(i).getTotalImporte());
                     articulo_update.setString(3, tvList.getItems().get(i).getIdArticulo());
                     articulo_update.addBatch();
 
@@ -114,7 +114,7 @@ public class VentaADO {
                     preparedHistorialArticulo.setDouble(3, 0);
                     preparedHistorialArticulo.setDouble(4, tvList.getItems().get(i).getUnidadVenta() == 1
                             ? tvList.getItems().get(i).getCantidad()
-                            : tvList.getItems().get(i).getImporte().get()
+                            : tvList.getItems().get(i).getTotalImporte()
                     );
                     preparedHistorialArticulo.setDouble(5, 0);
                     preparedHistorialArticulo.setString(6, Session.USER_ID);
@@ -126,7 +126,7 @@ public class VentaADO {
                     preparedHistorialArticulo.setDouble(3, 0);
                     preparedHistorialArticulo.setDouble(4, tvList.getItems().get(i).getUnidadVenta() == 1
                             ? tvList.getItems().get(i).getCantidad()
-                            : tvList.getItems().get(i).getImporte().get()
+                            : tvList.getItems().get(i).getTotalImporte()
                     );
                     preparedHistorialArticulo.setDouble(5, 0);
                     preparedHistorialArticulo.setString(6, Session.USER_ID);

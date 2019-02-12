@@ -88,7 +88,7 @@ public class BillPrintable implements Printable {
                         ? (tvList.getItems().get(i).getCantidad() + " " + tvList.getItems().get(i).getNombreMarca()).substring(0, 25)
                         : (tvList.getItems().get(i).getCantidad() + " " + tvList.getItems().get(i).getNombreMarca()),
                         0, y);
-                g2d.drawString(getText(tvList.getItems().get(i).getImporte().get()), rightText(width, metrics, getText(tvList.getItems().get(i).getImporte().get())), y);
+                g2d.drawString(getText(tvList.getItems().get(i).getTotalImporte()), rightText(width, metrics, getText(tvList.getItems().get(i).getTotalImporte())), y);
             }
 
             y += yShift;

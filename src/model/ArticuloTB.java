@@ -2,7 +2,6 @@ package model;
 
 import java.time.LocalDate;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -33,7 +32,8 @@ public class ArticuloTB {
     private double cantidad;
     private double cantidadGranel;
     private double precioCompra;
-
+    private double precioCompraReal;
+    
     private double precioVenta;
     private short margen;
     private double utilidad;
@@ -42,9 +42,11 @@ public class ArticuloTB {
     private boolean inventario;
     private ImageView imageLote;
     private SimpleStringProperty estadoName;
-    private SimpleDoubleProperty descuento;
-    private SimpleDoubleProperty subTotal;
-    private SimpleDoubleProperty importe;   
+    private double descuento;
+    private double descuentoSumado;
+    private Boolean descuentoEstado;
+    private double subImporte;
+    private double totalImporte;   
     private String imagenTB;
     private ObjectProperty<LocalDate> fechaRegistro;
     
@@ -244,6 +246,14 @@ public class ArticuloTB {
         this.precioCompra = precioCompra;
     }
 
+    public double getPrecioCompraReal() {
+        return precioCompraReal;
+    }
+
+    public void setPrecioCompraReal(double precioCompraReal) {
+        this.precioCompraReal = precioCompraReal;
+    }
+
     public double getPrecioVenta() {
         return precioVenta;
     }
@@ -268,29 +278,31 @@ public class ArticuloTB {
         this.cantidadGranel = cantidadGranel;
     }
 
-    public SimpleDoubleProperty getDescuento() {
+    public double getDescuento() {
         return descuento;
     }
 
     public void setDescuento(double descuento) {
-        this.descuento = new SimpleDoubleProperty(descuento);
+        this.descuento = descuento;
     }
 
-    public SimpleDoubleProperty getImporte() {
-        return importe;
+    public double getSubImporte() {
+        return subImporte;
     }
 
-    public void setImporte(double importe) {
-        this.importe = new SimpleDoubleProperty(importe);
+    public void setSubImporte(double subImporte) {
+        this.subImporte = subImporte;
     }
 
-    public SimpleDoubleProperty getSubTotal() {
-        return subTotal;
+    public double getTotalImporte() {
+        return totalImporte;
     }
 
-    public void setSubTotal(double subTotal) {
-        this.subTotal = new SimpleDoubleProperty(subTotal);
+    public void setTotalImporte(double totalImporte) {
+        this.totalImporte = totalImporte;
     }
+
+    
 
     public double getUtilidad() {
         return utilidad;
@@ -363,7 +375,21 @@ public class ArticuloTB {
     public void setImpuestoArticuloName(String impuestoArticuloName) {
         this.impuestoArticuloName = impuestoArticuloName;
     }
-    
-    
+
+    public Boolean getDescuentoEstado() {
+        return descuentoEstado;
+    }
+
+    public void setDescuentoEstado(Boolean descuentoEstado) {
+        this.descuentoEstado = descuentoEstado;
+    }
+
+    public double getDescuentoSumado() {
+        return descuentoSumado;
+    }
+
+    public void setDescuentoSumado(double descuentoSumado) {
+        this.descuentoSumado = descuentoSumado;
+    }
 
 }

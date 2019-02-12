@@ -67,8 +67,6 @@ public class FxArticuloCompraController implements Initializable {
     private ObservableList<LoteTB> loteTBs;
 
     private double cantidadinicial;
-    
-    private double impuesto;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -131,7 +129,6 @@ public class FxArticuloCompraController implements Initializable {
         }
         validarlote = lote;
         this.lote = lote;
-
     }
 
     public void setLoadEdit(ArticuloTB articuloTB, int index, ObservableList<LoteTB> loteTBs) {
@@ -140,8 +137,11 @@ public class FxArticuloCompraController implements Initializable {
         lblDescripcion.setText(articuloTB.getNombreMarca());
         txtCantidad.setText("" + articuloTB.getCantidad());
         unidadventa = articuloTB.getUnidadVenta();
-        txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
-        txtDescuento.setText(Tools.roundingValue(articuloTB.getDescuento().get(), 2));
+        txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompraReal(), 2));
+        rbPorcentaje.setSelected(articuloTB.getDescuentoEstado());
+        txtDescuento.setText(articuloTB.getDescuentoEstado()
+                ? Tools.roundingValue(articuloTB.getDescuento(), 0)
+                : Tools.roundingValue(articuloTB.getDescuento(), 2));
 
         txtPrecio.setText(Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
         txtMargen.setText("" + articuloTB.getMargen());
@@ -156,7 +156,6 @@ public class FxArticuloCompraController implements Initializable {
                 }
             }
         }
-
         validationelemnt = true;
         validarlote = articuloTB.isLote();
         lote = articuloTB.isLote();
@@ -173,17 +172,23 @@ public class FxArticuloCompraController implements Initializable {
         articuloTB.setNombreMarca(lblDescripcion.getText());
         articuloTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
         articuloTB.setUnidadVenta(unidadventa);
-        articuloTB.setPrecioCompra(costo);
+        articuloTB.setDescuentoEstado(rbPorcentaje.isSelected());
+        rbPorcentaje.setText(rbPorcentaje.isSelected() ? "Por porcentaje %" : "Por costo");
+        articuloTB.setDescuento(!Tools.isNumeric(txtDescuento.getText()) ? 0
+                : Double.parseDouble(txtDescuento.getText()));
 
-        articuloTB.setDescuento(txtDescuento.getText().isEmpty() ? 0
-                : Double.parseDouble(txtDescuento.getText()) * articuloTB.getCantidad());
+        double porcentajeDecimal = articuloTB.getDescuento() / 100.00;
+        double porcentajeRestante = costo * porcentajeDecimal;
 
-        articuloTB.setSubTotal(articuloTB.getCantidad() * articuloTB.getPrecioCompra());
+        articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
 
-        articuloTB.setImporte(
-                articuloTB.getSubTotal().get()
-                - articuloTB.getDescuento().get());
-        articuloTB.setCantidadGranel(articuloTB.getImporte().get());
+        articuloTB.setPrecioCompra(costo - porcentajeRestante);
+        articuloTB.setPrecioCompraReal(costo);
+        
+        articuloTB.setSubImporte(articuloTB.getCantidad()*articuloTB.getPrecioCompraReal());
+        articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioCompra());
+
+        articuloTB.setCantidadGranel(articuloTB.getTotalImporte());
 
         articuloTB.setUtilidad(Tools.isNumeric(txtUtilidad.getText())
                 ? Double.parseDouble(txtUtilidad.getText()) : 0
@@ -196,6 +201,8 @@ public class FxArticuloCompraController implements Initializable {
         articuloTB.setUtilidad(Double.parseDouble(txtUtilidad.getText()));
 
         articuloTB.setLote(lote);
+        
+        
         if (validateStock(comprasController.getTvList(), articuloTB) && !validationelemnt) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya existe en la lista el artículo", false);
         } else if (validationelemnt) {
@@ -315,13 +322,6 @@ public class FxArticuloCompraController implements Initializable {
 //        if (Tools.isNumeric(txtImporte.getText()) && Tools.isNumeric(txtCantidad.getText())) {
 //            generationPrice();
 //        }
-    }
-
-    @FXML
-    private void onKeyReleasedDescuento(KeyEvent event) {
-        if (Tools.isNumeric(txtDescuento.getText()) && Tools.isNumeric(txtCosto.getText())) {
-            
-        }
     }
 
     @FXML

@@ -166,6 +166,18 @@
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
+                                          <Label styleClass="labelRoboto14" text="Sub Total" textFill="#1a2226" />
+                                          <HBox spacing="5.0">
+                                             <children>
+                                                <Text fx:id="lblMonedaSubTotalNuevo" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                                <Text fx:id="lblSubTotalNuevo" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <HBox fx:id="hbAgregarImpuesto" style="-fx-spacing: 1.1666666666666667em;" />
+                                    <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                       <children>
                                           <Label styleClass="labelRoboto14" text="Total" textFill="#1a2226" />
                                           <HBox spacing="5.0">
                                              <children>

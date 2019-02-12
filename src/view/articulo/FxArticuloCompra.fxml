@@ -96,7 +96,7 @@
                               <VBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <RadioButton fx:id="rbPorcentaje" mnemonicParsing="false" onAction="#onActionPorcentaje" selected="true" styleClass="labelRoboto14" text="Por porcentaje %" />
-                                    <TextField fx:id="txtDescuento" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedDescuento" onKeyTyped="#onKeyTypedDescuento" VBox.vgrow="ALWAYS" />
+                                    <TextField fx:id="txtDescuento" onAction="#onActionAdd" onKeyTyped="#onKeyTypedDescuento" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>

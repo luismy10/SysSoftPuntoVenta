@@ -107,10 +107,10 @@ public class FxCompraDetalleController implements Initializable {
                 Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
 
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getDescuento().get(), 2)));
+                Tools.roundingValue(cellData.getValue().getDescuento(), 2)));
 
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getImporte().get(), 2)));
+                Tools.roundingValue(cellData.getValue().getTotalImporte(), 2)));
 
     }
 

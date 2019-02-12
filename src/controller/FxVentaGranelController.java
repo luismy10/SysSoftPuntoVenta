@@ -47,11 +47,10 @@ public class FxVentaGranelController implements Initializable {
     @FXML
     private void onActionAceptar(ActionEvent event) {
         if (opcion) {
-            articuloTB.setPrecioVenta(Double.parseDouble(txtImporte.getText()) + articuloTB.getSubTotal().get());
-            articuloTB.setSubTotal(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
-            articuloTB.setImporte(
-                    articuloTB.getSubTotal().get()
-                    - articuloTB.getDescuento().get()
+            articuloTB.setPrecioVenta(Double.parseDouble(txtImporte.getText()) + articuloTB.getTotalImporte());
+            articuloTB.setTotalImporte(
+                    (articuloTB.getCantidad() * articuloTB.getPrecioVenta())
+                    - articuloTB.getDescuento()
             );
             ventaController.getTvList().getItems().set(index, articuloTB);
             ventaController.calculateTotales();
@@ -60,10 +59,9 @@ public class FxVentaGranelController implements Initializable {
             ventaController.getTxtSearch().clear();
         } else {
             articuloTB.setPrecioVenta(Double.parseDouble(txtImporte.getText()));
-            articuloTB.setSubTotal(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
-            articuloTB.setImporte(
-                    articuloTB.getSubTotal().get()
-                    - articuloTB.getDescuento().get()
+            articuloTB.setTotalImporte(
+                    (articuloTB.getCantidad() * articuloTB.getPrecioVenta())
+                    - articuloTB.getDescuento()
             );
             ventaController.getTvList().getItems().set(index, articuloTB);
             ventaController.calculateTotales();

@@ -105,7 +105,7 @@ public class FxVentaDescuentoController implements Initializable {
     
     public void initComponents(ArticuloTB articuloTB, int index) {
         this.articuloTB = articuloTB;
-        txtPrecioVenta.setText(Tools.roundingValue(this.articuloTB.getImporte().get(), 2));
+        txtPrecioVenta.setText(Tools.roundingValue(this.articuloTB.getTotalImporte(), 2));
         this.index = index;
     }
     

@@ -115,7 +115,6 @@ public class FxVentaController implements Initializable {
     private String idCliente;
 
     private String datodCliente;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -221,9 +220,9 @@ public class FxVentaController implements Initializable {
         tcPrecio.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getPrecioVenta(), 2)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getDescuento().get(), 2)));
+                Tools.roundingValue(cellData.getValue().getDescuento(), 2)));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getImporte().get(), 2)));
+                Tools.roundingValue(cellData.getValue().getTotalImporte(), 2)));
     }
 
     private void InitializationTransparentBackground() {
@@ -290,7 +289,7 @@ public class FxVentaController implements Initializable {
             ventaTB.setGravada(Double.parseDouble(lblGravada.getText()));
             ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
             ventaTB.setIgv(Double.parseDouble(lblIgv.getText()));
-            ventaTB.setTotal(Double.parseDouble(lblTotalPagar.getText()));            
+            ventaTB.setTotal(Double.parseDouble(lblTotalPagar.getText()));
 
             controller.setInitComponents(ventaTB, txtCliente.getText(), tvList);
         } else {
@@ -400,10 +399,9 @@ public class FxVentaController implements Initializable {
                     } else {
                         ArticuloTB articuloTB = tvList.getItems().get(i);
                         articuloTB.setCantidad(tvList.getItems().get(i).getCantidad() + 1);
-                        articuloTB.setSubTotal(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
-                        articuloTB.setImporte(
-                                articuloTB.getSubTotal().get()
-                                - articuloTB.getDescuento().get()
+                        articuloTB.setTotalImporte(
+                                (articuloTB.getCantidad() * articuloTB.getPrecioVenta())
+                                - articuloTB.getDescuento()
                         );
                         tvList.getItems().set(i, articuloTB);
                         calculateTotales();
@@ -453,7 +451,7 @@ public class FxVentaController implements Initializable {
         lblExoneradoMoneda.setText(Session.MONEDA);
         lblGravadaMoneda.setText(Session.MONEDA);
         lblIgvMoneda.setText(Session.MONEDA);
-        
+
         lblTotal.setText("0.00");
         lblSubTotal.setText("0.00");
         lblDescuento.setText("0.00");
@@ -528,7 +526,7 @@ public class FxVentaController implements Initializable {
                     p.printTextWrap(count, 1, 0, 40, tvList.getItems().get(i).getNombreMarca());
                     count += 2;
                     p.printTextWrap(count, 0, 0, 40, tvList.getItems().get(i).getCantidad() + " x " + Tools.roundingValue(tvList.getItems().get(i).getPrecioVenta(), 2));
-                    p.printTextWrap(count, 0, 40 - Tools.roundingValue(tvList.getItems().get(i).getImporte().get(), 2).length(), 40, Tools.roundingValue(tvList.getItems().get(i).getImporte().get(), 2));
+                    p.printTextWrap(count, 0, 40 - Tools.roundingValue(tvList.getItems().get(i).getTotalImporte(), 2).length(), 40, Tools.roundingValue(tvList.getItems().get(i).getTotalImporte(), 2));
                     count++;
                 }
                 count++;
@@ -766,11 +764,10 @@ public class FxVentaController implements Initializable {
                     articuloTB.setNombreMarca(e.getNombreMarca());
                     articuloTB.setCantidad(e.getCantidad() + 1);
                     articuloTB.setPrecioVenta(e.getPrecioVenta());
-                    articuloTB.setDescuento(e.getDescuento().get());
-                    articuloTB.setSubTotal(articuloTB.getCantidad() * e.getPrecioVenta());
-                    articuloTB.setImporte(
-                            articuloTB.getSubTotal().get()
-                            - articuloTB.getDescuento().get()
+                    articuloTB.setDescuento(e.getDescuento());
+                    articuloTB.setTotalImporte(
+                            (articuloTB.getCantidad() * e.getPrecioVenta())
+                            - articuloTB.getDescuento()
                     );
                     articuloTB.setInventario(e.isInventario());
                     articuloTB.setUnidadVenta(e.getUnidadVenta());
@@ -794,11 +791,10 @@ public class FxVentaController implements Initializable {
                     if (articuloTB.getCantidad() < 1) {
                         return;
                     }
-                    articuloTB.setDescuento(e.getDescuento().get());
-                    articuloTB.setSubTotal(articuloTB.getCantidad() * e.getPrecioVenta());
-                    articuloTB.setImporte(
-                            articuloTB.getSubTotal().get()
-                            - articuloTB.getDescuento().get()
+                    articuloTB.setDescuento(e.getDescuento());
+                    articuloTB.setTotalImporte(
+                            (articuloTB.getCantidad() * e.getPrecioVenta())
+                            - articuloTB.getDescuento()
                     );
                     articuloTB.setInventario(e.isInventario());
                     articuloTB.setUnidadVenta(e.getUnidadVenta());
@@ -813,12 +809,12 @@ public class FxVentaController implements Initializable {
     public void calculateTotales() {
         double subTotalInterno, descuentoInterno;
 
-        tvList.getItems().forEach(e -> subTotal += e.getSubTotal().get());
+        tvList.getItems().forEach(e -> subTotal += e.getTotalImporte());
         lblSubTotal.setText(Tools.roundingValue(subTotal, 2));
         subTotalInterno = subTotal;
         subTotal = 0;
 
-        tvList.getItems().forEach(e -> descuento += e.getDescuento().get());
+        tvList.getItems().forEach(e -> descuento += e.getDescuento());
         lblDescuento.setText(Tools.roundingValue(descuento, 2));
         descuentoInterno = descuento;
         descuento = 0;
@@ -909,18 +905,17 @@ public class FxVentaController implements Initializable {
                 articuloTB.setCantidad(1);
                 articuloTB.setPrecioVenta(a.getPrecioVenta());
                 articuloTB.setDescuento(0);
-                articuloTB.setSubTotal(1 * a.getPrecioVenta());
-                articuloTB.setImporte(
-                        articuloTB.getSubTotal().get()
-                        - articuloTB.getDescuento().get()
+                articuloTB.setTotalImporte(
+                        (1 * a.getPrecioVenta())
+                        - articuloTB.getDescuento()
                 );
                 articuloTB.setInventario(a.isInventario());
                 articuloTB.setUnidadVenta(a.getUnidadVenta());
                 getAddArticulo(articuloTB);
                 txtSearch.clear();
                 txtSearch.requestFocus();
-            } else {                
-                
+            } else {
+
             }
         }
 
@@ -954,7 +949,6 @@ public class FxVentaController implements Initializable {
 //        pf.setPaper(paper);
 //        return pf;
 //    }
-
     @FXML
     private void onActionComprobante(ActionEvent event) {
 

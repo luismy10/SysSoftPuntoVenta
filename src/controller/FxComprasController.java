@@ -18,12 +18,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -72,6 +74,8 @@ public class FxComprasController implements Initializable {
     private Text lblSubTotal;
     @FXML
     private Text lblDescuento;
+    @FXML
+    private Text lblSubTotalNuevo;
 //    private Text lblGravada;
 //    private Text lblIgv;
     @FXML
@@ -81,6 +85,8 @@ public class FxComprasController implements Initializable {
     private Text lblMonedaSubTotal;
     @FXML
     private Text lblMonedaDescuento;
+    @FXML
+    private Text lblMonedaSubTotalNuevo;
 //    private Text lblMonedaGravada;
 //    private Text lblMonedaIgv;
     @FXML
@@ -89,6 +95,8 @@ public class FxComprasController implements Initializable {
     private Button btnArticulo;
     @FXML
     private ComboBox<MonedaTB> cbMoneda;
+    @FXML
+    private HBox hbAgregarImpuesto;
 
     private AnchorPane content;
 
@@ -96,9 +104,11 @@ public class FxComprasController implements Initializable {
 
     private String idRepresentante;
 
-    private double subTotal;
+    private double subImporte;
 
     private double descuento;
+
+    private double totalImporte;
 
     private ObservableList<LoteTB> loteTBs;
 
@@ -148,12 +158,32 @@ public class FxComprasController implements Initializable {
                 return cbRepresentante.getItems().stream().filter(p -> p.getInformacion().equals(string)).findFirst().orElse(null);
             }
         });
+        
         initTable();
         lblMonedaSubTotal.setText(Session.MONEDA);
+        lblMonedaSubTotalNuevo.setText(Session.MONEDA);
         lblMonedaDescuento.setText(Session.MONEDA);
 //        lblMonedaGravada.setText(Session.MONEDA);
 //        lblMonedaIgv.setText(Session.MONEDA);
         lblMonedaTotal.setText(Session.MONEDA);
+        
+        
+    }
+    
+    public void addElementImpuesto(String titulo,String moneda,String total){
+        Label label = new Label(titulo);
+        label.setStyle("-fx-text-fill:#1a2226;");
+        label.getStyleClass().add("labelRoboto14");
+        
+        Text text = new Text(moneda);
+        text.getStyleClass().add("labelRobotoMedium16");
+        Text text1 = new Text(total);
+        text1.getStyleClass().add("labelRobotoMedium16");       
+        
+        HBox hBox = new HBox(text,text1); 
+        VBox vBox = new VBox(label,hBox);
+        vBox.setStyle("-fx-spacing: 0.8333333333333334em;"); 
+        hbAgregarImpuesto.getChildren().add(vBox);
     }
 
     private void initTable() {
@@ -163,12 +193,25 @@ public class FxComprasController implements Initializable {
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
         tcCosto.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
+                Tools.roundingValue(cellData.getValue().getPrecioCompraReal(), 2)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getDescuento().get(), 2)));
+                cellData.getValue().getDescuentoEstado() ? Tools.roundingValue(cellData.getValue().getDescuento(), 0) + "%"
+                : Tools.roundingValue(cellData.getValue().getDescuento(), 2)
+        ));
         tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getImpuestoArticuloName()));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getImporte().get(), 2)));
+                Tools.roundingValue(cellData.getValue().getTotalImporte(), 2)));
+    }
+
+    public void setInitComprasValue(String... value) {
+        idProveedor = ProveedorADO.GetProveedorId(value[0]);
+        txtProveedor.setText(value[1]);
+        cbRepresentante.getItems().clear();
+        RepresentanteADO.ListRepresentantes_By_Id(idProveedor, "").forEach(e -> {
+            cbRepresentante.getItems().add(new RepresentanteTB(e.getNumeroDocumento(), e.getApellidos() + " "
+                    + e.getNombres()));
+        });
+
     }
 
     private void InitializationTransparentBackground() {
@@ -222,6 +265,7 @@ public class FxComprasController implements Initializable {
                 initTable();
                 lblSubTotal.setText("0.00");
                 lblDescuento.setText("0.00");
+                lblSubTotalNuevo.setText("0.00");
 //                lblGravada.setText("0.00");
 //                lblIgv.setText("0.00");
                 lblTotal.setText("0.00");
@@ -274,11 +318,13 @@ public class FxComprasController implements Initializable {
                     articuloTB.setCantidad(e.getCantidad());
                     articuloTB.setCantidadGranel(e.getCantidadGranel());
                     articuloTB.setPrecioCompra(e.getPrecioCompra());
+                    articuloTB.setPrecioCompraReal(e.getPrecioCompraReal());
                     articuloTB.setPrecioVenta(e.getPrecioVenta());
                     articuloTB.setMargen(e.getMargen());
                     articuloTB.setUtilidad(e.getUtilidad());
-                    articuloTB.setDescuento(e.getDescuento().get());
-                    articuloTB.setImporte(e.getImporte().get());
+                    articuloTB.setDescuentoEstado(e.getDescuentoEstado());
+                    articuloTB.setDescuento(e.getDescuento());
+                    articuloTB.setTotalImporte(e.getTotalImporte());
                     articuloTB.setImpuestoArticulo(e.getImpuestoArticulo());
                     articuloTB.setLote(e.isLote());
                     articuloTB.setUnidadVenta(e.getUnidadVenta());
@@ -395,17 +441,6 @@ public class FxComprasController implements Initializable {
         openWindowProvedores();
     }
 
-    public void setInitComprasValue(String... value) {
-        idProveedor = ProveedorADO.GetProveedorId(value[0]);
-        txtProveedor.setText(value[1]);
-        cbRepresentante.getItems().clear();
-        RepresentanteADO.ListRepresentantes_By_Id(idProveedor, "").forEach(e -> {
-            cbRepresentante.getItems().add(new RepresentanteTB(e.getNumeroDocumento(), e.getApellidos() + " "
-                    + e.getNombres()));
-        });
-
-    }
-
     @FXML
     private void onKeyTypedNumeracion(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
@@ -422,34 +457,39 @@ public class FxComprasController implements Initializable {
         }
 
     }
-
-    public TableView<ArticuloTB> getTvList() {
-        return tvList;
-    }
-
+    
     public void setCalculateTotals() {
 
         double subTotalInterno, descuentoInterno;
 
-        tvList.getItems().forEach(e -> subTotal += e.getSubTotal().get());
-        lblSubTotal.setText(Tools.roundingValue(subTotal, 2));
-        subTotalInterno = subTotal;
-        subTotal = 0;
+        tvList.getItems().forEach(e -> subImporte += e.getSubImporte());
+        lblSubTotal.setText(Tools.roundingValue(subImporte, 2));
+        subImporte = 0;
 
-        tvList.getItems().forEach(e -> descuento += e.getDescuento().get());
-        lblDescuento.setText(Tools.roundingValue(descuento, 2));
-        descuentoInterno = descuento;
+        tvList.getItems().forEach(e -> descuento += e.getDescuentoSumado());
+        lblDescuento.setText((Tools.roundingValue(descuento * (-1), 2)));
         descuento = 0;
 
-        double total = subTotalInterno - descuentoInterno;
-        lblTotal.setText(Tools.roundingValue(total, 2));
+        tvList.getItems().forEach(e -> totalImporte += e.getTotalImporte());
+        lblSubTotalNuevo.setText(Tools.roundingValue(totalImporte, 2));
+//        subTotalInterno = subTotal;
+        totalImporte = 0;
 
-        double gravada = Tools.calculateValueNeto(Session.IMPUESTO, total);
+//        tvList.getItems().forEach(e -> descuento += e.getDescuento().get());
+//        lblDescuento.setText(Tools.roundingValue(descuento, 2));
+//        descuentoInterno = descuento;
+//        descuento = 0;
+//        double total = subTotalInterno - descuentoInterno;
+//        lblTotal.setText(Tools.roundingValue(total, 2));
+//        double gravada = Tools.calculateValueNeto(Session.IMPUESTO, total);
 //        lblGravada.setText(Tools.roundingValue(gravada, 2));
-
-        double impuesto = Tools.calculateTax(Session.IMPUESTO, gravada);
+//        double impuesto = Tools.calculateTax(Session.IMPUESTO, gravada);
 //        lblIgv.setText(Tools.roundingValue(impuesto, 2));
+    }
 
+
+    public TableView<ArticuloTB> getTvList() {
+        return tvList;
     }
 
     public ObservableList<LoteTB> getLoteTBs() {
