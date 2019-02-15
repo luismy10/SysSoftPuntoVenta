@@ -52,6 +52,8 @@ public class ArticuloTB {
     
     private int impuestoArticulo;
     private String impuestoArticuloName;
+    private double impuestoValor;
+    private double impuestoSumado;
 
     public ArticuloTB() {
 
@@ -77,6 +79,14 @@ public class ArticuloTB {
         this.claveAlterna = claveAlterna;
         this.nombreMarca = nombreMarca;
     }
+
+    public ArticuloTB(int impuestoArticulo, String impuestoArticuloName, double impuestoSumado) {
+        this.impuestoArticulo = impuestoArticulo;
+        this.impuestoArticuloName = impuestoArticuloName;
+        this.impuestoSumado = impuestoSumado;
+    }
+    
+    
 
     public SimpleIntegerProperty getId() {
         return id;
@@ -374,6 +384,22 @@ public class ArticuloTB {
 
     public void setImpuestoArticuloName(String impuestoArticuloName) {
         this.impuestoArticuloName = impuestoArticuloName;
+    }
+
+    public double getImpuestoValor() {
+        return impuestoValor;
+    }
+
+    public void setImpuestoValor(double impuestoValor) {
+        this.impuestoValor = impuestoValor;
+    }
+
+    public double getImpuestoSumado() {
+        return impuestoSumado;
+    }
+
+    public void setImpuestoSumado(double impuestoSumado) {
+        this.impuestoSumado = impuestoSumado;
     }
 
     public Boolean getDescuentoEstado() {

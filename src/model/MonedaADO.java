@@ -273,6 +273,7 @@ public class MonedaADO {
                     monedaTB.setIdMoneda(resultSet.getInt("IdMoneda"));
                     monedaTB.setNombre(resultSet.getString("Nombre"));
                     monedaTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
+                    monedaTB.setSimbolo(resultSet.getString("Simbolo")); 
                     list.add(monedaTB);
                 }
             } catch (SQLException ex) {

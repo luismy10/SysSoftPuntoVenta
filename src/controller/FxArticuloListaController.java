@@ -202,6 +202,7 @@ public class FxArticuloListaController implements Initializable {
         if (event.getCode() == KeyCode.ENTER) {
             if (comprasController != null) {
                 openWindowCompra();
+                txtSearch.requestFocus();
             } else if (ventaController != null) {
                 addArticuloToList();
             } else if (articuloHistorialController != null) {

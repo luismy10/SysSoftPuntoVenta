@@ -25,6 +25,13 @@ public class MonedaTB {
         this.nombre = nombre;
         this.predeterminado = predeterminado;
     }
+
+    public MonedaTB(int idMoneda, String nombre, String simbolo, Boolean predeterminado) {
+        this.idMoneda = idMoneda;
+        this.nombre = nombre;
+        this.simbolo = simbolo;
+        this.predeterminado = predeterminado;
+    }
     
     
 

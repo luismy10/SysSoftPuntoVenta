@@ -50,14 +50,13 @@ public class FxArticuloCompraController implements Initializable {
 
     private FxComprasController comprasController;
 
-    private boolean validationelemnt;
+    private boolean editarArticulo;
 
     private String idArticulo;
 
     private boolean lote;
 
-    private boolean validarlote;
-
+//    private boolean validarlote;
     private boolean loteedit;
 
     private int indexcompra;
@@ -71,9 +70,9 @@ public class FxArticuloCompraController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
-        validationelemnt = false;
+        editarArticulo = false;
         lote = loteedit = false;
-        validarlote = false;
+//        validarlote = false;
         txtMargen.setText("30");
         idArticulo = "";
         indexcompra = 0;
@@ -126,8 +125,10 @@ public class FxArticuloCompraController implements Initializable {
                     break;
                 }
             }
+        } else {
+            cbImpuesto.getSelectionModel().select(0);
         }
-        validarlote = lote;
+//        validarlote = lote;
         this.lote = lote;
     }
 
@@ -155,9 +156,11 @@ public class FxArticuloCompraController implements Initializable {
                     break;
                 }
             }
+        } else {
+            cbImpuesto.getSelectionModel().select(0);
         }
-        validationelemnt = true;
-        validarlote = articuloTB.isLote();
+        editarArticulo = true;
+//        validarlote = articuloTB.isLote();
         lote = articuloTB.isLote();
         indexcompra = index;
         loteedit = true;
@@ -184,8 +187,8 @@ public class FxArticuloCompraController implements Initializable {
 
         articuloTB.setPrecioCompra(costo - porcentajeRestante);
         articuloTB.setPrecioCompraReal(costo);
-        
-        articuloTB.setSubImporte(articuloTB.getCantidad()*articuloTB.getPrecioCompraReal());
+
+        articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioCompraReal());
         articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioCompra());
 
         articuloTB.setCantidadGranel(articuloTB.getTotalImporte());
@@ -196,26 +199,40 @@ public class FxArticuloCompraController implements Initializable {
 
         articuloTB.setImpuestoArticulo(cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto());
         articuloTB.setImpuestoArticuloName(cbImpuesto.getSelectionModel().getSelectedItem().getNombre());
+        articuloTB.setImpuestoValor(cbImpuesto.getSelectionModel().getSelectedItem().getValor());
+        articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioCompra() * (articuloTB.getImpuestoValor() / 100.00)));
+
         articuloTB.setPrecioVenta(Double.parseDouble(txtPrecio.getText()));
         articuloTB.setMargen(Short.parseShort(txtMargen.getText()));
         articuloTB.setUtilidad(Double.parseDouble(txtUtilidad.getText()));
 
         articuloTB.setLote(lote);
-        
-        
-        if (validateStock(comprasController.getTvList(), articuloTB) && !validationelemnt) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya existe en la lista el artículo", false);
-        } else if (validationelemnt) {
-            if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {
-                openWindowLote(articuloTB);
-            } else {
-                comprasController.getTvList().getItems().set(indexcompra, articuloTB);
-                comprasController.setCalculateTotals();
-                Tools.Dispose(window);
-            }
-        } else {
+
+        if (!validateStock(comprasController.getTvList(), articuloTB) && !editarArticulo) {
+            comprasController.getTvList().getItems().add(articuloTB);
             comprasController.setCalculateTotals();
+            Tools.Dispose(window);
+        } else if (editarArticulo) {
+            comprasController.getTvList().getItems().set(indexcompra, articuloTB);
+            comprasController.setCalculateTotals();
+            Tools.Dispose(window);
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya hay un artículo con las mismas características.", false);
         }
+
+//        if (validateStock(comprasController.getTvList(), articuloTB) && !validationelemnt) {
+//            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya existe en la lista el artículo", false);
+//        } else if (validationelemnt) {
+//            if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {
+//                openWindowLote(articuloTB);
+//            } else {
+//                comprasController.getTvList().getItems().set(indexcompra, articuloTB);
+//                comprasController.setCalculateTotals();
+//                Tools.Dispose(window);
+//            }
+//        } else {
+//            comprasController.setCalculateTotals();
+//        }
     }
 
     private boolean validateStock(TableView<ArticuloTB> view, ArticuloTB articuloTB) throws IOException {
@@ -224,14 +241,6 @@ public class FxArticuloCompraController implements Initializable {
             if (view.getItems().get(i).getClave().equals(articuloTB.getClave())) {
                 ret = true;
                 break;
-            }
-        }
-        if (!ret) {
-            if (validarlote) {
-                openWindowLote(articuloTB);
-            } else {
-                view.getItems().add(articuloTB);
-                Tools.Dispose(window);
             }
         }
         return ret;
@@ -408,10 +417,9 @@ public class FxArticuloCompraController implements Initializable {
         rbPorcentaje.setText(rbPorcentaje.isSelected() ? "Por porcentaje %" : "Por costo");
     }
 
-    public void setValidarlote(boolean validarlote) {
-        this.validarlote = validarlote;
-    }
-
+//    public void setValidarlote(boolean validarlote) {
+//        this.validarlote = validarlote;
+//    }
     public void setCantidadInicial(double cantidadinicial) {
         this.cantidadinicial = cantidadinicial;
     }

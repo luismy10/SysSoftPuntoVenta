@@ -172,7 +172,7 @@ public class FxLoteProcesoController implements Initializable {
             listLote.forEach((loteTB) -> {
                 articuloCompraController.getComprasController().getLoteTBs().add(loteTB);
             });
-            articuloCompraController.setValidarlote(false);
+//            articuloCompraController.setValidarlote(false);
             articuloCompraController.setCantidadInicial(cantidad);
             Tools.Dispose(window);
             articuloCompraController.addArticuloList();
