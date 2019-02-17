@@ -51,9 +51,7 @@ public class FxInventarioGeneralController implements Initializable {
         tcCosto.setCellValueFactory(cellData -> Bindings.concat("S/. "+Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
         tcPrecioVenta.setCellValueFactory(cellData -> Bindings.concat("S/. "+Tools.roundingValue(cellData.getValue().getPrecioVenta(), 2)));
         tcExistencia.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getUnidadVenta() == 1
-                ? Tools.roundingValue(cellData.getValue().getCantidad(), 0)
-                : Tools.roundingValue(cellData.getValue().getCantidadGranel(), 2)
+                Tools.roundingValue(cellData.getValue().getCantidad(), 2)
         ));
         tcMedida.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel(Kg, Lt, Etc)"

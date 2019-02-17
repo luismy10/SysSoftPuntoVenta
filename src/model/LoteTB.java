@@ -9,9 +9,7 @@ public class LoteTB {
     
     private SimpleIntegerProperty id;
     private long idLote;
-    private boolean tipoLote;
     private String numeroLote;
-    private ObjectProperty<LocalDate> fechaFabricacion;
     private ObjectProperty<LocalDate> fechaCaducidad;
     private double existenciaInicial;
     private double existenciaActual;
@@ -47,14 +45,6 @@ public class LoteTB {
         this.numeroLote = numeroLote;
     }
 
-    public LocalDate getFechaFabricacion() {
-        return fechaFabricacion.get();
-    }
-
-    public void setFechaFabricacion(LocalDate fechaFabricacion) {
-        this.fechaFabricacion = new SimpleObjectProperty(fechaFabricacion);
-    }
-
     public LocalDate getFechaCaducidad() {
         return fechaCaducidad.get();
     }
@@ -77,14 +67,6 @@ public class LoteTB {
 
     public void setExistenciaActual(double existenciaActual) {
         this.existenciaActual = existenciaActual;
-    }
-
-    public boolean getTipoLote() {
-        return tipoLote;
-    }
-
-    public void setTipoLote(boolean tipoLote) {
-        this.tipoLote = tipoLote;
     }
 
     public String getIdArticulo() {

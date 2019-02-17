@@ -133,9 +133,6 @@ public class FxClienteController implements Initializable {
         }
     }
 
-    void setContent(AnchorPane content) {
-        this.content = content;
-    }
 
     @FXML
     private void onActionAdd(ActionEvent event) throws IOException {
@@ -185,6 +182,10 @@ public class FxClienteController implements Initializable {
         if (proccess) {
             fillCustomersTable("");
         }
+    }
+    
+    public void setContent(AnchorPane content) {
+        this.content = content;
     }
 
 }

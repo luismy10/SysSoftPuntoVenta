@@ -14,11 +14,12 @@ import javafx.scene.control.TableView;
 public class CompraADO {
 
     public static String CrudCompra(CompraTB compraTB, TableView<ArticuloTB> tableView, ObservableList<LoteTB> loteTBs) {
-        PreparedStatement compra = null;
+
         CallableStatement codigo_compra = null;
+        PreparedStatement compra = null;
         PreparedStatement detalle_compra = null;
         PreparedStatement articulo_update = null;
-        PreparedStatement preparedHistorialArticulo = null;
+//        PreparedStatement preparedHistorialArticulo = null;
         PreparedStatement lote_compra = null;
 
         try {
@@ -30,82 +31,86 @@ public class CompraADO {
             codigo_compra.execute();
             String id_compra = codigo_compra.getString(1);
 
-            compra = DBUtil.getConnection().prepareStatement("INSERT INTO CompraTB(IdCompra,Proveedor,Representante,Comprobante,Numeracion,FechaCompra,SubTotal,Descuento,Gravada,Igv,Total) "
-                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+            compra = DBUtil.getConnection().prepareStatement("INSERT INTO CompraTB(IdCompra,Proveedor,Representante,Comprobante,Numeracion,TipoMoneda,FechaCompra,SubTotal,Descuento,Total,Observaciones,Notas) "
+                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
 
-            detalle_compra = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleCompraTB(IdCompra,IdArticulo,Cantidad,PrecioCompra,Descuento,PrecioVenta,Margen,Utilidad,Importe)"
-                    + "VALUES(?,?,?,?,?,?,?,?,?)");
+            detalle_compra = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleCompraTB(IdCompra,IdArticulo,Cantidad,PrecioCompra,Descuento,PrecioVenta,Margen,Utilidad,IdImpuesto,NombreImpuesto,ValorImpuesto,ImpuestoSumado,Importe)"
+                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-            articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET PrecioCompra = ?, PrecioVenta = ?, Cantidad = Cantidad + ? ,CantidadGranel = CantidadGranel + ? WHERE IdArticulo = ?");
+            articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET PrecioCompra = ?, PrecioVenta = ?, Cantidad = Cantidad + ?, Margen = ?, Utilidad = ?, Impuesto = ? WHERE IdArticulo = ?");
 
-            preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("INSERT INTO HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
-                    + "VALUES(?,GETDATE(),?,?,?,?,?)");
-
-            lote_compra = DBUtil.getConnection().prepareStatement("INSERT INTO LoteTB(TipoLote,NumeroLote,FechaFabricacion,FechaCaducidad,ExistenciaInicial,ExistenciaActual,IdArticulo,IdCompra) "
-                    + "VALUES(?,?,?,?,?,?,?,?)");
+//           preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("INSERT INTO HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
+//                    + "VALUES(?,GETDATE(),?,?,?,?,?)");
+//
+            lote_compra = DBUtil.getConnection().prepareStatement("INSERT INTO LoteTB(NumeroLote,FechaCaducidad,ExistenciaInicial,ExistenciaActual,IdArticulo,IdCompra) "
+                    + "VALUES(?,?,?,?,?,?)");
 
             compra.setString(1, id_compra);
             compra.setString(2, compraTB.getProveedor());
             compra.setString(3, compraTB.getRepresentante());
             compra.setInt(4, compraTB.getComprobante());
             compra.setString(5, compraTB.getNumeracion().toUpperCase());
-            compra.setTimestamp(6, compraTB.getFechaRegistro());
-            compra.setDouble(7, compraTB.getSubTotal());
-            compra.setDouble(8, compraTB.getDescuento());
-            compra.setDouble(9, compraTB.getGravada());
-            compra.setDouble(10, compraTB.getIgv());
-            compra.setDouble(11, compraTB.getTotal().get());
+            compra.setInt(6, compraTB.getTipoMoneda());
+            compra.setTimestamp(7, compraTB.getFechaRegistro());
+            compra.setDouble(8, compraTB.getSubTotal());
+            compra.setDouble(9, compraTB.getDescuento());
+            compra.setDouble(10, compraTB.getTotal().get());
+            compra.setString(11, compraTB.getObservaciones());
+            compra.setString(12, compraTB.getNotas());
             compra.addBatch();
 
             for (int i = 0; i < tableView.getItems().size(); i++) {
                 detalle_compra.setString(1, id_compra);
                 detalle_compra.setString(2, tableView.getItems().get(i).getIdArticulo());
                 detalle_compra.setDouble(3, tableView.getItems().get(i).getCantidad());
-                detalle_compra.setDouble(4, tableView.getItems().get(i).getPrecioCompra());
+                detalle_compra.setDouble(4, tableView.getItems().get(i).getPrecioCompraReal());
                 detalle_compra.setDouble(5, tableView.getItems().get(i).getDescuento());
                 detalle_compra.setDouble(6, tableView.getItems().get(i).getPrecioVenta());
                 detalle_compra.setShort(7, tableView.getItems().get(i).getMargen());
-                detalle_compra.setDouble(8, tableView.getItems().get(i).getUtilidad());            
-                detalle_compra.setDouble(9, tableView.getItems().get(i).getTotalImporte());
+                detalle_compra.setDouble(8, tableView.getItems().get(i).getUtilidad());
+                detalle_compra.setInt(9, tableView.getItems().get(i).getImpuestoArticulo());
+                detalle_compra.setString(10, tableView.getItems().get(i).getImpuestoArticuloName());
+                detalle_compra.setDouble(11, tableView.getItems().get(i).getImpuestoValor());
+                detalle_compra.setDouble(12, tableView.getItems().get(i).getImpuestoSumado());
+                detalle_compra.setDouble(13, tableView.getItems().get(i).getTotalImporte());
                 detalle_compra.addBatch();
 
-                articulo_update.setDouble(1, tableView.getItems().get(i).getPrecioCompra());
+                articulo_update.setDouble(1, tableView.getItems().get(i).getPrecioCompraReal());
                 articulo_update.setDouble(2, tableView.getItems().get(i).getPrecioVenta());
                 articulo_update.setDouble(3, tableView.getItems().get(i).getCantidad());
-                articulo_update.setDouble(4, tableView.getItems().get(i).getCantidadGranel());
-                articulo_update.setString(5, tableView.getItems().get(i).getIdArticulo());
+                articulo_update.setInt(4, tableView.getItems().get(i).getMargen());
+                articulo_update.setDouble(5, tableView.getItems().get(i).getUtilidad());
+                articulo_update.setInt(6, tableView.getItems().get(i).getImpuestoArticulo());
+                articulo_update.setString(7, tableView.getItems().get(i).getIdArticulo());
                 articulo_update.addBatch();
 
-                preparedHistorialArticulo.setString(1, tableView.getItems().get(i).getIdArticulo());
-                preparedHistorialArticulo.setString(2, "Compra");
-                preparedHistorialArticulo.setDouble(3, tableView.getItems().get(i).getUnidadVenta() == 1
-                        ? tableView.getItems().get(i).getCantidad()
-                        : tableView.getItems().get(i).getCantidadGranel()
-                );
-                preparedHistorialArticulo.setDouble(4, 0);
-                preparedHistorialArticulo.setDouble(5, 0);
-                preparedHistorialArticulo.setString(6, Session.USER_ID);
-
-                preparedHistorialArticulo.addBatch();
-
+//                preparedHistorialArticulo.setString(1, tableView.getItems().get(i).getIdArticulo());
+//                preparedHistorialArticulo.setString(2, "Compra");
+//                preparedHistorialArticulo.setDouble(3, tableView.getItems().get(i).getUnidadVenta() == 1
+//                        ? tableView.getItems().get(i).getCantidad()
+//                        : tableView.getItems().get(i).getCantidadGranel()
+//                );
+//                preparedHistorialArticulo.setDouble(4, 0);
+//                preparedHistorialArticulo.setDouble(5, 0);
+//                preparedHistorialArticulo.setString(6, Session.USER_ID);
+//
+//                preparedHistorialArticulo.addBatch();
             }
-
+//
             for (int i = 0; i < loteTBs.size(); i++) {
-                lote_compra.setObject(1, loteTBs.get(i).getTipoLote());
-                lote_compra.setString(2, loteTBs.get(i).getTipoLote() ? (loteTBs.get(i).getIdArticulo() + id_compra) : loteTBs.get(i).getNumeroLote());
-                lote_compra.setDate(3, Date.valueOf(loteTBs.get(i).getFechaFabricacion()));
-                lote_compra.setDate(4, Date.valueOf(loteTBs.get(i).getFechaCaducidad()));
-                lote_compra.setDouble(5, loteTBs.get(i).getExistenciaInicial());
-                lote_compra.setDouble(6, loteTBs.get(i).getExistenciaActual());
-                lote_compra.setString(7, loteTBs.get(i).getIdArticulo());
-                lote_compra.setString(8, id_compra);
+                lote_compra.setString(1, loteTBs.get(i).getNumeroLote());
+                lote_compra.setDate(2, Date.valueOf(loteTBs.get(i).getFechaCaducidad()));
+                lote_compra.setDouble(3, loteTBs.get(i).getExistenciaInicial());
+                lote_compra.setDouble(4, loteTBs.get(i).getExistenciaActual());
+                lote_compra.setString(5, loteTBs.get(i).getIdArticulo());
+                lote_compra.setString(6, id_compra);
                 lote_compra.addBatch();
             }
 
             compra.executeBatch();
             detalle_compra.executeBatch();
             articulo_update.executeBatch();
-            preparedHistorialArticulo.executeBatch();
+//            preparedHistorialArticulo.executeBatch();
             lote_compra.executeBatch();
             DBUtil.getConnection().commit();
             return "register";
@@ -118,6 +123,9 @@ public class CompraADO {
             }
         } finally {
             try {
+                if (codigo_compra != null) {
+                    codigo_compra.close();
+                }
                 if (compra != null) {
                     compra.close();
                 }
@@ -127,12 +135,10 @@ public class CompraADO {
                 if (articulo_update != null) {
                     articulo_update.close();
                 }
-                if (codigo_compra != null) {
-                    codigo_compra.close();
-                }
-                if (preparedHistorialArticulo != null) {
-                    preparedHistorialArticulo.close();
-                }
+//              
+//                if (preparedHistorialArticulo != null) {
+//                    preparedHistorialArticulo.close();
+//                }
                 if (lote_compra != null) {
                     lote_compra.close();
                 }
@@ -160,6 +166,7 @@ public class CompraADO {
                 compraTB.setFechaCompra(rsEmps.getDate("Fecha").toLocalDate());
                 compraTB.setNumeracion(rsEmps.getString("Numeracion"));
                 compraTB.setProveedorTB(new ProveedorTB(rsEmps.getString("NumeroDocumento"), rsEmps.getString("RazonSocial")));
+                compraTB.setTipoMonedaName(rsEmps.getString("Simbolo"));
                 compraTB.setTotal(rsEmps.getDouble("Total"));
                 empList.add(compraTB);
             }
@@ -201,6 +208,7 @@ public class CompraADO {
                 compraTB.setFechaCompra(rsEmps.getDate("Fecha").toLocalDate());
                 compraTB.setNumeracion(rsEmps.getString("Numeracion"));
                 compraTB.setProveedorTB(new ProveedorTB(rsEmps.getString("NumeroDocumento"), rsEmps.getString("RazonSocial")));
+                compraTB.setTipoMonedaName(rsEmps.getString("Simbolo"));
                 compraTB.setTotal(rsEmps.getDouble("Total"));
                 empList.add(compraTB);
             }
@@ -224,7 +232,7 @@ public class CompraADO {
     }
 
     public static ObservableList<ArticuloTB> ListDetalleCompra(String value) {
-        String selectStmt = "select a.Clave,a.NombreMarca, d.Cantidad,d.PrecioCompra,d.Descuento,d.Importe,a.UnidadVenta from DetalleCompraTB as d inner join ArticuloTB as a\n"
+        String selectStmt = "select a.Clave,a.NombreMarca, d.Cantidad,d.PrecioCompra,d.Descuento,d.IdImpuesto,d.ValorImpuesto,d.ImpuestoSumado,d.Importe,a.UnidadVenta from DetalleCompraTB as d inner join ArticuloTB as a\n"
                 + "on d.IdArticulo = a.IdArticulo\n"
                 + "where IdCompra = ? ";
         PreparedStatement preparedStatement = null;
@@ -245,6 +253,14 @@ public class CompraADO {
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
                 articuloTB.setDescuento(rsEmps.getDouble("Descuento"));
+                articuloTB.setImpuestoArticulo(rsEmps.getInt("IdImpuesto"));
+                articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioCompra());
+                double porcentajeDecimal = articuloTB.getDescuento() / 100.00;
+                double porcentajeRestante = articuloTB.getPrecioCompra() * porcentajeDecimal;
+                articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
+                articuloTB.setImpuestoValor(rsEmps.getDouble("ValorImpuesto"));
+                articuloTB.setImpuestoSumado(rsEmps.getDouble("ImpuestoSumado"));
+                articuloTB.setSubImporteDescuento(articuloTB.getSubImporte() - articuloTB.getDescuentoSumado());
                 articuloTB.setTotalImporte(rsEmps.getDouble("Importe"));
                 empList.add(articuloTB);
             }
@@ -275,19 +291,24 @@ public class CompraADO {
 
         try {
             DBUtil.dbConnect();
-            statementCompra = DBUtil.getConnection().prepareStatement("select CAST(FechaCompra as date) as Fecha,\n"
-                    + "dbo.Fc_Obtener_Nombre_Detalle(Comprobante,'0009') as Comprobante,\n"
-                    + "Numeracion,Total from CompraTB\n"
-                    + "where IdCompra = ? ");
+//            statementCompra = DBUtil.getConnection().prepareStatement("select CAST(FechaCompra as date) as Fecha,\n"
+//                    + "dbo.Fc_Obtener_Nombre_Detalle(Comprobante,'0009') as Comprobante,\n"
+//                    + "Numeracion,Total from CompraTB\n"
+//                    + "where IdCompra = ? ");
+
+            statementCompra = DBUtil.getConnection().prepareStatement("select CAST(c.FechaCompra as date) as Fecha, c.Comprobante, c.Numeracion, dbo.Fc_Obtener_Simbolo_Moneda(c.TipoMoneda) as Simbolo,c.Total,c.Observaciones,c.Notas,td.Nombre from CompraTB as c inner join TipoDocumentoTB as td on c.Comprobante=td.IdTipoDocumento where c.IdCompra = ?");
             statementCompra.setString(1, value);
             ResultSet resultSet = statementCompra.executeQuery();
             CompraTB compraTB = null;
             if (resultSet.next()) {
                 compraTB = new CompraTB();
                 compraTB.setFechaCompra(resultSet.getDate("Fecha").toLocalDate());
-                compraTB.setComprobanteName(resultSet.getString("Comprobante"));
+                compraTB.setComprobanteName(resultSet.getString("Nombre"));
                 compraTB.setNumeracion(resultSet.getString("Numeracion"));
+                compraTB.setTipoMonedaName(resultSet.getString("Simbolo"));
                 compraTB.setTotal(resultSet.getDouble("Total"));
+                compraTB.setObservaciones(resultSet.getString("Observaciones"));
+                compraTB.setNotas(resultSet.getString("Notas"));
                 objects.add(compraTB);
             } else {
                 objects.add(compraTB);

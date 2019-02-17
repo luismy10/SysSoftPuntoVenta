@@ -22,10 +22,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -34,8 +34,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -53,8 +51,6 @@ public class FxComprasRealizadasController implements Initializable {
 
     @FXML
     private VBox window;
-
-    private AnchorPane content;
     @FXML
     private DatePicker dtFechaInicial;
     @FXML
@@ -76,6 +72,12 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private TableColumn<CompraTB, String> tcTotal;
 
+    private AnchorPane vbContent;
+
+    private AnchorPane windowinit;
+
+    private boolean validationSearch;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
@@ -84,7 +86,11 @@ public class FxComprasRealizadasController implements Initializable {
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getProveedorTB().getNumeroDocumento().get() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial().get()
         ));
-        tcTotal.setCellValueFactory(cellData -> Bindings.concat("S/. " + Tools.roundingValue(cellData.getValue().getTotal().get(), 2)));
+        tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal().get(), 2)));
+
+        Tools.actualDate(Tools.getDate(), dtFechaInicial);
+        Tools.actualDate(Tools.getDate(), dtFechaFinal);
+        validationSearch = false;
     }
 
     public void fillPurchasesTable(String value) {
@@ -103,13 +109,16 @@ public class FxComprasRealizadasController implements Initializable {
         task.setOnSucceeded((WorkerStateEvent e) -> {
             tvList.setItems((ObservableList<CompraTB>) task.getValue());
             lblLoad.setVisible(false);
+            validationSearch = false;
         });
         task.setOnFailed((WorkerStateEvent event) -> {
             lblLoad.setVisible(false);
+            validationSearch = false;
         });
 
         task.setOnScheduled((WorkerStateEvent event) -> {
             lblLoad.setVisible(true);
+            validationSearch = true;
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -147,34 +156,20 @@ public class FxComprasRealizadasController implements Initializable {
         }
     }
 
-    private void InitializationTransparentBackground() {
-        Session.pane.setStyle("-fx-background-color: black");
-        Session.pane.setTranslateX(0);
-        Session.pane.setTranslateY(0);
-        Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
-        Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
-        Session.pane.setOpacity(0.7f);
-        content.getChildren().add(Session.pane);
-    }
-
     private void openWindowDetalleCompra() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            InitializationTransparentBackground();
-            URL url = getClass().getResource(Tools.FX_FILE_COMPRASDETALLE);
-            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxCompraDetalleController controller = fXMLLoader.getController();
-            controller.setInitComptrasController(this);
-            //
-            Stage stage = FxWindow.StageLoaderModal(parent, "Detalle de compra", window.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding((WindowEvent WindowEvent) -> {
-                content.getChildren().remove(Session.pane);
-            });
-            stage.show();
+            FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_COMPRASDETALLE));
+            ScrollPane node = fXMLPrincipal.load();
+            FxCompraDetalleController controller = fXMLPrincipal.getController();
+            controller.setInitComptrasController(this, windowinit, vbContent);
             controller.setLoadDetalle(tvList.getSelectionModel().getSelectedItem().getIdCompra());
+            vbContent.getChildren().clear();
+            AnchorPane.setLeftAnchor(node, 0d);
+            AnchorPane.setTopAnchor(node, 0d);
+            AnchorPane.setRightAnchor(node, 0d);
+            AnchorPane.setBottomAnchor(node, 0d);
+            vbContent.getChildren().add(node);
+
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
         }
@@ -228,24 +223,60 @@ public class FxComprasRealizadasController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedSearch(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            if (!tvList.getItems().isEmpty()) {
-                tvList.requestFocus();
-                tvList.getSelectionModel().select(0);
-            }
+    private void onActionSearch(ActionEvent event) {
+        if (!tvList.getItems().isEmpty()) {
+            tvList.requestFocus();
+            tvList.getSelectionModel().select(0);
         }
     }
 
     @FXML
     private void onKeyReleasedSeach(KeyEvent event) {
-        fillPurchasesTable(txtSearch.getText().trim());
+        if (event.getCode() != KeyCode.ESCAPE
+                && event.getCode() != KeyCode.F1
+                && event.getCode() != KeyCode.F2
+                && event.getCode() != KeyCode.F3
+                && event.getCode() != KeyCode.F4
+                && event.getCode() != KeyCode.F5
+                && event.getCode() != KeyCode.F6
+                && event.getCode() != KeyCode.F7
+                && event.getCode() != KeyCode.F8
+                && event.getCode() != KeyCode.F9
+                && event.getCode() != KeyCode.F10
+                && event.getCode() != KeyCode.F11
+                && event.getCode() != KeyCode.F12
+                && event.getCode() != KeyCode.ALT
+                && event.getCode() != KeyCode.CONTROL
+                && event.getCode() != KeyCode.UP
+                && event.getCode() != KeyCode.DOWN
+                && event.getCode() != KeyCode.RIGHT
+                && event.getCode() != KeyCode.LEFT
+                && event.getCode() != KeyCode.TAB
+                && event.getCode() != KeyCode.CAPS
+                && event.getCode() != KeyCode.SHIFT
+                && event.getCode() != KeyCode.HOME
+                && event.getCode() != KeyCode.WINDOWS
+                && event.getCode() != KeyCode.ALT_GRAPH
+                && event.getCode() != KeyCode.CONTEXT_MENU
+                && event.getCode() != KeyCode.END
+                && event.getCode() != KeyCode.INSERT
+                && event.getCode() != KeyCode.PAGE_UP
+                && event.getCode() != KeyCode.PAGE_DOWN
+                && event.getCode() != KeyCode.NUM_LOCK
+                && event.getCode() != KeyCode.PRINTSCREEN
+                && event.getCode() != KeyCode.SCROLL_LOCK
+                && event.getCode() != KeyCode.PAUSE
+                && event.getCode() != KeyCode.ENTER) {
+            if (!validationSearch) {
+                fillPurchasesTable(txtSearch.getText().trim());
+            }
+        }
     }
 
     @FXML
     private void onActionFechaInicial(ActionEvent actionEvent) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-             fillPurchasesTableByDate();
+            fillPurchasesTableByDate();
         }
     }
 
@@ -256,7 +287,9 @@ public class FxComprasRealizadasController implements Initializable {
         }
     }
 
-    public void setContent(AnchorPane content) {
-        this.content = content;
+    public void setContent(AnchorPane windowinit, AnchorPane vbContent) {
+        this.windowinit = windowinit;
+        this.vbContent = vbContent;
     }
+
 }

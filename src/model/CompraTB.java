@@ -16,13 +16,15 @@ public class CompraTB {
     private int comprobante;
     private String comprobanteName;
     private String numeracion;
+    private int tipoMoneda;
+    private String tipoMonedaName;
     private ObjectProperty<LocalDate> fechaCompra;
     private Timestamp fechaRegistro;
     private double subTotal;
-    private double gravada;
     private double descuento;
-    private double igv;
     private SimpleDoubleProperty total;
+    private String observaciones;
+    private String notas;
     private ProveedorTB proveedorTB;
     private ArticuloTB articuloTB;
 
@@ -86,6 +88,22 @@ public class CompraTB {
         this.numeracion = numeracion;
     }
 
+    public int getTipoMoneda() {
+        return tipoMoneda;
+    }
+
+    public void setTipoMoneda(int tipoMoneda) {
+        this.tipoMoneda = tipoMoneda;
+    }
+
+    public String getTipoMonedaName() {
+        return tipoMonedaName;
+    }
+
+    public void setTipoMonedaName(String tipoMonedaName) {
+        this.tipoMonedaName = tipoMonedaName == null ? "" : tipoMonedaName;
+    }
+
     public Timestamp getFechaRegistro() {
         return fechaRegistro;
     }
@@ -114,14 +132,6 @@ public class CompraTB {
         this.subTotal = subTotal;
     }
 
-    public double getGravada() {
-        return gravada;
-    }
-
-    public void setGravada(double gravada) {
-        this.gravada = gravada;
-    }
-
     public double getDescuento() {
         return descuento;
     }
@@ -130,20 +140,28 @@ public class CompraTB {
         this.descuento = descuento;
     }
 
-    public double getIgv() {
-        return igv;
-    }
-
-    public void setIgv(double igv) {
-        this.igv = igv;
-    }
-
     public SimpleDoubleProperty getTotal() {
         return total;
     }
 
     public void setTotal(double total) {
         this.total = new SimpleDoubleProperty(total);
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public String getNotas() {
+        return notas;
+    }
+
+    public void setNotas(String notas) {
+        this.notas = notas;
     }
 
     public ProveedorTB getProveedorTB() {

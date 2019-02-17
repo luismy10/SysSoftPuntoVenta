@@ -30,7 +30,6 @@ public class ArticuloTB {
     private double stockMinimo;
     private double stockMaximo;
     private double cantidad;
-    private double cantidadGranel;
     private double precioCompra;
     private double precioCompraReal;
     
@@ -44,8 +43,10 @@ public class ArticuloTB {
     private SimpleStringProperty estadoName;
     private double descuento;
     private double descuentoSumado;
-    private Boolean descuentoEstado;
     private double subImporte;
+    
+    private double subImporteDescuento;
+    
     private double totalImporte;   
     private String imagenTB;
     private ObjectProperty<LocalDate> fechaRegistro;
@@ -280,14 +281,6 @@ public class ArticuloTB {
         this.cantidad = cantidad;
     }
 
-    public double getCantidadGranel() {
-        return cantidadGranel;
-    }
-
-    public void setCantidadGranel(double cantidadGranel) {
-        this.cantidadGranel = cantidadGranel;
-    }
-
     public double getDescuento() {
         return descuento;
     }
@@ -303,6 +296,16 @@ public class ArticuloTB {
     public void setSubImporte(double subImporte) {
         this.subImporte = subImporte;
     }
+
+    
+    public double getSubImporteDescuento() {
+        return subImporteDescuento;
+    }
+
+    public void setSubImporteDescuento(double subImporteDescuento) {
+        this.subImporteDescuento = subImporteDescuento;
+    }
+    
 
     public double getTotalImporte() {
         return totalImporte;
@@ -400,14 +403,6 @@ public class ArticuloTB {
 
     public void setImpuestoSumado(double impuestoSumado) {
         this.impuestoSumado = impuestoSumado;
-    }
-
-    public Boolean getDescuentoEstado() {
-        return descuentoEstado;
-    }
-
-    public void setDescuentoEstado(Boolean descuentoEstado) {
-        this.descuentoEstado = descuentoEstado;
     }
 
     public double getDescuentoSumado() {

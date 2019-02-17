@@ -69,8 +69,6 @@ public class FxArticulosController implements Initializable {
     private FxArticuloSeleccionadoController seleccionadoController;
 
     private FxArticuloDetalleController detalleController;
-    @FXML
-    private TableColumn<?, ?> tcEstado1;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -304,8 +302,11 @@ public class FxArticulosController implements Initializable {
     }
 
     @FXML
-    private void onKerPressedSearch(KeyEvent event) {
-
+    private void onActionSearch(ActionEvent event) {
+        if (!tvList.getItems().isEmpty()) {
+            tvList.requestFocus();
+            tvList.getSelectionModel().select(0);
+        }
     }
 
     @FXML
@@ -343,7 +344,8 @@ public class FxArticulosController implements Initializable {
                 && event.getCode() != KeyCode.NUM_LOCK
                 && event.getCode() != KeyCode.PRINTSCREEN
                 && event.getCode() != KeyCode.SCROLL_LOCK
-                && event.getCode() != KeyCode.PAUSE) {
+                && event.getCode() != KeyCode.PAUSE
+                && event.getCode() != KeyCode.ENTER) {
             fillArticlesTable(txtSearch.getText().trim());
         }
     }
@@ -368,9 +370,8 @@ public class FxArticulosController implements Initializable {
                     : new File(articuloTB.getImagenTB()).toURI().toString()));
             seleccionadoController.getLblName().setText(articuloTB.getNombreMarca());
             seleccionadoController.getLblPrice().setText(Session.MONEDA + " " + Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
-            seleccionadoController.getLblQuantity().setText(articuloTB.getUnidadVenta() == 1
-                    ? Tools.roundingValue(articuloTB.getCantidad(), 0)
-                    : Tools.roundingValue(articuloTB.getCantidadGranel(), 2));
+            seleccionadoController.getLblQuantity().setText(Tools.roundingValue(articuloTB.getCantidad(), 2));
+
 //            if (detalleController != null) {
 //                detalleController.getTvList().setItems(LoteADO.ListByIdLote(tvList.getSelectionModel().getSelectedItem().getIdArticulo()));
 //            }

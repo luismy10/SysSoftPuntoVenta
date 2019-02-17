@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticulosController">
+<VBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticulosController">
    <children>
       <HBox VBox.vgrow="ALWAYS">
          <children>
@@ -114,7 +114,7 @@
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtSearch" onKeyPressed="#onKerPressedSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Buscar...." />
+                                          <TextField fx:id="txtSearch" onAction="#onActionSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Buscar...." />
                                        </children>
                                     </VBox>
                                     <VBox spacing="10.0">

@@ -25,8 +25,6 @@ public class FxLoteCambiarController implements Initializable {
     @FXML
     private TextField txtCantidad;
     @FXML
-    private DatePicker dtFabricacion;
-    @FXML
     private DatePicker dtCaducidad;
     @FXML
     private Button btnProcess;
@@ -35,28 +33,20 @@ public class FxLoteCambiarController implements Initializable {
 
     private boolean statebatch;
 
-    private boolean typebatch;
-
-    private boolean updatebatch;
-
     private int indexbatch;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         statebatch = false;
-        typebatch = false;
-        updatebatch = false;
         indexbatch = 0;
     }
 
     public void setEditBatchRealizado(String[] value) {
-        updatebatch = true;
         txtArticulo.setText(value[1] + " " + value[2]);
         txtLote.setText(value[0]);
         txtCantidad.setText(value[3]);
         Tools.actualDate(value[4], dtCaducidad);
-        Tools.actualDate(value[5], dtFabricacion);
         txtLote.setDisable(true);
         txtCantidad.setDisable(true);
         btnProcess.setText("Guardar");
@@ -66,63 +56,46 @@ public class FxLoteCambiarController implements Initializable {
         txtArticulo.setText(descripcion);
         txtLote.setDisable(true);
         txtLote.setText("LT001GENERADO");
-        typebatch = true;
     }
 
     public void setEditBatch(String[] value) {
         statebatch = true;
         indexbatch = Integer.parseInt(value[0]);
-        typebatch = Boolean.valueOf(value[1]);
-        txtLote.setText(value[2]);
-        txtCantidad.setText(value[3]);
-        Tools.actualDate(value[4], dtFabricacion);
-        Tools.actualDate(value[5], dtCaducidad);
+        txtLote.setText(value[1]);
+        txtCantidad.setText(value[2]);
+        Tools.actualDate(value[3], dtCaducidad);
     }
 
     @FXML
     private void onActionAgregar(ActionEvent event) {
 
-        if (txtLote.getText().trim().isEmpty()) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Lotes", "Ingrese un lote ejemplo(LT0001,BT001,109029), por favor", false);
-            txtLote.requestFocus();
+        if (!Tools.isNumeric(txtCantidad.getText())) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Lotes", "Ingrese la cantidad de unidades del lote, por favor", false);
+            txtCantidad.requestFocus();
         } else {
-            if (!Tools.isNumeric(txtCantidad.getText())) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Lotes", "Ingrese la cantidad de unidades del lote, por favor", false);
+            if (Double.parseDouble(txtCantidad.getText()) < 1) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Lotes", "La cantidad debe ser mayor a 0, por favor", false);
                 txtCantidad.requestFocus();
             } else {
-                if (Double.parseDouble(txtCantidad.getText()) < 1) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Lotes", "La cantidad debe ser mayor a 0, por favor", false);
-                    txtCantidad.requestFocus();
+                if (dtCaducidad.getValue() == null) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Lotes", "Ingrese la fecha de caducidad, por favor", false);
+                    dtCaducidad.requestFocus();
                 } else {
-                    if (dtFabricacion.getValue() == null) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Lotes", "Ingrese la fecha de fabricación, por favor", false);
-                        dtFabricacion.requestFocus();
+                    LoteTB loteTB = new LoteTB();
+                    loteTB.setNumeroLote(txtLote.getText());
+                    loteTB.setExistenciaActual(Double.parseDouble(txtCantidad.getText()));
+                    loteTB.setExistenciaInicial(Double.parseDouble(txtCantidad.getText()));
+                    loteTB.setFechaCaducidad(dtCaducidad.getValue());
+                    loteTB.setIdArticulo(procesoController.getIdArticulo());
+                    if (!statebatch) {
+                        procesoController.getListLote().add(loteTB);
+                        procesoController.calculateBatch();
                     } else {
-                        if (dtCaducidad.getValue() == null) {
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Lotes", "Ingrese la fecha de caducidad, por favor", false);
-                            dtCaducidad.requestFocus();
-                        } else {
-                            LoteTB loteTB = new LoteTB();
-                            loteTB.setTipoLote(typebatch);
-                            loteTB.setNumeroLote(txtLote.getText());
-                            loteTB.setExistenciaActual(Double.parseDouble(txtCantidad.getText()));
-                            loteTB.setExistenciaInicial(Double.parseDouble(txtCantidad.getText()));
-                            loteTB.setFechaFabricacion(dtFabricacion.getValue());
-                            loteTB.setFechaCaducidad(dtCaducidad.getValue());
-                            loteTB.setIdArticulo(procesoController.getIdArticulo());
-                            if (!statebatch) {
-                                procesoController.getListLote().add(loteTB);
-                                procesoController.calculateBatch();
-                            } else if (updatebatch) {
-                                System.out.println("dentro");
-                            } else {
-                                procesoController.getListLote().set(indexbatch, loteTB);
-                                procesoController.calculateBatch();
-                            }
-
-                            Tools.Dispose(window);
-                        }
+                        procesoController.getListLote().set(indexbatch, loteTB);
+                        procesoController.calculateBatch();
                     }
+
+                    Tools.Dispose(window);
                 }
             }
         }

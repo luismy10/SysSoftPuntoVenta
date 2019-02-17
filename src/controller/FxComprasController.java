@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -49,7 +50,7 @@ import model.TipoDocumentoTB;
 public class FxComprasController implements Initializable {
 
     @FXML
-    private VBox window;
+    private ScrollPane window;
     @FXML
     private TextField txtProveedor;
     @FXML
@@ -96,6 +97,10 @@ public class FxComprasController implements Initializable {
     private ComboBox<MonedaTB> cbMoneda;
     @FXML
     private HBox hbAgregarImpuesto;
+    @FXML
+    private TextField txtObservaciones;
+    @FXML
+    private TextField txtNotas;
 
     private AnchorPane content;
 
@@ -115,9 +120,13 @@ public class FxComprasController implements Initializable {
 
     private ObservableList<LoteTB> loteTBs;
 
+    private String monedaSimbolo;
+    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idProveedor = idRepresentante = "";
+        monedaSimbolo = "M";
         loteTBs = FXCollections.observableArrayList();
         Tools.actualDate(Tools.getDate(), tpFechaCompra);
 
@@ -141,16 +150,16 @@ public class FxComprasController implements Initializable {
         }
 
         cbMoneda.getItems().clear();
-        cbMoneda.getItems().add(new MonedaTB(0, "Seleccione un moneda", "",false));
+        cbMoneda.getItems().add(new MonedaTB(0, "Seleccione una moneda", "", false));
         MonedaADO.GetMonedasCombBox().forEach(e -> {
-            cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getSimbolo(),e.getPredeterminado()));
+            cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getSimbolo(), e.getPredeterminado()));
         });
 
         if (!cbMoneda.getItems().isEmpty()) {
             for (int i = 0; i < cbMoneda.getItems().size(); i++) {
                 if (cbMoneda.getItems().get(i).getPredeterminado() == true) {
                     cbMoneda.getSelectionModel().select(i);
-                    Session.DEFAULT_MONEDA = i;
+                    monedaSimbolo = cbMoneda.getItems().get(i).getSimbolo();
                     break;
                 }
             }
@@ -169,10 +178,6 @@ public class FxComprasController implements Initializable {
         });
 
         initTable();
-        lblMonedaSubTotal.setText(Session.MONEDA);
-        lblMonedaSubTotalNuevo.setText(Session.MONEDA);
-        lblMonedaDescuento.setText(Session.MONEDA);
-        lblMonedaTotal.setText(Session.MONEDA);
 
     }
 
@@ -185,8 +190,7 @@ public class FxComprasController implements Initializable {
         tcCosto.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getPrecioCompraReal(), 2)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getDescuentoEstado() ? Tools.roundingValue(cellData.getValue().getDescuento(), 0) + "%"
-                : Tools.roundingValue(cellData.getValue().getDescuento(), 2)
+                Tools.roundingValue(cellData.getValue().getDescuento(), 0) + "%"
         ));
         tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getImpuestoArticuloName()));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
@@ -236,12 +240,14 @@ public class FxComprasController implements Initializable {
             compraTB.setRepresentante(idRepresentante);
             compraTB.setComprobante(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento());
             compraTB.setNumeracion(cbNumeracion.getText().trim());
+            compraTB.setTipoMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 1
+                    ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
             compraTB.setFechaRegistro(Timestamp.valueOf(Tools.getDatePicker(tpFechaCompra) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
             compraTB.setSubTotal(Double.parseDouble(lblSubTotal.getText()));
             compraTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
-//            compraTB.setGravada(Double.parseDouble(lblGravada.getText()));
-//            compraTB.setIgv(Double.parseDouble(lblIgv.getText()));
             compraTB.setTotal(Double.parseDouble(lblTotal.getText()));
+            compraTB.setObservaciones(txtObservaciones.getText().isEmpty()? "" : txtObservaciones.getText());
+            compraTB.setNotas(txtNotas.getText().isEmpty()? "" : txtNotas.getText());
             String result = CompraADO.CrudCompra(compraTB, tvList, loteTBs);
             if (result.equalsIgnoreCase("register")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Compras", "Registrado correctamente la compra.", false);
@@ -256,9 +262,10 @@ public class FxComprasController implements Initializable {
                 lblSubTotal.setText("0.00");
                 lblDescuento.setText("0.00");
                 lblSubTotalNuevo.setText("0.00");
-//                lblGravada.setText("0.00");
-//                lblIgv.setText("0.00");
                 lblTotal.setText("0.00");
+                txtObservaciones.clear();
+                txtNotas.clear();
+                hbAgregarImpuesto.getChildren().clear();
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Compras", result, false);
 
@@ -305,14 +312,12 @@ public class FxComprasController implements Initializable {
                     articuloTB.setIdArticulo(e.getIdArticulo());
                     articuloTB.setClave(e.getClave());
                     articuloTB.setNombreMarca(e.getNombreMarca());
-                    articuloTB.setCantidad(e.getCantidad());
-                    articuloTB.setCantidadGranel(e.getCantidadGranel());
+                    articuloTB.setCantidad(e.getCantidad());  
                     articuloTB.setPrecioCompra(e.getPrecioCompra());
                     articuloTB.setPrecioCompraReal(e.getPrecioCompraReal());
                     articuloTB.setPrecioVenta(e.getPrecioVenta());
                     articuloTB.setMargen(e.getMargen());
                     articuloTB.setUtilidad(e.getUtilidad());
-                    articuloTB.setDescuentoEstado(e.getDescuentoEstado());
                     articuloTB.setDescuento(e.getDescuento());
                     articuloTB.setTotalImporte(e.getTotalImporte());
                     articuloTB.setImpuestoArticulo(e.getImpuestoArticulo());
@@ -345,7 +350,7 @@ public class FxComprasController implements Initializable {
                     }
                     observableList.remove(e);
                 });
-                setCalculateTotals();
+                calculateTotals();
             }
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compras", "Seleccione un artículo para removerlo", false);
@@ -448,7 +453,7 @@ public class FxComprasController implements Initializable {
 
     }
 
-    public void setCalculateTotals() {
+    public void calculateTotals() {
 
         tvList.getItems().forEach(e -> subImporte += e.getSubImporte());
         lblSubTotal.setText(Tools.roundingValue(subImporte, 2));
@@ -473,7 +478,7 @@ public class FxComprasController implements Initializable {
                 }
             }
             if (addElement) {
-                addElementImpuesto(arrayArticulos.get(k).getIdImpuesto() + "", arrayArticulos.get(k).getNombre(), "S/.", Tools.roundingValue(sumaElement, 2));
+                addElementImpuesto(arrayArticulos.get(k).getIdImpuesto() + "", arrayArticulos.get(k).getNombre(), monedaSimbolo, Tools.roundingValue(sumaElement, 2));
                 addElement = false;
                 sumaElement = 0;
             }
@@ -484,7 +489,7 @@ public class FxComprasController implements Initializable {
         totalImporte = 0;
     }
 
-    public void addElementImpuesto(String id, String titulo, String moneda, String total) {
+    private void addElementImpuesto(String id, String titulo, String moneda, String total) {
         Label label = new Label(titulo);
         label.setStyle("-fx-text-fill:#1a2226;");
         label.getStyleClass().add("labelRoboto14");
@@ -495,6 +500,7 @@ public class FxComprasController implements Initializable {
         text1.getStyleClass().add("labelRobotoMedium16");
 
         HBox hBox = new HBox(text, text1);
+        hBox.setSpacing(5);
         VBox vBox = new VBox(label, hBox);
         vBox.setStyle("-fx-spacing: 0.8333333333333334em;");
         vBox.setId(id);
@@ -508,14 +514,18 @@ public class FxComprasController implements Initializable {
             onViewEdit();
         }
     }
-    
+
     @FXML
     private void onActionMoneda(ActionEvent event) {
-        if(cbMoneda.getSelectionModel().getSelectedIndex()>=1){
-            
+        if (cbMoneda.getSelectionModel().getSelectedIndex() >= 1) {
+            monedaSimbolo = cbMoneda.getSelectionModel().getSelectedItem().getSimbolo();
+            lblMonedaSubTotal.setText(monedaSimbolo);
+            lblMonedaSubTotalNuevo.setText(monedaSimbolo);
+            lblMonedaDescuento.setText(monedaSimbolo);
+            lblMonedaTotal.setText(monedaSimbolo);
+            calculateTotals();
         }
     }
-
 
     public TableView<ArticuloTB> getTvList() {
         return tvList;
@@ -533,6 +543,6 @@ public class FxComprasController implements Initializable {
         this.content = content;
     }
 
-    
+
 
 }

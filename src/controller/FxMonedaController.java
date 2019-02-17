@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -52,8 +51,6 @@ public class FxMonedaController implements Initializable {
 
     private boolean stateRequest;
 
-    private boolean stateUpdate;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcMoneda.setCellValueFactory(cellData -> Bindings.concat(
@@ -63,7 +60,6 @@ public class FxMonedaController implements Initializable {
         tcAbreviatura.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getAbreviado()));
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
         stateRequest = false;
-        stateUpdate = false;
     }
 
     public void fillTableMonedas() {
@@ -84,16 +80,6 @@ public class FxMonedaController implements Initializable {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
             stateRequest = true;
-            if (stateUpdate) {
-                List<MonedaTB> list = MonedaADO.GetMonedasCombBox();
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getPredeterminado() == true) {
-                        Session.DEFAULT_MONEDA = i;
-                        break;
-                    }
-                }
-                stateUpdate=false;
-            }
         });
         task.setOnFailed((WorkerStateEvent event) -> {
             lblLoad.setVisible(false);
@@ -178,7 +164,6 @@ public class FxMonedaController implements Initializable {
                 String result = MonedaADO.ChangeDefaultState(true, tvList.getSelectionModel().getSelectedItem().getIdMoneda());
                 if (result.equalsIgnoreCase("updated")) {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Moneda", "Se cambio el estado correctamente.", false);
-                    stateUpdate=true;
                     fillTableMonedas();
                 } else {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Moneda", "Error: " + result, false);

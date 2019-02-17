@@ -1,6 +1,7 @@
 package controller;
 
 import java.awt.HeadlessException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
@@ -11,21 +12,25 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
@@ -34,6 +39,8 @@ import model.ArticuloTB;
 import model.CompraADO;
 import model.CompraTB;
 import model.DBUtil;
+import model.ImpuestoADO;
+import model.ImpuestoTB;
 import model.ProveedorTB;
 import model.RepresentanteTB;
 import net.sf.jasperreports.engine.JRException;
@@ -46,23 +53,23 @@ import net.sf.jasperreports.view.JasperViewer;
 public class FxCompraDetalleController implements Initializable {
 
     @FXML
-    private AnchorPane window;
+    private ScrollPane window;
     @FXML
     private Text lblFechaCompra;
     @FXML
-    private Text lblDocumento;
+    private Label lblDocumento;
     @FXML
-    private Text lblProveedor;
+    private Label lblProveedor;
     @FXML
-    private Text lblDomicilio;
+    private Label lblDomicilio;
     @FXML
-    private Text lblContacto;
+    private Label lblContacto;
     @FXML
-    private Text lblRepresentante;
+    private Label lblRepresentante;
     @FXML
-    private Text lblComprobante;
+    private Label lblComprobante;
     @FXML
-    private Text lblNumeracion;
+    private Label lblNumeracion;
     @FXML
     private Text lblTotal;
     @FXML
@@ -72,7 +79,7 @@ public class FxCompraDetalleController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcDescripcion;
     @FXML
-    private TableColumn<ArticuloTB, Double> tcCantidad;
+    private TableColumn<ArticuloTB, String> tcCantidad;
     @FXML
     private TableColumn<ArticuloTB, String> tcMedidad;
     @FXML
@@ -80,17 +87,49 @@ public class FxCompraDetalleController implements Initializable {
     @FXML
     private TableColumn<ArticuloTB, String> tcDescuento;
     @FXML
+    private TableColumn<ArticuloTB, String> tcImpuesto;
+    @FXML
     private TableColumn<ArticuloTB, String> tcImporte;
     @FXML
     private Label lblLoad;
+    @FXML
+    private Text lblSubTotal;
+    @FXML
+    private Text lblDescuento;
+    @FXML
+    private Text lblSubTotalNuevo;
+    @FXML
+    private VBox hbAgregarImpuesto;
+    @FXML
+    private Label lblObservacion;
+    @FXML
+    private Label lblNotas;
+    @FXML
+    private Label lblTotalCompra;
+
+    private double subImporte;
+
+    private double descuento;
+
+    private double subTotalImporte;
+
+    private double totalImporte;
 
     private FxComprasRealizadasController comprascontroller;
 
+    private AnchorPane windowinit;
+
+    private AnchorPane vbContent;
+
     private String idCompra;
+
+    private String simboloMoneda;
+
+    private ArrayList<ImpuestoTB> arrayArticulos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
+//        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         tcId.setCellValueFactory(callData -> callData.getValue().getId().asObject());
 
         tcDescripcion.setCellValueFactory(callData -> Bindings.concat(
@@ -101,17 +140,26 @@ public class FxCompraDetalleController implements Initializable {
                 cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel"
         ));
 
-        tcCantidad.setCellValueFactory(callData -> new SimpleDoubleProperty(callData.getValue().getCantidad()).asObject());
+        tcCantidad.setCellValueFactory(callData -> Bindings.concat(Tools.roundingValue(callData.getValue().getCantidad(), 2)));
 
         tcPrecioCompra.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
+                simboloMoneda + "" + Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
 
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getDescuento(), 2)));
+                Tools.roundingValue(cellData.getValue().getDescuento(), 2) + "%"));
+
+        tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(
+                Tools.roundingValue(cellData.getValue().getImpuestoValor(), 2) + "%"));
 
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getTotalImporte(), 2)));
+                simboloMoneda + "" + Tools.roundingValue(cellData.getValue().getTotalImporte(), 2)));
 
+        arrayArticulos = new ArrayList<>();
+        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
+            arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+        });
+
+        simboloMoneda = "M";
     }
 
     private void fillArticlesTable(String value) {
@@ -130,6 +178,7 @@ public class FxCompraDetalleController implements Initializable {
         task.setOnSucceeded((WorkerStateEvent e) -> {
             tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
             lblLoad.setVisible(false);
+            calcularTotales();
         });
         task.setOnFailed((WorkerStateEvent event) -> {
             lblLoad.setVisible(false);
@@ -151,14 +200,16 @@ public class FxCompraDetalleController implements Initializable {
         ProveedorTB proveedorTB = (ProveedorTB) objects.get(1);
         RepresentanteTB representanteTB = (RepresentanteTB) objects.get(2);
 
-        if (compraTB != null) {            
+        if (compraTB != null) {
             lblFechaCompra.setText(compraTB.getFechaCompra().get().format(DateTimeFormatter.ofPattern("EEEE d 'de' MMMM 'de' yyyy")));
             lblComprobante.setText(compraTB.getComprobanteName());
             lblNumeracion.setText(compraTB.getNumeracion());
-            lblTotal.setText("S/. " + Tools.roundingValue(compraTB.getTotal().get(), 2));
-
+            lblObservacion.setText(compraTB.getObservaciones());
+            lblNotas.setText(compraTB.getNotas());
+            lblTotalCompra.setText(compraTB.getTipoMonedaName() + " " + Tools.roundingValue(compraTB.getTotal().get(), 2));
+            simboloMoneda = compraTB.getTipoMonedaName();
         }
-        
+
         if (proveedorTB != null) {
             lblDocumento.setText(proveedorTB.getNumeroDocumento().get());
             lblProveedor.setText(proveedorTB.getRazonSocial().get());
@@ -168,21 +219,74 @@ public class FxCompraDetalleController implements Initializable {
             lblContacto.setText("Tel: " + proveedorTB.getTelefono() + " Cel: " + proveedorTB.getCelular());
         }
 
-       
         if (representanteTB != null) {
             lblRepresentante.setText(
                     representanteTB.getApellidos() + " " + representanteTB.getNombres() + " - "
                     + representanteTB.getTelefono() + " " + representanteTB.getCelular()
             );
-        }else{
+        } else {
             lblRepresentante.setText("No tiene un representante registrado");
         }
 
         fillArticlesTable(idCompra);
+
     }
 
-    @FXML
-    private void onActionReporte(ActionEvent event) throws UnsupportedLookAndFeelException {
+    private void calcularTotales() {
+
+        tvList.getItems().forEach(e -> subImporte += e.getSubImporte());
+        lblSubTotal.setText(simboloMoneda + " " + Tools.roundingValue(subImporte, 2));
+        subImporte = 0;
+
+        tvList.getItems().forEach(e -> descuento += e.getDescuentoSumado());
+        lblDescuento.setText(simboloMoneda + " " + Tools.roundingValue(descuento, 2));
+        descuento = 0;
+
+        tvList.getItems().forEach(e -> subTotalImporte += e.getSubImporteDescuento());
+        lblSubTotalNuevo.setText(simboloMoneda + " " + Tools.roundingValue(subTotalImporte, 2));
+        subTotalImporte = 0;
+
+        hbAgregarImpuesto.getChildren().clear();
+        boolean addElement = false;
+        double sumaElement = 0;
+        for (int k = 0; k < arrayArticulos.size(); k++) {
+            for (int i = 0; i < tvList.getItems().size(); i++) {
+                if (arrayArticulos.get(k).getIdImpuesto() == tvList.getItems().get(i).getImpuestoArticulo()) {
+                    addElement = true;
+                    sumaElement += tvList.getItems().get(i).getImpuestoSumado();
+                }
+            }
+            if (addElement) {
+                addElementImpuesto(arrayArticulos.get(k).getIdImpuesto() + "", arrayArticulos.get(k).getNombre(), simboloMoneda + " " + Tools.roundingValue(sumaElement, 2));
+                addElement = false;
+                sumaElement = 0;
+            }
+        }
+
+        tvList.getItems().forEach(e -> totalImporte += e.getTotalImporte());
+        lblTotal.setText(simboloMoneda + " " + Tools.roundingValue(totalImporte, 2));
+        totalImporte = 0;
+
+    }
+
+    private void addElementImpuesto(String id, String titulo, String total) {
+        Text text = new Text(titulo);
+        text.setStyle("-fx-fill:#020203;");
+        text.getStyleClass().add("labelRobotoMedium16");
+
+        Text text1 = new Text(total);
+        text1.setStyle("-fx-fill:#004865;");
+        text1.getStyleClass().add("labelRobotoMedium16");
+
+        HBox hBox = new HBox(text, text1);
+        hBox.setStyle("-fx-padding: 0.5em 0  0.5em 0;-fx-spacing:1em");
+        hBox.setAlignment(Pos.CENTER_RIGHT);
+        hBox.setId(id);
+
+        hbAgregarImpuesto.getChildren().add(hBox);
+    }
+
+    private void onEventReporte() {
         try {
             DBUtil.dbConnect();
             InputStream dir = getClass().getResourceAsStream("/report/DetalleCompra.jasper");
@@ -205,7 +309,7 @@ public class FxCompraDetalleController implements Initializable {
             map.put("PROTELEFONOCELULAR", lblContacto.getText());
             map.put("PROEMAIL", Session.EMAIL);
             map.put("TOTAL", lblTotal.getText());
-            
+
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, DBUtil.getConnection());
 
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -220,15 +324,44 @@ public class FxCompraDetalleController implements Initializable {
         } catch (HeadlessException | JRException ex) {
             System.out.println("Error al generar el reporte : " + ex);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(FxCompraDetalleController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error al generar el reporte : " + ex);
         } finally {
             DBUtil.dbDisconnect();
         }
     }
 
-    public void setInitComptrasController(FxComprasRealizadasController comprascontroller) {
-        this.comprascontroller = comprascontroller;
+    @FXML
+    private void onKeyPressedImprimir(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventReporte();
+        }
     }
 
+    @FXML
+    private void onActionImprimir(ActionEvent event) {
+        onEventReporte();
+    }
+
+    @FXML
+    private void onMouseClickedBehind(MouseEvent event) throws IOException {
+        vbContent.getChildren().remove(window);
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_COMPRASREALIZADAS));
+        VBox node = fXMLPrincipal.load();
+        FxComprasRealizadasController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit, vbContent);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        vbContent.getChildren().add(node);
+        controller.fillPurchasesTable("");
+    }
+
+    public void setInitComptrasController(FxComprasRealizadasController comprascontroller, AnchorPane windowinit, AnchorPane vbContent) {
+        this.comprascontroller = comprascontroller;
+        this.windowinit = windowinit;
+        this.vbContent = vbContent;
+    }
 
 }

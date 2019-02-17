@@ -36,8 +36,6 @@ public class FxLoteProcesoController implements Initializable {
     @FXML
     private TableColumn<LoteTB, String> tcLote;
     @FXML
-    private TableColumn<LoteTB, String> tcFabricacion;
-    @FXML
     private TableColumn<LoteTB, String> tcCaducidad;
     @FXML
     private TableColumn<LoteTB, String> tcCantidad;
@@ -75,10 +73,7 @@ public class FxLoteProcesoController implements Initializable {
     }
 
     public void initTableView() {
-        tcLote.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroLote()));
-        tcFabricacion.setCellValueFactory(cellData
-                -> Bindings.concat(cellData.getValue().getFechaFabricacion().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)))
-        );
+        tcLote.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroLote()));       
         tcCaducidad.setCellValueFactory(cellData
                 -> Bindings.concat(cellData.getValue().getFechaCaducidad().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)))
         );
@@ -148,11 +143,9 @@ public class FxLoteProcesoController implements Initializable {
             stage.sizeToScene();
             stage.show();
             controller.setEditBatch(new String[]{
-                String.valueOf(tvList.getSelectionModel().getSelectedIndex()),
-                String.valueOf(tvList.getSelectionModel().getSelectedItem().getTipoLote()),
+                String.valueOf(tvList.getSelectionModel().getSelectedIndex()),               
                 String.valueOf(tvList.getSelectionModel().getSelectedItem().getNumeroLote()),
-                String.valueOf(tvList.getSelectionModel().getSelectedItem().getExistenciaInicial()),
-                String.valueOf(tvList.getSelectionModel().getSelectedItem().getFechaFabricacion()),
+                String.valueOf(tvList.getSelectionModel().getSelectedItem().getExistenciaInicial()),               
                 String.valueOf(tvList.getSelectionModel().getSelectedItem().getFechaCaducidad())
             });
         }
@@ -172,7 +165,7 @@ public class FxLoteProcesoController implements Initializable {
             listLote.forEach((loteTB) -> {
                 articuloCompraController.getComprasController().getLoteTBs().add(loteTB);
             });
-//            articuloCompraController.setValidarlote(false);
+            articuloCompraController.setValidarlote(false);
             articuloCompraController.setCantidadInicial(cantidad);
             Tools.Dispose(window);
             articuloCompraController.addArticuloList();
@@ -181,14 +174,12 @@ public class FxLoteProcesoController implements Initializable {
         }
     }
 
-    @FXML
     private void onKeyPressedGenerar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             openWindowAgregar(true);
         }
     }
 
-    @FXML
     private void onActionGenerar(ActionEvent event) throws IOException {
         openWindowAgregar(true);
     }

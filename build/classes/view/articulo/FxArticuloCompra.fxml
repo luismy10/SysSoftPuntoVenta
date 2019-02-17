@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -95,7 +94,11 @@
                               </VBox>
                               <VBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <RadioButton fx:id="rbPorcentaje" mnemonicParsing="false" onAction="#onActionPorcentaje" selected="true" styleClass="labelRoboto14" text="Por porcentaje %" />
+                                    <Label styleClass="labelRoboto14" text="Descuento por porcentaje %" textFill="#23283a">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
                                     <TextField fx:id="txtDescuento" onAction="#onActionAdd" onKeyTyped="#onKeyTypedDescuento" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>

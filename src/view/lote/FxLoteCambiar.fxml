@@ -26,7 +26,7 @@
                         <Image url="@../purchases.png" />
                      </image>
                   </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium20" text="Agregar lote" />
+                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="Agregar lote" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" spacing="10.0">
@@ -49,15 +49,13 @@
                   <TextField fx:id="txtCantidad" onAction="#onActionAgregar" onKeyTyped="#onKeyTypedCantidad" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" spacing="10.0">
+            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" spacing="10.0" VBox.vgrow="ALWAYS">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
                <children>
-                  <Label styleClass="labelRoboto14" text="Fecha de Fabricación:" />
-                  <DatePicker fx:id="dtFabricacion" prefHeight="30.0" prefWidth="160.0" />
                   <Label styleClass="labelRoboto14" text="Fecha de caducidad:" />
-                  <DatePicker fx:id="dtCaducidad" prefHeight="30.0" prefWidth="160.0" />
+                  <DatePicker fx:id="dtCaducidad" prefHeight="30.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" minHeight="-Infinity" spacing="10.0" style="-fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">

@@ -16,10 +16,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -42,27 +45,30 @@ public class FxLoteController implements Initializable {
     @FXML
     private TableColumn<LoteTB, String> tcArticulo;
     @FXML
-    private TableColumn<LoteTB, String> tcFabricacion;
-    @FXML
     private TableColumn<LoteTB, String> tcCaducidad;
     @FXML
     private TableColumn<LoteTB, String> tcInicial;
     @FXML
     private TableColumn<LoteTB, String> tcActual;
     @FXML
-    private TextField txtSearch;
-
-    private AnchorPane content;
+    private TextField txtSearch;   
+    @FXML
+    private DatePicker dtFechaInicial;
+    @FXML
+    private DatePicker dtFechaFinal;
+    
+     private AnchorPane content;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcNumeroLote.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroLote()));
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getArticuloTB().getClave() + "\n" + cellData.getValue().getArticuloTB().getNombreMarca()));
-        tcFabricacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaFabricacion().format(DateTimeFormatter.ofPattern("E, MMM dd yyyy"))));
         tcCaducidad.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCaducidad().format(DateTimeFormatter.ofPattern("E, MMM dd yyyy"))));
         tcInicial.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getExistenciaInicial()));
-        tcActual.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getExistenciaActual()));
+        tcActual.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getExistenciaActual()));        
+        Tools.actualDate(Tools.getDate(), dtFechaInicial);
+        Tools.actualDate(Tools.getDate(), dtFechaFinal);
     }
 
     private void InitializationTransparentBackground() {
@@ -86,8 +92,7 @@ public class FxLoteController implements Initializable {
             tvList.getSelectionModel().getSelectedItem().getArticuloTB().getClave(),
             tvList.getSelectionModel().getSelectedItem().getArticuloTB().getNombreMarca(),
             tvList.getSelectionModel().getSelectedItem().getExistenciaActual() + "",
-            tvList.getSelectionModel().getSelectedItem().getFechaCaducidad() + "",
-            tvList.getSelectionModel().getSelectedItem().getFechaFabricacion() + ""
+            tvList.getSelectionModel().getSelectedItem().getFechaCaducidad() + ""
         });
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Editar lote", window.getScene().getWindow());
@@ -150,8 +155,20 @@ public class FxLoteController implements Initializable {
     private void onActionReload(ActionEvent event) {
         fillLoteTable("");
     }
+    
+    @FXML
+    private void onActionReporte(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            
+        }
+    }
 
-    void setContent(AnchorPane content) {
+    @FXML
+    private void onActionReporte(ActionEvent event) {
+        
+    }
+    
+    public void setContent(AnchorPane content) {
         this.content = content;
     }
 

@@ -210,7 +210,7 @@ public class FxArticuloProcesoController implements Initializable {
                 txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidad(), 2));
             } else {
                 rbGranel.setSelected(true);
-                txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidadGranel(), 2));
+                txtCantidadActual.setText(Tools.roundingValue(articuloTB.getCantidad(), 2));
             }
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();

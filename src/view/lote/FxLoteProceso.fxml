@@ -58,15 +58,6 @@
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                            <children>
                               <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Agregar o generar un lote para el artículo" />
-                              <Button mnemonicParsing="false" onAction="#onActionGenerar" onKeyPressed="#onKeyPressedGenerar" styleClass="buttonLight" text="Generar">
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../generar.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
                               <Button mnemonicParsing="false" onAction="#onActionAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLight" text="Agregar">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -101,7 +92,6 @@
                               <TableView fx:id="tvList" prefHeight="303.0" prefWidth="650.0" HBox.hgrow="ALWAYS">
                                 <columns>
                                   <TableColumn fx:id="tcLote" prefWidth="140.0" text="N° Lote" />
-                                  <TableColumn fx:id="tcFabricacion" prefWidth="180.0" text="Fecha de fabricación" />
                                     <TableColumn fx:id="tcCaducidad" prefWidth="180.0" text="Fecha de caducidad" />
                                     <TableColumn fx:id="tcCantidad" prefWidth="142.0" text="Cantidad" />
                                 </columns>

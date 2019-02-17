@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -18,7 +19,7 @@ public class FxConsultasController implements Initializable {
     @FXML
     private TextField txtSearch;
 
-    private AnchorPane content;
+    private AnchorPane vbContent;
 
     private AnchorPane windowinit;
 
@@ -31,27 +32,26 @@ public class FxConsultasController implements Initializable {
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_COMPRASREALIZADAS));
         VBox node = fXMLPrincipal.load();
         FxComprasRealizadasController controller = fXMLPrincipal.getController();
-        controller.setContent(windowinit);
-        content.getChildren().clear();
+        controller.setContent(windowinit,vbContent);
+        vbContent.getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
-        content.getChildren().add(node);
+        vbContent.getChildren().add(node);
         controller.fillPurchasesTable("");
-
     }
 
     private void openWindowDirectory() throws IOException {
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_DIRECTORIO));
         VBox node = fXMLPrincipal.load();
         FxDirectorioController controller = fXMLPrincipal.getController();
-        content.getChildren().clear();
+        vbContent.getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
-        content.getChildren().add(node);
+        vbContent.getChildren().add(node);
         controller.fillEmployeeTable("");
 
     }
@@ -61,12 +61,12 @@ public class FxConsultasController implements Initializable {
         VBox node = fXMLPrincipal.load();
         FxArticuloHistorialController controller = fXMLPrincipal.getController();
         controller.setContent(windowinit);
-        content.getChildren().clear();
+        vbContent.getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
-        content.getChildren().add(node);
+        vbContent.getChildren().add(node);
     }
 
     private void openWindowVentas() throws IOException {
@@ -74,12 +74,12 @@ public class FxConsultasController implements Initializable {
         VBox node = fXMLPrincipal.load();
         FxVentaRealizadasController controller = fXMLPrincipal.getController();
         controller.setContent(windowinit);
-        content.getChildren().clear();
+        vbContent.getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
-        content.getChildren().add(node);     
+        vbContent.getChildren().add(node);
     }
 
     private void openWindowInvetario() throws IOException {
@@ -87,12 +87,12 @@ public class FxConsultasController implements Initializable {
         VBox node = fXMLPrincipal.load();
         FxInventarioGeneralController controller = fXMLPrincipal.getController();
         controller.setContent(windowinit);
-        content.getChildren().clear();
+        vbContent.getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
-        content.getChildren().add(node);
+        vbContent.getChildren().add(node);
         controller.fillInventarioTable();
     }
 
@@ -157,9 +157,9 @@ public class FxConsultasController implements Initializable {
         openWindowInvetario();
     }
 
-    public void setContent(AnchorPane windowinit, AnchorPane content) {
+    public void setContent(AnchorPane windowinit, AnchorPane vbContent) {
         this.windowinit = windowinit;
-        this.content = content;
+        this.vbContent = vbContent;
     }
 
 }

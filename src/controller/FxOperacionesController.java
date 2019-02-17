@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -90,7 +91,7 @@ public class FxOperacionesController implements Initializable {
 
     private void openWindowCompras() throws IOException {
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_COMPRAS));
-        VBox node = fXMLPrincipal.load();
+        ScrollPane node = fXMLPrincipal.load();
         FxComprasController controller = fXMLPrincipal.getController();
         controller.setContent(windowinit);
         content.getChildren().clear();

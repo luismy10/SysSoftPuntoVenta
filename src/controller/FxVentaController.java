@@ -200,7 +200,6 @@ public class FxVentaController implements Initializable {
             for (int i = 0; i < cbMoneda.getItems().size(); i++) {
                 if (cbMoneda.getItems().get(i).getPredeterminado() == true) {
                     cbMoneda.getSelectionModel().select(i);
-                    Session.DEFAULT_MONEDA = i;
                     break;
                 }
             }
@@ -460,7 +459,14 @@ public class FxVentaController implements Initializable {
         lblTotalPagar.setText("0.00");
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
 
-        cbMoneda.getSelectionModel().select(Session.DEFAULT_MONEDA);
+        if (!cbMoneda.getItems().isEmpty()) {
+            for (int i = 0; i < cbMoneda.getItems().size(); i++) {
+                if (cbMoneda.getItems().get(i).getPredeterminado() == true) {
+                    cbMoneda.getSelectionModel().select(i);
+                    break;
+                }
+            }
+        }
         cbComprobante.getSelectionModel().select(Session.DEFAULT_COMPROBANTE);
         txtSearch.requestFocus();
     }

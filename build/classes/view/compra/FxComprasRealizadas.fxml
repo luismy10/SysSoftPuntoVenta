@@ -4,6 +4,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -27,7 +28,7 @@
                               <Image url="@../purchases.png" />
                            </image>
                         </ImageView>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Compras realizadas" />
+                        <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Compras realizadas" />
                         <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textOverrun="CLIP" visible="false">
                            <font>
                               <Font name="Roboto" size="14.0" />
@@ -73,7 +74,7 @@
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../reports.png" />
+                                          <Image url="@../complete.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -90,34 +91,60 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Fecha inicial:" textFill="#1a2226">
-                                             <font>
-                                                <Font name="Calibri" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <DatePicker fx:id="dtFechaInicial" editable="false" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="200.0" />
-                                          <Label styleClass="labelRoboto14" text="Fecha final:" textFill="#1a2226">
-                                             <font>
-                                                <Font name="Calibri" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <DatePicker fx:id="dtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="200.0" />
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
+                                             <children>
+                                                <Label styleClass="labelRoboto14" text="Fecha inicial:" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                   <graphic>
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../calendar.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Label>
+                                                <DatePicker fx:id="dtFechaInicial" editable="false" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="200.0" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
+                                             <children>
+                                                <Label styleClass="labelRoboto14" text="Fecha final:" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                   <graphic>
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../calendar.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Label>
+                                                <DatePicker fx:id="dtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="200.0" />
+                                             </children>
+                                          </HBox>
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <Separator prefWidth="200.0" />
+                                    <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Buscar por Proveedor o Serie/Numeración" textFill="#1a2226">
+                                          <Label styleClass="labelRoboto14" text="Buscar por Proveedor o Serie/Numeración" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../search.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
                                           </Label>
+                                          <TextField fx:id="txtSearch" onAction="#onActionSearch" onKeyReleased="#onKeyReleasedSeach" prefHeight="30.0" promptText="Buscar...." />
                                        </children>
-                                    </HBox>
-                                    <HBox spacing="10.0">
-                                       <children>
-                                          <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSearch" onKeyReleased="#onKeyReleasedSeach" prefHeight="30.0" promptText="Buscar...." HBox.hgrow="ALWAYS" />
-                                       </children>
-                                    </HBox>
+                                    </VBox>
                                  </children>
                               </VBox>
                            </children>

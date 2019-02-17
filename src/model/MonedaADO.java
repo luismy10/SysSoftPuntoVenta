@@ -266,14 +266,14 @@ public class MonedaADO {
             PreparedStatement statement = null;
             ResultSet resultSet = null;            
             try {
-                statement = DBUtil.getConnection().prepareStatement("SELECT IdMoneda,Nombre,Predeterminado FROM MonedaTB");
+                statement = DBUtil.getConnection().prepareStatement("SELECT IdMoneda,Nombre,Simbolo,Predeterminado FROM MonedaTB");
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
                     MonedaTB monedaTB = new MonedaTB();
                     monedaTB.setIdMoneda(resultSet.getInt("IdMoneda"));
                     monedaTB.setNombre(resultSet.getString("Nombre"));
-                    monedaTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
                     monedaTB.setSimbolo(resultSet.getString("Simbolo")); 
+                    monedaTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));                    
                     list.add(monedaTB);
                 }
             } catch (SQLException ex) {
