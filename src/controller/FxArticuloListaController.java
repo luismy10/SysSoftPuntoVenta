@@ -65,7 +65,7 @@ public class FxArticuloListaController implements Initializable {
                 cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()
         )
         );
-        tcMarca.setCellValueFactory(cellData -> cellData.getValue().getMarcaName());
+        tcMarca.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMarcaName()));
         tcExistencias.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
         tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVenta(), 2)));
         tcUnidadVenta.setCellValueFactory(cellData -> Bindings.concat(

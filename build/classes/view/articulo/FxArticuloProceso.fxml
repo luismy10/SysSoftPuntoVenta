@@ -210,12 +210,12 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Precio compra" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Impuesto(Espacio)" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtPrecioCompra" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedPrecioCompra" prefHeight="30.0" promptText="0.00" />
+                                                      <TextField fx:id="txtImpuesto" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedImpuesto" onKeyTyped="#onKeyTypedImpuesto" onMouseClicked="#onMouseClickedImpuesto" prefHeight="30.0" promptText="\%" VBox.vgrow="ALWAYS" />
                                                    </children>
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
@@ -235,23 +235,23 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
+                                                      <Label styleClass="labelRoboto14" text="Precio compra" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField fx:id="txtPrecioCompra" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedPrecioCompra" prefHeight="30.0" promptText="0.00" />
+                                                   </children>
+                                                </VBox>
+                                                <Separator orientation="VERTICAL" />
+                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                                   <children>
                                                       <Label styleClass="labelRoboto14" text="Precio de venta" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
                                                       <TextField fx:id="txtPrecioVenta" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedPrecioVenta" prefHeight="30.0" promptText="0.00" VBox.vgrow="ALWAYS" />
-                                                   </children>
-                                                </VBox>
-                                                <Separator orientation="VERTICAL" />
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" text="Impuesto(Espacio)" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <TextField fx:id="txtImpuesto" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedImpuesto" onKeyTyped="#onKeyTypedImpuesto" onMouseClicked="#onMouseClickedImpuesto" prefHeight="30.0" VBox.vgrow="ALWAYS" />
                                                    </children>
                                                 </VBox>
                                              </children>

@@ -92,6 +92,5 @@ public class LoteTB {
     public void setArticuloTB(ArticuloTB articuloTB) {
         this.articuloTB = articuloTB;
     }
-    
 
 }

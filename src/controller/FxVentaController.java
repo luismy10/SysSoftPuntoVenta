@@ -187,6 +187,7 @@ public class FxVentaController implements Initializable {
                     break;
                 }
             }
+
         }
 
         txtCliente.setText(Session.DATOSCLIENTE);
@@ -203,11 +204,14 @@ public class FxVentaController implements Initializable {
                     break;
                 }
             }
+            String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
+            lblSerie.setText(array[0]);
+            lblNumeracion.setText(array[1]);
         }
 
-        String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
-        lblSerie.setText(array[0]);
-        lblNumeracion.setText(array[1]);
+//       String[] array = ComprobanteADO.GetSerieNumeracion().split("-");
+//        lblSerie.setText(array[0]);
+//        lblNumeracion.setText(array[1]);
     }
 
     private void initTable() {

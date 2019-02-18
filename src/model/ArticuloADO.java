@@ -44,7 +44,7 @@ public class ArticuloADO {
                     preparedArticulo.setDouble(11, articuloTB.getPrecioVenta());
                     preparedArticulo.setShort(12, articuloTB.getMargen());
                     preparedArticulo.setDouble(13, articuloTB.getUtilidad());
-                    preparedArticulo.setInt(14, articuloTB.getUnidadMedida());
+                    preparedArticulo.setInt(14, articuloTB.getUnidadCompra());
                     preparedArticulo.setInt(15, articuloTB.getUnidadVenta());
                     preparedArticulo.setInt(16, articuloTB.getEstado());
                     preparedArticulo.setBoolean(17, articuloTB.isLote());
@@ -111,7 +111,7 @@ public class ArticuloADO {
                     preparedArticulo.setShort(13, articuloTB.getMargen());
                     preparedArticulo.setDouble(14, articuloTB.getUtilidad());
                     preparedArticulo.setDouble(15, 0);            
-                    preparedArticulo.setInt(16, articuloTB.getUnidadMedida());
+                    preparedArticulo.setInt(16, articuloTB.getUnidadCompra());
                     preparedArticulo.setInt(17, articuloTB.getUnidadVenta());                    
                     preparedArticulo.setInt(18, articuloTB.getEstado());
                     preparedArticulo.setBoolean(19, articuloTB.isLote());
@@ -374,8 +374,8 @@ public class ArticuloADO {
                 articuloTB.setMarcaName(rsEmps.getString("MarcaNombre"));
                 articuloTB.setPresentacion(rsEmps.getInt("Presentacion"));
                 articuloTB.setPresentacionName(rsEmps.getString("PresentacionNombre"));
-                articuloTB.setUnidadMedida(rsEmps.getInt("UnidadCompra"));
-                articuloTB.setUnidadMedidaName(rsEmps.getString("UnidadCompraNombre"));
+                articuloTB.setUnidadCompra(rsEmps.getInt("UnidadCompra"));
+                articuloTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));              
                 articuloTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
                 articuloTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));

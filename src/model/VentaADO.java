@@ -67,7 +67,7 @@ public class VentaADO {
 
             detalle_venta = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleVentaTB(IdVenta,IdArticulo,Cantidad,PrecioUnitario,Descuento,Importe)VALUES(?,?,?,?,?,?)");
 
-            articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad - ?,CantidadGranel = CantidadGranel - ? WHERE IdArticulo = ?");
+            articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad - ? WHERE IdArticulo = ?");
 
             preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("INSERT INTO HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
                     + "VALUES(?,GETDATE(),?,?,?,?,?)");
@@ -105,8 +105,8 @@ public class VentaADO {
 
                 if (tvList.getItems().get(i).isInventario()) {
                     articulo_update.setDouble(1, tvList.getItems().get(i).getCantidad());
-                    articulo_update.setDouble(2, tvList.getItems().get(i).getTotalImporte());
-                    articulo_update.setString(3, tvList.getItems().get(i).getIdArticulo());
+//                    articulo_update.setDouble(2, tvList.getItems().get(i).getTotalImporte());
+                    articulo_update.setString(2, tvList.getItems().get(i).getIdArticulo());
                     articulo_update.addBatch();
 
                     preparedHistorialArticulo.setString(1, tvList.getItems().get(i).getIdArticulo());

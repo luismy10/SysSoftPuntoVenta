@@ -253,46 +253,47 @@ public class FxVentaDetalleController implements Initializable {
                 p.printTextWrap(count, 0, 0, 40, "\n");
 
                 p.toFile("c:\\temp\\impresion.txt");
-                File file = new File("c:\\temp\\impresion.txt");
-                FileInputStream inputStream = null;
-                try {
-                    try {
-                        inputStream = new FileInputStream(file);
-                    } catch (FileNotFoundException ex) {
-
-                    }
-                    if (inputStream == null) {
-                        return;
-                    }
-                    DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
-                    PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
-                    PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
-                    PrintService service = findPrintService(Session.NAME_IMPRESORA, printService);
-                    DocPrintJob job = service.createPrintJob();
-
-                    byte[] bytes = readFileToByteArray(file);
-                    byte[] cutP = new byte[]{0x1d, 'V', 1};
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    outputStream.write(bytes);
-                    outputStream.write(cutP);
-                    byte c[] = outputStream.toByteArray();
-
-                    Doc doc = new SimpleDoc(c, flavor, null);
-
-                    job.print(doc, null);
-                } catch (IOException | PrintException e) {
-                    // TODO Auto-generated catch block
-
-                } finally {
-                    if (inputStream != null) {
-                        try {
-                            inputStream.close();
-                        } catch (IOException ex) {
-
-                        }
-                    }
-                }
+//                File file = new File("c:\\temp\\impresion.txt");
+//                FileInputStream inputStream = null;
+//                try {
+//                    try {
+//                        inputStream = new FileInputStream(file);
+//                    } catch (FileNotFoundException ex) {
+//
+//                    }
+//                    if (inputStream == null) {
+//                        return;
+//                    }
+//                    DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
+//                    PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+//                    PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
+//                    PrintService service = findPrintService(Session.NAME_IMPRESORA, printService);
+//                    DocPrintJob job = service.createPrintJob();
+//
+//                    byte[] bytes = readFileToByteArray(file);
+//                    byte[] cutP = new byte[]{0x1d, 'V', 1};
+//                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//                    outputStream.write(bytes);
+//                    outputStream.write(cutP);
+//                    byte c[] = outputStream.toByteArray();
+//
+//                    Doc doc = new SimpleDoc(c, flavor, null);
+//
+//                    job.print(doc, null);
+//                } catch (IOException | PrintException e) {
+//                    // TODO Auto-generated catch block
+//
+//                } finally {
+//                    if (inputStream != null) {
+//                        try {
+//                            inputStream.close();
+//                        } catch (IOException ex) {
+//
+//                        }
+//                    }
+//                }
             } catch (Exception e) {
+                System.out.println("Error de impresion de venta: "+e);
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Venta", "Error al imprimir, configure correctamente su impresora.", false);
             }
         } else {

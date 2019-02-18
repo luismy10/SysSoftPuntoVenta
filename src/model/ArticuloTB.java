@@ -16,15 +16,16 @@ public class ArticuloTB {
     private String nombreMarca;
     private String nombreGenerico;
     private int categoria;
-    private SimpleStringProperty categoriaName;
+    private String categoriaName;
     private int marcar;
-    private SimpleStringProperty marcaName;
-    private int unidadMedida;
-    private SimpleStringProperty unidadMedidaName;
-    private int presentacion;
-    private SimpleStringProperty presentacionName;
+    private String marcaName;
+    private int unidadCompra;
+    private String unidadCompraName;
     private int unidadVenta;
-    private SimpleStringProperty unidadVentaName;
+    private String unidadVentaName;
+    private int presentacion;
+    private String presentacionName;
+
     private int estado;
 
     private double stockMinimo;
@@ -32,7 +33,7 @@ public class ArticuloTB {
     private double cantidad;
     private double precioCompra;
     private double precioCompraReal;
-    
+
     private double precioVenta;
     private short margen;
     private double utilidad;
@@ -44,13 +45,13 @@ public class ArticuloTB {
     private double descuento;
     private double descuentoSumado;
     private double subImporte;
-    
+
     private double subImporteDescuento;
-    
-    private double totalImporte;   
+
+    private double totalImporte;
     private String imagenTB;
     private ObjectProperty<LocalDate> fechaRegistro;
-    
+
     private int impuestoArticulo;
     private String impuestoArticuloName;
     private double impuestoValor;
@@ -75,8 +76,8 @@ public class ArticuloTB {
         this.clave = clave;
         this.nombreMarca = nombreMarca;
     }
-    
-    public ArticuloTB(String claveAlterna, String nombreMarca,boolean estado) {
+
+    public ArticuloTB(String claveAlterna, String nombreMarca, boolean estado) {
         this.claveAlterna = claveAlterna;
         this.nombreMarca = nombreMarca;
     }
@@ -86,8 +87,6 @@ public class ArticuloTB {
         this.impuestoArticuloName = impuestoArticuloName;
         this.impuestoSumado = impuestoSumado;
     }
-    
-    
 
     public SimpleIntegerProperty getId() {
         return id;
@@ -153,12 +152,12 @@ public class ArticuloTB {
         this.categoria = categoria;
     }
 
-    public SimpleStringProperty getCategoriaName() {
+    public String getCategoriaName() {
         return categoriaName;
     }
 
     public void setCategoriaName(String categoriaName) {
-        this.categoriaName = new SimpleStringProperty(categoriaName);
+        this.categoriaName = categoriaName == null ? "" : categoriaName;
     }
 
     public int getMarcar() {
@@ -169,28 +168,28 @@ public class ArticuloTB {
         this.marcar = marcar;
     }
 
-    public SimpleStringProperty getMarcaName() {
+    public String getMarcaName() {
         return marcaName;
     }
 
     public void setMarcaName(String marcaName) {
-        this.marcaName = new SimpleStringProperty(marcaName);
+        this.marcaName = marcaName == null ? "" : marcaName;
     }
 
-    public int getUnidadMedida() {
-        return unidadMedida;
+    public int getUnidadCompra() {
+        return unidadCompra;
     }
 
-    public void setUnidadMedida(int unidadMedida) {
-        this.unidadMedida = unidadMedida;
+    public void setUnidadCompra(int unidadCompra) {
+        this.unidadCompra = unidadCompra;
     }
 
-    public SimpleStringProperty getUnidadMedidaName() {
-        return unidadMedidaName;
+    public String getUnidadCompraName() {
+        return unidadCompraName;
     }
 
-    public void setUnidadMedidaName(String unidadMedidaName) {
-        this.unidadMedidaName = new SimpleStringProperty(unidadMedidaName);
+    public void setUnidadCompraName(String unidadCompraName) {
+        this.unidadCompraName = unidadCompraName == null ? "" : unidadCompraName;
     }
 
     public int getPresentacion() {
@@ -201,12 +200,12 @@ public class ArticuloTB {
         this.presentacion = presentacion;
     }
 
-    public SimpleStringProperty getPresentacionName() {
+    public String getPresentacionName() {
         return presentacionName;
     }
 
     public void setPresentacionName(String presentacionName) {
-        this.presentacionName = new SimpleStringProperty(presentacionName);
+        this.presentacionName = presentacionName;
     }
 
     public int getEstado() {
@@ -297,7 +296,6 @@ public class ArticuloTB {
         this.subImporte = subImporte;
     }
 
-    
     public double getSubImporteDescuento() {
         return subImporteDescuento;
     }
@@ -305,7 +303,6 @@ public class ArticuloTB {
     public void setSubImporteDescuento(double subImporteDescuento) {
         this.subImporteDescuento = subImporteDescuento;
     }
-    
 
     public double getTotalImporte() {
         return totalImporte;
@@ -314,8 +311,6 @@ public class ArticuloTB {
     public void setTotalImporte(double totalImporte) {
         this.totalImporte = totalImporte;
     }
-
-    
 
     public double getUtilidad() {
         return utilidad;
@@ -357,12 +352,12 @@ public class ArticuloTB {
         this.unidadVenta = unidadVenta;
     }
 
-    public SimpleStringProperty getUnidadVentaName() {
+    public String getUnidadVentaName() {
         return unidadVentaName;
     }
 
     public void setUnidadVentaName(String unidadVentaName) {
-        this.unidadVentaName = new SimpleStringProperty(unidadVentaName);
+        this.unidadVentaName = unidadVentaName;
     }
 
     public short getMargen() {

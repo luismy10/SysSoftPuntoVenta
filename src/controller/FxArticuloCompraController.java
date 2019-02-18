@@ -175,24 +175,17 @@ public class FxArticuloCompraController implements Initializable {
                 : Double.parseDouble(txtDescuento.getText()));
 
         double porcentajeDecimal = articuloTB.getDescuento() / 100.00;
-        System.out.println("Porcentaje" + porcentajeDecimal);
         double porcentajeRestante = costo * porcentajeDecimal;
 
-        System.out.println("Restante" + porcentajeRestante);
 
         articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
-        System.out.println("Descuento sumado" + articuloTB.getDescuentoSumado());
 
         articuloTB.setPrecioCompra(costo - porcentajeRestante);
-        System.out.println("Descuento sumado" + articuloTB.getPrecioCompra());
 
         articuloTB.setPrecioCompraReal(costo);
-        System.out.println("Descuento sumado" + articuloTB.getPrecioCompraReal());
 
         articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioCompraReal());
-        System.out.println("Sub importe" + articuloTB.getSubImporte());
         articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioCompra());
-        System.out.println("Total sumado" + articuloTB.getTotalImporte());
 
         articuloTB.setUtilidad(Tools.isNumeric(txtUtilidad.getText())
                 ? Double.parseDouble(txtUtilidad.getText()) : 0
@@ -208,8 +201,6 @@ public class FxArticuloCompraController implements Initializable {
         articuloTB.setUtilidad(Double.parseDouble(txtUtilidad.getText()));
 
         articuloTB.setLote(lote);
-
-        System.out.println("------------------------------------------------------");
 
         if (!validateStock(comprasController.getTvList(), articuloTB) && !editarArticulo) {
             if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {
@@ -233,19 +224,6 @@ public class FxArticuloCompraController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya hay un artículo con las mismas características.", false);
         }
 
-//        if (validateStock(comprasController.getTvList(), articuloTB) && !validationelemnt) {
-//            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya existe en la lista el artículo", false);
-//        } else if (validationelemnt) {
-//            if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {
-//                openWindowLote(articuloTB);
-//            } else {
-//                comprasController.getTvList().getItems().set(indexcompra, articuloTB);
-//                comprasController.setCalculateTotals();
-//                Tools.Dispose(window);
-//            }
-//        } else {
-//            comprasController.setCalculateTotals();
-//        }
     }
 
     private boolean validateStock(TableView<ArticuloTB> view, ArticuloTB articuloTB) throws IOException {

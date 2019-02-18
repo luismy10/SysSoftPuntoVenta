@@ -112,7 +112,7 @@ public class FxLoteProcesoController implements Initializable {
         calculateBatch();
     }
 
-    private void openWindowAgregar(boolean generate) throws IOException {
+    private void openWindowAgregar() throws IOException {
         URL url = getClass().getResource(Tools.FX_FILE_LOTECAMBIAR);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
@@ -123,10 +123,7 @@ public class FxLoteProcesoController implements Initializable {
         Stage stage = FxWindow.StageLoaderModal(parent, "Agregar Lote", window.getScene().getWindow());
         stage.setResizable(false);
         stage.sizeToScene();
-        stage.show();
-        if (generate) {
-            controller.generateBatch(lblDescripcion.getText());
-        }
+        stage.show();       
     }
 
     private void openWindowEditar() throws IOException {
@@ -174,20 +171,11 @@ public class FxLoteProcesoController implements Initializable {
         }
     }
 
-    private void onKeyPressedGenerar(KeyEvent event) throws IOException {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowAgregar(true);
-        }
-    }
-
-    private void onActionGenerar(ActionEvent event) throws IOException {
-        openWindowAgregar(true);
-    }
 
     @FXML
     private void onKeyPressedAgregar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowAgregar(false);
+            openWindowAgregar();
         }
     }
 
@@ -205,7 +193,7 @@ public class FxLoteProcesoController implements Initializable {
 
     @FXML
     private void onActionAgregar(ActionEvent event) throws IOException {
-        openWindowAgregar(false);
+        openWindowAgregar();
     }
 
     @FXML

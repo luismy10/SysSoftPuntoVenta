@@ -552,6 +552,7 @@
 
 .table-view .table-cell{
     -fx-font-family:"Roboto"; 
+    
     -fx-font-size: 1.1666666666666667em;
     -fx-padding: 0.6666666666666666em;
 }

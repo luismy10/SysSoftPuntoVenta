@@ -1,6 +1,5 @@
 package model;
 
-import controller.Session;
 import java.sql.CallableStatement;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -98,7 +97,7 @@ public class CompraADO {
             }
 //
             for (int i = 0; i < loteTBs.size(); i++) {
-                lote_compra.setString(1, loteTBs.get(i).getNumeroLote());
+                lote_compra.setString(1, loteTBs.get(i).getNumeroLote().equalsIgnoreCase("")?id_compra+loteTBs.get(i).getIdArticulo():loteTBs.get(i).getNumeroLote());
                 lote_compra.setDate(2, Date.valueOf(loteTBs.get(i).getFechaCaducidad()));
                 lote_compra.setDouble(3, loteTBs.get(i).getExistenciaInicial());
                 lote_compra.setDouble(4, loteTBs.get(i).getExistenciaActual());
@@ -232,9 +231,7 @@ public class CompraADO {
     }
 
     public static ObservableList<ArticuloTB> ListDetalleCompra(String value) {
-        String selectStmt = "select a.Clave,a.NombreMarca, d.Cantidad,d.PrecioCompra,d.Descuento,d.IdImpuesto,d.ValorImpuesto,d.ImpuestoSumado,d.Importe,a.UnidadVenta from DetalleCompraTB as d inner join ArticuloTB as a\n"
-                + "on d.IdArticulo = a.IdArticulo\n"
-                + "where IdCompra = ? ";
+        String selectStmt = "{call Sp_Listar_Detalle_Compra(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<ArticuloTB> empList = FXCollections.observableArrayList();
@@ -251,6 +248,7 @@ public class CompraADO {
                 articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
+                articuloTB.setUnidadCompraName(rsEmps.getString("UnidadCompra")); 
                 articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
                 articuloTB.setDescuento(rsEmps.getDouble("Descuento"));
                 articuloTB.setImpuestoArticulo(rsEmps.getInt("IdImpuesto"));

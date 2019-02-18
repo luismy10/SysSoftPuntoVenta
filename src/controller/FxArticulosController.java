@@ -77,11 +77,11 @@ public class FxArticulosController implements Initializable {
         tcDocument.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()
         ));
-        tcMarca.setCellValueFactory(cellData -> cellData.getValue().getMarcaName());
+        tcMarca.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMarcaName()));
         tcUnidadVenta.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel(Peso)"
         ));
-        tcCategoria.setCellValueFactory(cellData -> cellData.getValue().getCategoriaName());
+        tcCategoria.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName()));
         tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
 
         cbCategoria.getItems().add(new DetalleTB(new SimpleIntegerProperty(0), new SimpleStringProperty("-- Seleccione --")));

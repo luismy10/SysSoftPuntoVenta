@@ -153,7 +153,7 @@ public class CompraTB {
     }
 
     public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
+        this.observaciones = observaciones == null ? "" : observaciones;
     }
 
     public String getNotas() {
@@ -161,7 +161,7 @@ public class CompraTB {
     }
 
     public void setNotas(String notas) {
-        this.notas = notas;
+        this.notas = notas == null ? "" : notas;
     }
 
     public ProveedorTB getProveedorTB() {

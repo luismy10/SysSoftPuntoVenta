@@ -26,7 +26,7 @@
                         <Image url="@../purchases.png" />
                      </image>
                   </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="Agregar lote" />
+                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Agregar lote" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" spacing="10.0">
@@ -34,7 +34,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
                <children>
-                  <Label styleClass="labelRoboto14" text="Artículo:" />
+                  <Label styleClass="labelRoboto14" text="Artículo:" textFill="#1a2226" />
                   <TextField fx:id="txtArticulo" disable="true" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
@@ -43,9 +43,9 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
                <children>
-                  <Label prefWidth="52.0" styleClass="labelRoboto14" text="Lote:" />
+                  <Label prefWidth="52.0" styleClass="labelRoboto14" text="Lote:" textFill="#1a2226" />
                   <TextField fx:id="txtLote" onAction="#onActionAgregar" HBox.hgrow="ALWAYS" />
-                  <Label styleClass="labelRoboto14" text="Cantidad:" />
+                  <Label styleClass="labelRoboto14" text="Cantidad:" textFill="#1a2226" />
                   <TextField fx:id="txtCantidad" onAction="#onActionAgregar" onKeyTyped="#onKeyTypedCantidad" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
@@ -54,7 +54,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
                <children>
-                  <Label styleClass="labelRoboto14" text="Fecha de caducidad:" />
+                  <Label styleClass="labelRoboto14" text="Fecha de caducidad:" textFill="#1a2226" />
                   <DatePicker fx:id="dtCaducidad" prefHeight="30.0" />
                </children>
             </HBox>
