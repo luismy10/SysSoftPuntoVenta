@@ -4,12 +4,14 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 public class CompraTB {
 
-    private SimpleIntegerProperty id;
+    /*
+    Atributos para las vistas en general
+     */
+    private int id;
     private String idCompra;
     private String proveedor;
     private String representante;
@@ -28,16 +30,32 @@ public class CompraTB {
     private ProveedorTB proveedorTB;
     private ArticuloTB articuloTB;
 
+    /*
+     Atributos para el reporte
+     */
+    private String fechaCompraReporte;
+    private String serienumeracionReporte;
+    private String proveedorReporte;
+    private String totalReporte;
+
     public CompraTB() {
 
     }
 
-    public SimpleIntegerProperty getId() {
+    public CompraTB(int id, String fechaCompraReporte, String serienumeracionReporte, String proveedorReporte, String totalReporte) {
+        this.id = id;
+        this.fechaCompraReporte = fechaCompraReporte;
+        this.serienumeracionReporte = serienumeracionReporte;
+        this.proveedorReporte = proveedorReporte;
+        this.totalReporte = totalReporte;
+    }
+
+    public int getId() {
         return id;
     }
 
     public void setId(int id) {
-        this.id = new SimpleIntegerProperty(id);
+        this.id = id;
     }
 
     public String getIdCompra() {
@@ -178,6 +196,38 @@ public class CompraTB {
 
     public void setArticuloTB(ArticuloTB articuloTB) {
         this.articuloTB = articuloTB;
+    }
+
+    public String getSerienumeracionReporte() {
+        return serienumeracionReporte;
+    }
+
+    public void setSerienumeracionReporte(String serienumeracionReporte) {
+        this.serienumeracionReporte = serienumeracionReporte;
+    }
+
+    public String getProveedorReporte() {
+        return proveedorReporte;
+    }
+
+    public void setProveedorReporte(String proveedorReporte) {
+        this.proveedorReporte = proveedorReporte;
+    }
+
+    public String getFechaCompraReporte() {
+        return fechaCompraReporte;
+    }
+
+    public void setFechaCompraReporte(String fechaCompraReporte) {
+        this.fechaCompraReporte = fechaCompraReporte;
+    }
+
+    public String getTotalReporte() {
+        return totalReporte;
+    }
+
+    public void setTotalReporte(String totalReporte) {
+        this.totalReporte = totalReporte;
     }
 
 }

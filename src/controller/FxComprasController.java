@@ -315,9 +315,17 @@ public class FxComprasController implements Initializable {
                     articuloTB.setCantidad(e.getCantidad());  
                     articuloTB.setPrecioCompra(e.getPrecioCompra());
                     articuloTB.setPrecioCompraReal(e.getPrecioCompraReal());
+
                     articuloTB.setPrecioVenta(e.getPrecioVenta());
                     articuloTB.setMargen(e.getMargen());
                     articuloTB.setUtilidad(e.getUtilidad());
+                    articuloTB.setPrecioVenta2(e.getPrecioVenta2());
+                    articuloTB.setMargen2(e.getMargen2());
+                    articuloTB.setUtilidad2(e.getUtilidad2());
+                    articuloTB.setPrecioVenta3(e.getPrecioVenta3());
+                    articuloTB.setMargen3(e.getMargen3());
+                    articuloTB.setUtilidad3(e.getUtilidad3());                   
+                    
                     articuloTB.setDescuento(e.getDescuento());
                     articuloTB.setTotalImporte(e.getTotalImporte());
                     articuloTB.setImpuestoArticulo(e.getImpuestoArticulo());

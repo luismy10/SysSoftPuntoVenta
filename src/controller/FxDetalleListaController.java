@@ -151,18 +151,7 @@ public class FxDetalleListaController implements Initializable {
                     procesoController.setIdMedida(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
                     procesoController.getTxtMedida().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
                     Tools.Dispose(window);
-                } 
-//                else if (idMantenimiento.equalsIgnoreCase("0010")) {
-//                    procesoController.setIdImpuesto(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-//                    procesoController.getTxtImpuesto().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
-//                    Tools.Dispose(window);
-//                }
-                else if (idMantenimiento.equalsIgnoreCase("0")) {
-                    procesoController.setIdImpuesto(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                    procesoController.getTxtImpuesto().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
-                    Tools.Dispose(window);
-                }
-
+                }            
             }
         }
     }
@@ -183,11 +172,11 @@ public class FxDetalleListaController implements Initializable {
                     procesoController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
                     procesoController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
                     Tools.Dispose(window);
-                } else if (idMantenimiento.equalsIgnoreCase("0010")) {
-                    procesoController.setIdImpuesto(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                    procesoController.getTxtImpuesto().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                } else if (idMantenimiento.equalsIgnoreCase("0013")) {
+                    procesoController.setIdMedida(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    procesoController.getTxtMedida().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
                     Tools.Dispose(window);
-                }
+                }  
             }
         }
     }

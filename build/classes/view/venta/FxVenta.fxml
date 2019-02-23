@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentaController">
+<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentaController">
    <children>
       <HBox VBox.vgrow="ALWAYS">
          <children>
@@ -51,6 +51,15 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionListaPrecios" onKeyPressed="#onKeyPressedListaPrecios" styleClass="buttonLight" text="Lista de Precios(F3)">
+                                 <graphic>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../prices.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                               <Button mnemonicParsing="false" onAction="#onActionPrecio" onKeyPressed="#onKeyPressedPrecio" styleClass="buttonLight" text="Cambiar Precio(F5)">
                                  <graphic>
                                     <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
@@ -74,15 +83,6 @@
                                     <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../money.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionCancel" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar(F9)">
-                                 <graphic>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../close.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -156,6 +156,15 @@
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../print.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                                <Button mnemonicParsing="false" onAction="#onActionCancel" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar(F9)">
+                                                   <graphic>
+                                                      <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../close.png" />
                                                          </image>
                                                       </ImageView>
                                                    </graphic>

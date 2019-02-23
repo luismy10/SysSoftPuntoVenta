@@ -34,6 +34,8 @@ import model.ArticuloADO;
 import model.ArticuloTB;
 import model.DetalleADO;
 import model.DetalleTB;
+import model.ImpuestoADO;
+import model.ImpuestoTB;
 
 public class FxArticuloProcesoController implements Initializable {
 
@@ -66,8 +68,6 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private TextField txtPrecioCompra;
     @FXML
-    private TextField txtPrecioVenta;
-    @FXML
     private CheckBox cbLote;
     @FXML
     private CheckBox cbInventario;
@@ -80,7 +80,26 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private TextField txtMedida;
     @FXML
-    private TextField txtImpuesto;
+    private TextField txtPrecioVenta1;
+    @FXML
+    private TextField txtMargen1;
+    @FXML
+    private TextField txtUtilidad1;
+    @FXML
+    private TextField txtPrecioVenta2;
+    @FXML
+    private TextField txtMargen2;
+    @FXML
+    private TextField txtUtilidad2;
+    @FXML
+    private TextField txtPrecioVenta3;
+    @FXML
+    private TextField txtMargen3;
+    @FXML
+    private TextField txtUtilidad3;
+
+    @FXML
+    private ComboBox<ImpuestoTB> cbImpuesto;
 
     private String idArticulo;
 
@@ -94,8 +113,6 @@ public class FxArticuloProcesoController implements Initializable {
 
     private int idMedida;
 
-    private int idImpuesto;
-
     private FxArticulosController articulosController;
 
     @Override
@@ -105,11 +122,16 @@ public class FxArticuloProcesoController implements Initializable {
         idPresentacion = 0;
         idCategoria = 0;
         idMarca = 0;
-        idImpuesto = 0;
         ToggleGroup group = new ToggleGroup();
         rbUnidad.setToggleGroup(group);
         rbGranel.setToggleGroup(group);
-
+        txtMargen1.setText("30");
+        txtMargen2.setText("20");
+        txtMargen3.setText("10");
+        cbImpuesto.getItems().clear();
+        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
+            this.cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+        });
     }
 
     public void setInitArticulo() {
@@ -168,7 +190,18 @@ public class FxArticuloProcesoController implements Initializable {
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
             txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
-            txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
+            //agregar la lista de precio
+            txtPrecioVenta1.setText(Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
+            txtMargen1.setText(articuloTB.getMargen() + "");
+            txtUtilidad1.setText(Tools.roundingValue(articuloTB.getUtilidad(), 2));
+
+            txtPrecioVenta2.setText(Tools.roundingValue(articuloTB.getPrecioVenta2(), 2));
+            txtMargen2.setText(articuloTB.getMargen2() + "");
+            txtUtilidad2.setText(Tools.roundingValue(articuloTB.getUtilidad2(), 2));
+
+            txtPrecioVenta3.setText(Tools.roundingValue(articuloTB.getPrecioVenta3(), 2));
+            txtMargen3.setText(articuloTB.getMargen3() + "");
+            txtUtilidad3.setText(Tools.roundingValue(articuloTB.getUtilidad3(), 2));
 
         }
     }
@@ -229,7 +262,18 @@ public class FxArticuloProcesoController implements Initializable {
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
             txtPrecioCompra.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
-            txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
+            //agregar la lista de precio
+            txtPrecioVenta1.setText(Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
+            txtMargen1.setText(articuloTB.getMargen() + "");
+            txtUtilidad1.setText(Tools.roundingValue(articuloTB.getUtilidad(), 2));
+
+            txtPrecioVenta2.setText(Tools.roundingValue(articuloTB.getPrecioVenta2(), 2));
+            txtMargen2.setText(articuloTB.getMargen2() + "");
+            txtUtilidad2.setText(Tools.roundingValue(articuloTB.getUtilidad2(), 2));
+
+            txtPrecioVenta3.setText(Tools.roundingValue(articuloTB.getPrecioVenta3(), 2));
+            txtMargen3.setText(articuloTB.getMargen3() + "");
+            txtUtilidad3.setText(Tools.roundingValue(articuloTB.getUtilidad3(), 2));
 
             if (articuloTB.getImagenTB().equalsIgnoreCase("")) {
                 lnPrincipal.setImage(new Image("/view/no-image.png"));
@@ -238,8 +282,12 @@ public class FxArticuloProcesoController implements Initializable {
             }
 
             if (articuloTB.getImpuestoArticulo() != 0) {
-                idImpuesto = articuloTB.getImpuestoArticulo();
-                txtImpuesto.setText(articuloTB.getImpuestoArticuloName());
+                for (int i = 0; i < cbImpuesto.getItems().size(); i++) {
+                    if (cbImpuesto.getItems().get(i).getIdImpuesto() == articuloTB.getImpuestoArticulo()) {
+                        cbImpuesto.getSelectionModel().select(i);
+                        break;
+                    }
+                }
             }
 
         }
@@ -262,109 +310,127 @@ public class FxArticuloProcesoController implements Initializable {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el nombre de la unidad de medida, por favor.", false);
                         txtMedida.requestFocus();
                     } else {
-                        if (txtImpuesto.getText().isEmpty()) {
+                        if (cbImpuesto.getSelectionModel().getSelectedIndex() < 0) {
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el nombre del impuesto, por favor.", false);
-                            txtImpuesto.requestFocus();
+                            cbImpuesto.requestFocus();
                         } else {
                             if (idMedida <= 0) {
                                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el nombre de la unidad de medida, por favor.", false);
                                 txtMedida.requestFocus();
                             } else {
-                                if (idImpuesto <= 0) {
-                                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el nombre del impuesto, por favor.", false);
-                                    txtImpuesto.requestFocus();
+                                if (!Tools.isNumeric(txtPrecioCompra.getText())) {
+                                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el precio de compra, por favor.", false);
+                                    txtPrecioCompra.requestFocus();
                                 } else {
-                                    if (!Tools.isNumeric(txtPrecioCompra.getText())) {
-                                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el precio de compra, por favor.", false);
-                                        txtPrecioCompra.requestFocus();
+                                    if (!Tools.isNumeric(txtPrecioVenta1.getText())) {
+                                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el primer precio de venta, por favor.", false);
+                                        txtPrecioVenta1.requestFocus();
                                     } else {
-                                        if (!Tools.isNumeric(txtPrecioVenta.getText())) {
-                                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el precio de venta, por favor.", false);
-                                            txtPrecioVenta.requestFocus();
+
+                                        if (!Tools.isNumeric(txtPrecioVenta2.getText())) {
+                                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el segundo precio de venta, por favor.", false);
+                                            txtPrecioVenta2.requestFocus();
                                         } else {
-                                            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Articulo", "¿Esta seguro de continuar?", true);
-                                            if (confirmation == 1) {
-                                                ArticuloTB articuloTB = new ArticuloTB();
-                                                articuloTB.setIdArticulo(idArticulo);
-                                                articuloTB.setClave(txtClave.getText().trim());
-                                                articuloTB.setClaveAlterna(txtClaveAlterna.getText().trim());
-                                                articuloTB.setNombreMarca(txtNombreMarca.getText().trim());
-                                                articuloTB.setNombreGenerico(txtNombreGenerico.getText().trim());
-                                                articuloTB.setImagenTB(selectFile != null
-                                                        ? "./img/" + selectFile.getName()
-                                                        : "");
-                                                articuloTB.setCategoria(idCategoria != 0
-                                                        ? idCategoria
-                                                        : 0);
-                                                articuloTB.setMarcar(idMarca != 0
-                                                        ? idMarca
-                                                        : 0);
-                                                articuloTB.setUnidadCompra(idMedida != 0
-                                                        ? idMedida
-                                                        : 0);
-                                                articuloTB.setPresentacion(idPresentacion != 0
-                                                        ? idPresentacion
-                                                        : 0);
-
-                                                articuloTB.setStockMinimo(Tools.isNumeric(txtStockMinimo.getText())
-                                                        ? Double.parseDouble(txtStockMinimo.getText().trim())
-                                                        : 0);
-
-                                                articuloTB.setStockMaximo(Tools.isNumeric(txtStockMaximo.getText())
-                                                        ? Double.parseDouble(txtStockMaximo.getText().trim())
-                                                        : 0);
-
-                                                articuloTB.setPrecioCompra(Tools.isNumeric(txtPrecioCompra.getText())
-                                                        ? Double.parseDouble(txtPrecioCompra.getText())
-                                                        : 0);
-
-                                                articuloTB.setPrecioVenta(Tools.isNumeric(txtPrecioVenta.getText())
-                                                        ? Double.parseDouble(txtPrecioVenta.getText())
-                                                        : 0);
-                                                if (articuloTB.getPrecioCompra() > 0) {
-                                                    Double porcentaje = (articuloTB.getPrecioVenta() * 100) / articuloTB.getPrecioCompra();
-                                                    int recalculado = (int) Math.abs((100
-                                                            - (Double.parseDouble(
-                                                                    Tools.roundingValue(Double.parseDouble(
-                                                                            Tools.roundingValue(porcentaje, 2)), 0)))));
-
-                                                    articuloTB.setMargen((short) recalculado);
-                                                    articuloTB.setUtilidad(articuloTB.getPrecioVenta() - articuloTB.getPrecioCompra());
-
+                                            if (!Tools.isNumeric(txtPrecioVenta3.getText())) {
+                                                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el tercer precio de venta, por favor.", false);
+                                                txtPrecioVenta3.requestFocus();
+                                            } else {
+                                                if (!Tools.isNumeric(txtMargen1.getText())) {
+                                                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el primer margen, por favor.", false);
+                                                    txtMargen1.requestFocus();
                                                 } else {
-                                                    articuloTB.setMargen((short) 0);
-                                                    articuloTB.setUtilidad(0);
-                                                }
+                                                    if (!Tools.isNumeric(txtMargen2.getText())) {
+                                                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el segundo margen, por favor.", false);
+                                                        txtMargen2.requestFocus();
+                                                    } else {
+                                                        if (!Tools.isNumeric(txtMargen3.getText())) {
+                                                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el tercer margen, por favor.", false);
+                                                            txtMargen3.requestFocus();
+                                                        } else {
 
-                                                articuloTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
-                                                        ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get()
-                                                        : 0);
-                                                articuloTB.setUnidadVenta(rbUnidad.isSelected() ? 1 : 2);
-                                                articuloTB.setLote(cbLote.isSelected());
-                                                articuloTB.setInventario(cbInventario.isSelected());
-                                                articuloTB.setImpuestoArticulo(idImpuesto != 0 ? idImpuesto : 0);
+                                                            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Articulo", "¿Esta seguro de continuar?", true);
+                                                            if (confirmation == 1) {
+                                                                ArticuloTB articuloTB = new ArticuloTB();
+                                                                articuloTB.setIdArticulo(idArticulo);
+                                                                articuloTB.setClave(txtClave.getText().trim());
+                                                                articuloTB.setClaveAlterna(txtClaveAlterna.getText().trim());
+                                                                articuloTB.setNombreMarca(txtNombreMarca.getText().trim());
+                                                                articuloTB.setNombreGenerico(txtNombreGenerico.getText().trim());
+                                                                articuloTB.setImagenTB(selectFile != null
+                                                                        ? "./img/" + selectFile.getName()
+                                                                        : "");
+                                                                articuloTB.setCategoria(idCategoria != 0
+                                                                        ? idCategoria
+                                                                        : 0);
+                                                                articuloTB.setMarcar(idMarca != 0
+                                                                        ? idMarca
+                                                                        : 0);
+                                                                articuloTB.setUnidadCompra(idMedida != 0
+                                                                        ? idMedida
+                                                                        : 0);
+                                                                articuloTB.setPresentacion(idPresentacion != 0
+                                                                        ? idPresentacion
+                                                                        : 0);
 
-                                                String result = ArticuloADO.CrudArticulo(articuloTB);
-                                                switch (result) {
-                                                    case "registered":
-                                                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Registrado correctamente el artículo.", false);
-                                                        Tools.Dispose(window);
-                                                        break;
-                                                    case "updated":
-                                                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Actualizado correctamente el artículo.", false);
-                                                        Tools.Dispose(window);
-                                                        articulosController.getTxtSearch().requestFocus();
-                                                        break;
-                                                    case "duplicate":
-                                                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puede haber 2 artículos con la misma clave.", false);
-                                                        txtClave.requestFocus();
-                                                        break;
-                                                    default:
-                                                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Articulo", result, false);
-                                                        break;
+                                                                articuloTB.setStockMinimo(Tools.isNumeric(txtStockMinimo.getText())
+                                                                        ? Double.parseDouble(txtStockMinimo.getText().trim())
+                                                                        : 0);
+
+                                                                articuloTB.setStockMaximo(Tools.isNumeric(txtStockMaximo.getText())
+                                                                        ? Double.parseDouble(txtStockMaximo.getText().trim())
+                                                                        : 0);
+
+                                                                articuloTB.setPrecioCompra(Tools.isNumeric(txtPrecioCompra.getText())
+                                                                        ? Double.parseDouble(txtPrecioCompra.getText())
+                                                                        : 0);
+
+                                                                //agregar lista de precios
+                                                                articuloTB.setPrecioVenta(Double.parseDouble(txtPrecioVenta1.getText()));
+                                                                articuloTB.setMargen(Short.valueOf(txtMargen1.getText()));
+                                                                articuloTB.setUtilidad(Double.parseDouble(txtUtilidad1.getText()));
+
+                                                                articuloTB.setPrecioVenta2(Double.parseDouble(txtPrecioVenta2.getText()));
+                                                                articuloTB.setMargen2(Short.valueOf(txtMargen2.getText()));
+                                                                articuloTB.setUtilidad2(Double.parseDouble(txtUtilidad2.getText()));
+
+                                                                articuloTB.setPrecioVenta3(Double.parseDouble(txtPrecioVenta3.getText()));
+                                                                articuloTB.setMargen3(Short.valueOf(txtMargen3.getText()));
+                                                                articuloTB.setUtilidad3(Double.parseDouble(txtUtilidad3.getText()));
+
+                                                                articuloTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
+                                                                        ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                                                                        : 0);
+                                                                articuloTB.setUnidadVenta(rbUnidad.isSelected() ? 1 : 2);
+                                                                articuloTB.setLote(cbLote.isSelected());
+                                                                articuloTB.setInventario(cbInventario.isSelected());
+                                                                articuloTB.setImpuestoArticulo(cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto() : 0);
+
+                                                                String result = ArticuloADO.CrudArticulo(articuloTB);
+                                                                switch (result) {
+                                                                    case "registered":
+                                                                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Registrado correctamente el artículo.", false);
+                                                                        Tools.Dispose(window);
+                                                                        break;
+                                                                    case "updated":
+                                                                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Actualizado correctamente el artículo.", false);
+                                                                        Tools.Dispose(window);
+                                                                        articulosController.getTxtSearch().requestFocus();
+                                                                        break;
+                                                                    case "duplicate":
+                                                                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puede haber 2 artículos con la misma clave.", false);
+                                                                        txtClave.requestFocus();
+                                                                        break;
+                                                                    default:
+                                                                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Articulo", result, false);
+                                                                        break;
+                                                                }
+
+                                                            }
+
+                                                        }
+                                                    }
                                                 }
                                             }
-
                                         }
                                     }
                                 }
@@ -444,6 +510,59 @@ public class FxArticuloProcesoController implements Initializable {
     }
 
     @FXML
+    private void onKeyReleasedPrecioCompra(KeyEvent event) {
+        if (Tools.isNumeric(txtPrecioCompra.getText()) && Tools.isNumeric(txtMargen1.getText())) {
+            //toma el valor del impuesto del combo box
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtPrecioCompra.getText()));
+            //se suma el impuesto al costo del articulo
+            double preciocompra = Double.parseDouble(txtPrecioCompra.getText());
+            double precioimpuesto = (preciocompra + impuesto);
+
+            txtPrecioVenta1.setText(Tools.calculateAumento(Tools.isNumeric(txtMargen1.getText())
+                    ? Double.parseDouble(txtMargen1.getText()) : 0,
+                    precioimpuesto));
+            txtUtilidad1.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta1.getText()) - preciocompra), 2));
+        }
+        if (Tools.isNumeric(txtPrecioCompra.getText()) && Tools.isNumeric(txtMargen2.getText())) {
+            //toma el valor del impuesto del combo box
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtPrecioCompra.getText()));
+            //se suma el impuesto al costo del articulo
+            double preciocompra = Double.parseDouble(txtPrecioCompra.getText());
+            double precioimpuesto = (preciocompra + impuesto);
+
+            txtPrecioVenta2.setText(Tools.calculateAumento(Tools.isNumeric(txtMargen2.getText())
+                    ? Double.parseDouble(txtMargen2.getText()) : 0,
+                    precioimpuesto));
+            txtUtilidad2.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta2.getText()) - preciocompra), 2));
+        }
+        if (Tools.isNumeric(txtPrecioCompra.getText()) && Tools.isNumeric(txtMargen3.getText())) {
+            //toma el valor del impuesto del combo box
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtPrecioCompra.getText()));
+            //se suma el impuesto al costo del articulo
+            double preciocompra = Double.parseDouble(txtPrecioCompra.getText());
+            double precioimpuesto = (preciocompra + impuesto);
+
+            txtPrecioVenta3.setText(Tools.calculateAumento(Tools.isNumeric(txtMargen3.getText())
+                    ? Double.parseDouble(txtMargen3.getText()) : 0,
+                    precioimpuesto));
+            txtUtilidad3.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta3.getText()) - preciocompra), 2));
+        }
+
+    }
+
+    @FXML
     private void onKeyTypedClave(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z')) {
@@ -493,12 +612,34 @@ public class FxArticuloProcesoController implements Initializable {
     }
 
     @FXML
-    private void onKeyTypedPrecioVenta(KeyEvent event) {
+    private void onKeyTypedPrecioVenta1(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
             event.consume();
         }
-        if (c == '.' && txtPrecioVenta.getText().contains(".") || c == '-' && txtPrecioVenta.getText().contains("-")) {
+        if (c == '.' && txtPrecioVenta1.getText().contains(".") || c == '-' && txtPrecioVenta1.getText().contains("-")) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedPrecioVenta2(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+            event.consume();
+        }
+        if (c == '.' && txtPrecioVenta2.getText().contains(".") || c == '-' && txtPrecioVenta2.getText().contains("-")) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedPrecioVenta3(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+            event.consume();
+        }
+        if (c == '.' && txtPrecioVenta3.getText().contains(".") || c == '-' && txtPrecioVenta3.getText().contains("-")) {
             event.consume();
         }
     }
@@ -507,6 +648,14 @@ public class FxArticuloProcesoController implements Initializable {
     private void onKeyTypedDetalle(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if (c != '\b') {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedMargen(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b')) {
             event.consume();
         }
     }
@@ -616,25 +765,203 @@ public class FxArticuloProcesoController implements Initializable {
         }
     }
 
-    @FXML
     private void onMouseClickedImpuesto(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
             openWindowDetalle("Agregar Impuestoto", "0", true);
         }
     }
 
-    @FXML
     private void onKeyReleasedImpuesto(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.SPACE) {
             openWindowDetalle("Agregar Impuesto", "0", true);
         }
     }
 
-    @FXML
     private void onKeyTypedImpuesto(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if (c != '\b') {
             event.consume();
+        }
+    }
+
+    @FXML
+    private void onActionImpuesto(ActionEvent event) {
+        if (Tools.isNumeric(txtPrecioCompra.getText()) && Tools.isNumeric(txtMargen1.getText())) {
+            //toma el valor del impuesto del combo box
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtPrecioCompra.getText()));
+            //se suma el impuesto al costo del articulo
+            double precioimpuesto = (Double.parseDouble(txtPrecioCompra.getText()) + impuesto);
+            double preciocompra = precioimpuesto;
+            txtPrecioVenta1.setText(Tools.calculateAumento(Tools.isNumeric(txtMargen1.getText())
+                    ? Double.parseDouble(txtMargen1.getText()) : 0,
+                    preciocompra));
+            txtUtilidad1.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta1.getText()) - preciocompra), 2));
+        }
+        if (Tools.isNumeric(txtPrecioCompra.getText()) && Tools.isNumeric(txtMargen2.getText())) {
+            //toma el valor del impuesto del combo box
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtPrecioCompra.getText()));
+            //se suma el impuesto al costo del articulo
+            double precioimpuesto = (Double.parseDouble(txtPrecioCompra.getText()) + impuesto);
+            double preciocompra = precioimpuesto;
+            txtPrecioVenta2.setText(Tools.calculateAumento(Tools.isNumeric(txtMargen2.getText())
+                    ? Double.parseDouble(txtMargen2.getText()) : 0,
+                    preciocompra));
+            txtUtilidad2.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta2.getText()) - preciocompra), 2));
+        }
+        if (Tools.isNumeric(txtPrecioCompra.getText()) && Tools.isNumeric(txtMargen3.getText())) {
+            //toma el valor del impuesto del combo box
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtPrecioCompra.getText()));
+            //se suma el impuesto al costo del articulo
+            double precioimpuesto = (Double.parseDouble(txtPrecioCompra.getText()) + impuesto);
+            double preciocompra = precioimpuesto;
+            txtPrecioVenta3.setText(Tools.calculateAumento(Tools.isNumeric(txtMargen3.getText())
+                    ? Double.parseDouble(txtMargen3.getText()) : 0,
+                    preciocompra));
+            txtUtilidad3.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta3.getText()) - preciocompra), 2));
+        }
+    }
+
+    @FXML
+    private void onKeyRealesdPrecioVenta1(KeyEvent event) {
+        if (Tools.isNumeric(txtPrecioVenta1.getText()) && Tools.isNumeric(txtPrecioCompra.getText())) {
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtPrecioCompra.getText()));
+
+            double preciocompra = Double.parseDouble(txtPrecioCompra.getText());
+            double precioimpuesto = (preciocompra + impuesto);
+
+            Double precio = Double.parseDouble(txtPrecioVenta1.getText());
+            Double porcentaje = (precio * 100) / precioimpuesto;
+
+            int recalculado = (int) Math.abs((100
+                    - (Double.parseDouble(
+                            Tools.roundingValue(Double.parseDouble(
+                                    Tools.roundingValue(porcentaje, 2)), 0)))));
+
+            txtMargen1.setText(String.valueOf(recalculado));
+            txtUtilidad1.setText(Tools.roundingValue((precio - preciocompra), 2));
+        }
+    }
+
+    @FXML
+    private void onKeyRealesdPrecioVenta2(KeyEvent event) {
+        if (Tools.isNumeric(txtPrecioVenta2.getText()) && Tools.isNumeric(txtPrecioCompra.getText())) {
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtPrecioCompra.getText()));
+
+            double preciocompra = Double.parseDouble(txtPrecioCompra.getText());
+            double precioimpuesto = (preciocompra + impuesto);
+
+            Double precio = Double.parseDouble(txtPrecioVenta2.getText());
+            Double porcentaje = (precio * 100) / precioimpuesto;
+
+            int recalculado = (int) Math.abs((100
+                    - (Double.parseDouble(
+                            Tools.roundingValue(Double.parseDouble(
+                                    Tools.roundingValue(porcentaje, 2)), 0)))));
+
+            txtMargen2.setText(String.valueOf(recalculado));
+            txtUtilidad2.setText(Tools.roundingValue((precio - preciocompra), 2));
+        }
+    }
+
+    @FXML
+    private void onKeyRealesdPrecioVenta3(KeyEvent event) {
+        if (Tools.isNumeric(txtPrecioVenta3.getText()) && Tools.isNumeric(txtPrecioCompra.getText())) {
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtPrecioCompra.getText()));
+
+            double preciocompra = Double.parseDouble(txtPrecioCompra.getText());
+            double precioimpuesto = (preciocompra + impuesto);
+
+            Double precio = Double.parseDouble(txtPrecioVenta3.getText());
+            Double porcentaje = (precio * 100) / precioimpuesto;
+
+            int recalculado = (int) Math.abs((100
+                    - (Double.parseDouble(
+                            Tools.roundingValue(Double.parseDouble(
+                                    Tools.roundingValue(porcentaje, 2)), 0)))));
+
+            txtMargen3.setText(String.valueOf(recalculado));
+            txtUtilidad3.setText(Tools.roundingValue((precio - preciocompra), 2));
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedMargen1(KeyEvent event) {
+        if (Tools.isNumeric(txtMargen1.getText()) && Tools.isNumeric(txtPrecioCompra.getText())) {
+            //toma el valor del impuesto del combo box
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtPrecioCompra.getText()));
+            
+            double preciocompra = Double.parseDouble(txtPrecioCompra.getText());
+            double precioimpuesto = (Double.parseDouble(txtPrecioCompra.getText()) + impuesto);
+            
+            txtPrecioVenta1.setText(Tools.calculateAumento(Double.parseDouble(txtMargen1.getText()), precioimpuesto));
+            txtUtilidad1.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta1.getText()) - preciocompra), 2));
+
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedMargen2(KeyEvent event) {
+        if (Tools.isNumeric(txtMargen2.getText()) && Tools.isNumeric(txtPrecioCompra.getText())) {
+            //toma el valor del impuesto del combo box
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtPrecioCompra.getText()));
+            
+            double preciocompra = Double.parseDouble(txtPrecioCompra.getText());
+            double precioimpuesto = (Double.parseDouble(txtPrecioCompra.getText()) + impuesto);
+            
+            txtPrecioVenta2.setText(Tools.calculateAumento(Double.parseDouble(txtMargen2.getText()), precioimpuesto));
+            txtUtilidad2.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta2.getText()) - preciocompra), 2));
+
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedMargen3(KeyEvent event) {
+        if (Tools.isNumeric(txtMargen3.getText()) && Tools.isNumeric(txtPrecioCompra.getText())) {
+            //toma el valor del impuesto del combo box
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtPrecioCompra.getText()));
+            
+            double preciocompra = Double.parseDouble(txtPrecioCompra.getText());
+            double precioimpuesto = (Double.parseDouble(txtPrecioCompra.getText()) + impuesto);
+            
+            txtPrecioVenta3.setText(Tools.calculateAumento(Double.parseDouble(txtMargen3.getText()), precioimpuesto));
+            txtUtilidad3.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta3.getText()) - preciocompra), 2));
+
         }
     }
 
@@ -652,10 +979,6 @@ public class FxArticuloProcesoController implements Initializable {
 
     public void setIdMedida(int idMedida) {
         this.idMedida = idMedida;
-    }
-
-    public void setIdImpuesto(int idImpuesto) {
-        this.idImpuesto = idImpuesto;
     }
 
     public TextField getTxtPresentacion() {
@@ -676,10 +999,6 @@ public class FxArticuloProcesoController implements Initializable {
 
     public TextField getTxtMedida() {
         return txtMedida;
-    }
-
-    public TextField getTxtImpuesto() {
-        return txtImpuesto;
     }
 
     public void initControllerArticulos(FxArticulosController articulosController) {

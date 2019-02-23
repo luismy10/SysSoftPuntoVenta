@@ -1,10 +1,14 @@
 package model;
 
 import controller.Session;
+import controller.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
@@ -377,7 +381,7 @@ public class VentaADO {
                 ventaTB = new VentaTB();
                 ventaTB.setEstadoName(resultSet.getString("Estado"));
                 ventaTB.setMonedaName(resultSet.getString("Simbolo"));
-                ventaTB.setTotal(resultSet.getDouble("Total")); 
+                ventaTB.setTotal(resultSet.getDouble("Total"));
             }
             statementVendedor.close();
         }
@@ -403,6 +407,45 @@ public class VentaADO {
         }
         statementVendedor.close();
         return empleadoTB;
+    }
+
+   
+    public static ArrayList<VentaTB> GetReporteGenetalVentas(String fechaInicial, String fechaFinal, int tipoDocumento) {
+        CallableStatement callableStatement = null;
+        ResultSet resultSet = null;
+        ArrayList<VentaTB> arrayList = new ArrayList<>();
+        try {
+            DBUtil.dbConnect();
+            callableStatement = DBUtil.getConnection().prepareCall("{call Sp_Reporte_General_Ventas(?,?,?)}");
+            callableStatement.setString(1, fechaInicial);
+            callableStatement.setString(2, fechaFinal);
+            callableStatement.setInt(3, tipoDocumento);
+            resultSet = callableStatement.executeQuery();
+            while (resultSet.next()) {
+                VentaTB ventaTB = new VentaTB();
+                ventaTB.setDocumentoReporte(resultSet.getString("Nombre"));
+                ventaTB.setFechaVentaReporte(resultSet.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
+                ventaTB.setClienteReporte(resultSet.getString("Apellidos") + " " + resultSet.getString("Nombres"));
+                ventaTB.setTotalReporte(resultSet.getString("Simbolo") + " " + Tools.roundingValue(resultSet.getDouble("Total"), 2));
+                arrayList.add(ventaTB);
+            }
+        } catch (SQLException ex) {
+
+        } finally {
+            try {
+                if (callableStatement != null) {
+                    callableStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+
+        }
+        return arrayList;
     }
 
 }

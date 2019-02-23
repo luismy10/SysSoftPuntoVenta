@@ -87,11 +87,13 @@ public class Tools {
     static final String FX_FILE_ARTICULOREPORTES = "/view/articulo/FxArticuloReportes.fxml";
     static final String FX_FILE_MONEDA = "/view/mantenimiento/FxMoneda.fxml";
     static final String FX_FILE_MONEDAPROCESO = "/view/mantenimiento/FxMonedaProceso.fxml";
-    static final String FX_FILE_IMPRESORATICKET= "/view/venta/FxImpresoraTicket.fxml";
+    static final String FX_FILE_IMPRESORATICKET = "/view/venta/FxImpresoraTicket.fxml";
     static final String FX_FILE_TIPODOCUMENTO = "/view/mantenimiento/FxTipoDocumento.fxml";
     static final String FX_FILE_IMPUESTO = "/view/mantenimiento/FxImpuesto.fxml";
     static final String FX_FILE_IMPUESTOPROCESO = "/view/mantenimiento/FxImpuestoProceso.fxml";
-    
+    static final String FX_FILE_VENTAREPORTE = "/view/venta/FxVentaReporte.fxml";
+    static final String FX_FILE_LISTAPRECIOS = "/view/venta/FxListaPrecios.fxml";
+
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);
@@ -219,7 +221,7 @@ public class Tools {
     }
 
     public static String calculateAumento(double porcentaje, double costo) {
-        double totalimporte = costo + (costo * (porcentaje / 100));
+        double totalimporte = costo + (costo * (porcentaje / 100.00));
         double redondeandoimporte = Double.parseDouble(Tools.roundingValue(totalimporte, 1));
         return Tools.roundingValue(redondeandoimporte, 2);
     }
@@ -286,7 +288,5 @@ public class Tools {
             Logger.getLogger(Tools.class.getName()).log(Level.INFO, ex.getLocalizedMessage());
         }
     }
-
-   
 
 }

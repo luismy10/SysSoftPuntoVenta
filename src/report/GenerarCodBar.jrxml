@@ -67,4 +67,17 @@
 			</componentElement>
 		</band>
 	</detail>
+	<pageFooter>
+		<band height="25">
+			<textField>
+				<reportElement x="383" y="0" width="80" height="25" uuid="d52ca40c-d629-4631-92b3-dc9517d22bfd"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="463" y="0" width="87" height="25" uuid="bbf31b18-2c74-45ba-9558-c639af1a7420"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
 </jasperReport>

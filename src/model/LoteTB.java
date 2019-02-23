@@ -2,12 +2,14 @@ package model;
 
 import java.time.LocalDate;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 public class LoteTB {
     
-    private SimpleIntegerProperty id;
+    /*
+    Atributos para las vistas en general
+    */
+    private int id;
     private long idLote;
     private String numeroLote;
     private ObjectProperty<LocalDate> fechaCaducidad;
@@ -16,17 +18,39 @@ public class LoteTB {
     private String idArticulo;
     private String idCompra;
     private ArticuloTB articuloTB;
+
+    /*
+    Atributos para el reporte
+     */
+    private String descripcion;
+    private String fechaListado;
+    private String cantidad;
     
     public LoteTB() {
 
     }
 
-    public SimpleIntegerProperty getId() {
+    public LoteTB(int id, String numeroLote) {
+        this.id = id;
+        this.numeroLote = numeroLote;
+    }
+
+    public LoteTB(int id, String numeroLote, String descripcion, String fechaListado, String cantidad) {
+        this.id = id;
+        this.numeroLote = numeroLote;
+        this.descripcion = descripcion;
+        this.fechaListado = fechaListado;
+        this.cantidad = cantidad;
+    }
+    
+    
+    
+    public int getId() {
         return id;
     }
 
     public void setId(int id) {
-        this.id = new SimpleIntegerProperty(id);
+        this.id = id;
     }
 
     public long getIdLote() {
@@ -91,6 +115,30 @@ public class LoteTB {
 
     public void setArticuloTB(ArticuloTB articuloTB) {
         this.articuloTB = articuloTB;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getFechaListado() {
+        return fechaListado;
+    }
+
+    public void setFechaListado(String fechaListado) {
+        this.fechaListado = fechaListado;
+    }
+
+    public String getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(String cantidad) {
+        this.cantidad = cantidad;
     }
 
 }

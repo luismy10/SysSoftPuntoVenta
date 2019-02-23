@@ -9,7 +9,10 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -79,7 +82,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="cbImpuesto" onAction="#onActionImpuesto" prefWidth="150.0" />
+                                    <ComboBox fx:id="cbImpuesto" onAction="#onActionImpuesto" prefWidth="217.0" />
                                  </children>
                               </VBox>
                               <VBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
@@ -124,41 +127,77 @@
                      <children>
                         <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                            <children>
-                              <VBox alignment="CENTER">
+                              <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;" styleClass="paddinContainer105">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
                                  <children>
-                                    <Label styleClass="labelRoboto16" text="Precio General" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.4166666666666667em;">
-                                 <children>
-                                    <Label styleClass="labelRoboto14" text="Margen de utilidad %" textFill="#23283a">
+                                    <Label styleClass="labelRoboto14" text="Precio venta 1" textFill="#23283a">
                                        <font>
-                                          <Font size="14.0" />
+                                          <Font name="Roboto" size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtMargen" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedMargen" onKeyTyped="#onKeyTypedMargen" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.4166666666666667em;">
-                                 <children>
-                                    <Label prefWidth="134.0" styleClass="labelRoboto14" text="Precio de venta:" textFill="#23283a">
+                                    <Label styleClass="labelRoboto14" text="Precio venta 2" textFill="#23283a" GridPane.columnIndex="2">
                                        <font>
-                                          <Font size="14.0" />
+                                          <Font name="Roboto" size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtPrecio" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedPrecio" onKeyTyped="#onKeyTypedPrecio" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.4166666666666667em;">
-                                 <children>
-                                    <Label prefWidth="134.0" styleClass="labelRoboto14" text="Utilidad generada:" textFill="#23283a">
+                                    <Label styleClass="labelRoboto14" text="Precio venta 3" textFill="#23283a" GridPane.columnIndex="4">
                                        <font>
-                                          <Font size="14.0" />
+                                          <Font name="Roboto" size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtUtilidad" disable="true" />
+                                    <TextField fx:id="txtPrecioVenta2" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedPrecio2" onKeyTyped="#onKeyTypedPrecio2" prefHeight="30.0" prefWidth="180.0" promptText="0.00" GridPane.columnIndex="3" />
+                                    <TextField fx:id="txtPrecioVenta3" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedPrecio3" onKeyTyped="#onKeyTypedPrecio3" prefHeight="30.0" prefWidth="180.0" promptText="0.00" GridPane.columnIndex="5" />
+                                    <TextField fx:id="txtMargen2" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedMargen2" onKeyTyped="#onKeyTypedMargen2" prefHeight="30.0" prefWidth="180.0" promptText="0.00" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtMargen3" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedMargen3" onKeyTyped="#onKeyTypedMargen3" prefHeight="30.0" prefWidth="180.0" promptText="0.00" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtUtilidad2" disable="true" prefWidth="180.0" promptText="0.00" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtUtilidad3" disable="true" prefWidth="180.0" promptText="0.00" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <Label styleClass="labelRoboto14" text="Margen 1 %" textFill="#23283a" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font name="Roboto" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label styleClass="labelRoboto14" text="Margen 2 %" textFill="#23283a" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font name="Roboto" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label styleClass="labelRoboto14" text="Margen 3 %" textFill="#23283a" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font name="Roboto" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label styleClass="labelRoboto14" text="Utilidad 1" textFill="#23283a" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font name="Roboto" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label styleClass="labelRoboto14" text="Utilidad 2" textFill="#23283a" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font name="Roboto" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label styleClass="labelRoboto14" text="Utilidad 3" textFill="#23283a" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font name="Roboto" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtUtilidad1" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtMargen1" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedMargen" onKeyTyped="#onKeyTypedMargen" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtPrecioVenta1" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedPrecio" onKeyTyped="#onKeyTypedPrecio" GridPane.columnIndex="1" />
                                  </children>
-                              </VBox>
+                              </GridPane>
                            </children>
                         </VBox>
                      </children>

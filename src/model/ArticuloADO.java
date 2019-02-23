@@ -30,7 +30,34 @@ public class ArticuloADO {
                     DBUtil.getConnection().rollback();
                     return "duplicate";
                 } else {
-                    preparedArticulo = DBUtil.getConnection().prepareStatement("update ArticuloTB set Clave = ?,ClaveAlterna=?, NombreMarca=UPPER(?),NombreGenerico=UPPER(?),Categoria=?,Marca=?,Presentacion=?,StockMinimo=?,StockMaximo=?,PrecioCompra=?, PrecioVenta=?,Margen=?,Utilidad=?,UnidadCompra=?,UnidadVenta = ?,Estado=?,Lote=?,Inventario=?,Imagen=?, Impuesto=? where IdArticulo = ?");
+                    preparedArticulo = DBUtil.getConnection().prepareStatement("update ArticuloTB set "
+                            + "Clave=?, "
+                            + "ClaveAlterna=?, "
+                            + "NombreMarca=UPPER(?), "
+                            + "NombreGenerico=UPPER(?), "
+                            + "Categoria=?, "
+                            + "Marca=?, "
+                            + "Presentacion=?, "
+                            + "StockMinimo=?, "
+                            + "StockMaximo=?, "
+                            + "PrecioCompra=?, "
+                            + "PrecioVenta1=?, "
+                            + "Margen1=?, "
+                            + "Utilidad1=?, "
+                            + "PrecioVenta2=?, "
+                            + "Margen2=?, "
+                            + "Utilidad2=?, "
+                            + "PrecioVenta3=?, "
+                            + "Margen3=?, "
+                            + "Utilidad3=?, "
+                            + "UnidadCompra=?, "
+                            + "UnidadVenta = ?, "
+                            + "Estado=?, "
+                            + "Lote=?, "
+                            + "Inventario=?, "
+                            + "Imagen=?, "
+                            + "Impuesto=? "
+                            + "where IdArticulo = ?");
                     preparedArticulo.setString(1, articuloTB.getClave());
                     preparedArticulo.setString(2, articuloTB.getClaveAlterna());
                     preparedArticulo.setString(3, articuloTB.getNombreMarca());
@@ -41,17 +68,25 @@ public class ArticuloADO {
                     preparedArticulo.setDouble(8, articuloTB.getStockMinimo());
                     preparedArticulo.setDouble(9, articuloTB.getStockMaximo());
                     preparedArticulo.setDouble(10, articuloTB.getPrecioCompra());
+
                     preparedArticulo.setDouble(11, articuloTB.getPrecioVenta());
                     preparedArticulo.setShort(12, articuloTB.getMargen());
                     preparedArticulo.setDouble(13, articuloTB.getUtilidad());
-                    preparedArticulo.setInt(14, articuloTB.getUnidadCompra());
-                    preparedArticulo.setInt(15, articuloTB.getUnidadVenta());
-                    preparedArticulo.setInt(16, articuloTB.getEstado());
-                    preparedArticulo.setBoolean(17, articuloTB.isLote());
-                    preparedArticulo.setBoolean(18, articuloTB.isInventario());
-                    preparedArticulo.setString(19, articuloTB.getImagenTB());
-                    preparedArticulo.setInt(20, articuloTB.getImpuestoArticulo());
-                    preparedArticulo.setString(21, articuloTB.getIdArticulo());              
+                    preparedArticulo.setDouble(14, articuloTB.getPrecioVenta2());
+                    preparedArticulo.setShort(15, articuloTB.getMargen2());
+                    preparedArticulo.setDouble(16, articuloTB.getUtilidad2());
+                    preparedArticulo.setDouble(17, articuloTB.getPrecioVenta3());
+                    preparedArticulo.setShort(18, articuloTB.getMargen3());
+                    preparedArticulo.setDouble(19, articuloTB.getUtilidad3());
+
+                    preparedArticulo.setInt(20, articuloTB.getUnidadCompra());
+                    preparedArticulo.setInt(21, articuloTB.getUnidadVenta());
+                    preparedArticulo.setInt(22, articuloTB.getEstado());
+                    preparedArticulo.setBoolean(23, articuloTB.isLote());
+                    preparedArticulo.setBoolean(24, articuloTB.isInventario());
+                    preparedArticulo.setString(25, articuloTB.getImagenTB());
+                    preparedArticulo.setInt(26, articuloTB.getImpuestoArticulo());
+                    preparedArticulo.setString(27, articuloTB.getIdArticulo());
 
                     preparedArticulo.addBatch();
                     preparedArticulo.executeBatch();
@@ -84,18 +119,24 @@ public class ArticuloADO {
                             + "StockMinimo,"
                             + "StockMaximo,"
                             + "PrecioCompra,"
-                            + "PrecioVenta,"
-                            + "Margen,"
-                            + "Utilidad,"                       
-                            + "Cantidad,"                        
+                            + "PrecioVenta1,"
+                            + "Margen1,"
+                            + "Utilidad1,"
+                            + "PrecioVenta2,"
+                            + "Margen2,"
+                            + "Utilidad2,"
+                            + "PrecioVenta3,"
+                            + "Margen3,"
+                            + "Utilidad3,"
+                            + "Cantidad,"
                             + "UnidadCompra,"
-                            + "UnidadVenta,"                         
+                            + "UnidadVenta,"
                             + "Estado,"
                             + "Lote,"
                             + "Inventario,"
                             + "Imagen,"
                             + "Impuesto)"
-                            + "values(?,?,?,UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                            + "values(?,?,?,UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                     preparedArticulo.setString(1, idArticulo);
                     preparedArticulo.setString(2, articuloTB.getClave());
                     preparedArticulo.setString(3, articuloTB.getClaveAlterna());
@@ -107,18 +148,26 @@ public class ArticuloADO {
                     preparedArticulo.setDouble(9, articuloTB.getStockMinimo());
                     preparedArticulo.setDouble(10, articuloTB.getStockMaximo());
                     preparedArticulo.setDouble(11, articuloTB.getPrecioCompra());
+                    
                     preparedArticulo.setDouble(12, articuloTB.getPrecioVenta());
                     preparedArticulo.setShort(13, articuloTB.getMargen());
                     preparedArticulo.setDouble(14, articuloTB.getUtilidad());
-                    preparedArticulo.setDouble(15, 0);            
-                    preparedArticulo.setInt(16, articuloTB.getUnidadCompra());
-                    preparedArticulo.setInt(17, articuloTB.getUnidadVenta());                    
-                    preparedArticulo.setInt(18, articuloTB.getEstado());
-                    preparedArticulo.setBoolean(19, articuloTB.isLote());
-                    preparedArticulo.setBoolean(20, articuloTB.isInventario());
+                    preparedArticulo.setDouble(15, articuloTB.getPrecioVenta2());
+                    preparedArticulo.setShort(16, articuloTB.getMargen2());
+                    preparedArticulo.setDouble(17, articuloTB.getUtilidad2());
+                    preparedArticulo.setDouble(18, articuloTB.getPrecioVenta3());
+                    preparedArticulo.setShort(19, articuloTB.getMargen3());
+                    preparedArticulo.setDouble(20, articuloTB.getUtilidad3());
+                    
+                    preparedArticulo.setDouble(21, 0);
+                    preparedArticulo.setInt(22, articuloTB.getUnidadCompra());
+                    preparedArticulo.setInt(23, articuloTB.getUnidadVenta());
+                    preparedArticulo.setInt(24, articuloTB.getEstado());
+                    preparedArticulo.setBoolean(25, articuloTB.isLote());
+                    preparedArticulo.setBoolean(26, articuloTB.isInventario());
 //                    preparedArticulo.setBinaryStream(24, articuloTB.getImagenTB().getFile());
-                    preparedArticulo.setString(21, articuloTB.getImagenTB());
-                    preparedArticulo.setInt(22, articuloTB.getImpuestoArticulo());
+                    preparedArticulo.setString(27, articuloTB.getImagenTB());
+                    preparedArticulo.setInt(28, articuloTB.getImpuestoArticulo());
                     preparedArticulo.addBatch();
 
                     preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("insert into HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
@@ -230,11 +279,11 @@ public class ArticuloADO {
                 articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
                 articuloTB.setClave(rsEmps.getString("Clave"));
                 articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                articuloTB.setMarcaName(rsEmps.getString("Marca"));                
+                articuloTB.setMarcaName(rsEmps.getString("Marca"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta1"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
-                articuloTB.setCategoriaName(rsEmps.getString("Categoria")); 
+                articuloTB.setCategoriaName(rsEmps.getString("Categoria"));
                 articuloTB.setEstadoName(rsEmps.getString("Estado"));
                 articuloTB.setImagenTB(rsEmps.getString("Imagen"));
                 empList.add(articuloTB);
@@ -257,7 +306,7 @@ public class ArticuloADO {
         }
         return empList;
     }
-    
+
     public static ObservableList<ArticuloTB> ListArticulosCategoria(int value) {
         String selectStmt = "{call Sp_Listar_Articulo_Categoria(?)}";
         PreparedStatement preparedStatement = null;
@@ -275,12 +324,11 @@ public class ArticuloADO {
                 articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
                 articuloTB.setClave(rsEmps.getString("Clave"));
                 articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                articuloTB.setMarcaName(rsEmps.getString("Marca"));                
+                articuloTB.setMarcaName(rsEmps.getString("Marca"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
-//                articuloTB.setCantidadGranel(rsEmps.getDouble("CantidadGranel"));
-                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta1"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
-                articuloTB.setCategoriaName(rsEmps.getString("Categoria")); 
+                articuloTB.setCategoriaName(rsEmps.getString("Categoria"));
                 articuloTB.setEstadoName(rsEmps.getString("Estado"));
                 articuloTB.setImagenTB(rsEmps.getString("Imagen"));
                 empList.add(articuloTB);
@@ -304,7 +352,6 @@ public class ArticuloADO {
         return empList;
     }
 
-    
     public static ObservableList<ArticuloTB> ListArticulosListaView(String value) {
         String selectStmt = "{call Sp_Listar_Articulo_Lista_View(?)}";
         PreparedStatement preparedStatement = null;
@@ -324,12 +371,22 @@ public class ArticuloADO {
                 articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 articuloTB.setMarcaName(rsEmps.getString("Marca"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra")); 
-                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
+                
+                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta1"));
+                articuloTB.setMargen(rsEmps.getShort("Margen1"));
+                articuloTB.setUtilidad(rsEmps.getDouble("Utilidad1"));
+                articuloTB.setPrecioVenta2(rsEmps.getDouble("PrecioVenta2"));
+                articuloTB.setMargen2(rsEmps.getShort("Margen2"));
+                articuloTB.setUtilidad2(rsEmps.getDouble("Utilidad2"));
+                articuloTB.setPrecioVenta3(rsEmps.getDouble("PrecioVenta3"));
+                articuloTB.setMargen3(rsEmps.getShort("Margen3"));
+                articuloTB.setUtilidad3(rsEmps.getDouble("Utilidad3"));
+                
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 articuloTB.setInventario(rsEmps.getBoolean("Inventario"));
                 articuloTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
-                articuloTB.setLote(rsEmps.getBoolean("Lote")); 
+                articuloTB.setLote(rsEmps.getBoolean("Lote"));
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {
@@ -376,17 +433,25 @@ public class ArticuloADO {
                 articuloTB.setPresentacionName(rsEmps.getString("PresentacionNombre"));
                 articuloTB.setUnidadCompra(rsEmps.getInt("UnidadCompra"));
                 articuloTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
-                articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));              
+                articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 articuloTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
                 articuloTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
                 articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
-                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
-                articuloTB.setMargen(rsEmps.getShort("Margen"));
-                articuloTB.setUtilidad(rsEmps.getDouble("Utilidad"));              
+                
+                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta1"));
+                articuloTB.setMargen(rsEmps.getShort("Margen1"));
+                articuloTB.setUtilidad(rsEmps.getDouble("Utilidad1"));
+                articuloTB.setPrecioVenta2(rsEmps.getDouble("PrecioVenta2"));
+                articuloTB.setMargen2(rsEmps.getShort("Margen2"));
+                articuloTB.setUtilidad2(rsEmps.getDouble("Utilidad2"));
+                articuloTB.setPrecioVenta3(rsEmps.getDouble("PrecioVenta3"));
+                articuloTB.setMargen3(rsEmps.getShort("Margen3"));
+                articuloTB.setUtilidad3(rsEmps.getDouble("Utilidad3"));
+
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setEstado(rsEmps.getInt("Estado"));
                 articuloTB.setLote(rsEmps.getBoolean("Lote"));
-                articuloTB.setInventario(rsEmps.getBoolean("Inventario"));               
+                articuloTB.setInventario(rsEmps.getBoolean("Inventario"));
                 articuloTB.setImagenTB(rsEmps.getString("Imagen"));
                 articuloTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
                 articuloTB.setImpuestoArticuloName(rsEmps.getString("ImpuestoNombre"));
@@ -581,7 +646,7 @@ public class ArticuloADO {
             while (rsEmps.next()) {
                 ArticuloTB articuloTB = new ArticuloTB();
                 articuloTB.setClave(rsEmps.getString("Clave"));
-                articuloTB.setClaveAlterna(rsEmps.getString("ClaveAlterna")); 
+                articuloTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
                 articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 empList.add(articuloTB);
@@ -673,5 +738,42 @@ public class ArticuloADO {
         return result;
 
     }
+    
+     public static ArticuloTB GetItemPriceList(String idArticulo)  {
+        PreparedStatement statementVendedor = null;
+        ArticuloTB articuloTB = null;
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            try {
+                statementVendedor = DBUtil.getConnection().prepareStatement("SELECT IdArticulo,PrecioVenta1,PrecioVenta2,PrecioVenta3 FROM ArticuloTB WHERE IdArticulo = ?");
+                statementVendedor.setString(1, idArticulo);
+                try (ResultSet resultSet = statementVendedor.executeQuery()) {
+                    if (resultSet.next()) {
+                        articuloTB = new ArticuloTB();
+                        articuloTB.setIdArticulo(resultSet.getString("IdArticulo"));
+                        articuloTB.setPrecioVenta(resultSet.getDouble("PrecioVenta1"));
+                        articuloTB.setPrecioVenta2(resultSet.getDouble("PrecioVenta2"));
+                        articuloTB.setPrecioVenta3(resultSet.getDouble("PrecioVenta3"));
+                    }
+                }
 
+            } catch (SQLException ex) {
+
+            } finally {
+                try {
+                    if (statementVendedor != null) {
+                        statementVendedor.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+
+                }
+            }
+
+        }
+
+        return articuloTB;
+    }
+
+    
 }
