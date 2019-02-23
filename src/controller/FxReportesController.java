@@ -24,47 +24,82 @@ public class FxReportesController implements Initializable {
 
     private AnchorPane content;
 
-    private FXMLLoader fXMLPrincipal;
+    //ARTICULO REPORTE
+    private FXMLLoader fXMLArticuloReporte;
 
-    private VBox node;
+    private VBox nodeArticulo;
 
-    private FxArticuloReportesController controller;
+    private FxArticuloReportesController articuloReportesController;
+
+    //VENTA REPORTE    
+    private FXMLLoader fXMLVentaReporte;
+
+    private VBox nodeVenta;
+
+    private FxVentaReporteController ventaReporteController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_ARTICULOREPORTES));
-            node = fXMLPrincipal.load();
-            controller = fXMLPrincipal.getController();
+            fXMLArticuloReporte = new FXMLLoader(getClass().getResource(Tools.FX_FILE_ARTICULOREPORTES));
+            nodeArticulo = fXMLArticuloReporte.load();
+            articuloReportesController = fXMLArticuloReporte.getController();
+
+            fXMLVentaReporte = new FXMLLoader(getClass().getResource(Tools.FX_FILE_VENTAREPORTE));
+            nodeVenta = fXMLVentaReporte.load();
+            ventaReporteController = fXMLVentaReporte.getController();
         } catch (IOException ex) {
             Logger.getLogger(FxReportesController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void openWindowReportes() throws IOException {
-        controller.setContent(windowinit);
+    private void openWindowArticuloReportes() throws IOException {
+        articuloReportesController.setContent(windowinit);
         content.getChildren().clear();
-        AnchorPane.setLeftAnchor(node, 0d);
-        AnchorPane.setTopAnchor(node, 0d);
-        AnchorPane.setRightAnchor(node, 0d);
-        AnchorPane.setBottomAnchor(node, 0d);
-        content.getChildren().add(node);
+        AnchorPane.setLeftAnchor(nodeArticulo, 0d);
+        AnchorPane.setTopAnchor(nodeArticulo, 0d);
+        AnchorPane.setRightAnchor(nodeArticulo, 0d);
+        AnchorPane.setBottomAnchor(nodeArticulo, 0d);
+        content.getChildren().add(nodeArticulo);
+    }
+
+    private void openWindowVentaReportes() throws IOException {
+        ventaReporteController.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeVenta, 0d);
+        AnchorPane.setTopAnchor(nodeVenta, 0d);
+        AnchorPane.setRightAnchor(nodeVenta, 0d);
+        AnchorPane.setBottomAnchor(nodeVenta, 0d);
+        content.getChildren().add(nodeVenta);
     }
 
     @FXML
     private void onKeyPressedArticulos(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowReportes();
+            openWindowArticuloReportes();
         }
     }
 
     @FXML
     private void onActionArticulos(ActionEvent event) throws IOException {
-        openWindowReportes();
+        openWindowArticuloReportes();
+    }
+
+    @FXML
+    private void onKeyPressedVentas(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowVentaReportes();
+        }
+    }
+
+    @FXML
+    private void onActionVentas(ActionEvent event) throws IOException {
+        openWindowVentaReportes();
     }
 
     public void setContent(AnchorPane windowinit, AnchorPane content) {
         this.windowinit = windowinit;
         this.content = content;
     }
+
 }

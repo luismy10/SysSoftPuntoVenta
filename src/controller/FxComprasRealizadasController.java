@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -39,11 +41,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import model.CompraADO;
 import model.CompraTB;
-import model.DBUtil;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
@@ -80,7 +82,7 @@ public class FxComprasRealizadasController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
+        tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         tcFechaCompra.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCompra().get().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))));
         tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeracion()));
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
@@ -93,7 +95,7 @@ public class FxComprasRealizadasController implements Initializable {
         validationSearch = false;
     }
 
-    public void fillPurchasesTable(String value) {
+    public void fillPurchasesTable(short opcion, String value, String fechaInicial, String fechaFinal) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -103,7 +105,7 @@ public class FxComprasRealizadasController implements Initializable {
         Task<List<CompraTB>> task = new Task<List<CompraTB>>() {
             @Override
             public ObservableList<CompraTB> call() {
-                return CompraADO.ListComprasRealizadas(value);
+                return CompraADO.ListComprasRealizadas(opcion, value, fechaInicial, fechaFinal);
             }
         };
         task.setOnSucceeded((WorkerStateEvent e) -> {
@@ -119,36 +121,6 @@ public class FxComprasRealizadasController implements Initializable {
         task.setOnScheduled((WorkerStateEvent event) -> {
             lblLoad.setVisible(true);
             validationSearch = true;
-        });
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
-        }
-    }
-
-    private void fillPurchasesTableByDate() {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-
-        Task<List<CompraTB>> task = new Task<List<CompraTB>>() {
-            @Override
-            public ObservableList<CompraTB> call() {
-                return CompraADO.ListComprasRealizadasByFecha(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
-            }
-        };
-        task.setOnSucceeded((WorkerStateEvent e) -> {
-            tvList.setItems((ObservableList<CompraTB>) task.getValue());
-            lblLoad.setVisible(false);
-        });
-        task.setOnFailed((WorkerStateEvent event) -> {
-            lblLoad.setVisible(false);
-        });
-
-        task.setOnScheduled((WorkerStateEvent event) -> {
-            lblLoad.setVisible(true);
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -175,6 +147,44 @@ public class FxComprasRealizadasController implements Initializable {
         }
     }
 
+    private void openWindowReporte() {
+        try {
+
+            ArrayList<CompraTB> list = new ArrayList();
+            for (int i = 0; i < tvList.getItems().size(); i++) {
+                list.add(new CompraTB(
+                        tvList.getItems().get(i).getId(),
+                        tvList.getItems().get(i).getFechaCompra().get().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
+                        tvList.getItems().get(i).getNumeracion(),
+                        tvList.getItems().get(i).getProveedorTB().getNumeroDocumento().get() + "\n" + tvList.getItems().get(i).getProveedorTB().getRazonSocial().get(),
+                        tvList.getItems().get(i).getTipoMonedaName() + " " + Tools.roundingValue(tvList.getItems().get(i).getTotal().get(), 2)
+                ));
+            }
+
+            InputStream inputStream = getClass().getResourceAsStream("/report/Compras.jasper");
+
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(inputStream);
+
+            Map map = new HashMap();
+            map.put("PARAMETROFECHA", "Periodo: " + Tools.getDatePicker(dtFechaInicial) + " al " + Tools.getDatePicker(dtFechaFinal));
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(list));
+
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+            jasperViewer.setIconImage(new ImageIcon(getClass().getResource(Tools.FX_LOGO)).getImage());
+            jasperViewer.setTitle("Reporte general de compras");
+            jasperViewer.setSize(840, 650);
+            jasperViewer.setLocationRelativeTo(null);
+            jasperViewer.setVisible(true);
+
+        } catch (HeadlessException | JRException ex) {
+            System.out.println("Error al generar el reporte : " + ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(FxCompraDetalleController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     @FXML
     private void onActionView(ActionEvent event) throws IOException {
         openWindowDetalleCompra();
@@ -190,35 +200,25 @@ public class FxComprasRealizadasController implements Initializable {
 
     @FXML
     private void onActionReload(ActionEvent event) {
-        fillPurchasesTable("");
+        fillPurchasesTable((short) 1, "", "", "");
+    }
+
+    @FXML
+    private void onKeyPressedReload(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            fillPurchasesTable((short) 1, "", "", "");
+        }
     }
 
     @FXML
     private void onActionReport(ActionEvent event) {
-        try {
-            DBUtil.dbConnect();
-            InputStream inputStream = getClass().getResourceAsStream("/report/Compras.jasper");
+        openWindowReporte();
+    }
 
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(inputStream);
-            Map map = new HashMap();
-
-//            map.put("TOTAL", lblTotal.getText());
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, DBUtil.getConnection());
-
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
-            jasperViewer.setIconImage(new ImageIcon(getClass().getResource(Tools.FX_LOGO)).getImage());
-            jasperViewer.setTitle("Reporte general de compras");
-            jasperViewer.setSize(840, 650);
-            jasperViewer.setLocationRelativeTo(null);
-            jasperViewer.setVisible(true);
-
-        } catch (HeadlessException | JRException ex) {
-            System.out.println("Error al generar el reporte : " + ex);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(FxCompraDetalleController.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            DBUtil.dbDisconnect();
+    @FXML
+    private void onKeyPressedReporte(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowReporte();
         }
     }
 
@@ -268,7 +268,8 @@ public class FxComprasRealizadasController implements Initializable {
                 && event.getCode() != KeyCode.PAUSE
                 && event.getCode() != KeyCode.ENTER) {
             if (!validationSearch) {
-                fillPurchasesTable(txtSearch.getText().trim());
+                fillPurchasesTable((short) 1, txtSearch.getText().trim(), "", "");
+
             }
         }
     }
@@ -276,14 +277,14 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private void onActionFechaInicial(ActionEvent actionEvent) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillPurchasesTableByDate();
+            fillPurchasesTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
         }
     }
 
     @FXML
     private void onActionFechaFinal(ActionEvent actionEvent) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillPurchasesTableByDate();
+            fillPurchasesTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
         }
     }
 

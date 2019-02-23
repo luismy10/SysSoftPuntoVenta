@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -39,7 +38,7 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         vbContent.getChildren().add(node);
-        controller.fillPurchasesTable("");
+        controller.fillPurchasesTable((short)0,"",Tools.getDate(),Tools.getDate());
     }
 
     private void openWindowDirectory() throws IOException {

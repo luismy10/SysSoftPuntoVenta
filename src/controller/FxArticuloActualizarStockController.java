@@ -34,9 +34,6 @@ public class FxArticuloActualizarStockController implements Initializable {
     public void setInitArticuloUpdateStock(FxArticulosController articulosController) {
         this.articulosController = articulosController;
     }
-    
-    
-    
-    
-    
+        
+       
 }

@@ -391,7 +391,33 @@ public class FxVentaController implements Initializable {
         }
 
     }
+    
+    private void openWindowListaPrecios(String title) throws IOException {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_LISTAPRECIOS);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxListaPreciosController controller = fXMLLoader.getController();
+            controller.setInitVentasController(this);
+            controller.loadDataView(tvList.getSelectionModel().getSelectedItem(), tvList.getSelectionModel().getSelectedIndex());
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, title, window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.pane);
+            });
+            stage.show();
+            
+           
+        } else {
+            tvList.requestFocus();
+        }
 
+    }
+    
     public void getAddArticulo(ArticuloTB articulo) {
         if (validateDuplicateArticulo(tvList, articulo)) {
             for (int i = 0; i < tvList.getItems().size(); i++) {
@@ -942,6 +968,18 @@ public class FxVentaController implements Initializable {
     private void onActionImprimir(ActionEvent event) throws IOException {
         openWindowImpresora();
     }
+    
+    @FXML
+    private void onKeyPressedListaPrecios(KeyEvent event) throws IOException {
+        if(event.getCode() == KeyCode.ENTER){
+            openWindowListaPrecios("Lista de precios");
+        }
+    }
+
+    @FXML
+    private void onActionListaPrecios(ActionEvent event) throws IOException {
+        openWindowListaPrecios("Lista de precios"); 
+    }
 
     public void setClienteVenta(String id, String datos) {
         idCliente = !id.equalsIgnoreCase("") ? id : Session.IDCLIENTE;
@@ -997,5 +1035,7 @@ public class FxVentaController implements Initializable {
     public void setContent(AnchorPane content) {
         this.content = content;
     }
+
+    
 
 }

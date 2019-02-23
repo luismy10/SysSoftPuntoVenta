@@ -4,7 +4,10 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class VentaTB {
-
+    
+    /*
+    Atributos para las vistas en general
+    */
     private int id;
     private String idVenta;
     private String cliente;
@@ -26,8 +29,17 @@ public class VentaTB {
     private String estadoName;
     private String observaciones;
     private ArticuloTB articuloTB;
+    
+    /*
+    Atributos para el reporte
+    */
+    private String documentoReporte;
+    private String fechaVentaReporte;
+    private String clienteReporte;
+    private String totalReporte;
 
     public VentaTB() {
+        
     }
 
     public int getId() {
@@ -200,4 +212,37 @@ public class VentaTB {
         this.observaciones = observaciones;
     }
 
+    public String getDocumentoReporte() {
+        return documentoReporte;
+    }
+
+    public void setDocumentoReporte(String documentoReporte) {
+        this.documentoReporte = documentoReporte;
+    }
+
+    public String getFechaVentaReporte() {
+        return fechaVentaReporte;
+    }
+
+    public void setFechaVentaReporte(String fechaVentaReporte) {
+        this.fechaVentaReporte = fechaVentaReporte;
+    }
+
+    public String getClienteReporte() {
+        return clienteReporte;
+    }
+
+    public void setClienteReporte(String clienteReporte) {
+        this.clienteReporte = clienteReporte;
+    }
+
+    public String getTotalReporte() {
+        return totalReporte;
+    }
+
+    public void setTotalReporte(String totalReporte) {
+        this.totalReporte = totalReporte;
+    }
+    
+    
 }

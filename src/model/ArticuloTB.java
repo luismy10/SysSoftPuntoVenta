@@ -37,6 +37,13 @@ public class ArticuloTB {
     private double precioVenta;
     private short margen;
     private double utilidad;
+    
+    private double precioVenta2;
+    private short margen2;
+    private double utilidad2;
+    private double precioVenta3;
+    private short margen3;
+    private double utilidad3;
 
     private boolean lote;
     private boolean inventario;
@@ -272,6 +279,74 @@ public class ArticuloTB {
         this.precioVenta = precioVenta;
     }
 
+    public short getMargen() {
+        return margen;
+    }
+
+    public void setMargen(short margen) {
+        this.margen = margen;
+    }
+
+    public double getUtilidad() {
+        return utilidad;
+    }
+
+    public void setUtilidad(double utilidad) {
+        this.utilidad = utilidad;
+    }
+
+    
+    
+    public double getPrecioVenta2() {
+        return precioVenta2;
+    }
+
+    public void setPrecioVenta2(double precioVenta2) {
+        this.precioVenta2 = precioVenta2;
+    }
+
+    public short getMargen2() {
+        return margen2;
+    }
+
+    public void setMargen2(short margen2) {
+        this.margen2 = margen2;
+    }
+
+    public double getUtilidad2() {
+        return utilidad2;
+    }
+
+    public void setUtilidad2(double utilidad2) {
+        this.utilidad2 = utilidad2;
+    }
+
+    public double getPrecioVenta3() {
+        return precioVenta3;
+    }
+
+    public void setPrecioVenta3(double precioVenta3) {
+        this.precioVenta3 = precioVenta3;
+    }
+
+    public short getMargen3() {
+        return margen3;
+    }
+
+    public void setMargen3(short margen3) {
+        this.margen3 = margen3;
+    }
+
+    public double getUtilidad3() {
+        return utilidad3;
+    }
+
+    public void setUtilidad3(double utilidad3) {
+        this.utilidad3 = utilidad3;
+    }
+
+    
+
     public double getCantidad() {
         return cantidad;
     }
@@ -311,15 +386,7 @@ public class ArticuloTB {
     public void setTotalImporte(double totalImporte) {
         this.totalImporte = totalImporte;
     }
-
-    public double getUtilidad() {
-        return utilidad;
-    }
-
-    public void setUtilidad(double utilidad) {
-        this.utilidad = utilidad;
-    }
-
+    
     public ImageView getImageLote() {
         return imageLote;
     }
@@ -358,14 +425,6 @@ public class ArticuloTB {
 
     public void setUnidadVentaName(String unidadVentaName) {
         this.unidadVentaName = unidadVentaName;
-    }
-
-    public short getMargen() {
-        return margen;
-    }
-
-    public void setMargen(short margen) {
-        this.margen = margen;
     }
 
     public int getImpuestoArticulo() {

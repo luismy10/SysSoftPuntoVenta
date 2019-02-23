@@ -1,15 +1,22 @@
 package controller;
 
+import java.awt.HeadlessException;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -19,7 +26,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -29,10 +35,20 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import model.DBUtil;
 import model.LoteADO;
 import model.LoteTB;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class FxLoteController implements Initializable {
 
@@ -55,23 +71,23 @@ public class FxLoteController implements Initializable {
     @FXML
     private TextField txtSearch;
     @FXML
-    private DatePicker dtFechaInicial;
-    @FXML
-    private DatePicker dtFechaFinal;
-    @FXML
     private ComboBox<String> cbEstado;
+    @FXML
+    private Text lblCaducados;
+    @FXML
+    private Text lblPorCaducar;
 
     private AnchorPane content;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
+        tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         tcNumeroLote.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroLote()));
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getArticuloTB().getClave() + "\n" + cellData.getValue().getArticuloTB().getNombreMarca()));
-        tcCaducidad.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCaducidad().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))));
+        tcCaducidad.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCaducidad().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
         tcActual.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getExistenciaActual()));
 
-        tcCaducidad.setCellFactory(column -> {
+        tcCaducidad.setCellFactory((TableColumn<LoteTB, String> column) -> {
             return new TableCell<LoteTB, String>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
@@ -81,15 +97,19 @@ public class FxLoteController implements Initializable {
                         setStyle("");
                     } else {
                         setText(item);
-                        System.out.println();
-                        setStyle("-fx-background-color: yellow");
+
+                        if (LocalDate.parse(item).isBefore(LocalDate.parse(Tools.getDate()))) {
+                            setStyle("-fx-text-fill: #d00c0c;-fx-alignment: CENTER-LEFT;");
+                        } else if (LocalDate.parse(item).isAfter(LocalDate.parse(Tools.getDate()))) {
+                            setStyle("-fx-text-fill: #19790e;-fx-alignment: CENTER-LEFT;");
+                        } else {
+                            setStyle("-fx-text-fill: #000000;-fx-alignment: CENTER-LEFT;");
+                        }
                     }
                 }
             };
 
         });
-        Tools.actualDate(Tools.getDate(), dtFechaInicial);
-        Tools.actualDate(Tools.getDate(), dtFechaFinal);
         cbEstado.getItems().addAll("Todos", "Proximos a caducar", "Caducados");
         cbEstado.getSelectionModel().select(0);
     }
@@ -104,8 +124,39 @@ public class FxLoteController implements Initializable {
         content.getChildren().add(Session.pane);
     }
 
-    public void fillLoteTable(String value) {
+    public void loadDataInitial() {
+        try {
+            DBUtil.dbConnect();
+            Callable<String> callable = () -> LoteADO.GetTotalCaducados();
+            Callable<String> callable1 = () -> LoteADO.GetTotalPorCaducar();
+            Callable<List<LoteTB>> callable2 = () -> LoteADO.ListLote((short) 0, "");
+            ExecutorService service = Executors.newFixedThreadPool(3, (runnable) -> {
+                Thread t = new Thread(runnable);
+                t.setDaemon(true);
+                return t;
+            });
+            Future<String> future = service.submit(callable);
+            Future<String> future1 = service.submit(callable1);
+            Future<List<LoteTB>> future2 = service.submit(callable2);
+            while (!future.isDone() && future1.isDone() && future2.isDone()) {
+                lblLoad.setVisible(true);
+            }
 
+            lblLoad.setVisible(false);
+            lblCaducados.setText("Lotes caducados - " + future.get());
+            lblPorCaducar.setText("Lotes proximos a caducarse a 2 semanas - " + future1.get());
+            tvList.setItems((ObservableList<LoteTB>) future2.get());
+            if (!service.isShutdown()) {
+                service.shutdown();
+            }
+            DBUtil.dbDisconnect();
+
+        } catch (InterruptedException | ExecutionException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
+    public void fillLoteTable(short opcion, String value) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -115,7 +166,7 @@ public class FxLoteController implements Initializable {
         Task<List<LoteTB>> task = new Task<List<LoteTB>>() {
             @Override
             public ObservableList<LoteTB> call() {
-                return LoteADO.ListLote(value);
+                return LoteADO.ListLote(opcion, value);
             }
         };
 
@@ -130,6 +181,7 @@ public class FxLoteController implements Initializable {
         task.setOnScheduled((WorkerStateEvent event) -> {
             lblLoad.setVisible(true);
         });
+
         exec.execute(task);
 
         if (!exec.isShutdown()) {
@@ -164,6 +216,37 @@ public class FxLoteController implements Initializable {
 
     }
 
+    private void onViewReporte() {
+        try {
+            ArrayList<LoteTB> list = new ArrayList();
+            for (int i = 0; i < tvList.getItems().size(); i++) {
+                list.add(new LoteTB(
+                        tvList.getItems().get(i).getId(),
+                        tvList.getItems().get(i).getNumeroLote(),
+                        tvList.getItems().get(i).getArticuloTB().getClave() + "\n" + tvList.getItems().get(i).getArticuloTB().getNombreMarca(),
+                        tvList.getItems().get(i).getFechaCaducidad().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        Tools.roundingValue(tvList.getItems().get(i).getExistenciaActual(), 2)));
+            }
+
+            Map map = new HashMap();
+            map.put("TIPOFILTRO", String.valueOf(cbEstado.getSelectionModel().getSelectedItem()));
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(FxArticuloReportesController.class.getResourceAsStream("/report/ListarLotes.jasper"), map, new JRBeanCollectionDataSource(list));
+
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+            JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+            jasperViewer.setIconImage(new ImageIcon(getClass().getResource(Tools.FX_LOGO)).getImage());
+            jasperViewer.setTitle("Lista de Lote(s)");
+            jasperViewer.setSize(840, 650);
+            jasperViewer.setLocationRelativeTo(null);
+            jasperViewer.setVisible(true);
+
+        } catch (HeadlessException | JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            System.out.println("Error al generar el reporte : " + ex);
+        }
+    }
+
     @FXML
     private void onActionEdit(ActionEvent event) throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
@@ -182,24 +265,40 @@ public class FxLoteController implements Initializable {
 
     @FXML
     private void onActionSearch(ActionEvent event) {
-        fillLoteTable(txtSearch.getText().trim());
+        fillLoteTable((short) 0, txtSearch.getText().trim());
     }
 
     @FXML
     private void onActionReload(ActionEvent event) {
-        fillLoteTable("");
+        fillLoteTable((short) 0, "");
     }
 
     @FXML
     private void onActionReporte(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            onViewReporte();
         }
     }
 
     @FXML
     private void onActionReporte(ActionEvent event) {
+        onViewReporte();
+    }
 
+    @FXML
+    private void onActionEstado(ActionEvent event) {
+        switch (cbEstado.getSelectionModel().getSelectedIndex()) {
+            case 0:
+                fillLoteTable((short) 0, "");
+                break;
+            case 1:
+                fillLoteTable((short) 1, "");
+                break;
+
+            case 2:
+                fillLoteTable((short) 2, "");
+                break;
+        }
     }
 
     public void setContent(AnchorPane content) {

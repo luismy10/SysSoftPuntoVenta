@@ -113,7 +113,7 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         content.getChildren().add(node);
-        controller.fillLoteTable("");
+        controller.loadDataInitial();
     }
 
     private void openWindowVenta() throws IOException {       
