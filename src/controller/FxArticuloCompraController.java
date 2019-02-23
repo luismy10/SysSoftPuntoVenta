@@ -11,9 +11,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -56,6 +58,12 @@ public class FxArticuloCompraController implements Initializable {
     private TextField txtUtilidad2;
     @FXML
     private TextField txtUtilidad3;
+    @FXML
+    private Label lblPrecioVentaNombre1;
+    @FXML
+    private Label lblPrecioVentaNombre2;
+    @FXML
+    private Label lblPrecioVentaNombre3;
 
     private FxComprasController comprasController;
 
@@ -128,17 +136,20 @@ public class FxArticuloCompraController implements Initializable {
         unidadventa = Integer.parseInt(value[3]);
         txtCosto.setText("" + Double.parseDouble(value[4]));
 
-        txtPrecioVenta1.setText("" + Double.parseDouble(value[5]));
-        txtMargen1.setText("" + Short.parseShort(value[6]));
-        txtUtilidad1.setText("" + Double.parseDouble(value[7]));
-        txtPrecioVenta2.setText("" + Double.parseDouble(value[8]));
-        txtMargen2.setText("" + Short.parseShort(value[9]));
-        txtUtilidad2.setText("" + Double.parseDouble(value[10]));
-        txtPrecioVenta3.setText("" + Double.parseDouble(value[11]));
-        txtMargen3.setText("" + Short.parseShort(value[12]));
-        txtUtilidad3.setText("" + Double.parseDouble(value[13]));
+        lblPrecioVentaNombre1.setText(value[5].equals("")? "Precio de Venta 1":value[5]);
+        txtPrecioVenta1.setText("" + Double.parseDouble(value[6]));
+        txtMargen1.setText("" + Short.parseShort(value[7]));
+        txtUtilidad1.setText("" + Double.parseDouble(value[8]));
+        lblPrecioVentaNombre2.setText(value[9].equals("")? "Precio de Venta 2":value[9]);
+        txtPrecioVenta2.setText("" + Double.parseDouble(value[10]));
+        txtMargen2.setText("" + Short.parseShort(value[11]));
+        txtUtilidad2.setText("" + Double.parseDouble(value[12]));
+        lblPrecioVentaNombre3.setText(value[13].equals("")? "Precio de Venta 3":value[13]);
+        txtPrecioVenta3.setText("" + Double.parseDouble(value[14]));
+        txtMargen3.setText("" + Short.parseShort(value[15]));
+        txtUtilidad3.setText("" + Double.parseDouble(value[16]));
 
-        int impuesto = Integer.parseInt(value[14]);
+        int impuesto = Integer.parseInt(value[17]);
         if (impuesto != 0) {
             for (int i = 0; i < cbImpuesto.getItems().size(); i++) {
                 if (cbImpuesto.getItems().get(i).getIdImpuesto() == impuesto) {
@@ -162,12 +173,15 @@ public class FxArticuloCompraController implements Initializable {
         txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompraReal(), 2));
         txtDescuento.setText(Tools.roundingValue(articuloTB.getDescuento(), 2));
 
+        lblPrecioVentaNombre1.setText(articuloTB.getPrecioVentaNombre());
         txtPrecioVenta1.setText(Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
         txtMargen1.setText("" + articuloTB.getMargen());
         txtUtilidad1.setText(Tools.roundingValue(articuloTB.getUtilidad(), 2));
+        lblPrecioVentaNombre2.setText(articuloTB.getPrecioVentaNombre2());
         txtPrecioVenta2.setText(Tools.roundingValue(articuloTB.getPrecioVenta2(), 2));
         txtMargen2.setText("" + articuloTB.getMargen2());
         txtUtilidad2.setText(Tools.roundingValue(articuloTB.getUtilidad2(), 2));
+        lblPrecioVentaNombre3.setText(articuloTB.getPrecioVentaNombre3());
         txtPrecioVenta3.setText(Tools.roundingValue(articuloTB.getPrecioVenta3(), 2));
         txtMargen3.setText("" + articuloTB.getMargen3());
         txtUtilidad3.setText(Tools.roundingValue(articuloTB.getUtilidad3(), 2));
@@ -224,16 +238,18 @@ public class FxArticuloCompraController implements Initializable {
         articuloTB.setImpuestoValor(cbImpuesto.getSelectionModel().getSelectedItem().getValor());
         articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioCompra() * (articuloTB.getImpuestoValor() / 100.00)));
 
+        articuloTB.setPrecioVentaNombre(lblPrecioVentaNombre1.getText());
         articuloTB.setPrecioVenta(Double.parseDouble(txtPrecioVenta1.getText()));
         articuloTB.setMargen(Short.parseShort(txtMargen1.getText()));
         articuloTB.setUtilidad(Double.parseDouble(txtUtilidad1.getText()));
+        articuloTB.setPrecioVentaNombre2(lblPrecioVentaNombre2.getText());
         articuloTB.setPrecioVenta2(Double.parseDouble(txtPrecioVenta2.getText()));
         articuloTB.setMargen2(Short.parseShort(txtMargen2.getText()));
         articuloTB.setUtilidad2(Double.parseDouble(txtUtilidad2.getText()));
+        articuloTB.setPrecioVentaNombre3(lblPrecioVentaNombre3.getText());
         articuloTB.setPrecioVenta3(Double.parseDouble(txtPrecioVenta3.getText()));
         articuloTB.setMargen3(Short.parseShort(txtMargen3.getText()));
         articuloTB.setUtilidad3(Double.parseDouble(txtUtilidad3.getText()));
-
 
         articuloTB.setLote(lote);
 
@@ -630,6 +646,19 @@ public class FxArticuloCompraController implements Initializable {
             txtPrecioVenta3.setText(Tools.calculateAumento(Double.parseDouble(txtMargen3.getText()), preciocompra));
             txtUtilidad3.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta3.getText()) - preciocompra), 2));
         }
+    }
+
+    @FXML
+    private void onMouseClickedPrecioNombre1(MouseEvent event) {
+
+    }
+
+    @FXML
+    private void onMouseClickedPrecioNombre2(MouseEvent event) {
+    }
+
+    @FXML
+    private void onMouseClickedPrecioNombre3(MouseEvent event) {
     }
 
 }

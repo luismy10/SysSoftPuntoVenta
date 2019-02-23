@@ -34,13 +34,16 @@ public class ArticuloTB {
     private double precioCompra;
     private double precioCompraReal;
 
+    private String PrecioVentaNombre;
     private double precioVenta;
     private short margen;
     private double utilidad;
     
+    private String PrecioVentaNombre2;
     private double precioVenta2;
     private short margen2;
     private double utilidad2;
+    private String PrecioVentaNombre3;
     private double precioVenta3;
     private short margen3;
     private double utilidad3;
@@ -343,6 +346,30 @@ public class ArticuloTB {
 
     public void setUtilidad3(double utilidad3) {
         this.utilidad3 = utilidad3;
+    }
+
+    public String getPrecioVentaNombre() {
+        return PrecioVentaNombre;
+    }
+
+    public void setPrecioVentaNombre(String PrecioVentaNombre) {
+        this.PrecioVentaNombre = PrecioVentaNombre;
+    }
+
+    public String getPrecioVentaNombre2() {
+        return PrecioVentaNombre2;
+    }
+
+    public void setPrecioVentaNombre2(String PrecioVentaNombre2) {
+        this.PrecioVentaNombre2 = PrecioVentaNombre2;
+    }
+
+    public String getPrecioVentaNombre3() {
+        return PrecioVentaNombre3;
+    }
+
+    public void setPrecioVentaNombre3(String PrecioVentaNombre3) {
+        this.PrecioVentaNombre3 = PrecioVentaNombre3;
     }
 
     

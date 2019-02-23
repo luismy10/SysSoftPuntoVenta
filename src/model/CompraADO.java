@@ -36,7 +36,7 @@ public class CompraADO {
             detalle_compra = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleCompraTB(IdCompra,IdArticulo,Cantidad,PrecioCompra,Descuento,PrecioVenta1,Margen1,Utilidad1,PrecioVenta2,Margen2,Utilidad2,PrecioVenta3,Margen3,Utilidad3,IdImpuesto,NombreImpuesto,ValorImpuesto,ImpuestoSumado,Importe)"
                     + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-            articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad + ?, PrecioCompra = ?, PrecioVenta1 = ?, Margen1 = ?, Utilidad1 = ?, PrecioVenta2 = ?, Margen2 = ?, Utilidad2 = ?, PrecioVenta3 = ?, Margen3 = ?, Utilidad3 = ?, Impuesto = ? WHERE IdArticulo = ?");
+            articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad + ?, PrecioCompra = ?, PrecioVentaNombre1 = ?, PrecioVenta1 = ?, Margen1 = ?, Utilidad1 = ?, PrecioVentaNombre2 = ?, PrecioVenta2 = ?, Margen2 = ?, Utilidad2 = ?, PrecioVentaNombre3 = ?, PrecioVenta3 = ?, Margen3 = ?, Utilidad3 = ?, Impuesto = ? WHERE IdArticulo = ?");
 
 //           preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("INSERT INTO HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
 //                    + "VALUES(?,GETDATE(),?,?,?,?,?)");
@@ -85,18 +85,21 @@ public class CompraADO {
                 articulo_update.setDouble(1, tableView.getItems().get(i).getCantidad());
                 articulo_update.setDouble(2, tableView.getItems().get(i).getPrecioCompraReal());
                 
-                articulo_update.setDouble(3, tableView.getItems().get(i).getPrecioVenta());
-                articulo_update.setInt(4, tableView.getItems().get(i).getMargen());
-                articulo_update.setDouble(5, tableView.getItems().get(i).getUtilidad());               
-                articulo_update.setDouble(6, tableView.getItems().get(i).getPrecioVenta2());
-                articulo_update.setInt(7, tableView.getItems().get(i).getMargen2());
-                articulo_update.setDouble(8, tableView.getItems().get(i).getUtilidad2());
-                articulo_update.setDouble(9, tableView.getItems().get(i).getPrecioVenta3());
-                articulo_update.setInt(10, tableView.getItems().get(i).getMargen3());
-                articulo_update.setDouble(11, tableView.getItems().get(i).getUtilidad3());
+                articulo_update.setString(3, tableView.getItems().get(i).getPrecioVentaNombre());
+                articulo_update.setDouble(4, tableView.getItems().get(i).getPrecioVenta());
+                articulo_update.setInt(5, tableView.getItems().get(i).getMargen());
+                articulo_update.setDouble(6, tableView.getItems().get(i).getUtilidad());
+                articulo_update.setString(7, tableView.getItems().get(i).getPrecioVentaNombre2());
+                articulo_update.setDouble(8, tableView.getItems().get(i).getPrecioVenta2());
+                articulo_update.setInt(9, tableView.getItems().get(i).getMargen2());
+                articulo_update.setDouble(10, tableView.getItems().get(i).getUtilidad2());
+                articulo_update.setString(11, tableView.getItems().get(i).getPrecioVentaNombre3());
+                articulo_update.setDouble(12, tableView.getItems().get(i).getPrecioVenta3());
+                articulo_update.setInt(13, tableView.getItems().get(i).getMargen3());
+                articulo_update.setDouble(14, tableView.getItems().get(i).getUtilidad3());
                 
-                articulo_update.setInt(12, tableView.getItems().get(i).getImpuestoArticulo());
-                articulo_update.setString(13, tableView.getItems().get(i).getIdArticulo());
+                articulo_update.setInt(15, tableView.getItems().get(i).getImpuestoArticulo());
+                articulo_update.setString(16, tableView.getItems().get(i).getIdArticulo());
                 articulo_update.addBatch();
 
 //                preparedHistorialArticulo.setString(1, tableView.getItems().get(i).getIdArticulo());

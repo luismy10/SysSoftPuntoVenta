@@ -373,12 +373,15 @@ public class ArticuloADO {
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
                 
+                articuloTB.setPrecioVentaNombre(rsEmps.getString("PrecioVentaNombre1"));
                 articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta1"));
                 articuloTB.setMargen(rsEmps.getShort("Margen1"));
                 articuloTB.setUtilidad(rsEmps.getDouble("Utilidad1"));
+                articuloTB.setPrecioVentaNombre2(rsEmps.getString("PrecioVentaNombre2"));
                 articuloTB.setPrecioVenta2(rsEmps.getDouble("PrecioVenta2"));
                 articuloTB.setMargen2(rsEmps.getShort("Margen2"));
                 articuloTB.setUtilidad2(rsEmps.getDouble("Utilidad2"));
+                articuloTB.setPrecioVentaNombre3(rsEmps.getString("PrecioVentaNombre3"));
                 articuloTB.setPrecioVenta3(rsEmps.getDouble("PrecioVenta3"));
                 articuloTB.setMargen3(rsEmps.getShort("Margen3"));
                 articuloTB.setUtilidad3(rsEmps.getDouble("Utilidad3"));
