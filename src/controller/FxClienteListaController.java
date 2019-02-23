@@ -42,6 +42,8 @@ public class FxClienteListaController implements Initializable {
 
     private FxVentaController ventaController;
 
+    private FxVentaReporteController ventaReporteController;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
@@ -57,32 +59,31 @@ public class FxClienteListaController implements Initializable {
 
     public void fillCustomersTable(String value) {
 
-            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-                Thread t = new Thread(runnable);
-                t.setDaemon(true);
-                return t;
-            });
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
 
-            Task<ObservableList<ClienteTB>> task = new Task<ObservableList<ClienteTB>>() {
-                @Override
-                public ObservableList<ClienteTB> call() {
-                    return ClienteADO.ListClienteVenta(value);
-                }
-            };
-
-            task.setOnSucceeded((WorkerStateEvent e) -> {
-                tvList.setItems(task.getValue());
-            });
-
-            exec.execute(task);
-
-            if (!exec.isShutdown()) {
-                exec.shutdown();
+        Task<ObservableList<ClienteTB>> task = new Task<ObservableList<ClienteTB>>() {
+            @Override
+            public ObservableList<ClienteTB> call() {
+                return ClienteADO.ListClienteVenta(value);
             }
-        
+        };
+
+        task.setOnSucceeded((WorkerStateEvent e) -> {
+            tvList.setItems(task.getValue());
+        });
+
+        exec.execute(task);
+
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
 
     }
-    
+
     private void openWindowAddCliente() throws IOException {
         URL url = getClass().getResource(Tools.FX_FILE_CLIENTE_PROCESO);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -114,34 +115,38 @@ public class FxClienteListaController implements Initializable {
         fillCustomersTable(txtSearch.getText());
     }
 
-    @FXML
-    private void onMouseClickedList(MouseEvent event) {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            if (event.getClickCount() == 2) {
-                if (ventaController != null) {
-                    ventaController.setClienteVenta(tvList.getSelectionModel().getSelectedItem().getIdCliente(),
-                            tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres());
-                    Tools.Dispose(window);
-                }
-
-            }
-        }
-    }
-
-    @FXML
-    private void onKeyPressedList(KeyEvent event) {
+    private void selectClienteList() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (ventaController != null) {
                 ventaController.setClienteVenta(tvList.getSelectionModel().getSelectedItem().getIdCliente(),
                         tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres());
                 Tools.Dispose(window);
+            }else if(ventaReporteController != null){
+                ventaReporteController.setClienteVentaReporte(tvList.getSelectionModel().getSelectedItem().getIdCliente(),
+                        tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres());
+                Tools.Dispose(window);
             }
         }
     }
-    
-     @FXML
+
+    @FXML
+    private void onMouseClickedList(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            selectClienteList();
+        }
+
+    }
+
+    @FXML
+    private void onKeyPressedList(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            selectClienteList();
+        }
+    }
+
+    @FXML
     private void onKeyPressedAdd(KeyEvent event) throws IOException {
-        if(event.getCode() == KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             openWindowAddCliente();
         }
     }
@@ -155,6 +160,8 @@ public class FxClienteListaController implements Initializable {
         this.ventaController = ventaController;
     }
 
-   
+    public void setInitVentaReporteController(FxVentaReporteController ventaReporteController) {
+        this.ventaReporteController = ventaReporteController;
+    }
 
 }
