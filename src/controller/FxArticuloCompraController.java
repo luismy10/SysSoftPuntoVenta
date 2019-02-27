@@ -64,7 +64,7 @@ public class FxArticuloCompraController implements Initializable {
     @FXML
     private Label lblPrecioVentaNombre3;
 
-    private FxComprasController comprasController;
+    private FxCompraController compraController;
 
     private boolean editarArticulo;
 
@@ -259,12 +259,12 @@ public class FxArticuloCompraController implements Initializable {
 
         articuloTB.setLote(lote);
 
-        if (!validateStock(comprasController.getTvList(), articuloTB) && !editarArticulo) {
+        if (!validateStock(compraController.getTvList(), articuloTB) && !editarArticulo) {
             if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {
                 openWindowLote(articuloTB);
             } else {
-                comprasController.getTvList().getItems().add(articuloTB);
-                comprasController.calculateTotals();
+                compraController.getTvList().getItems().add(articuloTB);
+                compraController.calculateTotals();
                 Tools.Dispose(window);
             }
 
@@ -272,8 +272,8 @@ public class FxArticuloCompraController implements Initializable {
             if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {
                 openWindowLote(articuloTB);
             } else {
-                comprasController.getTvList().getItems().set(indexcompra, articuloTB);
-                comprasController.calculateTotals();
+                compraController.getTvList().getItems().set(indexcompra, articuloTB);
+                compraController.calculateTotals();
                 Tools.Dispose(window);
             }
 
@@ -646,12 +646,12 @@ public class FxArticuloCompraController implements Initializable {
         this.cantidadinicial = cantidadinicial;
     }
 
-    public void setInitCompraController(FxComprasController comprasController) {
-        this.comprasController = comprasController;
+    public void setInitCompraController(FxCompraController compraController) {
+        this.compraController = compraController;
     }
 
-    public FxComprasController getComprasController() {
-        return comprasController;
+    public FxCompraController getCompraController() {
+        return compraController;
     }
 
 }

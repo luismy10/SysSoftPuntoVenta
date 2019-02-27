@@ -41,7 +41,7 @@ public class FxProveedorListaController implements Initializable {
     @FXML
     private TableColumn<ProveedorTB, String> tcRepresentative;
 
-    private FxComprasController comprasController;
+    private FxCompraController compraController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -138,15 +138,15 @@ public class FxProveedorListaController implements Initializable {
     private void onMouseClickedList(MouseEvent event) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (event.getClickCount() == 2) {
-                comprasController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get(),
+                compraController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get(),
                         tvList.getSelectionModel().getSelectedItem().getRazonSocial().get());
                 Tools.Dispose(window);
             }
         }
     }
 
-    void setInitComprasController(FxComprasController comprasController) {
-        this.comprasController = comprasController;
+    void setInitCompraController(FxCompraController comprasController) {
+        this.compraController = comprasController;
     }
 
 }

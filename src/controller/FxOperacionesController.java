@@ -92,7 +92,7 @@ public class FxOperacionesController implements Initializable {
     private void openWindowCompras() throws IOException {
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_COMPRAS));
         ScrollPane node = fXMLPrincipal.load();
-        FxComprasController controller = fXMLPrincipal.getController();
+        FxCompraController controller = fXMLPrincipal.getController();
         controller.setContent(windowinit);
         content.getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
