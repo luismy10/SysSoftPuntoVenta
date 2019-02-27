@@ -1,6 +1,7 @@
 package controller;
 
 import java.awt.HeadlessException;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -10,15 +11,21 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -45,8 +52,16 @@ public class FxVentaReporteController implements Initializable {
     private ComboBox<TipoDocumentoTB> cbDocumentos;
     @FXML
     private CheckBox cbDocumentosSeleccionar;
+    @FXML
+    private TextField txtClientes;
     
     private AnchorPane content;
+    
+    private String idCliente;
+    @FXML
+    private Button btnClientes;
+    @FXML
+    private CheckBox cbClientesSeleccionar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -56,10 +71,39 @@ public class FxVentaReporteController implements Initializable {
         TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
             cbDocumentos.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado()));
         });
-       
+        idCliente = "";
     }
 
-    private void openViewReporte() {
+    private void InitializationTransparentBackground() {
+        Session.pane.setStyle("-fx-background-color: black");
+        Session.pane.setTranslateX(0);
+        Session.pane.setTranslateY(0);
+        Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.pane.setOpacity(0.7f);
+        content.getChildren().add(Session.pane);
+    }
+
+    private void openWindowCliente() throws IOException {
+        InitializationTransparentBackground();
+        URL url = getClass().getResource(Tools.FX_FILE_CLIENTELISTA);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxClienteListaController controller = fXMLLoader.getController();
+        controller.setInitVentaReporteController(this);
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Elija un cliente", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.setOnHiding((WindowEvent WindowEvent) -> {
+            content.getChildren().remove(Session.pane);
+        });
+        stage.show();
+        controller.fillCustomersTable("");
+    }
+
+    private void openViewReporteGeneral() {
         try {
             if (!cbDocumentosSeleccionar.isSelected() && cbDocumentos.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte General de Ventas", "Seleccione un documento para generar el reporte.", false);
@@ -73,7 +117,7 @@ public class FxVentaReporteController implements Initializable {
                     return;
                 }
                 Map map = new HashMap();
-                map.put("PERIODO", "Periodo: " +LocalDate.from(DateTimeFormatter.ofPattern("dd/MM/YYYY").parse(Tools.getDatePicker(dpFechaInicial))) + " - " +LocalDate.from(DateTimeFormatter.ofPattern("dd/MM/YYYY").parse(Tools.getDatePicker(dpFechaFinal))));
+                map.put("PERIODO", "Periodo: " + dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY"))+ " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
                 map.put("DOCUMENTO", "Todos");
                 map.put("ORDEN", "Fecha");
 
@@ -96,24 +140,46 @@ public class FxVentaReporteController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedVisualizar(KeyEvent event) {
+    private void onActionCbDocumentosSeleccionar(ActionEvent event) {
+        cbDocumentos.setDisable(cbDocumentosSeleccionar.isSelected());
+    }
+    
+       @FXML
+    private void onActionCbClientesSeleccionar(ActionEvent event) {
+        btnClientes.setDisable(cbClientesSeleccionar.isSelected());
+    }
+
+    @FXML
+    private void onKeyPressedReporteGeneral(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openViewReporte();
+            openViewReporteGeneral();
         }
     }
 
     @FXML
-    private void onActionVisualizar(ActionEvent event) {
-        openViewReporte();
+    private void onActionReporteGeneral(ActionEvent event) {
+        openViewReporteGeneral();
     }
 
     @FXML
-    private void onActionCbDocumentosSeleccionar(ActionEvent event) {
-        cbDocumentos.setDisable(cbDocumentosSeleccionar.isSelected());
+    private void onKeyPressedClientes(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowCliente();
+        }
+    }
+
+    @FXML
+    private void onActionClientes(ActionEvent event) throws IOException {
+            openWindowCliente();
     }
 
     public void setContent(AnchorPane content) {
         this.content = content;
+    }
+
+    public void setClienteVentaReporte(String idCliente, String datos) {
+        this.idCliente = idCliente;
+        txtClientes.setText(datos);
     }
 
 }

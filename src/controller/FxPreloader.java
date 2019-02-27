@@ -19,7 +19,6 @@ import javafx.stage.StageStyle;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.DBUtil;
-import model.DetalleADO;
 import model.EmpresaADO;
 import model.EmpresaTB;
 import model.FacturacionTB;
@@ -159,11 +158,8 @@ public class FxPreloader extends Preloader {
                         Session.PAGINAWEB = list.get(0).getPaginaWeb();
                         Session.EMAIL = list.get(0).getEmail();
                         Session.DIRECCION = list.get(0).getDomicilio();
-                    }
-                    DetalleADO.GetDetailIdName("3", "0010", "").forEach(e -> {
-                        Session.IMPUESTO = Double.parseDouble(e.getDescripcion().get());
-                    });
-
+                    }                    
+//
                     Session.MONEDA = MonedaADO.GetMonedaPredetermined();
 
                     ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");

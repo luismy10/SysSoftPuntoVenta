@@ -337,7 +337,7 @@ public class FxCompraDetalleController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         vbContent.getChildren().add(node);
-        controller.fillPurchasesTable((short)1,"","","");
+        controller.fillPurchasesTable((short)0,"",Tools.getDate(),Tools.getDate());
     }
 
     public void setInitComptrasController(FxComprasRealizadasController comprascontroller, AnchorPane windowinit, AnchorPane vbContent) {

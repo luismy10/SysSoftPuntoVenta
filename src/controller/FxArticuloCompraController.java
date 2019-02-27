@@ -15,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -92,6 +91,8 @@ public class FxArticuloCompraController implements Initializable {
         lote = loteedit = false;
         validarlote = false;
         txtMargen1.setText("30");
+        txtMargen2.setText("20");
+        txtMargen3.setText("10");
         idArticulo = "";
         indexcompra = 0;
         cantidadinicial = 0;
@@ -136,15 +137,15 @@ public class FxArticuloCompraController implements Initializable {
         unidadventa = Integer.parseInt(value[3]);
         txtCosto.setText("" + Double.parseDouble(value[4]));
 
-        lblPrecioVentaNombre1.setText(value[5].equals("")? "Precio de Venta 1":value[5]);
+        lblPrecioVentaNombre1.setText(value[5].equals("") ? "Precio de Venta 1" : value[5]);
         txtPrecioVenta1.setText("" + Double.parseDouble(value[6]));
         txtMargen1.setText("" + Short.parseShort(value[7]));
         txtUtilidad1.setText("" + Double.parseDouble(value[8]));
-        lblPrecioVentaNombre2.setText(value[9].equals("")? "Precio de Venta 2":value[9]);
+        lblPrecioVentaNombre2.setText(value[9].equals("") ? "Precio de Venta 2" : value[9]);
         txtPrecioVenta2.setText("" + Double.parseDouble(value[10]));
         txtMargen2.setText("" + Short.parseShort(value[11]));
         txtUtilidad2.setText("" + Double.parseDouble(value[12]));
-        lblPrecioVentaNombre3.setText(value[13].equals("")? "Precio de Venta 3":value[13]);
+        lblPrecioVentaNombre3.setText(value[13].equals("") ? "Precio de Venta 3" : value[13]);
         txtPrecioVenta3.setText("" + Double.parseDouble(value[14]));
         txtMargen3.setText("" + Short.parseShort(value[15]));
         txtUtilidad3.setText("" + Double.parseDouble(value[16]));
@@ -238,14 +239,19 @@ public class FxArticuloCompraController implements Initializable {
         articuloTB.setImpuestoValor(cbImpuesto.getSelectionModel().getSelectedItem().getValor());
         articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioCompra() * (articuloTB.getImpuestoValor() / 100.00)));
 
+        articuloTB.setPrecioVentaId(1);
         articuloTB.setPrecioVentaNombre(lblPrecioVentaNombre1.getText());
         articuloTB.setPrecioVenta(Double.parseDouble(txtPrecioVenta1.getText()));
         articuloTB.setMargen(Short.parseShort(txtMargen1.getText()));
         articuloTB.setUtilidad(Double.parseDouble(txtUtilidad1.getText()));
+
+        articuloTB.setPrecioVentaId2(2);
         articuloTB.setPrecioVentaNombre2(lblPrecioVentaNombre2.getText());
         articuloTB.setPrecioVenta2(Double.parseDouble(txtPrecioVenta2.getText()));
         articuloTB.setMargen2(Short.parseShort(txtMargen2.getText()));
         articuloTB.setUtilidad2(Double.parseDouble(txtUtilidad2.getText()));
+
+        articuloTB.setPrecioVentaId3(3);
         articuloTB.setPrecioVentaNombre3(lblPrecioVentaNombre3.getText());
         articuloTB.setPrecioVenta3(Double.parseDouble(txtPrecioVenta3.getText()));
         articuloTB.setMargen3(Short.parseShort(txtMargen3.getText()));
@@ -510,22 +516,6 @@ public class FxArticuloCompraController implements Initializable {
         }
     }
 
-    public void setValidarlote(boolean validarlote) {
-        this.validarlote = validarlote;
-    }
-
-    public void setCantidadInicial(double cantidadinicial) {
-        this.cantidadinicial = cantidadinicial;
-    }
-
-    public void setInitCompraController(FxComprasController comprasController) {
-        this.comprasController = comprasController;
-    }
-
-    public FxComprasController getComprasController() {
-        return comprasController;
-    }
-
     @FXML
     private void onKeyTypedPrecio2(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
@@ -648,17 +638,20 @@ public class FxArticuloCompraController implements Initializable {
         }
     }
 
-    @FXML
-    private void onMouseClickedPrecioNombre1(MouseEvent event) {
-
+    public void setValidarlote(boolean validarlote) {
+        this.validarlote = validarlote;
     }
 
-    @FXML
-    private void onMouseClickedPrecioNombre2(MouseEvent event) {
+    public void setCantidadInicial(double cantidadinicial) {
+        this.cantidadinicial = cantidadinicial;
     }
 
-    @FXML
-    private void onMouseClickedPrecioNombre3(MouseEvent event) {
+    public void setInitCompraController(FxComprasController comprasController) {
+        this.comprasController = comprasController;
+    }
+
+    public FxComprasController getComprasController() {
+        return comprasController;
     }
 
 }

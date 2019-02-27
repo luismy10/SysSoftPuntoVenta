@@ -1,10 +1,7 @@
 package model;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import javafx.beans.property.ObjectProperty;
+import java.time.LocalDateTime;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class ProveedorTB {
@@ -29,9 +26,7 @@ public class ProveedorTB {
     private String direccion;
     private SimpleStringProperty estadoName;
     private String usuarioRegistro;
-    private ObjectProperty<LocalDate> fechaRegistro;
-    private String usuarioActualizado;
-    private Date fechaActualizado;
+    private LocalDateTime fechaRegistro;
 
     public ProveedorTB() {
         
@@ -188,30 +183,14 @@ public class ProveedorTB {
         this.usuarioRegistro = usuarioRegistro;
     }
 
-    public ObjectProperty<LocalDate> getFechaRegistro() {
+    public LocalDateTime getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(LocalDate fechaRegistro) {
-        this.fechaRegistro = new SimpleObjectProperty<>(fechaRegistro);
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
-
-    public String getUsuarioActualizado() {
-        return usuarioActualizado;
-    }
-
-    public void setUsuarioActualizado(String usuarioActualizado) {
-        this.usuarioActualizado = usuarioActualizado;
-    }
-
-    public Date getFechaActualizado() {
-        return fechaActualizado;
-    }
-
-    public void setFechaActualizado(Date fechaActualizado) {
-        this.fechaActualizado = fechaActualizado;
-    }
-
+    
     public SimpleStringProperty getTipoDocumentoName() {
         return tipoDocumentoName;
     }
@@ -226,10 +205,6 @@ public class ProveedorTB {
 
     public void setEstadoName(String estadoName) {
         this.estadoName = new SimpleStringProperty(estadoName);
-    }
-    
-    public ObjectProperty<LocalDate> fechaRegistroProperty() {
-        return fechaRegistro;
     }
 
 }

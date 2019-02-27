@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane fx:id="window" fitToWidth="true" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxComprasController">
+<ScrollPane fx:id="window" fitToWidth="true" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxComprasController">
    <content>
       <VBox>
          <children>
@@ -109,7 +109,7 @@
                                        <children>
                                           <ComboBox fx:id="cbComprobante" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Proveedor:" textFill="#1a2226" />
-                                          <TextField fx:id="txtProveedor" prefHeight="30.0" promptText="Buscar...." GridPane.columnIndex="1" />
+                                          <TextField fx:id="txtProveedor" disable="true" prefHeight="30.0" promptText="Buscar...." GridPane.columnIndex="1" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Comprobante:" textFill="#1a2226" GridPane.rowIndex="1" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Moneda:" textFill="#1a2226" GridPane.rowIndex="2" />
                                           <ComboBox fx:id="cbMoneda" maxWidth="1.7976931348623157E308" onAction="#onActionMoneda" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -156,7 +156,7 @@
                                                 <Label styleClass="labelRoboto14" text="Sub Total" textFill="#1a2226" />
                                                 <HBox spacing="5.0">
                                                    <children>
-                                                      <Text fx:id="lblMonedaSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                                      <Text fx:id="lblMonedaSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
                                                       <Text fx:id="lblSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                                    </children>
                                                 </HBox>
@@ -167,7 +167,7 @@
                                                 <Label styleClass="labelRoboto14" text="Descuento" textFill="#1a2226" />
                                                 <HBox spacing="5.0">
                                                    <children>
-                                                      <Text fx:id="lblMonedaDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                                      <Text fx:id="lblMonedaDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
                                                       <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                                    </children>
                                                 </HBox>
@@ -178,7 +178,7 @@
                                                 <Label styleClass="labelRoboto14" text="Sub Total" textFill="#1a2226" />
                                                 <HBox spacing="5.0">
                                                    <children>
-                                                      <Text fx:id="lblMonedaSubTotalNuevo" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                                      <Text fx:id="lblMonedaSubTotalNuevo" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
                                                       <Text fx:id="lblSubTotalNuevo" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                                    </children>
                                                 </HBox>
@@ -190,7 +190,7 @@
                                                 <Label styleClass="labelRoboto14" text="Total" textFill="#1a2226" />
                                                 <HBox spacing="5.0">
                                                    <children>
-                                                      <Text fx:id="lblMonedaTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="S/." />
+                                                      <Text fx:id="lblMonedaTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
                                                       <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                                    </children>
                                                 </HBox>

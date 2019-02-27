@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -333,59 +334,56 @@ public class FxProveedorProcesoController implements Initializable {
 
             cbEstado.requestFocus();
         } else {
-                short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mi Empresa", "¿Esta seguro de continuar?", true);
-                if (confirmation == 1) {
-                    ProveedorTB proveedorTB = new ProveedorTB();
-                    proveedorTB.setIdProveedor(idProveedor);
-                    proveedorTB.setTipoDocumento(cbDocumentTypeFactura.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                    proveedorTB.setNumeroDocumento(txtDocumentNumberFactura.getText().trim());
-                    proveedorTB.setRazonSocial(txtBusinessName.getText().trim());
-                    proveedorTB.setNombreComercial(txtTradename.getText().trim());
-                    proveedorTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()
-                            : "");
-                    proveedorTB.setCiudad(cbCiudad.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()
-                            : 0);
-                    proveedorTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
-                    proveedorTB.setDistrito(cbDistrito.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
+            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Proveedor", "¿Esta seguro de continuar?", true);
+            if (confirmation == 1) {
+                ProveedorTB proveedorTB = new ProveedorTB();
+                proveedorTB.setIdProveedor(idProveedor);
+                proveedorTB.setTipoDocumento(cbDocumentTypeFactura.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                proveedorTB.setNumeroDocumento(txtDocumentNumberFactura.getText().trim());
+                proveedorTB.setRazonSocial(txtBusinessName.getText().trim());
+                proveedorTB.setNombreComercial(txtTradename.getText().trim());
+                proveedorTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()
+                        : "");
+                proveedorTB.setCiudad(cbCiudad.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()
+                        : 0);
+                proveedorTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
+                proveedorTB.setDistrito(cbDistrito.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
 
-                    proveedorTB.setAmbito(cbAmbito.getSelectionModel().getSelectedIndex() >= 0
-                            ? cbAmbito.getSelectionModel().getSelectedItem().getIdDetalle().get()
-                            : 0);
-                    proveedorTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                    proveedorTB.setTelefono(txtTelefono.getText().trim());
-                    proveedorTB.setCelular(txtCelular.getText().trim());
-                    proveedorTB.setEmail(txtEmail.getText().trim());
-                    proveedorTB.setPaginaWeb(txtPaginaWeb.getText().trim());
-                    proveedorTB.setDireccion(txtDireccion.getText().trim());
-                    proveedorTB.setUsuarioRegistro("76423388");
-                    String result = ProveedorADO.CrudEntity(proveedorTB);
-                    switch (result) {
-                        case "registered":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Registrado correctamente.", false);
-                            Tools.Dispose(window);
-                            break;
-                        case "updated":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Actualizado correctamente.", false);
-                            break;
-                        case "duplicate":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "No se puede haber 2 personas con el mismo documento.", false);
-                            txtDocumentNumberFactura.requestFocus();
-                            break;
-                        case "error":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Proveedor", "No se puedo completar la ejecución.", false);
-                            break;
-                        default:
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Proveedor", result, false);
-                            break;
-                    }
-                
-            } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Proveedor", "No hay conexión al servidor.", false);
-            }
+                proveedorTB.setAmbito(cbAmbito.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbAmbito.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                        : 0);
+                proveedorTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                proveedorTB.setTelefono(txtTelefono.getText().trim());
+                proveedorTB.setCelular(txtCelular.getText().trim());
+                proveedorTB.setEmail(txtEmail.getText().trim());
+                proveedorTB.setPaginaWeb(txtPaginaWeb.getText().trim());
+                proveedorTB.setDireccion(txtDireccion.getText().trim());
+                proveedorTB.setUsuarioRegistro(Session.USER_ID);
+                proveedorTB.setFechaRegistro(LocalDateTime.now());
+                String result = ProveedorADO.CrudEntity(proveedorTB);
+                switch (result) {
+                    case "registered":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Registrado correctamente.", false);
+                        Tools.Dispose(window);
+                        break;
+                    case "updated":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Actualizado correctamente.", false);
+                        Tools.Dispose(window);
+                        break;
+                    case "duplicate":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Proveedor", "No se puede haber 2 proveedores con el mismo número de documento.", false);
+                        txtDocumentNumberFactura.requestFocus();
+                        break;
+                    default:
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Proveedor", result, false);
+                        break;
+                }
+
+            } 
         }
     }
 
@@ -587,7 +585,7 @@ public class FxProveedorProcesoController implements Initializable {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (event.getClickCount() == 2) {
                 toUpdateRepresentative(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento());
-            } 
+            }
         }
     }
 

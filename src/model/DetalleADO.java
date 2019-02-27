@@ -4,7 +4,6 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -24,7 +23,7 @@ public class DetalleADO {
             while (resultSet.next()) {
                 DetalleTB emp = new DetalleTB();
                 emp.setIdDetalle(resultSet.getInt("IdDetalle"));
-                emp.setIdAuxiliar(resultSet.getString("IdAuxiliar")); 
+                emp.setIdAuxiliar(resultSet.getString("IdAuxiliar"));
                 emp.setNombre(resultSet.getString("Nombre"));
                 emp.setDescripcion(resultSet.getString("Descripcion"));
                 emp.setEstado(resultSet.getString("Estado"));
@@ -43,7 +42,7 @@ public class DetalleADO {
                 DBUtil.dbDisconnect();
 
             } catch (SQLException ex) {
-
+                System.out.println("La operación de selección de SQL ha fallado: " + ex);
             }
 
         }
@@ -179,8 +178,8 @@ public class DetalleADO {
         }
         return empList;
     }
-    
-    public static ObservableList<DetalleTB> GetDetailNameImpuesto(){
+
+    public static ObservableList<DetalleTB> GetDetailNameImpuesto() {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         ObservableList<DetalleTB> empList = FXCollections.observableArrayList();
@@ -212,6 +211,6 @@ public class DetalleADO {
             }
         }
         return empList;
-        
+
     }
 }

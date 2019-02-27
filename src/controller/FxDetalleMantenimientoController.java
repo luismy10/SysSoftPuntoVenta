@@ -69,7 +69,8 @@ public class FxDetalleMantenimientoController implements Initializable {
     private boolean onAnimationStart, onAnimationFinished;
 
     private AnchorPane content;
-    
+
+    private String validarProceso;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -79,7 +80,7 @@ public class FxDetalleMantenimientoController implements Initializable {
         tcNombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
         tcDescripcion.setCellValueFactory(cellData -> cellData.getValue().getDescripcion());
         tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstado());
-
+        validarProceso = "0";
     }
 
     private void InitializationTransparentBackground() {
@@ -92,28 +93,23 @@ public class FxDetalleMantenimientoController implements Initializable {
         content.getChildren().add(Session.pane);
     }
 
-
     private void initMaintenance(String... value) {
-        try {
-            lvMaintenance.getItems().clear();
-            ObservableList<MantenimientoTB> listMaintenance = ListPrincipal(value[0]);
-            listMaintenance.forEach(e -> {
-                lvMaintenance.getItems().add(e);
-            });
-            lblItems.setText(listMaintenance.isEmpty() == true ? "Items (0)" : "Items (" + listMaintenance.size() + ")");
-            if (!lvMaintenance.getItems().isEmpty()) {
-                lvMaintenance.getSelectionModel().select(0);
-                initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(), "");
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        } finally {
-            
+        lvMaintenance.getItems().clear();
+        ObservableList<MantenimientoTB> listMaintenance = ListMantenimiento(value[0]);
+        listMaintenance.forEach(e
+                -> lvMaintenance.getItems().add(e)
+        );
+        lblItems.setText(listMaintenance.isEmpty() == true ? "Items (0)" : "Items (" + listMaintenance.size() + ")");
+        if (!lvMaintenance.getItems().isEmpty()) {
+            lvMaintenance.getSelectionModel().select(0);
+            MantenimientoTB mtb = lvMaintenance.getSelectionModel().getSelectedItem();
+            initDetail(mtb.getIdMantenimiento(), "");
         }
     }
 
-    public void initDetail(String... value) {
-        ObservableList<DetalleTB> listDetail = ListDetail(value);
+    public void initDetail(String value, String search) {
+        ObservableList<DetalleTB> listDetail = ListDetail(value, search);
+        validarProceso = value.equalsIgnoreCase("0010") ? "1" : "0";
         tvDetail.setItems(listDetail);
         lblDetail.setText(listDetail.isEmpty() == true ? "Ingrese el nombre del detalle (0)" : "Ingrese el nombre del detalle (" + listDetail.size() + ")");
     }
@@ -289,13 +285,12 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     @FXML
     private void onKeyReleasedSearchDetail(KeyEvent event) throws ClassNotFoundException, SQLException {
-        initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(), txtSearchDetail.getText());
-
+        initDetail(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(), txtSearchDetail.getText().trim());
     }
 
     @FXML
     private void onActionAdd(ActionEvent event) throws IOException {
-        if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0) {
+        if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0 && validarProceso.equals("0")) {
             InitializationTransparentBackground();
             URL url = getClass().getResource(Tools.FX_FILE_DETALLE);
             FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -320,6 +315,9 @@ public class FxDetalleMantenimientoController implements Initializable {
                     lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(),
                     tvDetail.getSelectionModel().getSelectedIndex() >= 0 ? tvDetail.getSelectionModel().getSelectedItem().getIdDetalle().getValue().toString() : "0");
 
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle mantenimiento", "No hay seleccionado un item del matenimiento o no esta permitido su acción.", false);
+            lvMaintenance.requestFocus();
         }
     }
 
@@ -335,7 +333,7 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     @FXML
     private void onActionRemover(ActionEvent event) {
-        if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0 && tvDetail.getSelectionModel().getSelectedIndex() >= 0) {
+        if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0 && tvDetail.getSelectionModel().getSelectedIndex() >= 0 && validarProceso.equalsIgnoreCase("0")) {
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
             if (confirmation == 1) {
                 DetalleTB detalleTB = new DetalleTB();
@@ -358,7 +356,8 @@ public class FxDetalleMantenimientoController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle mantenimiento", "Se cancelo la petición.", false);
             }
         } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle mantenimiento", "No hay conexión al servidor.", false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle mantenimiento", "Seleccione el item para removerlo o no esta permitido su acción.", false);
+            tvDetail.requestFocus();
         }
 
     }

@@ -127,11 +127,6 @@ public class FxArticuloListaController implements Initializable {
             //Controlller here
             FxArticuloCompraController controller = fXMLLoader.getController();
             controller.setInitCompraController(comprasController);
-            //
-            Stage stage = FxWindow.StageLoaderModal(parent, "Agregar artículo", window.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.show();
             controller.setLoadData(new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
                 tvList.getSelectionModel().getSelectedItem().getClave(),
                 tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
@@ -153,6 +148,11 @@ public class FxArticuloListaController implements Initializable {
             },
                     tvList.getSelectionModel().getSelectedItem().isLote()
             );
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Agregar artículo", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.show();
 
         }
     }

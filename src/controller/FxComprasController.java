@@ -164,6 +164,11 @@ public class FxComprasController implements Initializable {
                 }
             }
         }
+        
+        lblMonedaSubTotal.setText(monedaSimbolo);
+        lblMonedaDescuento.setText(monedaSimbolo);
+        lblMonedaSubTotalNuevo.setText(monedaSimbolo);
+        lblMonedaTotal.setText(monedaSimbolo);
 
         cbRepresentante.setConverter(new javafx.util.StringConverter<RepresentanteTB>() {
             @Override
@@ -218,7 +223,7 @@ public class FxComprasController implements Initializable {
         content.getChildren().add(Session.pane);
     }
 
-    private void onViewRegister() {
+    private void onViewRegister() throws IOException {
         if (txtProveedor.getText().isEmpty() && idProveedor.equalsIgnoreCase("")) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compras", "Ingrese un proveedor, por favor.", false);
             txtProveedor.requestFocus();
@@ -235,6 +240,20 @@ public class FxComprasController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compras", "Ingrese algún producto para realizar la compra, por favor.", false);
             btnArticulo.requestFocus();
         } else {
+//            InitializationTransparentBackground();
+//            URL url = getClass().getResource(Tools.FX_FILE_COMPRASPROCESO);
+//            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+//            Parent parent = fXMLLoader.load(url.openStream());
+////            Controlller here
+//            FxCompraProcesoController controller = fXMLLoader.getController();
+//            controller.setInitComprasController(this);
+//            
+//            Stage stage = FxWindow.StageLoaderModal(parent, "Pago de la compra", window.getScene().getWindow());
+//            stage.setResizable(false);
+//            stage.sizeToScene();
+//            stage.setOnHiding((WindowEvent)-> content.getChildren().remove(Session.pane));
+//            stage.show();
+            
             CompraTB compraTB = new CompraTB();
             compraTB.setProveedor(idProveedor);
             compraTB.setRepresentante(idRepresentante);
@@ -315,15 +334,17 @@ public class FxComprasController implements Initializable {
                     articuloTB.setCantidad(e.getCantidad());  
                     articuloTB.setPrecioCompra(e.getPrecioCompra());
                     articuloTB.setPrecioCompraReal(e.getPrecioCompraReal());
-
+                    
                     articuloTB.setPrecioVentaNombre(e.getPrecioVentaNombre());
                     articuloTB.setPrecioVenta(e.getPrecioVenta());
                     articuloTB.setMargen(e.getMargen());
                     articuloTB.setUtilidad(e.getUtilidad());
+                    
                     articuloTB.setPrecioVentaNombre2(e.getPrecioVentaNombre2());
                     articuloTB.setPrecioVenta2(e.getPrecioVenta2());
                     articuloTB.setMargen2(e.getMargen2());
                     articuloTB.setUtilidad2(e.getUtilidad2());
+                    
                     articuloTB.setPrecioVentaNombre3(e.getPrecioVentaNombre3());
                     articuloTB.setPrecioVenta3(e.getPrecioVenta3());
                     articuloTB.setMargen3(e.getMargen3());
@@ -388,15 +409,15 @@ public class FxComprasController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedRegister(KeyEvent event) {
+    private void onKeyPressedRegister(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             onViewRegister();
         }
     }
 
     @FXML
-    private void onActionRegister(ActionEvent event) {
-        onViewRegister();
+    private void onActionRegister(ActionEvent event) throws IOException {
+         onViewRegister();
     }
 
     @FXML

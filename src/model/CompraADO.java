@@ -85,15 +85,17 @@ public class CompraADO {
                 articulo_update.setDouble(1, tableView.getItems().get(i).getCantidad());
                 articulo_update.setDouble(2, tableView.getItems().get(i).getPrecioCompraReal());
                 
-                articulo_update.setString(3, tableView.getItems().get(i).getPrecioVentaNombre());
+                articulo_update.setInt(3, tableView.getItems().get(i).getPrecioVentaId());
                 articulo_update.setDouble(4, tableView.getItems().get(i).getPrecioVenta());
                 articulo_update.setInt(5, tableView.getItems().get(i).getMargen());
                 articulo_update.setDouble(6, tableView.getItems().get(i).getUtilidad());
-                articulo_update.setString(7, tableView.getItems().get(i).getPrecioVentaNombre2());
+                
+                articulo_update.setInt(7, tableView.getItems().get(i).getPrecioVentaId2());
                 articulo_update.setDouble(8, tableView.getItems().get(i).getPrecioVenta2());
                 articulo_update.setInt(9, tableView.getItems().get(i).getMargen2());
                 articulo_update.setDouble(10, tableView.getItems().get(i).getUtilidad2());
-                articulo_update.setString(11, tableView.getItems().get(i).getPrecioVentaNombre3());
+                
+                articulo_update.setInt(11, tableView.getItems().get(i).getPrecioVentaId3());
                 articulo_update.setDouble(12, tableView.getItems().get(i).getPrecioVenta3());
                 articulo_update.setInt(13, tableView.getItems().get(i).getMargen3());
                 articulo_update.setDouble(14, tableView.getItems().get(i).getUtilidad3());

@@ -16,26 +16,25 @@
    <children>
       <VBox style="-fx-padding: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
+            <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc;" styleClass="paddinContainer">
                <children>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../client.png" />
                      </image>
                   </ImageView>
-                  <Label styleClass="labelRoboto16" text="Datos del representante" textFill="#1a2226">
+                  <Label styleClass="labelRobotoMedium18" text="Datos del representante" textFill="#1a2226">
                      <font>
                         <Font name="Roboto" size="14.0" />
                      </font>
                   </Label>
                </children>
             </HBox>
-            <Separator />
             <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label prefHeight="18.0" styleClass="labelRoboto14" text="Tipo de documento:" textFill="#23283a">
+                        <Label prefHeight="18.0" styleClass="labelRoboto14" text="Tipo de documento" textFill="#23283a">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -46,7 +45,7 @@
                   <Separator orientation="VERTICAL" />
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="N° Documento:" textFill="#23283a">
+                        <Label styleClass="labelRoboto14" text="N° Documento" textFill="#23283a">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -60,7 +59,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label prefHeight="18.0" styleClass="labelRoboto14" text="Apellidos:" textFill="#23283a">
+                        <Label prefHeight="18.0" styleClass="labelRoboto14" text="Apellidos" textFill="#23283a">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -71,7 +70,7 @@
                   <Separator orientation="VERTICAL" />
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Nombres:" textFill="#23283a">
+                        <Label styleClass="labelRoboto14" text="Nombres" textFill="#23283a">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -85,7 +84,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label prefHeight="18.0" styleClass="labelRoboto14" text="Teléfono:" textFill="#23283a">
+                        <Label prefHeight="18.0" styleClass="labelRoboto14" text="Teléfono" textFill="#23283a">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -96,7 +95,7 @@
                   <Separator orientation="VERTICAL" />
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Celular:" textFill="#23283a">
+                        <Label styleClass="labelRoboto14" text="Celular" textFill="#23283a">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -110,7 +109,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label prefHeight="18.0" styleClass="labelRoboto14" text="Email:" textFill="#23283a">
+                        <Label prefHeight="18.0" styleClass="labelRoboto14" text="Email" textFill="#23283a">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -121,7 +120,7 @@
                   <Separator orientation="VERTICAL" />
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Dirección:" textFill="#23283a">
+                        <Label styleClass="labelRoboto14" text="Dirección" textFill="#23283a">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -131,9 +130,10 @@
                   </VBox>
                </children>
             </HBox>
+            <Separator prefWidth="200.0" />
             <HBox alignment="CENTER" styleClass="paddinContainer">
                <children>
-                  <Button fx:id="btnProceso" mnemonicParsing="false" onAction="#onActionProceso" onKeyPressed="#onKeyPressedProceso" styleClass="buttonLight" text="Agregar">
+                  <Button fx:id="btnProceso" mnemonicParsing="false" onAction="#onActionProceso" onKeyPressed="#onKeyPressedProceso" styleClass="buttonLightDefault" text="Agregar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>

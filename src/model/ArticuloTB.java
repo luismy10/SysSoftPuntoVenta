@@ -34,16 +34,20 @@ public class ArticuloTB {
     private double precioCompra;
     private double precioCompraReal;
 
-    private String PrecioVentaNombre;
+    private int precioVentaId;
+    private String precioVentaNombre;
     private double precioVenta;
     private short margen;
     private double utilidad;
-    
-    private String PrecioVentaNombre2;
+
+    private int precioVentaId2;
+    private String precioVentaNombre2;
     private double precioVenta2;
     private short margen2;
     private double utilidad2;
-    private String PrecioVentaNombre3;
+
+    private int precioVentaId3;
+    private String precioVentaNombre3;
     private double precioVenta3;
     private short margen3;
     private double utilidad3;
@@ -298,8 +302,6 @@ public class ArticuloTB {
         this.utilidad = utilidad;
     }
 
-    
-    
     public double getPrecioVenta2() {
         return precioVenta2;
     }
@@ -348,32 +350,6 @@ public class ArticuloTB {
         this.utilidad3 = utilidad3;
     }
 
-    public String getPrecioVentaNombre() {
-        return PrecioVentaNombre;
-    }
-
-    public void setPrecioVentaNombre(String PrecioVentaNombre) {
-        this.PrecioVentaNombre = PrecioVentaNombre;
-    }
-
-    public String getPrecioVentaNombre2() {
-        return PrecioVentaNombre2;
-    }
-
-    public void setPrecioVentaNombre2(String PrecioVentaNombre2) {
-        this.PrecioVentaNombre2 = PrecioVentaNombre2;
-    }
-
-    public String getPrecioVentaNombre3() {
-        return PrecioVentaNombre3;
-    }
-
-    public void setPrecioVentaNombre3(String PrecioVentaNombre3) {
-        this.PrecioVentaNombre3 = PrecioVentaNombre3;
-    }
-
-    
-
     public double getCantidad() {
         return cantidad;
     }
@@ -413,7 +389,7 @@ public class ArticuloTB {
     public void setTotalImporte(double totalImporte) {
         this.totalImporte = totalImporte;
     }
-    
+
     public ImageView getImageLote() {
         return imageLote;
     }
@@ -492,6 +468,54 @@ public class ArticuloTB {
 
     public void setDescuentoSumado(double descuentoSumado) {
         this.descuentoSumado = descuentoSumado;
+    }
+
+    public int getPrecioVentaId() {
+        return precioVentaId;
+    }
+
+    public void setPrecioVentaId(int precioVentaId) {
+        this.precioVentaId = precioVentaId;
+    }
+
+    public String getPrecioVentaNombre() {
+        return precioVentaNombre;
+    }
+
+    public void setPrecioVentaNombre(String precioVentaNombre) {
+        this.precioVentaNombre = precioVentaNombre;
+    }
+
+    public int getPrecioVentaId2() {
+        return precioVentaId2;
+    }
+
+    public void setPrecioVentaId2(int precioVentaId2) {
+        this.precioVentaId2 = precioVentaId2;
+    }
+
+    public String getPrecioVentaNombre2() {
+        return precioVentaNombre2;
+    }
+
+    public void setPrecioVentaNombre2(String precioVentaNombre2) {
+        this.precioVentaNombre2 = precioVentaNombre2;
+    }
+
+    public int getPrecioVentaId3() {
+        return precioVentaId3;
+    }
+
+    public void setPrecioVentaId3(int precioVentaId3) {
+        this.precioVentaId3 = precioVentaId3;
+    }
+
+    public String getPrecioVentaNombre3() {
+        return precioVentaNombre3;
+    }
+
+    public void setPrecioVentaNombre3(String precioVentaNombre3) {
+        this.precioVentaNombre3 = precioVentaNombre3;
     }
 
 }

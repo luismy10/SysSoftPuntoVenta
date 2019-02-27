@@ -47,7 +47,7 @@ public class Tools {
     static final String FX_FILE_CLIENTE = "/view/persona/FxCliente.fxml";
     static final String FX_FILE_CONFIGURACION = "/view/inicio/FxConfiguracion.fxml";
     static final String FX_FILE_ASIGNACION = "/view/persona/FxAsignacion.fxml";
-    static final String FX_FILE_PROVEEDORES = "/view/proveedores/FxProveedores.fxml";
+    static final String FX_FILE_PROVEEDORES = "/view/proveedores/FxProveedor.fxml";
     static final String FX_FILE_PROVEEDOREPROCESO = "/view/proveedores/FxProveedorProceso.fxml";
     static final String FX_FILE_PROVEEDORLISTA = "/view/proveedores/FxProveedorLista.fxml";
     static final String FX_FILE_MIEMPRESA = "/view/miempresa/FxMiEmpresa.fxml";
@@ -85,14 +85,15 @@ public class Tools {
     static final String FX_FILE_INVENTARIOGENERAL = "/view/lote/FxInventarioGeneral.fxml";
     static final String FX_FILE_REPORTES = "/view/inicio/FxReportes.fxml";
     static final String FX_FILE_ARTICULOREPORTES = "/view/articulo/FxArticuloReportes.fxml";
-    static final String FX_FILE_MONEDA = "/view/mantenimiento/FxMoneda.fxml";
-    static final String FX_FILE_MONEDAPROCESO = "/view/mantenimiento/FxMonedaProceso.fxml";
+    static final String FX_FILE_MONEDA = "/view/moneda/FxMoneda.fxml";
+    static final String FX_FILE_MONEDAPROCESO = "/view/moneda/FxMonedaProceso.fxml";
     static final String FX_FILE_IMPRESORATICKET = "/view/venta/FxImpresoraTicket.fxml";
     static final String FX_FILE_TIPODOCUMENTO = "/view/mantenimiento/FxTipoDocumento.fxml";
-    static final String FX_FILE_IMPUESTO = "/view/mantenimiento/FxImpuesto.fxml";
-    static final String FX_FILE_IMPUESTOPROCESO = "/view/mantenimiento/FxImpuestoProceso.fxml";
+    static final String FX_FILE_IMPUESTO = "/view/impuesto/tipodocumento.fxml";
+    static final String FX_FILE_IMPUESTOPROCESO = "/view/impuesto/FxImpuestoProceso.fxml";
     static final String FX_FILE_VENTAREPORTE = "/view/venta/FxVentaReporte.fxml";
     static final String FX_FILE_LISTAPRECIOS = "/view/venta/FxListaPrecios.fxml";
+    static final String FX_FILE_COMPRASPROCESO = "/view/compra/FxCompraProceso.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");

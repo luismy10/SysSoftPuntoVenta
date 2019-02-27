@@ -62,7 +62,7 @@ public class FxOperacionesController implements Initializable {
     private void openWindowProviders() throws IOException {
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_PROVEEDORES));
         VBox node = fXMLPrincipal.load();
-        FxProveedoresController controller = fXMLPrincipal.getController();
+        FxProveedorController controller = fXMLPrincipal.getController();
         controller.setContent(windowinit);
         content.getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
