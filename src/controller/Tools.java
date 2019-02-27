@@ -53,7 +53,7 @@ public class Tools {
     static final String FX_FILE_MIEMPRESA = "/view/miempresa/FxMiEmpresa.fxml";
     static final String FX_FILE_ARTICULO = "/view/articulo/FxArticulos.fxml";
     static final String FX_FILE_ARTICULOPROCESO = "/view/articulo/FxArticuloProceso.fxml";
-    static final String FX_FILE_COMPRAS = "/view/compra/FxCompras.fxml";
+    static final String FX_FILE_COMPRAS = "/view/compra/FxCompra.fxml";
     static final String FX_FILE_COMPRASREALIZADAS = "/view/compra/FxComprasRealizadas.fxml";
     static final String FX_FILE_CONSULTAS = "/view/inicio/FxConsultas.fxml";
     static final String FX_FILE_ARTICULOLISTA = "/view/articulo/FxArticuloLista.fxml";
@@ -77,7 +77,6 @@ public class Tools {
     static final String FX_FILE_INVENTARIOINICIAL = "/view/lote/FxInventarioInicial.fxml";
     static final String FX_FILE_IMPORTARINVENTARIO = "/view/lote/FxImportarInventario.fxml";
     static final String FX_FILE_CODIGOBARRAS = "/view/articulo/FxCodigoBarras.fxml";
-    static final String FX_FILE_PROVEEDORESREPRENTANTE = "/view/proveedores/FxProveedorRepresentante.fxml";
     static final String FX_FILE_ACTUALIZAR_STOCK = "/view/articulo/FxArticuloActualizarStock.fxml";
     static final String FX_FILE_ARTICULOHISTORIAL = "/view/articulo/FxArticuloHistorial.fxml";
     static final String FX_FILE_VENTADESCUENTO = "/view/venta/FxVentaDescuento.fxml";

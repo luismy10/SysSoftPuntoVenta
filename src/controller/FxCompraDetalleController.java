@@ -41,7 +41,6 @@ import model.DBUtil;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
 import model.ProveedorTB;
-import model.RepresentanteTB;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -63,8 +62,6 @@ public class FxCompraDetalleController implements Initializable {
     private Label lblDomicilio;
     @FXML
     private Label lblContacto;
-    @FXML
-    private Label lblRepresentante;
     @FXML
     private Label lblComprobante;
     @FXML
@@ -180,8 +177,7 @@ public class FxCompraDetalleController implements Initializable {
         this.idCompra = idCompra;
         ArrayList<Object> objects = CompraADO.ListCompletaDetalleCompra(idCompra);
         CompraTB compraTB = (CompraTB) objects.get(0);
-        ProveedorTB proveedorTB = (ProveedorTB) objects.get(1);
-        RepresentanteTB representanteTB = (RepresentanteTB) objects.get(2);
+        ProveedorTB proveedorTB = (ProveedorTB) objects.get(1);       
 
         if (compraTB != null) {
             lblFechaCompra.setText(compraTB.getFechaCompra().get().format(DateTimeFormatter.ofPattern("EEEE d 'de' MMMM 'de' yyyy")));
@@ -202,14 +198,7 @@ public class FxCompraDetalleController implements Initializable {
             lblContacto.setText("Tel: " + proveedorTB.getTelefono() + " Cel: " + proveedorTB.getCelular());
         }
 
-        if (representanteTB != null) {
-            lblRepresentante.setText(
-                    representanteTB.getApellidos() + " " + representanteTB.getNombres() + " - "
-                    + representanteTB.getTelefono() + " " + representanteTB.getCelular()
-            );
-        } else {
-            lblRepresentante.setText("No tiene un representante registrado");
-        }
+        
 
         fillArticlesTable(idCompra);
 
@@ -284,8 +273,7 @@ public class FxCompraDetalleController implements Initializable {
             map.put("LOGO", imgInputStream);
             map.put("EMAIL", "EMAIL" + Session.EMAIL);
             map.put("TELEFONOCELULAR", "TEL:" + Session.TELEFONO + " CEL:" + Session.CELULAR);
-            map.put("DIRECCION", Session.DIRECCION);
-            map.put("REPRESENTANTE", lblRepresentante.getText());
+            map.put("DIRECCION", Session.DIRECCION);            
 
             map.put("FECHACOMPRA", lblFechaCompra.getText());
             map.put("PROVEEDOR", lblProveedor.getText());

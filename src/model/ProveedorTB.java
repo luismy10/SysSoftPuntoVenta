@@ -27,7 +27,7 @@ public class ProveedorTB {
     private SimpleStringProperty estadoName;
     private String usuarioRegistro;
     private LocalDateTime fechaRegistro;
-
+    
     public ProveedorTB() {
         
     }

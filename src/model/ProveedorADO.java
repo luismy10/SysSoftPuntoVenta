@@ -16,6 +16,7 @@ public class ProveedorADO {
             PreparedStatement preparedValidation = null;
             CallableStatement codigoProveedor = null;
             PreparedStatement preparedProveedor = null;
+            
             try {
                 DBUtil.getConnection().setAutoCommit(false);
 
@@ -86,8 +87,8 @@ public class ProveedorADO {
                         preparedProveedor.setString(17, proveedorTB.getUsuarioRegistro());
                         preparedProveedor.setTimestamp(18, Timestamp.valueOf(proveedorTB.getFechaRegistro()));
                         preparedProveedor.addBatch();
-
-                        preparedProveedor.executeBatch();
+                        
+                        preparedProveedor.executeBatch();                       
                         DBUtil.getConnection().commit();
                         return "registered";
                     }
@@ -110,7 +111,7 @@ public class ProveedorADO {
                     }
                     if (codigoProveedor != null) {
                         codigoProveedor.close();
-                    }
+                    }                   
                     DBUtil.dbDisconnect();
                 } catch (SQLException ex) {
                     return ex.getLocalizedMessage();
@@ -151,7 +152,7 @@ public class ProveedorADO {
                 return ex.getLocalizedMessage();
             } finally {
                 try {
-                    if(preparedValidation != null){
+                    if (preparedValidation != null) {
                         preparedValidation.close();
                     }
                     if (preparedProveedor != null) {
@@ -181,7 +182,7 @@ public class ProveedorADO {
             while (rsEmps.next()) {
                 ProveedorTB proveedorTB = new ProveedorTB();
                 proveedorTB.setId(rsEmps.getRow());
-                proveedorTB.setIdProveedor(rsEmps.getString("IdProveedor")); 
+                proveedorTB.setIdProveedor(rsEmps.getString("IdProveedor"));
                 proveedorTB.setTipoDocumentoName(rsEmps.getString("Documento"));
                 proveedorTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 proveedorTB.setRazonSocial(rsEmps.getString("RazonSocial"));

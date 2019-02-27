@@ -14,7 +14,6 @@ public class CompraTB {
     private int id;
     private String idCompra;
     private String proveedor;
-    private String representante;
     private int comprobante;
     private String comprobanteName;
     private String numeracion;
@@ -72,14 +71,6 @@ public class CompraTB {
 
     public void setProveedor(String proveedor) {
         this.proveedor = proveedor;
-    }
-
-    public String getRepresentante() {
-        return representante;
-    }
-
-    public void setRepresentante(String representante) {
-        this.representante = representante;
     }
 
     public int getComprobante() {

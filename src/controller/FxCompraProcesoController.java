@@ -29,7 +29,7 @@ public class FxCompraProcesoController implements Initializable {
     @FXML
     private DatePicker fcVencimiento;
     
-    private FxComprasController comprasController;
+    private FxCompraController compraController;
 
   
     @Override
@@ -73,8 +73,8 @@ public class FxCompraProcesoController implements Initializable {
     private void onActionCancelar(ActionEvent event) {
     }
 
-    public void setInitComprasController(FxComprasController comprasController) {
-        this.comprasController=comprasController;
+    public void setInitCompraController(FxCompraController compraController) {
+        this.compraController=compraController;
     }
     
 }

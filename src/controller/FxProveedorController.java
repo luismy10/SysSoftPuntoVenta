@@ -187,7 +187,7 @@ public class FxProveedorController implements Initializable {
                 });
                 stage.show();
                 controller.setValueUpdate(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
-                controller.fillCustomersTable("");
+             
             } catch (IOException ix) {
                 System.out.println("Error en Proveedor Controller:" + ix.getLocalizedMessage());
             }

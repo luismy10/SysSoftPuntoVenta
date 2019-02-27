@@ -95,7 +95,6 @@
                                           <RowConstraints vgrow="SOMETIMES" />
                                           <RowConstraints vgrow="SOMETIMES" />
                                           <RowConstraints vgrow="SOMETIMES" />
-                                          <RowConstraints vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Proveedor:" textFill="#020203" />
@@ -112,21 +111,19 @@
                                                 <Label fx:id="lblContacto" styleClass="labelRoboto14" text="-" textFill="#0771d3" />
                                              </children>
                                           </HBox>
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Representante:" textFill="#020203" GridPane.rowIndex="2" />
-                                          <Label fx:id="lblRepresentante" styleClass="labelRoboto14" text="-" textFill="#1976d2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Comprobante y Numeración:" textFill="#020203" GridPane.rowIndex="3" />
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.25em;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Comprobante y Numeración:" textFill="#020203" GridPane.rowIndex="2" />
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.25em;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                              <children>
                                                 <Label fx:id="lblComprobante" styleClass="labelRoboto14" text="-" textFill="#1976d2" />
                                                 <Label fx:id="lblNumeracion" styleClass="labelRoboto14" text="-" textFill="#1976d2" />
                                              </children>
                                           </HBox>
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Obervación:" textFill="#020203" GridPane.rowIndex="4" />
-                                          <Label fx:id="lblObservacion" styleClass="labelRoboto14" text="-" textFill="#1976d2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Notas:" textFill="#020203" GridPane.rowIndex="5" />
-                                          <Label fx:id="lblNotas" styleClass="labelRoboto14" text="-" textFill="#1976d2" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Total:" textFill="#020203" GridPane.rowIndex="6" />
-                                          <Label fx:id="lblTotalCompra" styleClass="labelRoboto14" text="-" textFill="#1976d2" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Obervación:" textFill="#020203" GridPane.rowIndex="3" />
+                                          <Label fx:id="lblObservacion" styleClass="labelRoboto14" text="-" textFill="#1976d2" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Notas:" textFill="#020203" GridPane.rowIndex="4" />
+                                          <Label fx:id="lblNotas" styleClass="labelRoboto14" text="-" textFill="#1976d2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Total:" textFill="#020203" GridPane.rowIndex="5" />
+                                          <Label fx:id="lblTotalCompra" styleClass="labelRoboto14" text="-" textFill="#1976d2" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                        </children>
                                     </GridPane>
                                  </children>
