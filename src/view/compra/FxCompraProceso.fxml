@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.FxCompraProcesoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxCompraProcesoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -22,7 +21,7 @@
                <children>
                   <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em;">
                      <children>
-                        <Text fx:id="lblComprobante" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold24" text="Total de la Compra" />
+                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold24" text="Total de la Compra" />
                         <Text fx:id="lblTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold22" text="M 00.00" />
                      </children>
                   </VBox>
@@ -34,10 +33,10 @@
                      <children>
                         <HBox style="-fx-background-color: #c9c9c9; -fx-padding: 0.4166666666666667em 0 0.4166666666666667em 0.4166666666666667em;">
                            <children>
-                              <RadioButton mnemonicParsing="false" selected="true" styleClass="labelOpenSansRegular14" text="Pago de Caja" />
+                              <RadioButton fx:id="rbContado" mnemonicParsing="false" onAction="#onActionRadioButtonOpcion" selected="true" styleClass="labelOpenSansRegular14" text="Pago de Caja" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
+                        <HBox fx:id="hbPogoContado" alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                            <children>
                               <Label styleClass="labelOpenSansRegular14" text="Efectivo:" />
                               <TextField fx:id="txtEfectivo" onKeyTyped="#onKeyTypedEfectivo" />
@@ -47,6 +46,7 @@
                   </VBox>
                </children>
             </HBox>
+            <Separator prefWidth="200.0" />
             <HBox style="-fx-padding: 0.8333333333333334em;">
                <children>
                   <VBox>
@@ -55,46 +55,69 @@
                            <children>
                               <HBox style="-fx-background-color: #c9c9c9; -fx-padding: 0.4166666666666667em 0 0.4166666666666667em 0.4166666666666667em;">
                                  <children>
-                                    <RadioButton mnemonicParsing="false" styleClass="labelOpenSansRegular14" text="Crédito" />
+                                    <RadioButton fx:id="tbCredito" mnemonicParsing="false" onAction="#onActionRadioButtonOpcion" styleClass="labelOpenSansRegular14" text="Crédito" />
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
+                              <VBox fx:id="vbPagoCredito" disable="true" style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Proveedor:" />
-                                    <TextField disable="true" HBox.hgrow="ALWAYS" />
-                                    <Button mnemonicParsing="false" onAction="#onActionProveedor" onKeyPressed="#onKeyPressedProveedor" styleClass="buttonBorder">
-                                       <graphic>
-                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../search.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                 </children>
-                              </HBox>
-                              <VBox VBox.vgrow="ALWAYS">
-                                 <children>
-                                    <HBox style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                                          <Label styleClass="labelOpenSansRegular14" text="Proveedor:" />
+                                          <TextField fx:id="txtProveedor" disable="true" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                    <VBox VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <HBox style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                                              <children>
-                                                <Label styleClass="labelOpenSansRegular14" text="Crédito" />
-                                                <TextField fx:id="txtCredito" onKeyTyped="#onKeyTypedCredito" prefWidth="180.0" />
+                                                <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label styleClass="labelOpenSansRegular14" text="Crédito" />
+                                                      <TextField fx:id="txtCredito" onKeyTyped="#onKeyTypedCredito" prefWidth="180.0" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label styleClass="labelOpenSansRegular14" text="Días de Crédito" />
+                                                      <TextField fx:id="txtDiasCredito" onKeyTyped="#onKeyTypedDiasCredito" prefWidth="180.0" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label styleClass="labelOpenSansRegular14" text="Fecha de Vencimiento" />
+                                                      <DatePicker fx:id="fcVencimiento" prefWidth="180.0" />
+                                                   </children>
+                                                </VBox>
                                              </children>
-                                          </VBox>
-                                          <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                                             <children>
-                                                <Label styleClass="labelOpenSansRegular14" text="Días de Crédito" />
-                                                <TextField fx:id="txtDiasCredito" onKeyTyped="#onKeyTypedDiasCredito" prefWidth="180.0" />
-                                             </children>
-                                          </VBox>
-                                          <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                                             <children>
-                                                <Label styleClass="labelOpenSansRegular14" text="Fecha de Vencimiento" />
-                                                <DatePicker fx:id="fcVencimiento" prefWidth="180.0" />
-                                             </children>
-                                          </VBox>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Separator prefWidth="200.0" />
+            <HBox style="-fx-padding: 0.8333333333333334em;">
+               <children>
+                  <VBox HBox.hgrow="ALWAYS">
+                     <children>
+                        <VBox style="-fx-spacing: 0.8333333333333334em;">
+                           <children>
+                              <HBox style="-fx-background-color: #c9c9c9; -fx-padding: 0.4166666666666667em 0 0.4166666666666667em 0.4166666666666667em;">
+                                 <children>
+                                    <RadioButton fx:id="tbOtroPago" mnemonicParsing="false" onAction="#onActionRadioButtonOpcion" styleClass="labelOpenSansRegular14" text="Otro medio de pago" />
+                                 </children>
+                              </HBox>
+                              <VBox fx:id="vbOtroPago" disable="true" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Descripción:" />
+                                          <TextField fx:id="txtDescripcion" disable="true" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                  </children>

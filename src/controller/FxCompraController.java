@@ -232,7 +232,7 @@ public class FxCompraController implements Initializable {
 //            Controlller here
             FxCompraProcesoController controller = fXMLLoader.getController();
             controller.setInitCompraController(this);
-            controller.setLoadProcess(compraTB,tvList,loteTBs);
+            controller.setLoadProcess(compraTB,tvList,loteTBs,monedaSimbolo+" "+lblTotal.getText(),txtProveedor.getText());
 
             Stage stage = FxWindow.StageLoaderModal(parent, "Pago de la compra", window.getScene().getWindow());
             stage.setResizable(false);
