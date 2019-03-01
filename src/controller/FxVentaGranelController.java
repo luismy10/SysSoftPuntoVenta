@@ -44,37 +44,43 @@ public class FxVentaGranelController implements Initializable {
         lblArticulo.setText(articuloTB.getNombreMarca());
     }
 
+    private void executeEventAceptar() {
+        if (Tools.isNumeric(txtImporte.getText())) {
+            if (opcion) {
+                articuloTB.setPrecioVenta(Double.parseDouble(txtImporte.getText()) + articuloTB.getTotalImporte());
+                articuloTB.setTotalImporte(
+                        (articuloTB.getCantidad() * articuloTB.getPrecioVenta())
+                        - articuloTB.getDescuento()
+                );
+                ventaController.getTvList().getItems().set(index, articuloTB);
+                ventaController.calculateTotales();
+                Tools.Dispose(window);
+                ventaController.getTxtSearch().requestFocus();
+                ventaController.getTxtSearch().clear();
+            } else {
+                articuloTB.setPrecioVenta(Double.parseDouble(txtImporte.getText()));
+                articuloTB.setTotalImporte(
+                        (articuloTB.getCantidad() * articuloTB.getPrecioVenta())
+                        - articuloTB.getDescuento()
+                );
+                ventaController.getTvList().getItems().set(index, articuloTB);
+                ventaController.calculateTotales();
+                Tools.Dispose(window);
+                ventaController.getTxtSearch().requestFocus();
+                ventaController.getTxtSearch().clear();
+            }
+        }
+    }
+
     @FXML
     private void onActionAceptar(ActionEvent event) {
-        if (opcion) {
-            articuloTB.setPrecioVenta(Double.parseDouble(txtImporte.getText()) + articuloTB.getTotalImporte());
-            articuloTB.setTotalImporte(
-                    (articuloTB.getCantidad() * articuloTB.getPrecioVenta())
-                    - articuloTB.getDescuento()
-            );
-            ventaController.getTvList().getItems().set(index, articuloTB);
-            ventaController.calculateTotales();
-            Tools.Dispose(window);
-            ventaController.getTxtSearch().requestFocus();
-            ventaController.getTxtSearch().clear();
-        } else {
-            articuloTB.setPrecioVenta(Double.parseDouble(txtImporte.getText()));
-            articuloTB.setTotalImporte(
-                    (articuloTB.getCantidad() * articuloTB.getPrecioVenta())
-                    - articuloTB.getDescuento()
-            );
-            ventaController.getTvList().getItems().set(index, articuloTB);
-            ventaController.calculateTotales();
-            Tools.Dispose(window);
-            ventaController.getTxtSearch().requestFocus();
-            ventaController.getTxtSearch().clear();
-        }
+        executeEventAceptar();
     }
 
     @FXML
     private void onKeyPressedAceptar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            executeEventAceptar();
         }
     }
 
@@ -82,12 +88,16 @@ public class FxVentaGranelController implements Initializable {
     private void onKeyPressedCancelar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             Tools.Dispose(window);
+            ventaController.getTxtSearch().requestFocus();
+            ventaController.getTxtSearch().clear();
         }
     }
 
     @FXML
     private void onActionCancelar(ActionEvent event) {
         Tools.Dispose(window);
+        ventaController.getTxtSearch().requestFocus();
+        ventaController.getTxtSearch().clear();
     }
 
     @FXML

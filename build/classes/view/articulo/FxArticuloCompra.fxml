@@ -234,15 +234,6 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onActionPreviousPrices" onKeyPressed="#onKeyPressedPreviousPrices" styleClass="buttonLight" text="Precios Anteriores">
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../cambio-divisas.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCancel" onKeyPressed="#onKeyPressedCancel" styleClass="buttonLight" text="Cancelar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
