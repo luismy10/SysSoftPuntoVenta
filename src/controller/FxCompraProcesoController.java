@@ -38,7 +38,7 @@ public class FxCompraProcesoController implements Initializable {
     @FXML
     private DatePicker fcVencimiento;
     @FXML
-    private HBox hbPogoContado;
+    private HBox hbPagoContado;
     @FXML
     private VBox vbPagoCredito;
     @FXML
@@ -68,6 +68,9 @@ public class FxCompraProcesoController implements Initializable {
         rbContado.setToggleGroup(group);
         tbCredito.setToggleGroup(group);
         tbOtroPago.setToggleGroup(group);
+        System.out.println(hbPagoContado.isDisable());
+        System.out.println(vbPagoCredito.isDisable());
+        System.out.println(vbOtroPago.isDisable());
     }
 
     public void setLoadProcess(CompraTB compraTB, TableView<ArticuloTB> tvList, ObservableList<LoteTB> loteTBs, String total, String proveedor) {
@@ -111,7 +114,7 @@ public class FxCompraProcesoController implements Initializable {
                 executeCrud();
             }
         } else if (tbOtroPago.isSelected()) {
-            if (!txtDescripcion.getText().isEmpty()) {
+            if (txtDescripcion.getText().isEmpty()) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo descripción.", false);
                 txtDescripcion.requestFocus();
             } else {
@@ -176,20 +179,24 @@ public class FxCompraProcesoController implements Initializable {
     }
 
     @FXML
-    private void onActionRadioButtonOpcion(ActionEvent event) {
-        if (tbCredito.isSelected()) {
-            vbPagoCredito.setDisable(false);
-            vbOtroPago.setDisable(false);
-            hbPogoContado.setDisable(true);
-        } else if (tbCredito.isSelected()) {
-            vbOtroPago.setDisable(false);
-            hbPogoContado.setDisable(false);
-            vbPagoCredito.setDisable(true);
-        } else if (tbOtroPago.isSelected()) {
-            hbPogoContado.setDisable(false);
-            vbPagoCredito.setDisable(false);
-            vbOtroPago.setDisable(true);
-        }
+    private void onActionRbContado(ActionEvent event) {
+        vbPagoCredito.setDisable(true);
+        vbOtroPago.setDisable(true);
+        hbPagoContado.setDisable(false);
+    }
+
+    @FXML
+    private void onActionRbCredito(ActionEvent event) {
+        hbPagoContado.setDisable(true);
+        vbOtroPago.setDisable(true);
+        vbPagoCredito.setDisable(false);
+    }
+
+    @FXML
+    private void onActionRbOtroPago(ActionEvent event) {
+        hbPagoContado.setDisable(true);
+        vbPagoCredito.setDisable(true);
+        vbOtroPago.setDisable(false);
     }
 
     public void setInitCompraController(FxCompraController compraController) {
