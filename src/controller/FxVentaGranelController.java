@@ -52,6 +52,8 @@ public class FxVentaGranelController implements Initializable {
                         (articuloTB.getCantidad() * articuloTB.getPrecioVenta())
                         - articuloTB.getDescuento()
                 );
+                articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVenta() * (ventaController.getTaxValue(articuloTB.getImpuestoArticulo()) / 100.00)));
+
                 ventaController.getTvList().getItems().set(index, articuloTB);
                 ventaController.calculateTotales();
                 Tools.Dispose(window);
@@ -63,6 +65,8 @@ public class FxVentaGranelController implements Initializable {
                         (articuloTB.getCantidad() * articuloTB.getPrecioVenta())
                         - articuloTB.getDescuento()
                 );
+                articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVenta() * (ventaController.getTaxValue(articuloTB.getImpuestoArticulo()) / 100.00)));
+
                 ventaController.getTvList().getItems().set(index, articuloTB);
                 ventaController.calculateTotales();
                 Tools.Dispose(window);
@@ -90,6 +94,7 @@ public class FxVentaGranelController implements Initializable {
             Tools.Dispose(window);
             ventaController.getTxtSearch().requestFocus();
             ventaController.getTxtSearch().clear();
+            
         }
     }
 

@@ -12,62 +12,77 @@ import javafx.scene.layout.AnchorPane;
 import model.ArticuloTB;
 
 public class FxVentaDescuentoController implements Initializable {
-    
+
     @FXML
     private AnchorPane window;
     @FXML
     private TextField txtPrecioVenta;
     @FXML
     private TextField txtPorcentajeDescuento;
-    @FXML
-    private TextField txtPrecioDescuento;
-    
+
     private FxVentaController ventaController;
-    
+
     private ArticuloTB articuloTB;
-    
+
     private int index;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
-    
+
+    public void initComponents(ArticuloTB articuloTB, int index) {
+        this.articuloTB = articuloTB;
+        txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getTotalImporte(), 2));
+        this.index = index;
+    }
+
     @FXML
     private void onKeyPressedAceptar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            
+
         }
     }
-    
+
     @FXML
     private void onActionAceptar(ActionEvent event) {
-        
+
     }
-    
+
     @FXML
     private void onKeyPressedCancelar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             Tools.Dispose(window);
         }
     }
-    
+
     @FXML
     private void onActionCancelar(ActionEvent event) {
         Tools.Dispose(window);
     }
-    
+
     @FXML
     private void onKeyReleasedPorcentajeDescuento(KeyEvent event) {
         if (Tools.isNumeric(txtPrecioVenta.getText()) && Tools.isNumeric(txtPorcentajeDescuento.getText())) {
-            Double precio = Double.parseDouble(txtPrecioVenta.getText());
-            Double porcentaje = Double.parseDouble(txtPorcentajeDescuento.getText()) / 100.00;
-            Double descuento = precio * porcentaje;
-            Double total = precio - descuento;
-            txtPrecioDescuento.setText(Tools.roundingValue(total, 2));
+            double precio = Double.parseDouble(txtPrecioVenta.getText());
+            double descuento = Double.parseDouble(txtPorcentajeDescuento.getText());
+            double porcentajeDecimal = descuento / 100.00;
+            double porcentajeRestante = precio * porcentajeDecimal;
+            
+            articuloTB.setPrecioVentaReal(articuloTB.getPrecioVenta());
+            articuloTB.setPrecioVenta(articuloTB.getPrecioVenta() - porcentajeRestante);            
+            
+            articuloTB.setDescuento(descuento);
+            articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
+            
+            articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaReal());
+            articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+            
+            articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVenta() * (ventaController.getTaxValue(articuloTB.getImpuestoArticulo()) / 100.00)));
+
         }
     }
-    
+
     @FXML
     private void onKeyTypedPorcentajeDescuento(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
@@ -78,39 +93,9 @@ public class FxVentaDescuentoController implements Initializable {
             event.consume();
         }
     }
-    
-    @FXML
-    private void onKeyReleasedPrecioDescuento(KeyEvent event) {
-        if (Tools.isNumeric(txtPrecioVenta.getText()) && Tools.isNumeric(txtPrecioDescuento.getText())) {
-            Double valor = Double.parseDouble(txtPrecioVenta.getText());
-            Double precio = Double.parseDouble(txtPrecioDescuento.getText());
-            Double porcentaje = (precio * 100) / valor;
-            int recalculado = (int) (100 - (Double.parseDouble(Tools.roundingValue(
-                    Double.parseDouble(Tools.roundingValue(porcentaje, 2)),
-                    0))));
-            txtPorcentajeDescuento.setText(String.valueOf(recalculado)); 
-        }
-    }
-    
-    @FXML
-    private void onKeyTypedPrecioDescuento(KeyEvent event) {
-        char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-            event.consume();
-        }
-        if (c == '.' && txtPrecioDescuento.getText().contains(".")) {
-            event.consume();
-        }
-    }
-    
-    public void initComponents(ArticuloTB articuloTB, int index) {
-        this.articuloTB = articuloTB;
-        txtPrecioVenta.setText(Tools.roundingValue(this.articuloTB.getTotalImporte(), 2));
-        this.index = index;
-    }
-    
+
     public void setInitVentasController(FxVentaController ventaController) {
         this.ventaController = ventaController;
     }
-    
+
 }

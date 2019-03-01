@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
@@ -20,12 +21,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -42,6 +45,8 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import model.ArticuloADO;
 import model.ArticuloTB;
 import model.ComprobanteADO;
+import model.ImpuestoADO;
+import model.ImpuestoTB;
 import model.MonedaADO;
 import model.MonedaTB;
 import model.TipoDocumentoADO;
@@ -92,6 +97,8 @@ public class FxVentaController implements Initializable {
     private Text lblDescuentoMoneda;
     @FXML
     private Text lblTotalPagarMoneda;
+    @FXML
+    private VBox vbImpuestos;
 
     private AnchorPane content;
 
@@ -99,11 +106,13 @@ public class FxVentaController implements Initializable {
 
     private double descuento;
 
+    private double totalImporte;
+
     private String idCliente;
 
-    private String datodCliente;
-
     private String monedaSimbolo;
+
+    private ArrayList<ImpuestoTB> arrayArticulosImpuesto;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -195,6 +204,11 @@ public class FxVentaController implements Initializable {
         lblDescuentoMoneda.setText(monedaSimbolo);
         lblTotalPagarMoneda.setText(monedaSimbolo);
 
+        arrayArticulosImpuesto = new ArrayList<>();
+        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
+            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+        });
+
     }
 
     private void initTable() {
@@ -206,7 +220,7 @@ public class FxVentaController implements Initializable {
         tcPrecio.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getPrecioVenta(), 2)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getDescuento(), 2)));
+                Tools.roundingValue(cellData.getValue().getDescuento(), 0) + "%"));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getTotalImporte(), 2)));
     }
@@ -414,11 +428,11 @@ public class FxVentaController implements Initializable {
                         openWindowGranel("Cambiar precio al Artículo", false);
                     } else {
                         ArticuloTB articuloTB = tvList.getItems().get(i);
-                        articuloTB.setCantidad(tvList.getItems().get(i).getCantidad() + 1);
-                        articuloTB.setTotalImporte(
-                                (articuloTB.getCantidad() * articuloTB.getPrecioVenta())
-                                - articuloTB.getDescuento()
-                        );
+                        articuloTB.setCantidad(tvList.getItems().get(i).getCantidad() + 1);                        
+                        
+                        articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+                        articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVenta() * (getTaxValue(articuloTB.getImpuestoArticulo()) / 100.00)));
+
                         tvList.getItems().set(i, articuloTB);
                         tvList.getSelectionModel().select(i);
                         calculateTotales();
@@ -481,6 +495,8 @@ public class FxVentaController implements Initializable {
         }
         cbComprobante.getSelectionModel().select(Session.DEFAULT_COMPROBANTE);
         txtSearch.requestFocus();
+
+        calculateTotales();
     }
 
     public void imprimirVenta(VentaTB ventaTB, String efec, String vuel, String ticket) {
@@ -736,6 +752,16 @@ public class FxVentaController implements Initializable {
     }
 
     @FXML
+    private void onActionCancelar(ActionEvent event) {
+        if (!tvList.getItems().isEmpty()) {
+            short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Está seguro de borrar la venta?", true);
+            if (value == 1) {
+                resetVenta();
+            }
+        }
+    }
+
+    @FXML
     private void onKeyPressedCancelar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (!tvList.getItems().isEmpty()) {
@@ -745,16 +771,6 @@ public class FxVentaController implements Initializable {
                 }
             }
 
-        }
-    }
-
-    @FXML
-    private void onActionCancel(ActionEvent event) {
-        if (!tvList.getItems().isEmpty()) {
-            short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Está seguro de borrar la venta?", true);
-            if (value == 1) {
-                resetVenta();
-            }
         }
     }
 
@@ -787,6 +803,9 @@ public class FxVentaController implements Initializable {
                     if (articuloTB.getUnidadVenta() == 2) {
                         return;
                     }
+                    articuloTB.setImpuestoArticulo(e.getImpuestoArticulo());
+                    articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (e.getPrecioVenta() * (getTaxValue(e.getImpuestoArticulo()) / 100.00)));
+
                     tvList.getItems().set(index, articuloTB);
                     tvList.getSelectionModel().select(index);
                     calculateTotales();
@@ -814,12 +833,14 @@ public class FxVentaController implements Initializable {
                     );
                     articuloTB.setInventario(e.isInventario());
                     articuloTB.setUnidadVenta(e.getUnidadVenta());
-                    if (articuloTB.getUnidadVenta() == 2) {
-                        return;
-                    }
+
+                    articuloTB.setImpuestoArticulo(e.getImpuestoArticulo());
+                    articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (e.getPrecioVenta() * (getTaxValue(e.getImpuestoArticulo()) / 100.00)));
+
                     tvList.getItems().set(index, articuloTB);
                     tvList.getSelectionModel().select(index);
                     calculateTotales();
+
                 });
             }
         }
@@ -891,15 +912,22 @@ public class FxVentaController implements Initializable {
                 articuloTB.setIdArticulo(a.getIdArticulo());
                 articuloTB.setClave(a.getClave());
                 articuloTB.setNombreMarca(a.getNombreMarca());
+                
+                articuloTB.setDescuento(0);
+                articuloTB.setDescuentoSumado(0);
+                
                 articuloTB.setCantidad(1);
                 articuloTB.setPrecioVenta(a.getPrecioVenta());
-                articuloTB.setDescuento(0);
-                articuloTB.setTotalImporte(
-                        (1 * a.getPrecioVenta())
-                        - articuloTB.getDescuento()
-                );
+                articuloTB.setPrecioVentaReal(a.getPrecioVenta());
+                
+                articuloTB.setSubImporte(1 * a.getPrecioVenta());
+                articuloTB.setTotalImporte(1 * a.getPrecioVenta());
+                
                 articuloTB.setInventario(a.isInventario());
                 articuloTB.setUnidadVenta(a.getUnidadVenta());
+                articuloTB.setImpuestoArticulo(a.getImpuestoArticulo());
+                articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVenta() * (getTaxValue(articuloTB.getImpuestoArticulo()) / 100.00)));
+                
                 getAddArticulo(articuloTB);
                 txtSearch.clear();
                 txtSearch.requestFocus();
@@ -909,6 +937,17 @@ public class FxVentaController implements Initializable {
             }
         }
 
+    }
+
+    public double getTaxValue(int impuesto) {
+        double valor = 0;
+        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
+            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
+                valor = arrayArticulosImpuesto.get(i).getValor();
+                break;
+            }
+        }
+        return valor;
     }
 
     @FXML
@@ -980,27 +1019,39 @@ public class FxVentaController implements Initializable {
     }
 
     public void calculateTotales() {
-        double subTotalInterno, descuentoInterno;
 
-        tvList.getItems().forEach(e -> subTotal += e.getTotalImporte());
+        tvList.getItems().forEach(e -> subTotal += e.getSubImporte());
         lblSubTotal.setText(Tools.roundingValue(subTotal, 2));
-        subTotalInterno = subTotal;
         subTotal = 0;
 
-        tvList.getItems().forEach(e -> descuento += e.getDescuento());
-        lblDescuento.setText(Tools.roundingValue(descuento, 2));
-        descuentoInterno = descuento;
+        tvList.getItems().forEach(e -> descuento += e.getDescuentoSumado());
+        lblDescuento.setText((Tools.roundingValue(descuento * (-1), 2)));
         descuento = 0;
 
-        double total = subTotalInterno - descuentoInterno;
-        lblTotal.setText(Tools.roundingValue(total, 2));
-        lblTotalPagar.setText(Tools.roundingValue(total, 2));
+        vbImpuestos.getChildren().clear();
+        boolean addElement = false;
+        double sumaElement = 0;
+        if (!tvList.getItems().isEmpty()) {
+            for (int k = 0; k < arrayArticulosImpuesto.size(); k++) {
+                for (int i = 0; i < tvList.getItems().size(); i++) {
+                    if (arrayArticulosImpuesto.get(k).getIdImpuesto() == tvList.getItems().get(i).getImpuestoArticulo()) {
+                        addElement = true;
+                        sumaElement += tvList.getItems().get(i).getImpuestoSumado();
+                    }
+                }
+                if (addElement) {
+                    addElementImpuesto(arrayArticulosImpuesto.get(k).getIdImpuesto() + "", arrayArticulosImpuesto.get(k).getNombre(), monedaSimbolo, Tools.roundingValue(sumaElement, 2));
+                    addElement = false;
+                    sumaElement = 0;
+                }
+            }
+        }
 
-//        double gravada = Tools.calculateValueNeto(Session.IMPUESTO, total);
-//        lblGravada.setText(Tools.roundingValue(gravada, 2));
-//
-//        double impuesto = Tools.calculateTax(Session.IMPUESTO, gravada);
-//        lblIgv.setText(Tools.roundingValue(impuesto, 2));
+        tvList.getItems().forEach(e -> totalImporte += e.getTotalImporte());
+        lblTotal.setText(Tools.roundingValue(totalImporte, 2));
+        lblTotalPagar.setText(Tools.roundingValue(totalImporte, 2));
+        totalImporte = 0;
+
     }
 
     // Metodo para obtener Tipo Comprobante
@@ -1010,10 +1061,32 @@ public class FxVentaController implements Initializable {
 
     public void setClienteVenta(String id, String datos) {
         idCliente = !id.equalsIgnoreCase("") ? id : Session.IDCLIENTE;
-        datodCliente = datos;
-        txtCliente.setText(datodCliente.equalsIgnoreCase("")
+        txtCliente.setText(datos.equalsIgnoreCase("")
                 ? Session.DATOSCLIENTE
-                : datodCliente);
+                : datos);
+    }
+
+    private void addElementImpuesto(String id, String titulo, String moneda, String total) {
+
+        Label label = new Label(titulo);
+        label.setStyle("-fx-text-fill:#1a2226;");
+        label.getStyleClass().add("labelRoboto14");
+
+        Text text = new Text(moneda);
+        text.setStyle("-fx-fill:#1a2226");
+        text.getStyleClass().add("labelRobotoMedium16");
+        Text text1 = new Text(total);
+        text1.setStyle("-fx-fill:#1a2226");
+        text1.getStyleClass().add("labelRobotoMedium16");
+
+        HBox box = new HBox(text, text1);
+        box.setStyle("-fx-spacing: 0.4166666666666667em;");
+
+        HBox hBox = new HBox(label, box);
+        hBox.setId(id);
+        hBox.setStyle("-fx-spacing: 0.8333333333333334em;");
+
+        vbImpuestos.getChildren().add(hBox);
     }
 
     public TextField getTxtSearch() {

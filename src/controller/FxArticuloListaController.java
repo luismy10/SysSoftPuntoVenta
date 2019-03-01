@@ -1,6 +1,5 @@
 package controller;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -120,40 +119,44 @@ public class FxArticuloListaController implements Initializable {
         controller.setInitArticulo();
     }
 
-    private void openWindowCompra() throws IOException {
+    private void openWindowCompra() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            URL url = getClass().getResource(Tools.FX_FILE_ARTICULOCOMPRA);
-            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxArticuloCompraController controller = fXMLLoader.getController();
-            controller.setInitCompraController(compraController);
-            controller.setLoadData(new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
-                tvList.getSelectionModel().getSelectedItem().getClave(),
-                tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
-                "" + tvList.getSelectionModel().getSelectedItem().getUnidadVenta(),
-                "" + tvList.getSelectionModel().getSelectedItem().getPrecioCompra(),
-                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVentaNombre(),
-                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta(),
-                "" + tvList.getSelectionModel().getSelectedItem().getMargen(),
-                "" + tvList.getSelectionModel().getSelectedItem().getUtilidad(),
-                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVentaNombre2(),
-                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta2(),
-                "" + tvList.getSelectionModel().getSelectedItem().getMargen2(),
-                "" + tvList.getSelectionModel().getSelectedItem().getUtilidad2(),
-                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVentaNombre3(),
-                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta3(),
-                "" + tvList.getSelectionModel().getSelectedItem().getMargen3(),
-                "" + tvList.getSelectionModel().getSelectedItem().getUtilidad3(),
-                "" + tvList.getSelectionModel().getSelectedItem().getImpuestoArticulo()
-            },
-                    tvList.getSelectionModel().getSelectedItem().isLote()
-            );
-            //
-            Stage stage = FxWindow.StageLoaderModal(parent, "Agregar artículo", window.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.show();
+            try {
+                URL url = getClass().getResource(Tools.FX_FILE_ARTICULOCOMPRA);
+                FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxArticuloCompraController controller = fXMLLoader.getController();
+                controller.setInitCompraController(compraController);
+                controller.setLoadData(new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
+                    tvList.getSelectionModel().getSelectedItem().getClave(),
+                    tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getUnidadVenta(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getPrecioCompra(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getPrecioVentaNombre(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getMargen(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getUtilidad(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getPrecioVentaNombre2(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta2(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getMargen2(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getUtilidad2(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getPrecioVentaNombre3(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta3(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getMargen3(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getUtilidad3(),
+                    "" + tvList.getSelectionModel().getSelectedItem().getImpuestoArticulo()
+                },
+                        tvList.getSelectionModel().getSelectedItem().isLote()
+                );
+                //
+                Stage stage = FxWindow.StageLoaderModal(parent, "Agregar artículo", window.getScene().getWindow());
+                stage.setResizable(false);
+                stage.sizeToScene();
+                stage.show();
+            } catch (IOException ix) {
+                System.out.println("Error Articulo Lista Controller:" + ix.getLocalizedMessage());
+            }
 
         }
     }
@@ -173,73 +176,56 @@ public class FxArticuloListaController implements Initializable {
             );
             articuloTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
             articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
+            articuloTB.setImpuestoArticulo(tvList.getSelectionModel().getSelectedItem().getImpuestoArticulo());
+            articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVenta() * (ventaController.getTaxValue(articuloTB.getImpuestoArticulo()) / 100.00)));
+
             Tools.Dispose(window);
             ventaController.getAddArticulo(articuloTB);
             txtSearch.requestFocus();
         }
     }
 
-    @FXML
-    private void onMouseClickedList(MouseEvent event) throws IOException {
-        if (event.getClickCount() == 2) {
-            if (compraController != null) {
-                openWindowCompra();
-            } else if (ventaController != null) {
-                addArticuloToList();
-            } else if (articuloHistorialController != null) {
-                if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                    articuloHistorialController.getElemetsArticulo(
-                            new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
-                                tvList.getSelectionModel().getSelectedItem().getClave(),
-                                tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
-                                "" + tvList.getSelectionModel().getSelectedItem().getCantidad(),
-                                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta()});
-                    Tools.Dispose(window);
-                }
-            } else if (articuloReportesController != null) {
-                if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                    ArticuloTB articuloTB = new ArticuloTB();
-                    articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave());
-                    articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
-                    articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
-                    articuloReportesController.getTvList().getItems().add(articuloTB);
-                    Tools.Dispose(window);
-                }
+    private void executeEventObject() {
+        if (compraController != null) {
+            openWindowCompra();
+            txtSearch.requestFocus();
+        } else if (ventaController != null) {
+            addArticuloToList();
+        } else if (articuloHistorialController != null) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                articuloHistorialController.getElemetsArticulo(
+                        new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
+                            tvList.getSelectionModel().getSelectedItem().getClave(),
+                            tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
+                            "" + tvList.getSelectionModel().getSelectedItem().getCantidad(),
+                            "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta()});
+                Tools.Dispose(window);
+            }
+
+        } else if (articuloReportesController != null) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                ArticuloTB articuloTB = new ArticuloTB();
+                articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave());
+                articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
+                articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
+                articuloReportesController.getTvList().getItems().add(articuloTB);
+                Tools.Dispose(window);
             }
 
         }
     }
 
     @FXML
-    private void onKeyPressedList(KeyEvent event) throws IOException {
+    private void onMouseClickedList(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            executeEventObject();
+        }
+    }
+
+    @FXML
+    private void onKeyPressedList(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (compraController != null) {
-                openWindowCompra();
-                txtSearch.requestFocus();
-            } else if (ventaController != null) {
-                addArticuloToList();
-            } else if (articuloHistorialController != null) {
-                if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                    articuloHistorialController.getElemetsArticulo(
-                            new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
-                                tvList.getSelectionModel().getSelectedItem().getClave(),
-                                tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
-                                "" + tvList.getSelectionModel().getSelectedItem().getCantidad(),
-                                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta()});
-                    Tools.Dispose(window);
-                }
-
-            } else if (articuloReportesController != null) {
-                if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                    ArticuloTB articuloTB = new ArticuloTB();
-                    articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave());
-                    articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
-                    articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
-                    articuloReportesController.getTvList().getItems().add(articuloTB);
-                    Tools.Dispose(window);
-                }
-
-            }
+            executeEventObject();
         }
     }
 

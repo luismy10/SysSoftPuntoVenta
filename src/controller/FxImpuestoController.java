@@ -50,8 +50,6 @@ public class FxImpuestoController implements Initializable {
 
     private AnchorPane content;
 
-    private boolean stateRequest;
-
     private boolean stateUpdate;
 
     @Override
@@ -60,7 +58,6 @@ public class FxImpuestoController implements Initializable {
         tcValor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getValor()));
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
         tcCodigoAlterno.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCodigoAlterno()));
-        stateRequest = false;
         stateUpdate = false;
     }
 
@@ -186,7 +183,6 @@ public class FxImpuestoController implements Initializable {
         task.setOnSucceeded((WorkerStateEvent e) -> {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
-            stateRequest = true;
             if (stateUpdate) {
                 List<ImpuestoTB> list = ImpuestoADO.GetTipoImpuestoCombBox();
                 for (int i = 0; i < list.size(); i++) {
@@ -200,12 +196,10 @@ public class FxImpuestoController implements Initializable {
         });
         task.setOnFailed((WorkerStateEvent event) -> {
             lblLoad.setVisible(false);
-            stateRequest = false;
         });
 
         task.setOnScheduled((WorkerStateEvent event) -> {
             lblLoad.setVisible(true);
-            stateRequest = false;
         });
         exec.execute(task);
 
