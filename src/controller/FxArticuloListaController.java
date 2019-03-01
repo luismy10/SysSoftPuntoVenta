@@ -1,5 +1,6 @@
 package controller;
 
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -48,7 +49,7 @@ public class FxArticuloListaController implements Initializable {
 
     private boolean stateRequest;
 
-    private FxComprasController comprasController;
+    private FxCompraController compraController;
 
     private FxVentaController ventaController;
 
@@ -126,23 +127,21 @@ public class FxArticuloListaController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxArticuloCompraController controller = fXMLLoader.getController();
-            controller.setInitCompraController(comprasController);
-            //
-            Stage stage = FxWindow.StageLoaderModal(parent, "Agregar artículo", window.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.show();
+            controller.setInitCompraController(compraController);
             controller.setLoadData(new String[]{tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
                 tvList.getSelectionModel().getSelectedItem().getClave(),
                 tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
                 "" + tvList.getSelectionModel().getSelectedItem().getUnidadVenta(),
                 "" + tvList.getSelectionModel().getSelectedItem().getPrecioCompra(),
+                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVentaNombre(),
                 "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta(),
                 "" + tvList.getSelectionModel().getSelectedItem().getMargen(),
                 "" + tvList.getSelectionModel().getSelectedItem().getUtilidad(),
+                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVentaNombre2(),
                 "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta2(),
                 "" + tvList.getSelectionModel().getSelectedItem().getMargen2(),
                 "" + tvList.getSelectionModel().getSelectedItem().getUtilidad2(),
+                "" + tvList.getSelectionModel().getSelectedItem().getPrecioVentaNombre3(),
                 "" + tvList.getSelectionModel().getSelectedItem().getPrecioVenta3(),
                 "" + tvList.getSelectionModel().getSelectedItem().getMargen3(),
                 "" + tvList.getSelectionModel().getSelectedItem().getUtilidad3(),
@@ -150,6 +149,11 @@ public class FxArticuloListaController implements Initializable {
             },
                     tvList.getSelectionModel().getSelectedItem().isLote()
             );
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Agregar artículo", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.show();
 
         }
     }
@@ -178,7 +182,7 @@ public class FxArticuloListaController implements Initializable {
     @FXML
     private void onMouseClickedList(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
-            if (comprasController != null) {
+            if (compraController != null) {
                 openWindowCompra();
             } else if (ventaController != null) {
                 addArticuloToList();
@@ -209,7 +213,7 @@ public class FxArticuloListaController implements Initializable {
     @FXML
     private void onKeyPressedList(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            if (comprasController != null) {
+            if (compraController != null) {
                 openWindowCompra();
                 txtSearch.requestFocus();
             } else if (ventaController != null) {
@@ -284,8 +288,8 @@ public class FxArticuloListaController implements Initializable {
         }
     }
 
-    public void setInitComprasController(FxComprasController comprasController) {
-        this.comprasController = comprasController;
+    public void setInitCompraController(FxCompraController comprasController) {
+        this.compraController = comprasController;
     }
 
     public void setInitVentasController(FxVentaController ventaController) {

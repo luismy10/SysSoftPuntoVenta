@@ -47,13 +47,13 @@ public class Tools {
     static final String FX_FILE_CLIENTE = "/view/persona/FxCliente.fxml";
     static final String FX_FILE_CONFIGURACION = "/view/inicio/FxConfiguracion.fxml";
     static final String FX_FILE_ASIGNACION = "/view/persona/FxAsignacion.fxml";
-    static final String FX_FILE_PROVEEDORES = "/view/proveedores/FxProveedores.fxml";
+    static final String FX_FILE_PROVEEDORES = "/view/proveedores/FxProveedor.fxml";
     static final String FX_FILE_PROVEEDOREPROCESO = "/view/proveedores/FxProveedorProceso.fxml";
     static final String FX_FILE_PROVEEDORLISTA = "/view/proveedores/FxProveedorLista.fxml";
     static final String FX_FILE_MIEMPRESA = "/view/miempresa/FxMiEmpresa.fxml";
     static final String FX_FILE_ARTICULO = "/view/articulo/FxArticulos.fxml";
     static final String FX_FILE_ARTICULOPROCESO = "/view/articulo/FxArticuloProceso.fxml";
-    static final String FX_FILE_COMPRAS = "/view/compra/FxCompras.fxml";
+    static final String FX_FILE_COMPRAS = "/view/compra/FxCompra.fxml";
     static final String FX_FILE_COMPRASREALIZADAS = "/view/compra/FxComprasRealizadas.fxml";
     static final String FX_FILE_CONSULTAS = "/view/inicio/FxConsultas.fxml";
     static final String FX_FILE_ARTICULOLISTA = "/view/articulo/FxArticuloLista.fxml";
@@ -77,7 +77,6 @@ public class Tools {
     static final String FX_FILE_INVENTARIOINICIAL = "/view/lote/FxInventarioInicial.fxml";
     static final String FX_FILE_IMPORTARINVENTARIO = "/view/lote/FxImportarInventario.fxml";
     static final String FX_FILE_CODIGOBARRAS = "/view/articulo/FxCodigoBarras.fxml";
-    static final String FX_FILE_PROVEEDORESREPRENTANTE = "/view/proveedores/FxProveedorRepresentante.fxml";
     static final String FX_FILE_ACTUALIZAR_STOCK = "/view/articulo/FxArticuloActualizarStock.fxml";
     static final String FX_FILE_ARTICULOHISTORIAL = "/view/articulo/FxArticuloHistorial.fxml";
     static final String FX_FILE_VENTADESCUENTO = "/view/venta/FxVentaDescuento.fxml";
@@ -85,14 +84,15 @@ public class Tools {
     static final String FX_FILE_INVENTARIOGENERAL = "/view/lote/FxInventarioGeneral.fxml";
     static final String FX_FILE_REPORTES = "/view/inicio/FxReportes.fxml";
     static final String FX_FILE_ARTICULOREPORTES = "/view/articulo/FxArticuloReportes.fxml";
-    static final String FX_FILE_MONEDA = "/view/mantenimiento/FxMoneda.fxml";
-    static final String FX_FILE_MONEDAPROCESO = "/view/mantenimiento/FxMonedaProceso.fxml";
+    static final String FX_FILE_MONEDA = "/view/moneda/FxMoneda.fxml";
+    static final String FX_FILE_MONEDAPROCESO = "/view/moneda/FxMonedaProceso.fxml";
     static final String FX_FILE_IMPRESORATICKET = "/view/venta/FxImpresoraTicket.fxml";
     static final String FX_FILE_TIPODOCUMENTO = "/view/mantenimiento/FxTipoDocumento.fxml";
-    static final String FX_FILE_IMPUESTO = "/view/mantenimiento/FxImpuesto.fxml";
-    static final String FX_FILE_IMPUESTOPROCESO = "/view/mantenimiento/FxImpuestoProceso.fxml";
+    static final String FX_FILE_IMPUESTO = "/view/impuesto/tipodocumento.fxml";
+    static final String FX_FILE_IMPUESTOPROCESO = "/view/impuesto/FxImpuestoProceso.fxml";
     static final String FX_FILE_VENTAREPORTE = "/view/venta/FxVentaReporte.fxml";
     static final String FX_FILE_LISTAPRECIOS = "/view/venta/FxListaPrecios.fxml";
+    static final String FX_FILE_COMPRASPROCESO = "/view/compra/FxCompraProceso.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");

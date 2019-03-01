@@ -41,7 +41,6 @@ import model.DBUtil;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
 import model.ProveedorTB;
-import model.RepresentanteTB;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -63,8 +62,6 @@ public class FxCompraDetalleController implements Initializable {
     private Label lblDomicilio;
     @FXML
     private Label lblContacto;
-    @FXML
-    private Label lblRepresentante;
     @FXML
     private Label lblComprobante;
     @FXML
@@ -153,11 +150,11 @@ public class FxCompraDetalleController implements Initializable {
             for (int i = 0; i < arrList.size(); i++) {
                 gpList.add(addElementGridPane("l1" + (i + 1), arrList.get(i).getId().get() + "", Pos.CENTER), 0, (i + 1));
                 gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getClave() + "\n" + arrList.get(i).getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
-                gpList.add(addElementGridPane("l3" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
+                gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
                 gpList.add(addElementGridPane("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
                 gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
                 gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getImpuestoValor(), 2) + "%", Pos.CENTER_RIGHT), 5, (i + 1));
-                gpList.add(addElementGridPane("l7" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
+                gpList.add(addElementGridPane("l7" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
                 gpList.add(addElementGridPane("l8" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getTotalImporte(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
             }
             lblLoad.setVisible(false);
@@ -180,8 +177,7 @@ public class FxCompraDetalleController implements Initializable {
         this.idCompra = idCompra;
         ArrayList<Object> objects = CompraADO.ListCompletaDetalleCompra(idCompra);
         CompraTB compraTB = (CompraTB) objects.get(0);
-        ProveedorTB proveedorTB = (ProveedorTB) objects.get(1);
-        RepresentanteTB representanteTB = (RepresentanteTB) objects.get(2);
+        ProveedorTB proveedorTB = (ProveedorTB) objects.get(1);       
 
         if (compraTB != null) {
             lblFechaCompra.setText(compraTB.getFechaCompra().get().format(DateTimeFormatter.ofPattern("EEEE d 'de' MMMM 'de' yyyy")));
@@ -202,14 +198,7 @@ public class FxCompraDetalleController implements Initializable {
             lblContacto.setText("Tel: " + proveedorTB.getTelefono() + " Cel: " + proveedorTB.getCelular());
         }
 
-        if (representanteTB != null) {
-            lblRepresentante.setText(
-                    representanteTB.getApellidos() + " " + representanteTB.getNombres() + " - "
-                    + representanteTB.getTelefono() + " " + representanteTB.getCelular()
-            );
-        } else {
-            lblRepresentante.setText("No tiene un representante registrado");
-        }
+        
 
         fillArticlesTable(idCompra);
 
@@ -284,8 +273,7 @@ public class FxCompraDetalleController implements Initializable {
             map.put("LOGO", imgInputStream);
             map.put("EMAIL", "EMAIL" + Session.EMAIL);
             map.put("TELEFONOCELULAR", "TEL:" + Session.TELEFONO + " CEL:" + Session.CELULAR);
-            map.put("DIRECCION", Session.DIRECCION);
-            map.put("REPRESENTANTE", lblRepresentante.getText());
+            map.put("DIRECCION", Session.DIRECCION);            
 
             map.put("FECHACOMPRA", lblFechaCompra.getText());
             map.put("PROVEEDOR", lblProveedor.getText());
@@ -337,7 +325,7 @@ public class FxCompraDetalleController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         vbContent.getChildren().add(node);
-        controller.fillPurchasesTable((short)1,"","","");
+        controller.fillPurchasesTable((short)0,"",Tools.getDate(),Tools.getDate());
     }
 
     public void setInitComptrasController(FxComprasRealizadasController comprascontroller, AnchorPane windowinit, AnchorPane vbContent) {

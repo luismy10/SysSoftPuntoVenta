@@ -14,7 +14,6 @@ public class CompraTB {
     private int id;
     private String idCompra;
     private String proveedor;
-    private String representante;
     private int comprobante;
     private String comprobanteName;
     private String numeracion;
@@ -27,6 +26,10 @@ public class CompraTB {
     private SimpleDoubleProperty total;
     private String observaciones;
     private String notas;
+    
+    private String TipoCompra;
+    private String EstadoCompra;
+    
     private ProveedorTB proveedorTB;
     private ArticuloTB articuloTB;
 
@@ -72,14 +75,6 @@ public class CompraTB {
 
     public void setProveedor(String proveedor) {
         this.proveedor = proveedor;
-    }
-
-    public String getRepresentante() {
-        return representante;
-    }
-
-    public void setRepresentante(String representante) {
-        this.representante = representante;
     }
 
     public int getComprobante() {
@@ -230,4 +225,19 @@ public class CompraTB {
         this.totalReporte = totalReporte;
     }
 
+    public String getTipoCompra() {
+        return TipoCompra;
+    }
+
+    public void setTipoCompra(String TipoCompra) {
+        this.TipoCompra = TipoCompra;
+    }
+
+    public String getEstadoCompra() {
+        return EstadoCompra;
+    }
+
+    public void setEstadoCompra(String EstadoCompra) {
+        this.EstadoCompra = EstadoCompra;
+    }
 }

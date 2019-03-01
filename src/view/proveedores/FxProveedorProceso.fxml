@@ -7,8 +7,6 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -290,77 +288,6 @@
                                                       </Button>
                                                    </children>
                                                 </VBox>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                              </AnchorPane>
-                           </content>
-                        </Tab>
-                        <Tab fx:id="tbRepresentantes" text="Representantes">
-                           <content>
-                              <AnchorPane style="-fx-background-color: #e7e6e6;">
-                                 <children>
-                                    <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-padding: 1.6666666666666667em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <children>
-                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
-                                             <children>
-                                                <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSeach" onKeyReleased="#onKeyReleasedSeach" prefHeight="30.0" promptText="Buscar...." HBox.hgrow="ALWAYS" />
-                                                <Button mnemonicParsing="false" onAction="#onActionToRepresentanteRegister" onKeyPressed="#onKeyPressedToRepresentanteRegister" styleClass="buttonLight">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../plus.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                                <Button mnemonicParsing="false" onAction="#onActionToRepresentanteEdit" onKeyPressed="#onKeyPressedToRepresentanteEdit" styleClass="buttonLight">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../edit.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                                <Button mnemonicParsing="false" onAction="#onActionToRepresentanteRemover" onKeyPressed="#onKeyPressedToRepresentanteRemover" styleClass="buttonLight">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../remove.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                                <Button mnemonicParsing="false" onAction="#onActionLista" onKeyPressed="#onKeyPressedLista" styleClass="buttonLight">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../search.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105" VBox.vgrow="ALWAYS">
-                                             <children>
-                                                <TableView fx:id="tvList" onMouseClicked="#onMouseClicked" prefHeight="285.0" styleClass="tableView" HBox.hgrow="ALWAYS">
-                                                   <columns>
-                                                      <TableColumn fx:id="tcId" prefWidth="64.0" style="-fx-alignment: CENTER;" text="N°" />
-                                                      <TableColumn fx:id="tcDocument" prefWidth="123.0" style="-fx-alignment: CENTER;" text="Documento" />
-                                                      <TableColumn fx:id="tcLastName" prefWidth="367.0" style="-fx-alignment: CENTER-LEFT;" text="Datos completos" />
-                                                      <TableColumn fx:id="tcContacto" prefWidth="157.0" style="-fx-alignment: CENTER-LEFT;" text="Teléfono/Celular" />
-                                                   </columns>
-                                                   <HBox.margin>
-                                                      <Insets />
-                                                   </HBox.margin>
-                                                </TableView>
                                              </children>
                                           </HBox>
                                        </children>

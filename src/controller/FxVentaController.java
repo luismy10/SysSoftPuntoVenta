@@ -859,11 +859,11 @@ public class FxVentaController implements Initializable {
         lblTotal.setText(Tools.roundingValue(total, 2));
         lblTotalPagar.setText(Tools.roundingValue(total, 2));
 
-        double gravada = Tools.calculateValueNeto(Session.IMPUESTO, total);
-        lblGravada.setText(Tools.roundingValue(gravada, 2));
-
-        double impuesto = Tools.calculateTax(Session.IMPUESTO, gravada);
-        lblIgv.setText(Tools.roundingValue(impuesto, 2));
+//        double gravada = Tools.calculateValueNeto(Session.IMPUESTO, total);
+//        lblGravada.setText(Tools.roundingValue(gravada, 2));
+//
+//        double impuesto = Tools.calculateTax(Session.IMPUESTO, gravada);
+//        lblIgv.setText(Tools.roundingValue(impuesto, 2));
 
     }
 

@@ -23,7 +23,7 @@
                      <children>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../providers.png" />
+                              <Image url="@../table.png" />
                            </image>
                         </ImageView>
                         <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Mantenimiento de los detalles básicos" />
@@ -79,6 +79,15 @@
                            <children>
                               <VBox styleClass="paddinContainer">
                                  <children>
+                                    <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Mantenimiento">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <Text fx:id="lblItems" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Items (0)">
@@ -89,7 +98,7 @@
                                           <TextField fx:id="txtSearchMaintenance" onAction="#onActionSearchItems" onKeyReleased="#onKeyReleasedSearchItems" promptText="Buscar...." HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
-                                    <ListView fx:id="lvMaintenance" minHeight="-Infinity" onKeyReleased="#onKeyReleasedList" onMouseClicked="#onMouseClickedList" prefHeight="288.0" prefWidth="248.0" VBox.vgrow="SOMETIMES" />
+                                    <ListView fx:id="lvMaintenance" minHeight="-Infinity" onKeyReleased="#onKeyReleasedList" onMouseClicked="#onMouseClickedList" prefHeight="288.0" prefWidth="260.0" VBox.vgrow="SOMETIMES" />
                                     <HBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <Text fill="#23283a" onMouseClicked="#onMouseClickedAgregar" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Agrear(+)" underline="true">

@@ -3,37 +3,24 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 
 public class MantenimientoTB implements Serializable {
 
     private String idMantenimiento;
     private String nombre;
     private Character estado;
+    private String validar;
     private String usuarioRegistro;
     private Date fechaRegistro;
 
     public MantenimientoTB() {
     }
 
-    public MantenimientoTB(String idMantenimiento) {
-        this.idMantenimiento = idMantenimiento;
-    }
-
     public MantenimientoTB(String idMantenimiento, String nombre) {
         this.idMantenimiento = idMantenimiento;
         this.nombre = nombre;
-    }
+    }  
     
-    
-    
-    public MantenimientoTB(String idMantenimiento, String nombre, Character estado, String usuarioRegistro) {
-        this.idMantenimiento = idMantenimiento;
-        this.nombre = nombre;
-        this.estado = estado;
-        this.usuarioRegistro = usuarioRegistro;
-    }
-
     public String getIdMantenimiento() {
         return idMantenimiento;
     }
@@ -74,27 +61,15 @@ public class MantenimientoTB implements Serializable {
         this.fechaRegistro = fechaRegistro;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idMantenimiento != null ? idMantenimiento.hashCode() : 0);
-        return hash;
+    public String getValidar() {
+        return validar;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final MantenimientoTB other = (MantenimientoTB) obj;
-        return Objects.equals(this.idMantenimiento, other.idMantenimiento);
+    public void setValidar(String validar) {
+        this.validar = validar;
     }
+
+    
 
 
     @Override

@@ -4,49 +4,167 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ProveedorADO {
 
     public static String CrudEntity(ProveedorTB proveedorTB) {
-        String selectStmt = "{call Sp_Crud_Proveedor(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-        CallableStatement callableStatement = null;
-        try {
-            DBUtil.dbConnect();
-            callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
-            callableStatement.setString("IdProveedor", proveedorTB.getIdProveedor().get());
-            callableStatement.setInt("TipoDocumento", proveedorTB.getTipoDocumento());
-            callableStatement.setString("NumeroDocumento", proveedorTB.getNumeroDocumento().get());
-            callableStatement.setString("RazonSocial", proveedorTB.getRazonSocial().get());
-            callableStatement.setString("NombreComercial", proveedorTB.getNombreComercial().get());
-            callableStatement.setString("Pais", proveedorTB.getPais());
-            callableStatement.setInt("Ciudad", proveedorTB.getCiudad());
-            callableStatement.setInt("Provincia", proveedorTB.getProvincia());
-            callableStatement.setInt("Distrito", proveedorTB.getDistrito());
-            callableStatement.setInt("Ambito", proveedorTB.getAmbito());
-            callableStatement.setInt("Estado", proveedorTB.getEstado());
-            callableStatement.setString("Telefono", proveedorTB.getTelefono());
-            callableStatement.setString("Celular", proveedorTB.getCelular());
-            callableStatement.setString("Email", proveedorTB.getEmail());
-            callableStatement.setString("PaginaWeb", proveedorTB.getPaginaWeb());
-            callableStatement.setString("Direccion", proveedorTB.getDireccion());
-            callableStatement.setString("UsuarioRegistro", proveedorTB.getUsuarioRegistro());
-
-            callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
-            callableStatement.execute();
-            return callableStatement.getString("Message");
-        } catch (SQLException e) {
-            return e.getLocalizedMessage();
-        } finally {
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement preparedValidation = null;
+            CallableStatement codigoProveedor = null;
+            PreparedStatement preparedProveedor = null;
+            
             try {
-                if (callableStatement != null) {
-                    callableStatement.close();
+                DBUtil.getConnection().setAutoCommit(false);
+
+                preparedValidation = DBUtil.getConnection().prepareStatement("select IdProveedor from ProveedorTB where IdProveedor = ?");
+                preparedValidation.setString(1, proveedorTB.getIdProveedor().get());
+                if (preparedValidation.executeQuery().next()) {
+                    preparedValidation = DBUtil.getConnection().prepareStatement("select NumeroDocumento from ProveedorTB where IdProveedor <> ? and NumeroDocumento = ?");
+                    preparedValidation.setString(1, proveedorTB.getIdProveedor().get());
+                    preparedValidation.setString(2, proveedorTB.getNumeroDocumento().get());
+                    if (preparedValidation.executeQuery().next()) {
+                        DBUtil.getConnection().rollback();
+                        return "duplicate";
+                    } else {
+                        preparedProveedor = DBUtil.getConnection().prepareCall("UPDATE ProveedorTB SET TipoDocumento=?,NumeroDocumento=?,RazonSocial=UPPER(?),NombreComercial=UPPER(?),Pais=?,Ciudad=?,Provincia=?,Distrito=?,Ambito=?,Estado=?,Telefono=?,Celular=?,Email=?,PaginaWeb=?,Direccion=? WHERE IdProveedor=?");
+
+                        preparedProveedor.setInt(1, proveedorTB.getTipoDocumento());
+                        preparedProveedor.setString(2, proveedorTB.getNumeroDocumento().get());
+                        preparedProveedor.setString(3, proveedorTB.getRazonSocial().get());
+                        preparedProveedor.setString(4, proveedorTB.getNombreComercial().get());
+                        preparedProveedor.setString(5, proveedorTB.getPais());
+                        preparedProveedor.setInt(6, proveedorTB.getCiudad());
+                        preparedProveedor.setInt(7, proveedorTB.getProvincia());
+                        preparedProveedor.setInt(8, proveedorTB.getDistrito());
+                        preparedProveedor.setInt(9, proveedorTB.getAmbito());
+                        preparedProveedor.setInt(10, proveedorTB.getEstado());
+                        preparedProveedor.setString(11, proveedorTB.getTelefono());
+                        preparedProveedor.setString(12, proveedorTB.getCelular());
+                        preparedProveedor.setString(13, proveedorTB.getEmail());
+                        preparedProveedor.setString(14, proveedorTB.getPaginaWeb());
+                        preparedProveedor.setString(15, proveedorTB.getDireccion());
+                        preparedProveedor.setString(16, proveedorTB.getIdProveedor().get());
+                        preparedProveedor.addBatch();
+
+                        preparedProveedor.executeBatch();
+                        DBUtil.getConnection().commit();
+                        return "updated";
+                    }
+                } else {
+                    preparedValidation = DBUtil.getConnection().prepareStatement("select NumeroDocumento from ProveedorTB where NumeroDocumento = ?");
+                    preparedValidation.setString(1, proveedorTB.getNumeroDocumento().get());
+                    if (preparedValidation.executeQuery().next()) {
+                        DBUtil.getConnection().rollback();
+                        return "duplicate";
+                    } else {
+                        codigoProveedor = DBUtil.getConnection().prepareCall("{? = call Fc_Proveedor_Codigo_Alfanumerico()}");
+                        codigoProveedor.registerOutParameter(1, java.sql.Types.VARCHAR);
+                        codigoProveedor.execute();
+                        String idProveedor = codigoProveedor.getString(1);
+
+                        preparedProveedor = DBUtil.getConnection().prepareCall("INSERT INTO ProveedorTB(IdProveedor,TipoDocumento,NumeroDocumento,RazonSocial,NombreComercial,Pais,Ciudad,Provincia,Distrito,Ambito,Estado,Telefono,Celular,Email,PaginaWeb,Direccion,UsuarioRegistro,FechaRegistro)"
+                                + "values(?,?,?,UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                        preparedProveedor.setString(1, idProveedor);
+                        preparedProveedor.setInt(2, proveedorTB.getTipoDocumento());
+                        preparedProveedor.setString(3, proveedorTB.getNumeroDocumento().get());
+                        preparedProveedor.setString(4, proveedorTB.getRazonSocial().get());
+                        preparedProveedor.setString(5, proveedorTB.getNombreComercial().get());
+                        preparedProveedor.setString(6, proveedorTB.getPais());
+                        preparedProveedor.setInt(7, proveedorTB.getCiudad());
+                        preparedProveedor.setInt(8, proveedorTB.getProvincia());
+                        preparedProveedor.setInt(9, proveedorTB.getDistrito());
+                        preparedProveedor.setInt(10, proveedorTB.getAmbito());
+                        preparedProveedor.setInt(11, proveedorTB.getEstado());
+                        preparedProveedor.setString(12, proveedorTB.getTelefono());
+                        preparedProveedor.setString(13, proveedorTB.getCelular());
+                        preparedProveedor.setString(14, proveedorTB.getEmail());
+                        preparedProveedor.setString(15, proveedorTB.getPaginaWeb());
+                        preparedProveedor.setString(16, proveedorTB.getDireccion());
+                        preparedProveedor.setString(17, proveedorTB.getUsuarioRegistro());
+                        preparedProveedor.setTimestamp(18, Timestamp.valueOf(proveedorTB.getFechaRegistro()));
+                        preparedProveedor.addBatch();
+                        
+                        preparedProveedor.executeBatch();                       
+                        DBUtil.getConnection().commit();
+                        return "registered";
+                    }
                 }
-                DBUtil.dbDisconnect();
+
             } catch (SQLException ex) {
+                try {
+                    DBUtil.getConnection().rollback();
+                } catch (SQLException exr) {
+                    return exr.getLocalizedMessage();
+                }
                 return ex.getLocalizedMessage();
+            } finally {
+                try {
+                    if (preparedProveedor != null) {
+                        preparedProveedor.close();
+                    }
+                    if (preparedValidation != null) {
+                        preparedValidation.close();
+                    }
+                    if (codigoProveedor != null) {
+                        codigoProveedor.close();
+                    }                   
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    return ex.getLocalizedMessage();
+                }
             }
+        } else {
+            return "No hay conexión al servidor, intente nuevamente o revise su conexión.";
+        }
+    }
+
+    public static String RemoveProveedor(String idProveedor) {
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement preparedValidation = null;
+            PreparedStatement preparedProveedor = null;
+            try {
+                DBUtil.getConnection().setAutoCommit(false);
+
+                preparedValidation = DBUtil.getConnection().prepareStatement("SELECT * FROM CompraTB WHERE Proveedor = ?");
+                preparedValidation.setString(1, idProveedor);
+                if (preparedValidation.executeQuery().next()) {
+                    DBUtil.getConnection().rollback();
+                    return "exists";
+                } else {
+                    preparedProveedor = DBUtil.getConnection().prepareStatement("DELETE FROM ProveedorTB WHERE IdProveedor = ?");
+                    preparedProveedor.setString(1, idProveedor);
+                    preparedProveedor.addBatch();
+                    preparedProveedor.executeBatch();
+                    DBUtil.getConnection().commit();
+                    return "removed";
+                }
+            } catch (SQLException ex) {
+                try {
+                    DBUtil.getConnection().rollback();
+                } catch (SQLException exr) {
+                    return exr.getLocalizedMessage();
+                }
+                return ex.getLocalizedMessage();
+            } finally {
+                try {
+                    if (preparedValidation != null) {
+                        preparedValidation.close();
+                    }
+                    if (preparedProveedor != null) {
+                        preparedProveedor.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    return ex.getLocalizedMessage();
+                }
+            }
+        } else {
+            return "No hay conexión al servidor, intente nuevamente o revise su conexión.";
         }
     }
 
@@ -64,6 +182,7 @@ public class ProveedorADO {
             while (rsEmps.next()) {
                 ProveedorTB proveedorTB = new ProveedorTB();
                 proveedorTB.setId(rsEmps.getRow());
+                proveedorTB.setIdProveedor(rsEmps.getString("IdProveedor"));
                 proveedorTB.setTipoDocumentoName(rsEmps.getString("Documento"));
                 proveedorTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 proveedorTB.setRazonSocial(rsEmps.getString("RazonSocial"));
@@ -71,7 +190,7 @@ public class ProveedorADO {
                 proveedorTB.setEstadoName(rsEmps.getString("Estado"));
                 proveedorTB.setTelefono(rsEmps.getString("Telefono"));
                 proveedorTB.setCelular(rsEmps.getString("Celular"));
-                proveedorTB.setFechaRegistro(rsEmps.getDate("FRegistro").toLocalDate());
+                proveedorTB.setFechaRegistro(rsEmps.getTimestamp("FRegistro").toLocalDateTime());
                 empList.add(proveedorTB);
             }
         } catch (SQLException e) {

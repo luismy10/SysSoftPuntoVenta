@@ -9,39 +9,38 @@ import javafx.collections.ObservableList;
 
 public class MantenimientoADO {
 
-    public static ObservableList<MantenimientoTB> ListPrincipal(String value) throws SQLException {
+    public static ObservableList<MantenimientoTB> ListMantenimiento(String value) {
         String selectStmt = "{call Sp_List_Table_Matenimiento(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
+        ObservableList<MantenimientoTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, value);
             rsEmps = preparedStatement.executeQuery();
-            ObservableList<MantenimientoTB> empList = getEntityList(rsEmps);
-            return empList;
+            while (rsEmps.next()) {
+                MantenimientoTB emp = new MantenimientoTB();
+                emp.setIdMantenimiento(rsEmps.getString("IdMantenimiento"));
+                emp.setNombre(rsEmps.getString("Nombre"));
+                emp.setValidar(rsEmps.getString("Validar"));              
+                empList.add(emp);
+            }
+
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
-            throw e;
         } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if(rsEmps != null){
-                rsEmps.close();
-            }
-            DBUtil.dbDisconnect();
-        }
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
 
-    }
-
-    private static ObservableList<MantenimientoTB> getEntityList(ResultSet rs) throws SQLException {
-        ObservableList<MantenimientoTB> empList = FXCollections.observableArrayList();
-        while (rs.next()) {
-            MantenimientoTB emp = new MantenimientoTB();
-            emp.setIdMantenimiento(rs.getString("IdMantenimiento"));
-            emp.setNombre(rs.getString("Nombre"));
-            empList.add(emp);
+            }
         }
         return empList;
     }
@@ -118,5 +117,5 @@ public class MantenimientoADO {
             }
         }
     }
-    
+
 }
