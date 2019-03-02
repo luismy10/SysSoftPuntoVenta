@@ -47,9 +47,15 @@ public class FxVentaGranelController implements Initializable {
     private void executeEventAceptar() {
         if (Tools.isNumeric(txtImporte.getText())) {
             if (opcion) {
+                double precio = Double.parseDouble(txtImporte.getText()) + articuloTB.getPrecioVenta();
+                double descuento = articuloTB.getDescuento();
+                double porcentajeDecimal = descuento / 100.00;
+                double porcentajeRestante = precio * porcentajeDecimal;
 
-                articuloTB.setPrecioVentaReal(Double.parseDouble(txtImporte.getText()) + articuloTB.getPrecioVentaReal());
-                articuloTB.setPrecioVenta(Double.parseDouble(txtImporte.getText()) + articuloTB.getPrecioVenta());
+                articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
+
+                articuloTB.setPrecioVentaReal(precio);
+                articuloTB.setPrecioVenta(precio - porcentajeRestante);
 
                 articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaReal());
                 articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
@@ -62,8 +68,15 @@ public class FxVentaGranelController implements Initializable {
                 ventaController.getTxtSearch().requestFocus();
                 ventaController.getTxtSearch().clear();
             } else {
-                articuloTB.setPrecioVentaReal(Double.parseDouble(txtImporte.getText()));
-                articuloTB.setPrecioVenta(Double.parseDouble(txtImporte.getText()));
+                double precio = Double.parseDouble(txtImporte.getText());
+                double descuento = articuloTB.getDescuento();
+                double porcentajeDecimal = descuento / 100.00;
+                double porcentajeRestante = precio * porcentajeDecimal;
+
+                articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
+
+                articuloTB.setPrecioVentaReal(precio);
+                articuloTB.setPrecioVenta(precio - porcentajeRestante);
 
                 articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaReal());
                 articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
