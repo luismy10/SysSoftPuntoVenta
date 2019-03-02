@@ -61,7 +61,7 @@
                               </ImageView>
                            </graphic>
                         </Label>
-                        <TextField fx:id="txtPorcentajeDescuento" onKeyReleased="#onKeyReleasedPorcentajeDescuento" onKeyTyped="#onKeyTypedPorcentajeDescuento" prefHeight="30.0" />
+                        <TextField fx:id="txtPorcentajeDescuento" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedPorcentajeDescuento" prefHeight="30.0" />
                      </children>
                   </VBox>
                </children>

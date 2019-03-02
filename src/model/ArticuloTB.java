@@ -294,8 +294,6 @@ public class ArticuloTB {
     public void setPrecioVentaReal(double precioVentaReal) {
         this.precioVentaReal = precioVentaReal;
     }
-    
-    
 
     public short getMargen() {
         return margen;

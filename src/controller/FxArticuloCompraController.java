@@ -224,7 +224,6 @@ public class FxArticuloCompraController implements Initializable {
         articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
 
         articuloTB.setPrecioCompra(costo - porcentajeRestante);
-
         articuloTB.setPrecioCompraReal(costo);
 
         articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioCompraReal());

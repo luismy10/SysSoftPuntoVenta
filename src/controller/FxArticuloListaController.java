@@ -168,12 +168,16 @@ public class FxArticuloListaController implements Initializable {
             articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave());
             articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
             articuloTB.setCantidad(1);
-            articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
+
             articuloTB.setDescuento(0);
-            articuloTB.setTotalImporte(
-                    (1 * tvList.getSelectionModel().getSelectedItem().getPrecioVenta())
-                    - articuloTB.getDescuento()
-            );
+            articuloTB.setDescuentoSumado(0);
+
+            articuloTB.setPrecioVentaReal(tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
+            articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioVenta());
+
+            articuloTB.setSubImporte(1 * tvList.getSelectionModel().getSelectedItem().getPrecioVenta());              
+            articuloTB.setTotalImporte(1 * tvList.getSelectionModel().getSelectedItem().getPrecioVenta());       
+
             articuloTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
             articuloTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
             articuloTB.setImpuestoArticulo(tvList.getSelectionModel().getSelectedItem().getImpuestoArticulo());
@@ -181,7 +185,6 @@ public class FxArticuloListaController implements Initializable {
 
             Tools.Dispose(window);
             ventaController.getAddArticulo(articuloTB);
-            txtSearch.requestFocus();
         }
     }
 

@@ -33,20 +33,65 @@ public class FxVentaDescuentoController implements Initializable {
 
     public void initComponents(ArticuloTB articuloTB, int index) {
         this.articuloTB = articuloTB;
-        txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getTotalImporte(), 2));
+        txtPrecioVenta.setText(Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
         this.index = index;
     }
 
     @FXML
     private void onKeyPressedAceptar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
+            if (Tools.isNumeric(txtPrecioVenta.getText()) && Tools.isNumeric(txtPorcentajeDescuento.getText())) {
+                double precio = Double.parseDouble(txtPrecioVenta.getText());
+                double descuento = Double.parseDouble(txtPorcentajeDescuento.getText());
+                double porcentajeDecimal = descuento / 100.00;
+                double porcentajeRestante = precio * porcentajeDecimal;
+
+                articuloTB.setPrecioVentaReal(articuloTB.getPrecioVenta());
+                articuloTB.setPrecioVenta(articuloTB.getPrecioVenta() - porcentajeRestante);
+
+                articuloTB.setDescuento(descuento);
+                articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
+
+                articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaReal());
+                articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+
+                articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVenta() * (ventaController.getTaxValue(articuloTB.getImpuestoArticulo()) / 100.00)));
+
+                ventaController.getTvList().getItems().set(index, articuloTB);
+                ventaController.calculateTotales();
+                Tools.Dispose(window);
+                ventaController.getTxtSearch().requestFocus();
+                ventaController.getTxtSearch().clear();
+            }
 
         }
     }
 
     @FXML
     private void onActionAceptar(ActionEvent event) {
+        if (Tools.isNumeric(txtPrecioVenta.getText()) && Tools.isNumeric(txtPorcentajeDescuento.getText())) {
+            double precio = Double.parseDouble(txtPrecioVenta.getText());
+            double descuento = Double.parseDouble(txtPorcentajeDescuento.getText());
+            double porcentajeDecimal = descuento / 100.00;
+            double porcentajeRestante = precio * porcentajeDecimal;
 
+            articuloTB.setPrecioVentaReal(articuloTB.getPrecioVenta());
+            articuloTB.setPrecioVenta(articuloTB.getPrecioVenta() - porcentajeRestante);
+
+            articuloTB.setDescuento(descuento);
+            articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
+
+            articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaReal());
+            articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+
+            articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVenta() * (ventaController.getTaxValue(articuloTB.getImpuestoArticulo()) / 100.00)));
+
+            ventaController.getTvList().getItems().set(index, articuloTB);
+            ventaController.calculateTotales();
+            Tools.Dispose(window);
+            ventaController.getTxtSearch().requestFocus();
+            ventaController.getTxtSearch().clear();
+        }
     }
 
     @FXML
@@ -62,36 +107,11 @@ public class FxVentaDescuentoController implements Initializable {
     }
 
     @FXML
-    private void onKeyReleasedPorcentajeDescuento(KeyEvent event) {
-        if (Tools.isNumeric(txtPrecioVenta.getText()) && Tools.isNumeric(txtPorcentajeDescuento.getText())) {
-            double precio = Double.parseDouble(txtPrecioVenta.getText());
-            double descuento = Double.parseDouble(txtPorcentajeDescuento.getText());
-            double porcentajeDecimal = descuento / 100.00;
-            double porcentajeRestante = precio * porcentajeDecimal;
-            
-            articuloTB.setPrecioVentaReal(articuloTB.getPrecioVenta());
-            articuloTB.setPrecioVenta(articuloTB.getPrecioVenta() - porcentajeRestante);            
-            
-            articuloTB.setDescuento(descuento);
-            articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
-            
-            articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaReal());
-            articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
-            
-            articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVenta() * (ventaController.getTaxValue(articuloTB.getImpuestoArticulo()) / 100.00)));
-
-        }
-    }
-
-    @FXML
     private void onKeyTypedPorcentajeDescuento(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
             event.consume();
-        }
-        if (c == '.' && txtPorcentajeDescuento.getText().contains(".")) {
-            event.consume();
-        }
+        }       
     }
 
     public void setInitVentasController(FxVentaController ventaController) {
