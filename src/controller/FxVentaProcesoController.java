@@ -34,8 +34,6 @@ public class FxVentaProcesoController implements Initializable {
     @FXML
     private TextField txtObservacion;
     @FXML
-    private Label lblVueltoMoneda;
-    @FXML
     private Label lblCliente;
     @FXML
     private VBox vbEfectivo;
@@ -56,13 +54,29 @@ public class FxVentaProcesoController implements Initializable {
 
     private String tipo_comprobante;
 
+    private String moneda_simbolo;
+
+    private double tota_venta;
+
     private boolean state_view_pago;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
         state_view_pago = false;
-        lblVueltoMoneda.setText(Session.MONEDA);
+        tota_venta = 0;
+    }
+
+    public void setInitComponents(VentaTB ventaTB, String cliente, TableView<ArticuloTB> tvList, String total) {
+        this.ventaTB = ventaTB;
+        this.tvList = tvList;
+        moneda_simbolo = ventaTB.getMonedaName();
+        lblComprobante.setText(ventaTB.getComprobanteName());
+        lblCliente.setText("Cliente: " + cliente);
+        lblTotal.setText(moneda_simbolo + " " + total);
+        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(0, 2));
+        tota_venta = Double.parseDouble(total);
+        txtEfectivo.requestFocus();
     }
 
     @FXML
@@ -97,21 +111,11 @@ public class FxVentaProcesoController implements Initializable {
 
     }
 
-    public void setInitComponents(VentaTB ventaTB, String cliente, TableView<ArticuloTB> tvList) {
-        this.ventaTB = ventaTB;
-        this.tvList = tvList;
-        lblComprobante.setText(ventaTB.getComprobanteName());
-        lblCliente.setText("Cliente: " + cliente);
-        lblTotal.setText(Session.MONEDA + "" + Tools.roundingValue(ventaTB.getTotal(), 2));
-        txtEfectivo.requestFocus();
-
-    }
-
     @FXML
     private void onKeyReleasedEfectivo(KeyEvent event) {
         if (Tools.isNumeric(txtEfectivo.getText())) {
-            double vuelto = Double.parseDouble(txtEfectivo.getText()) - ventaTB.getTotal();
-            lblVuelto.setText(Tools.roundingValue(vuelto, 2));
+            double vuelto = Double.parseDouble(txtEfectivo.getText()) - tota_venta;
+            lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
         }
     }
 

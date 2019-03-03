@@ -270,7 +270,7 @@
                                        <children>
                                           <ScrollPane fitToWidth="true" HBox.hgrow="ALWAYS">
                                              <content>
-                                                <VBox styleClass="paddinContainer">
+                                                <VBox style="-fx-background-color: white;" styleClass="paddinContainer">
                                                    <children>
                                                       <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                                          <children>
@@ -278,7 +278,7 @@
                                                             <HBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;">
                                                                <children>
                                                                   <Text fx:id="lblSubTotalMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M" />
-                                                                  <Text fx:id="lblSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                                                  <Text fx:id="lblSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.0000" />
                                                                </children>
                                                             </HBox>
                                                          </children>
@@ -289,7 +289,7 @@
                                                             <HBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;">
                                                                <children>
                                                                   <Text fx:id="lblDescuentoMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M -" />
-                                                                  <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                                                  <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.0000" />
                                                                </children>
                                                             </HBox>
                                                          </children>
@@ -303,7 +303,7 @@
                                                          <children>
                                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Importe Total:" />
                                                             <Text fx:id="lblImporteTotalMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M" />
-                                                            <Text fx:id="lblImporteTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                                            <Text fx:id="lblImporteTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.0000" />
                                                          </children>
                                                       </HBox>
                                                       <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.4166666666666667em;">

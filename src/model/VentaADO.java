@@ -1,13 +1,11 @@
 package model;
 
-import controller.Session;
 import controller.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +21,7 @@ public class VentaADO {
         CallableStatement codigo_venta = null;
         PreparedStatement detalle_venta = null;
         PreparedStatement articulo_update = null;
-        PreparedStatement preparedHistorialArticulo = null;
+//        PreparedStatement preparedHistorialArticulo = null;
 
         try {
 
@@ -52,14 +50,12 @@ public class VentaADO {
                     + "           ,[Numeracion]\n"
                     + "           ,[FechaVenta]\n"
                     + "           ,[SubTotal]\n"
-                    + "           ,[Gravada]\n"
                     + "           ,[Descuento]\n"
-                    + "           ,[Igv]\n"
                     + "           ,[Total]"
                     + "           ,[Estado]"
                     + "           ,[Observaciones])\n"
                     + "     VALUES\n"
-                    + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "           (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             if (tipo_comprobante.equalsIgnoreCase("boleta")) {
                 comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(serie_b,Numeracion,FechaRegistro)VALUES(?,?,?)");
@@ -69,12 +65,24 @@ public class VentaADO {
                 comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(serie_t,Numeracion,FechaRegistro)VALUES(?,?,?)");
             }
 
-            detalle_venta = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleVentaTB(IdVenta,IdArticulo,Cantidad,PrecioUnitario,Descuento,Importe)VALUES(?,?,?,?,?,?)");
+            detalle_venta = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleVentaTB\n"
+                    + "(IdVenta\n"
+                    + ",IdArticulo\n"
+                    + ",Cantidad\n"
+                    + ",PrecioVenta\n"
+                    + ",Descuento\n"
+                    + ",IdImpuesto\n"
+                    + ",NombreImpuesto\n"
+                    + ",ValorImpuesto\n"
+                    + ",ImpuestoSumado\n"
+                    + ",Importe)\n"
+                    + "VALUES\n"
+                    + "(?,?,?,?,?,?,?,?,?,?)");
 
             articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad - ? WHERE IdArticulo = ?");
-
-            preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("INSERT INTO HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
-                    + "VALUES(?,GETDATE(),?,?,?,?,?)");
+//
+//            preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("INSERT INTO HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
+//                    + "VALUES(?,GETDATE(),?,?,?,?,?)");
 
             venta.setString(1, id_venta);
             venta.setString(2, ventaTB.getCliente());
@@ -85,12 +93,10 @@ public class VentaADO {
             venta.setString(7, id_comprabante[1]);
             venta.setTimestamp(8, ventaTB.getFechaVenta());
             venta.setDouble(9, ventaTB.getSubTotal());
-            venta.setDouble(10, ventaTB.getGravada());
-            venta.setDouble(11, ventaTB.getDescuento());
-            venta.setDouble(12, ventaTB.getIgv());
-            venta.setDouble(13, ventaTB.getTotal());
-            venta.setInt(14, ventaTB.getEstado());
-            venta.setString(15, ventaTB.getObservaciones());
+            venta.setDouble(10, ventaTB.getDescuento());
+            venta.setDouble(11, ventaTB.getTotal());
+            venta.setInt(12, ventaTB.getEstado());
+            venta.setString(13, ventaTB.getObservaciones());
             venta.addBatch();
 
             comprobante.setString(1, id_comprabante[0]);
@@ -104,38 +110,41 @@ public class VentaADO {
                 detalle_venta.setDouble(3, tvList.getItems().get(i).getCantidad());
                 detalle_venta.setDouble(4, tvList.getItems().get(i).getPrecioVenta());
                 detalle_venta.setDouble(5, tvList.getItems().get(i).getDescuento());
-                detalle_venta.setDouble(6, tvList.getItems().get(i).getTotalImporte());
+                detalle_venta.setDouble(6, tvList.getItems().get(i).getImpuestoArticulo());
+                detalle_venta.setString(7, tvList.getItems().get(i).getImpuestoArticuloName());
+                detalle_venta.setDouble(8, tvList.getItems().get(i).getImpuestoValor());
+                detalle_venta.setDouble(9, tvList.getItems().get(i).getImpuestoSumado());
+                detalle_venta.setDouble(10, tvList.getItems().get(i).getTotalImporte());
                 detalle_venta.addBatch();
 
                 if (tvList.getItems().get(i).isInventario()) {
                     articulo_update.setDouble(1, tvList.getItems().get(i).getCantidad());
-//                    articulo_update.setDouble(2, tvList.getItems().get(i).getTotalImporte());
                     articulo_update.setString(2, tvList.getItems().get(i).getIdArticulo());
                     articulo_update.addBatch();
 
-                    preparedHistorialArticulo.setString(1, tvList.getItems().get(i).getIdArticulo());
-                    preparedHistorialArticulo.setString(2, "Venta");
-                    preparedHistorialArticulo.setDouble(3, 0);
-                    preparedHistorialArticulo.setDouble(4, tvList.getItems().get(i).getUnidadVenta() == 1
-                            ? tvList.getItems().get(i).getCantidad()
-                            : tvList.getItems().get(i).getTotalImporte()
-                    );
-                    preparedHistorialArticulo.setDouble(5, 0);
-                    preparedHistorialArticulo.setString(6, Session.USER_ID);
-
-                    preparedHistorialArticulo.addBatch();
+//                    preparedHistorialArticulo.setString(1, tvList.getItems().get(i).getIdArticulo());
+//                    preparedHistorialArticulo.setString(2, "Venta");
+//                    preparedHistorialArticulo.setDouble(3, 0);
+//                    preparedHistorialArticulo.setDouble(4, tvList.getItems().get(i).getUnidadVenta() == 1
+//                            ? tvList.getItems().get(i).getCantidad()
+//                            : tvList.getItems().get(i).getTotalImporte()
+//                    );
+//                    preparedHistorialArticulo.setDouble(5, 0);
+//                    preparedHistorialArticulo.setString(6, Session.USER_ID);
+//
+//                    preparedHistorialArticulo.addBatch();
                 } else {
-                    preparedHistorialArticulo.setString(1, tvList.getItems().get(i).getIdArticulo());
-                    preparedHistorialArticulo.setString(2, "Venta");
-                    preparedHistorialArticulo.setDouble(3, 0);
-                    preparedHistorialArticulo.setDouble(4, tvList.getItems().get(i).getUnidadVenta() == 1
-                            ? tvList.getItems().get(i).getCantidad()
-                            : tvList.getItems().get(i).getTotalImporte()
-                    );
-                    preparedHistorialArticulo.setDouble(5, 0);
-                    preparedHistorialArticulo.setString(6, Session.USER_ID);
-
-                    preparedHistorialArticulo.addBatch();
+//                    preparedHistorialArticulo.setString(1, tvList.getItems().get(i).getIdArticulo());
+//                    preparedHistorialArticulo.setString(2, "Venta");
+//                    preparedHistorialArticulo.setDouble(3, 0);
+//                    preparedHistorialArticulo.setDouble(4, tvList.getItems().get(i).getUnidadVenta() == 1
+//                            ? tvList.getItems().get(i).getCantidad()
+//                            : tvList.getItems().get(i).getTotalImporte()
+//                    );
+//                    preparedHistorialArticulo.setDouble(5, 0);
+//                    preparedHistorialArticulo.setString(6, Session.USER_ID);
+//
+//                    preparedHistorialArticulo.addBatch();
                 }
 
             }
@@ -144,7 +153,7 @@ public class VentaADO {
             comprobante.executeBatch();
             detalle_venta.executeBatch();
             articulo_update.executeBatch();
-            preparedHistorialArticulo.executeBatch();
+//            preparedHistorialArticulo.executeBatch();
             DBUtil.getConnection().commit();
             return "register/" + id_comprabante[0] + "-" + id_comprabante[1];
         } catch (SQLException ex) {
@@ -177,9 +186,9 @@ public class VentaADO {
                 if (codigo_venta != null) {
                     codigo_venta.close();
                 }
-                if (preparedHistorialArticulo != null) {
-                    preparedHistorialArticulo.close();
-                }
+//                if (preparedHistorialArticulo != null) {
+//                    preparedHistorialArticulo.close();
+//                }
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {
             }
@@ -287,7 +296,7 @@ public class VentaADO {
             DetalleVentaTB detalleVentaTB = new DetalleVentaTB();
             detalleVentaTB.setId(rsEmps.getInt("Filas"));
             detalleVentaTB.setCantidad(rsEmps.getDouble("Cantidad"));
-            detalleVentaTB.setPrecioUnitario(rsEmps.getDouble("PrecioUnitario"));
+            detalleVentaTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
             detalleVentaTB.setDescuento(rsEmps.getDouble("Descuento"));
             detalleVentaTB.setImporte(rsEmps.getDouble("Importe"));
             detalleVentaTB.setArticuloTB(new ArticuloTB(rsEmps.getString("IdArticulo"), rsEmps.getString("NombreMarca"), rsEmps.getInt("UnidadVenta")));
@@ -409,7 +418,6 @@ public class VentaADO {
         return empleadoTB;
     }
 
-   
     public static ArrayList<VentaTB> GetReporteGenetalVentas(String fechaInicial, String fechaFinal, int tipoDocumento) {
         CallableStatement callableStatement = null;
         ResultSet resultSet = null;

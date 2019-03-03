@@ -195,7 +195,7 @@
  ******************************************************************************/
 
 .scroll-pane {
-    -fx-background-color: transparent, transparent;
+    -fx-background-color:  transparent,  transparent;
 }
 
 .scroll-pane .corner {
@@ -205,7 +205,7 @@
 }
 
 .scroll-pane> .viewport{
-    -fx-background-color: white;
+    -fx-background-color:  #999999;
 }
 
 /*******************************************************************************
