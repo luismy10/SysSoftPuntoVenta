@@ -1,12 +1,19 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
@@ -14,14 +21,21 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import model.ArticuloTB;
 import model.CompraADO;
 import model.CompraTB;
+import model.DetalleADO;
+import model.DetalleTB;
 import model.LoteTB;
+import model.PagoProveedoresTB;
+import model.PlazosADO;
+import model.PlazosTB;
 
 public class FxCompraProcesoController implements Initializable {
 
@@ -32,13 +46,7 @@ public class FxCompraProcesoController implements Initializable {
     @FXML
     private TextField txtEfectivo;
     @FXML
-    private TextField txtCredito;
-    @FXML
-    private TextField txtDiasCredito;
-    @FXML
-    private DatePicker fcVencimiento;
-    @FXML
-    private HBox hbPogoContado;
+    private HBox hbPagoContado;
     @FXML
     private VBox vbPagoCredito;
     @FXML
@@ -46,13 +54,21 @@ public class FxCompraProcesoController implements Initializable {
     @FXML
     private RadioButton rbContado;
     @FXML
-    private RadioButton tbCredito;
+    private RadioButton rbCredito;
     @FXML
-    private RadioButton tbOtroPago;
+    private RadioButton rbOtroPago;
     @FXML
     private TextField txtProveedor;
     @FXML
     private TextField txtDescripcion;
+    @FXML
+    private ComboBox<PlazosTB> cbPlazos;
+    @FXML
+    private DatePicker dpFecha;
+    @FXML
+    private TextField txtMonto;
+    @FXML
+    private TextField txtCuotas;
 
     private FxCompraController compraController;
 
@@ -61,13 +77,27 @@ public class FxCompraProcesoController implements Initializable {
     private TableView<ArticuloTB> tvList;
 
     private ObservableList<LoteTB> loteTBs;
+    
+    private int plazos; 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ToggleGroup group = new ToggleGroup();
         rbContado.setToggleGroup(group);
-        tbCredito.setToggleGroup(group);
-        tbOtroPago.setToggleGroup(group);
+        rbCredito.setToggleGroup(group);
+        rbOtroPago.setToggleGroup(group);
+        System.out.println(hbPagoContado.isDisable());
+        System.out.println(vbPagoCredito.isDisable());
+        System.out.println(vbOtroPago.isDisable());
+        setInitializePlazos();
+        Tools.actualDate(Tools.getDate(), dpFecha);
+    }
+    
+    public void setInitializePlazos(){
+        cbPlazos.getItems().clear();
+        PlazosADO.GetTipoPlazoCombBox().forEach(e -> {
+            this.cbPlazos.getItems().add(new PlazosTB(e.getIdPlazos(), e.getNombre(), e.getDias(), e.getEstado(), e.getPredeterminado()));
+        });
     }
 
     public void setLoadProcess(CompraTB compraTB, TableView<ArticuloTB> tvList, ObservableList<LoteTB> loteTBs, String total, String proveedor) {
@@ -78,7 +108,26 @@ public class FxCompraProcesoController implements Initializable {
         txtProveedor.setText(proveedor);
     }
 
-    private void executeCrud() {
+    private void executeCrud(String estadoCompra, String tipoCompra) {
+        
+        PagoProveedoresTB pagoProveedoresTB = new PagoProveedoresTB();
+        
+        pagoProveedoresTB.setMontoTotal(Double.parseDouble(lblTotal.getText()));
+        pagoProveedoresTB.setMontoActual(Double.parseDouble(txtMonto.getText()));
+        pagoProveedoresTB.setCuotaTotal(Integer.parseInt(txtCuotas.getText()));
+        pagoProveedoresTB.setCuotaActual(0);
+        
+        
+        pagoProveedoresTB.setFechaInicial(Timestamp.valueOf(Tools.getDatePicker(dpFecha)));
+        pagoProveedoresTB.setFechaActual(Timestamp.valueOf(Tools.getDatePicker(dpFecha)));
+        pagoProveedoresTB.setFechaFinal(Timestamp.valueOf(Tools.getDatePicker(dpFecha)));
+        pagoProveedoresTB.setObservacion("");
+        pagoProveedoresTB.setEstado("");
+        pagoProveedoresTB.setIdproveedor(compraTB.getProveedor());
+        
+        compraTB.setEstadoCompra(estadoCompra);
+        compraTB.setTipoCompra(tipoCompra);
+        
         String result = CompraADO.CrudCompra(compraTB, tvList, loteTBs);
         if (result.equalsIgnoreCase("register")) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Compra", "Se registró correctamente la compra.", false);
@@ -90,34 +139,58 @@ public class FxCompraProcesoController implements Initializable {
     }
 
     private void onEventProcess() {
+        
+        String estadoCompra,  tipoCompra;
+        
         if (rbContado.isSelected()) {
             if (!Tools.isNumeric(txtEfectivo.getText())) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo efectivo.", false);
                 txtEfectivo.requestFocus();
             } else {
-                executeCrud();
+                estadoCompra = "pagado";
+                tipoCompra = "contado";
+                executeCrud(estadoCompra, tipoCompra);
             }
-        } else if (tbCredito.isSelected()) {
-            if (!Tools.isNumeric(txtCredito.getText())) {
+        } else if (rbCredito.isSelected()) {
+            if (!Tools.isNumeric(txtMonto.getText())) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo crédito.", false);
-                txtCredito.requestFocus();
-            } else if (!Tools.isNumeric(txtDiasCredito.getText())) {
+                txtMonto.requestFocus();
+            } else if (!Tools.isNumeric(txtCuotas.getText())) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo días de crédito.", false);
-                txtDiasCredito.requestFocus();
-            } else if (fcVencimiento.getValue() == null) {
+                txtCuotas.requestFocus();
+            } else if (dpFecha.getValue() == null) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo fecha de vencimiento.", false);
-                fcVencimiento.requestFocus();
+                dpFecha.requestFocus();
             } else {
-                executeCrud();
+                estadoCompra = "pendiente";
+                tipoCompra = "credito";
+                executeCrud(estadoCompra, tipoCompra);
             }
-        } else if (tbOtroPago.isSelected()) {
-            if (!txtDescripcion.getText().isEmpty()) {
+        } else if (rbOtroPago.isSelected()) {
+            if (txtDescripcion.getText().isEmpty()) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo descripción.", false);
                 txtDescripcion.requestFocus();
             } else {
-                executeCrud();
+                estadoCompra = "otro";
+                tipoCompra = "otro";
+                executeCrud(estadoCompra, tipoCompra);
             }
         }
+
+    }
+    
+    private void openWindowAddPlazo() throws IOException {
+        URL url = getClass().getResource(Tools.FX_FILE_PLAZOS);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxPlazosController controller = fXMLLoader.getController();
+        controller.setInitCompraProcesoController(this);
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Agegar nuevo plazo", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.show();
 
     }
 
@@ -128,25 +201,6 @@ public class FxCompraProcesoController implements Initializable {
             event.consume();
         }
         if (c == '.' && txtEfectivo.getText().contains(".") || c == '-' && txtEfectivo.getText().contains("-")) {
-            event.consume();
-        }
-    }
-
-    @FXML
-    private void onKeyTypedCredito(KeyEvent event) {
-        char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
-            event.consume();
-        }
-        if (c == '.' && txtCredito.getText().contains(".") || c == '-' && txtCredito.getText().contains("-")) {
-            event.consume();
-        }
-    }
-
-    @FXML
-    private void onKeyTypedDiasCredito(KeyEvent event) {
-        char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b')) {
             event.consume();
         }
     }
@@ -176,24 +230,57 @@ public class FxCompraProcesoController implements Initializable {
     }
 
     @FXML
-    private void onActionRadioButtonOpcion(ActionEvent event) {
-        if (tbCredito.isSelected()) {
-            vbPagoCredito.setDisable(false);
-            vbOtroPago.setDisable(false);
-            hbPogoContado.setDisable(true);
-        } else if (tbCredito.isSelected()) {
-            vbOtroPago.setDisable(false);
-            hbPogoContado.setDisable(false);
-            vbPagoCredito.setDisable(true);
-        } else if (tbOtroPago.isSelected()) {
-            hbPogoContado.setDisable(false);
-            vbPagoCredito.setDisable(false);
-            vbOtroPago.setDisable(true);
-        }
+    private void onActionRbContado(ActionEvent event) {
+        vbPagoCredito.setDisable(true);
+        vbOtroPago.setDisable(true);
+        hbPagoContado.setDisable(false);
+    }
+
+    @FXML
+    private void onActionRbCredito(ActionEvent event) {
+        hbPagoContado.setDisable(true);
+        vbOtroPago.setDisable(true);
+        vbPagoCredito.setDisable(false);
+    }
+
+    @FXML
+    private void onActionRbOtroPago(ActionEvent event) {
+        hbPagoContado.setDisable(true);
+        vbPagoCredito.setDisable(true);
+        vbOtroPago.setDisable(false);
     }
 
     public void setInitCompraController(FxCompraController compraController) {
         this.compraController = compraController;
+    }
+
+    @FXML
+    private void OnActionPlazos(ActionEvent event) {
+        
+    }
+
+    @FXML
+    private void onKeyTypedMonto(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+            event.consume();
+        }
+        if (c == '.' && txtMonto.getText().contains(".") || c == '-' && txtMonto.getText().contains("-")) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedCuotas(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b')) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void OnMouseClickedPlazos(MouseEvent event) throws IOException {
+        this.openWindowAddPlazo();
     }
 
 }

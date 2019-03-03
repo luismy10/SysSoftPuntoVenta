@@ -14,6 +14,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -139,16 +140,15 @@ public class FxArticuloCompraController implements Initializable {
 
         lblPrecioVentaNombre1.setText(value[5].equals("") ? "Precio de Venta 1" : value[5]);
         txtPrecioVenta1.setText("" + Double.parseDouble(value[6]));
-        txtMargen1.setText("" + Short.parseShort(value[7]));
-        txtUtilidad1.setText("" + Double.parseDouble(value[8]));
+        txtUtilidad1.setText("0.00");
+
         lblPrecioVentaNombre2.setText(value[9].equals("") ? "Precio de Venta 2" : value[9]);
         txtPrecioVenta2.setText("" + Double.parseDouble(value[10]));
-        txtMargen2.setText("" + Short.parseShort(value[11]));
-        txtUtilidad2.setText("" + Double.parseDouble(value[12]));
+        txtUtilidad2.setText("0.00");
+
         lblPrecioVentaNombre3.setText(value[13].equals("") ? "Precio de Venta 3" : value[13]);
         txtPrecioVenta3.setText("" + Double.parseDouble(value[14]));
-        txtMargen3.setText("" + Short.parseShort(value[15]));
-        txtUtilidad3.setText("" + Double.parseDouble(value[16]));
+        txtUtilidad3.setText("0.00");
 
         int impuesto = Integer.parseInt(value[17]);
         if (impuesto != 0) {
@@ -267,7 +267,6 @@ public class FxArticuloCompraController implements Initializable {
                 compraController.calculateTotals();
                 Tools.Dispose(window);
             }
-
         } else if (editarArticulo) {
             if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {
                 openWindowLote(articuloTB);
@@ -276,11 +275,9 @@ public class FxArticuloCompraController implements Initializable {
                 compraController.calculateTotals();
                 Tools.Dispose(window);
             }
-
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya hay un artículo con las mismas características.", false);
         }
-
     }
 
     private boolean validateStock(TableView<ArticuloTB> view, ArticuloTB articuloTB) throws IOException {
@@ -298,15 +295,33 @@ public class FxArticuloCompraController implements Initializable {
         if (!Tools.isNumeric(txtCantidad.getText())) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en la cantidad", false);
             txtCantidad.requestFocus();
+        } else if (Double.parseDouble(txtCantidad.getText()) <= 0) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "La cantidad no puede ser menor o igual a 0", false);
+            txtCantidad.requestFocus();
         } else if (cbImpuesto.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Seleccione el impuesto", false);
             cbImpuesto.requestFocus();
         } else if (!Tools.isNumeric(txtCosto.getText())) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el costo", false);
             txtCosto.requestFocus();
+        } else if (Double.parseDouble(txtCosto.getText()) <= 0) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "El costo no puede ser menor o igual a 0", false);
+            txtCosto.requestFocus();
         } else if (!Tools.isNumeric(txtPrecioVenta1.getText())) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el precio", false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el precio 1", false);
             txtPrecioVenta1.requestFocus();
+        } else if (Double.parseDouble(txtPrecioVenta1.getText()) <= 0) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "El precio de venta 1 no puede ser menor o igual a 0", false);
+            txtPrecioVenta1.requestFocus();
+        } else if (!Tools.isNumeric(txtPrecioVenta2.getText())) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el precio 2", false);
+            txtPrecioVenta2.requestFocus();
+        } else if (Double.parseDouble(txtPrecioVenta2.getText()) <= 0) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "El precio de venta 2 no puede ser menor o igual a 0", false);
+            txtPrecioVenta2.requestFocus();
+        } else if (!Tools.isNumeric(txtPrecioVenta3.getText())) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el precio 3", false);
+            txtPrecioVenta3.requestFocus();
         } else {
             addArticulo(Double.parseDouble(txtCosto.getText()));
         }
@@ -318,8 +333,28 @@ public class FxArticuloCompraController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedAdd(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            addArticuloList();
+        }
+    }
+
+    private void onKeyPressedPreviousPrices(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
     private void onActionCancel(ActionEvent event) {
         Tools.Dispose(window);
+    }
+
+    @FXML
+    private void onKeyPressedCancel(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            Tools.Dispose(window);
+        }
     }
 
     @FXML
@@ -376,7 +411,6 @@ public class FxArticuloCompraController implements Initializable {
 
     @FXML
     private void onKeyReleasedCosto(KeyEvent event) {
-
         if (Tools.isNumeric(txtCosto.getText()) && Tools.isNumeric(txtMargen1.getText())) {
             //toma el valor del impuesto del combo box
             double impuesto = Tools.calculateTax(
@@ -637,6 +671,58 @@ public class FxArticuloCompraController implements Initializable {
             txtUtilidad3.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta3.getText()) - preciocompra), 2));
         }
     }
+    
+    @FXML
+    private void onKeyReleasedCantidad(KeyEvent event) {
+        if (Tools.isNumeric(txtCosto.getText()) && Tools.isNumeric(txtMargen1.getText())) {
+            //toma el valor del impuesto del combo box
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtCosto.getText()));
+            //se suma el impuesto al costo del articulo
+            double precioimpuesto = (Double.parseDouble(txtCosto.getText()) + impuesto);
+            double preciocompra = precioimpuesto;
+            txtPrecioVenta1.setText(Tools.calculateAumento(Tools.isNumeric(txtMargen1.getText())
+                    ? Double.parseDouble(txtMargen1.getText()) : 0,
+                    preciocompra));
+            txtUtilidad1.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta1.getText()) - preciocompra), 2));
+        }
+
+        if (Tools.isNumeric(txtCosto.getText()) && Tools.isNumeric(txtMargen2.getText())) {
+            //toma el valor del impuesto del combo box
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtCosto.getText()));
+            //se suma el impuesto al costo del articulo
+            double precioimpuesto = (Double.parseDouble(txtCosto.getText()) + impuesto);
+            double preciocompra = precioimpuesto;
+            txtPrecioVenta2.setText(Tools.calculateAumento(Tools.isNumeric(txtMargen2.getText())
+                    ? Double.parseDouble(txtMargen2.getText()) : 0,
+                    preciocompra));
+            txtUtilidad2.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta2.getText()) - preciocompra), 2));
+        }
+
+        if (Tools.isNumeric(txtCosto.getText()) && Tools.isNumeric(txtMargen3.getText())) {
+            //toma el valor del impuesto del combo box
+            double impuesto = Tools.calculateTax(
+                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
+                    : 0,
+                    Double.parseDouble(txtCosto.getText()));
+            //se suma el impuesto al costo del articulo
+            double precioimpuesto = (Double.parseDouble(txtCosto.getText()) + impuesto);
+            double preciocompra = precioimpuesto;
+            txtPrecioVenta3.setText(Tools.calculateAumento(Tools.isNumeric(txtMargen3.getText())
+                    ? Double.parseDouble(txtMargen3.getText()) : 0,
+                    preciocompra));
+            txtUtilidad3.setText(Tools.roundingValue((Double.parseDouble(txtPrecioVenta3.getText()) - preciocompra), 2));
+        }
+
+    }
 
     public void setValidarlote(boolean validarlote) {
         this.validarlote = validarlote;
@@ -653,5 +739,7 @@ public class FxArticuloCompraController implements Initializable {
     public FxCompraController getCompraController() {
         return compraController;
     }
+
+    
 
 }

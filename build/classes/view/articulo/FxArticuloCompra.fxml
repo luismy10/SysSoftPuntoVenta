@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloCompraController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticuloCompraController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -63,7 +63,7 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="txtCantidad" onAction="#onActionAdd" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" />
+                  <TextField fx:id="txtCantidad" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedCantidad" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" promptText="0.00" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -92,7 +92,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtCosto" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedCosto" onKeyTyped="#onKeyTypedCosto" VBox.vgrow="ALWAYS" />
+                                    <TextField fx:id="txtCosto" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedCosto" onKeyTyped="#onKeyTypedCosto" promptText="0.00" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
@@ -102,7 +102,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtDescuento" onAction="#onActionAdd" onKeyTyped="#onKeyTypedDescuento" VBox.vgrow="ALWAYS" />
+                                    <TextField fx:id="txtDescuento" onAction="#onActionAdd" onKeyTyped="#onKeyTypedDescuento" promptText="0" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
@@ -194,9 +194,9 @@
                                           <Font name="Roboto" size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtUtilidad1" disable="true" prefWidth="140.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <TextField fx:id="txtMargen1" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedMargen" onKeyTyped="#onKeyTypedMargen" prefWidth="140.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <TextField fx:id="txtPrecioVenta1" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedPrecio" onKeyTyped="#onKeyTypedPrecio" prefWidth="140.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtUtilidad1" disable="true" prefWidth="140.0" promptText="0.00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <TextField fx:id="txtMargen1" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedMargen" onKeyTyped="#onKeyTypedMargen" prefWidth="140.0" promptText="0.00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtPrecioVenta1" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedPrecio" onKeyTyped="#onKeyTypedPrecio" prefWidth="140.0" promptText="0.00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <Label fx:id="lblPrecioVentaNombre1" styleClass="labelRoboto14" text="Precio Venta 1" textFill="#23283a">
                                        <font>
                                           <Font name="Roboto" size="14.0" />
@@ -225,7 +225,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
                <children>
-                  <Button mnemonicParsing="false" onAction="#onActionAdd" styleClass="buttonLightDefault" text="Agregar">
+                  <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLightDefault" text="Agregar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -234,7 +234,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onActionCancel" styleClass="buttonLight" text="Cancelar">
+                  <Button mnemonicParsing="false" onAction="#onActionCancel" onKeyPressed="#onKeyPressedCancel" styleClass="buttonLight" text="Cancelar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>

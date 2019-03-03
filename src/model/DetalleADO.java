@@ -101,7 +101,7 @@ public class DetalleADO {
             }
         }
     }
-
+    
     public static ObservableList<DetalleTB> GetDetailId(String value) {
         String selectStmt = "{call Sp_Get_Detalle_Id(?)}";
         PreparedStatement preparedStatement = null;
