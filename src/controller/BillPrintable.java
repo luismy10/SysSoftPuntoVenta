@@ -1,5 +1,6 @@
 package controller;
 
+import br.com.adilson.util.PrinterMatrix;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -10,9 +11,25 @@ import java.awt.print.Printable;
 import static java.awt.print.Printable.NO_SUCH_PAGE;
 import static java.awt.print.Printable.PAGE_EXISTS;
 import java.awt.print.PrinterException;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
+import javafx.stage.Window;
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintException;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.SimpleDoc;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
 import model.ArticuloTB;
 
 public class BillPrintable implements Printable {
@@ -149,4 +166,101 @@ public class BillPrintable implements Printable {
     private String getText(double value) {
         return Tools.roundingValue(value, 2);
     }
+
+    private void t(Window window, String messageClassTitle, String messageClassContent) {
+        Date date = new Date();
+        SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss aa");
+
+        try {
+            PrinterMatrix p = new PrinterMatrix();
+            p.setOutSize(10, 40);
+            p.printTextWrap(1, 0, 0, 40, "\n");
+            p.printTextWrap(2, 0, 0, 40, "\n");
+            p.printTextWrap(3, 0, 0, 40, "\n");
+            p.printTextWrap(4, 0, 0, 40, "\n");
+            p.printTextWrap(5, 0, 0, 40, "\n");
+            p.toFile("c:\\temp\\impresion.txt");
+        } catch (Exception e) {
+            Tools.AlertMessage(window, Alert.AlertType.ERROR, messageClassTitle, messageClassContent, false);
+        }
+    }
+
+    private void printDoc(String ruta) {
+        File file = new File(ruta);
+        FileInputStream inputStream = null;
+        try {
+            try {
+                inputStream = new FileInputStream(file);
+            } catch (FileNotFoundException ex) {
+            }
+            if (inputStream == null) {
+                return;
+            }
+            DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
+            PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+            PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
+            PrintService service = findPrintService(Session.NAME_IMPRESORA, printService);
+            DocPrintJob job = service.createPrintJob();
+
+            byte[] bytes = readFileToByteArray(file);
+            byte[] cutP = new byte[]{0x1d, 'V', 1};
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            outputStream.write(bytes);
+            outputStream.write(cutP);
+            byte c[] = outputStream.toByteArray();
+            Doc doc = new SimpleDoc(c, flavor, null);
+            job.print(doc, null);
+        } catch (IOException | PrintException e) {
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException ex) {
+                }
+            }
+        }
+    }
+
+    private int getSizePaper(int filas, int inicial) {
+        int recorrido = inicial;
+        for (int i = 0; i < filas; i++) {
+            recorrido += 2;
+            recorrido++;
+        }
+        recorrido++;
+        recorrido += 2;
+        recorrido++;
+        recorrido += 2;
+        recorrido++;
+        recorrido++;
+        recorrido++;
+        recorrido++;
+        recorrido++;
+        recorrido++;
+        recorrido++;
+        recorrido++;
+        return recorrido;
+    }
+
+    private PrintService findPrintService(String printerName, PrintService[] services) {
+        for (PrintService service : services) {
+            if (service.getName().equalsIgnoreCase(printerName)) {
+                return service;
+            }
+        }
+        return null;
+    }
+
+    private static byte[] readFileToByteArray(File file) {
+        byte[] bArray = new byte[(int) file.length()];
+        try (FileInputStream fis = new FileInputStream(file)) {
+            fis.read(bArray);
+            fis.close();
+
+        } catch (IOException ioExp) {
+        }
+        return bArray;
+    }
+
 }

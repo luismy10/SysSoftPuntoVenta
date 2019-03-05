@@ -1,16 +1,9 @@
 package controller;
 
-import br.com.adilson.util.PrinterMatrix;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -33,15 +26,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javax.print.Doc;
-import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintException;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import javax.print.SimpleDoc;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
 import model.ArticuloADO;
 import model.ArticuloTB;
 import model.ComprobanteADO;
@@ -575,6 +559,7 @@ public class FxVentaController implements Initializable {
 
     public void imprimirVenta(VentaTB ventaTB, String efec, String vuel, String ticket) {
         if (Session.STATE_IMPRESORA && Session.NAME_IMPRESORA != null && Session.CORTA_PAPEL != null) {
+            
 //            PrinterJob pj = PrinterJob.getPrinterJob();
 //            
 //            Book book = new Book();
@@ -587,140 +572,7 @@ public class FxVentaController implements Initializable {
 //            } catch (PrinterException ex) {
 //            }
 
-            Date date = new Date();
-            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss aa");
-
-            try {
-                String ruc = "RUC " + Session.RUC;
-                String telcel = "TEL: " + Session.TELEFONO + " CEL:" + Session.CELULAR;
-                String documento = "";
-                if (ticket.substring(0, 1).equalsIgnoreCase("b")) {
-                    documento = "BOLETA DE VENTA ELECTRONICA";
-                } else if (ticket.substring(0, 1).equalsIgnoreCase("f")) {
-                    documento = "FACTURA DE VENTA ELECTRONICA";
-                } else if (ticket.substring(0, 1).equalsIgnoreCase("t")) {
-                    documento = "TICKET DE VENTA";
-                }
-                String efectivo = "EFECTIVO SOLES  " + monedaSimbolo + " " + efec;
-                String vuelto = "Cambio  " + monedaSimbolo + " " + vuel;
-                String total = monedaSimbolo + " " + Tools.roundingValue(ventaTB.getTotal(), 2);
-                PrinterMatrix p = new PrinterMatrix();
-
-                int filas = tvList.getItems().size();
-
-                int count = 13;
-
-                p.setOutSize(getSizePaper(filas, count), 40);
-
-                p.printTextWrap(1, 0, (int) (40 - Session.NOMBREEMPRESA.length()) / 2, 40, Session.NOMBREEMPRESA);
-                p.printTextWrap(2, 0, (int) (40 - ruc.length()) / 2, 40, ruc);
-                p.printTextWrap(3, 1, 0, 40, Session.DIRECCION);
-                p.printTextWrap(5, 0, (int) (40 - telcel.length()) / 2, 40, telcel);
-
-                p.printTextWrap(6, 0, (int) (40 - documento.length()) / 2, 40, documento);
-                p.printTextWrap(7, 0, (int) (40 - ticket.length()) / 2, 40, ticket);
-                p.printTextWrap(8, 0, 0, 40, "FECHA DE EMISION:" + fecha.format(date) + " " + hora.format(date));
-
-                p.printCharAtCol(10, 0, 40, "=");
-
-                p.printTextWrap(10, 1, 0, 40, "Descripcion");
-                p.printTextWrap(11, 0, 0, "Cantidad x P.Unitario".length(), "Cantidad x P.Unitario");
-                p.printTextWrap(11, 0, (40 - "Importe".length()), 40, "Importe");
-
-                p.printCharAtCol(13, 0, 40, "=");
-
-                for (int i = 0; i < filas; i++) {
-                    p.printTextWrap(count, 1, 0, 40, tvList.getItems().get(i).getNombreMarca());
-                    count += 2;
-                    p.printTextWrap(count, 0, 0, 40, tvList.getItems().get(i).getCantidad() + " x " + Tools.roundingValue(tvList.getItems().get(i).getPrecioVenta(), 2));
-                    p.printTextWrap(count, 0, 40 - Tools.roundingValue(tvList.getItems().get(i).getTotalImporte(), 2).length(), 40, Tools.roundingValue(tvList.getItems().get(i).getTotalImporte(), 2));
-                    count++;
-                }
-                count++;
-
-                p.printCharAtCol(count, 0, 40, "=");
-
-                p.printTextWrap(count, 1, 0, 40, "IMPORTE TOTAL");
-                p.printTextWrap(count, 1, 40 - total.length(), 40, total);
-
-                count += 2;
-                p.printCharAtCol(count, 0, 40, "=");
-
-                p.printTextWrap(count, 1, 40 - efectivo.length(), 40, efectivo);
-
-                count++;
-                p.printTextWrap(count, 0, 40 - vuelto.length(), 40, vuelto);
-
-                count += 2;
-                p.printCharAtCol(count, 0, 40, "=");
-
-                p.printTextWrap(count, 1, (int) (40 - "Representacion Impresa del Documento".length()) / 2, 40, "Representacion Impresa del Documento");
-
-                count++;
-                p.printTextWrap(count, 0, (int) (40 - "de Venta Electronica".length()) / 2, 40, "de Venta Electronica");
-
-                count++;
-                p.printTextWrap(count, 0, 0, 40, "GRACIAS POR SU COMPRA...");
-
-                count++;
-                p.printTextWrap(count, 0, 0, 40, "\n");
-
-                count++;
-                p.printTextWrap(count, 0, 0, 40, "\n");
-
-                count++;
-                p.printTextWrap(count, 0, 0, 40, "\n");
-
-                count++;
-                p.printTextWrap(count, 0, 0, 40, "\n");
-
-                count++;
-                p.printTextWrap(count, 0, 0, 40, "\n");
-
-                p.toFile("c:\\temp\\impresion.txt");
-                File file = new File("c:\\temp\\impresion.txt");
-                FileInputStream inputStream = null;
-                try {
-                    try {
-                        inputStream = new FileInputStream(file);
-                    } catch (FileNotFoundException ex) {
-
-                    }
-                    if (inputStream == null) {
-                        return;
-                    }
-                    DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
-                    PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
-                    PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
-                    PrintService service = findPrintService(Session.NAME_IMPRESORA, printService);
-                    DocPrintJob job = service.createPrintJob();
-
-                    byte[] bytes = readFileToByteArray(file);
-                    byte[] cutP = new byte[]{0x1d, 'V', 1};
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    outputStream.write(bytes);
-                    outputStream.write(cutP);
-                    byte c[] = outputStream.toByteArray();
-
-                    Doc doc = new SimpleDoc(c, flavor, null);
-
-                    job.print(doc, null);
-                } catch (IOException | PrintException e) {
-                    // TODO Auto-generated catch block
-
-                } finally {
-                    if (inputStream != null) {
-                        try {
-                            inputStream.close();
-                        } catch (IOException ex) {
-
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Venta", "Error al imprimir, configure correctamente su impresora.", false);
-            }
+            //"Error al imprimir, configure correctamente su impresora."
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Venta", "No esta configurado la impresora :D", false);
 
@@ -728,47 +580,7 @@ public class FxVentaController implements Initializable {
 
     }
 
-    private int getSizePaper(int filas, int inicial) {
-        int recorrido = inicial;
-        for (int i = 0; i < filas; i++) {
-            recorrido += 2;
-            recorrido++;
-        }
-        recorrido++;
-        recorrido += 2;
-        recorrido++;
-        recorrido += 2;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        return recorrido;
-    }
-
-    private PrintService findPrintService(String printerName, PrintService[] services) {
-        for (PrintService service : services) {
-            if (service.getName().equalsIgnoreCase(printerName)) {
-                return service;
-            }
-        }
-        return null;
-    }
-
-    private static byte[] readFileToByteArray(File file) {
-        byte[] bArray = new byte[(int) file.length()];
-        try (FileInputStream fis = new FileInputStream(file)) {
-            fis.read(bArray);
-            fis.close();
-
-        } catch (IOException ioExp) {
-        }
-        return bArray;
-    }
-
+    
     private void removeArticulo() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Esta seguro de quitar el artículo?", true);

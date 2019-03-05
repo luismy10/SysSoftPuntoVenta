@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="SysSoftProcess.jar" size="1256354" download="eager" />
+    <jar href="SysSoftProcess.jar" size="1261369" download="eager" />
     <jar href="lib\Util.jar" size="11957" download="eager" />
     <jar href="lib\barbecue-1.5-beta1.jar" size="91079" download="eager" />
     <jar href="lib\commons-beanutils-1.8.2.jar" size="231891" download="eager" />
@@ -21,6 +21,7 @@
     <jar href="lib\iText-5.0.5.jar" size="1599728" download="eager" />
     <jar href="lib\jasperreports-4.7.1.jar" size="3998149" download="eager" />
     <jar href="lib\jasperreports-javaflow-4.7.1.jar" size="4041522" download="eager" />
+    <jar href="lib\json-simple-1.1.1.jar" size="23737" download="eager" />
     <jar href="lib\mssql-jdbc-7.0.0.jre8.jar" size="1166239" download="eager" />
     <jar href="lib\png-encoder-1.5.jar" size="18117" download="eager" />
     <jar href="lib\poi-3.12-20150511.jar" size="2136557" download="eager" />

@@ -7,7 +7,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -61,6 +60,15 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionPrint" onKeyPressed="#onKeyPressedPrint" styleClass="buttonLight" text="Imprimir">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../print.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                            </children>
                         </HBox>
                      </children>
@@ -79,15 +87,15 @@
                                  <children>
                                     <VBox>
                                        <children>
-                                          <TableView fx:id="tvList" fixedCellSize="-0.0" onMouseClicked="#onMouseClickedList" prefHeight="332.0" prefWidth="340.0" VBox.vgrow="ALWAYS">
+                                          <TableView fx:id="tvList" fixedCellSize="-0.0" onMouseClicked="#onMouseClickedList" prefHeight="332.0" prefWidth="360.0" VBox.vgrow="ALWAYS">
                                              <columns>
-                                                <TableColumn fx:id="tcMoneda" prefWidth="186.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de comprobante" />
-                                                <TableColumn fx:id="tcPredeterminado" prefWidth="130.0" style="-fx-alignment: CENTER;" text="Predeterminado" />
+                                                <TableColumn fx:id="tcMoneda" prefWidth="195.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de comprobante" />
+                                                <TableColumn fx:id="tcPredeterminado" prefWidth="155.0" style="-fx-alignment: CENTER;" text="Predeterminado" />
                                              </columns>
                                           </TableView>
                                        </children>
                                     </VBox>
-                                    <HBox prefWidth="460.0" style="-fx-border-width: 1; -fx-border-color: #cccccc; -fx-padding: 5;" HBox.hgrow="ALWAYS">
+                                    <HBox style="-fx-border-width: 1; -fx-border-color: #cccccc; -fx-padding: 5;" HBox.hgrow="ALWAYS">
                                        <children>
                                           <ScrollPane fitToWidth="true" prefHeight="320.0" HBox.hgrow="ALWAYS">
                                              <content>
@@ -97,77 +105,29 @@
                                                          <children>
                                                             <VBox prefWidth="305.0" style="-fx-background-color: white;">
                                                                <children>
-                                                                  <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em;">
+                                                                  <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;">
                                                                      <children>
                                                                         <Label styleClass="labelRobotoBold12" text="Encabezado" textFill="WHITE" />
+                                                                        <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onMouseClickedEncabezadoAdd" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                                                           <image>
+                                                                              <Image url="@../plus.png" />
+                                                                           </image>
+                                                                        </ImageView>
                                                                      </children>
                                                                   </HBox>
-                                                                  <VBox>
-                                                                     <children>
-                                                                        <TextField alignment="CENTER" promptText="Nombre de la empresa" style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff; -fx-text-fill: #009900;" styleClass="labelMonospaced12" text="Nombre de la Empresa">
-                                                                           <font>
-                                                                              <Font name="Monospaced Regular" size="12.0" />
-                                                                           </font>
-                                                                        </TextField>
-                                                                        <TextField alignment="CENTER" style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff; -fx-text-fill: #009900;" styleClass="labelMonospaced12" text="Ruc de la Empresa">
-                                                                           <font>
-                                                                              <Font name="Monospaced Regular" size="12.0" />
-                                                                           </font>
-                                                                        </TextField>
-                                                                        <TextField alignment="CENTER" style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff; -fx-text-fill: #009900;" styleClass="labelMonospaced12" text="Domicilio de la Empresa" />
-                                                                        <TextField alignment="CENTER" style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff; -fx-text-fill: #009900;" styleClass="labelMonospaced12" text="Telefono de la empresa" />
-                                                                        <TextField alignment="CENTER" style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff; -fx-text-fill: #009900;" styleClass="labelMonospaced12" text="Nombre del documento" />
-                                                                        <TextField alignment="CENTER" style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff; -fx-text-fill: #009900;" styleClass="labelMonospaced12" text="Nro del documento" />
-                                                                        <TextField style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff; -fx-text-fill: #009900;" styleClass="labelMonospaced12" text="Fecha y Hora">
-                                                                           <font>
-                                                                              <Font name="Monospaced Regular" size="12.0" />
-                                                                           </font>
-                                                                        </TextField>
-                                                                        <TextField prefHeight="26.0" style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff;" styleClass="labelMonospaced12" text="========================================" />
-                                                                     </children>
-                                                                  </VBox>
+                                                                  <VBox fx:id="hbEncabezado" />
                                                                   <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em;">
                                                                      <children>
                                                                         <Label styleClass="labelRobotoBold12" text="Detalle" textFill="WHITE" />
                                                                      </children>
                                                                   </HBox>
-                                                                  <VBox>
-                                                                     <children>
-                                                                        <TextField style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff;" styleClass="labelMonospaced12" text="Descripcion" />
-                                                                        <HBox>
-                                                                           <children>
-                                                                              <TextField style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff;" styleClass="labelMonospaced12" text="Cant. x P.Unit." HBox.hgrow="ALWAYS" />
-                                                                              <TextField alignment="CENTER_RIGHT" style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff;" styleClass="labelMonospaced12" text="Importe" HBox.hgrow="ALWAYS" />
-                                                                           </children>
-                                                                        </HBox>
-                                                                        <TextField style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff;" styleClass="labelMonospaced12" text="=======================================" />
-                                                                        <TextField style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff; -fx-text-fill: #009900;" styleClass="labelMonospaced12" text="Descripcion" />
-                                                                        <HBox>
-                                                                           <children>
-                                                                              <TextField style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff; -fx-text-fill: #009900;" styleClass="labelMonospaced12" text="Cant." HBox.hgrow="ALWAYS" />
-                                                                              <TextField alignment="CENTER_RIGHT" style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff; -fx-text-fill: #009900;" styleClass="labelMonospaced12" text="P.Unit." HBox.hgrow="ALWAYS" />
-                                                                              <TextField alignment="CENTER_RIGHT" style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff; -fx-text-fill: #009900;" styleClass="labelMonospaced12" text="Importe" HBox.hgrow="ALWAYS" />
-                                                                           </children>
-                                                                        </HBox>
-                                                                     </children>
-                                                                  </VBox>
+                                                                  <VBox />
                                                                   <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em;">
                                                                      <children>
                                                                         <Label styleClass="labelRobotoBold12" text="Pie" textFill="WHITE" />
                                                                      </children>
                                                                   </HBox>
-                                                                  <VBox>
-                                                                     <children>
-                                                                        <TextField style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff;" styleClass="labelMonospaced12" text="=======================================" />
-                                                                        <HBox>
-                                                                           <children>
-                                                                              <TextField style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff;" styleClass="labelMonospaced12" text="Importe Total" HBox.hgrow="ALWAYS" />
-                                                                              <TextField alignment="CENTER_RIGHT" style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff; -fx-text-fill: #009900;" styleClass="labelMonospaced12" text="Total" HBox.hgrow="ALWAYS" />
-                                                                           </children>
-                                                                        </HBox>
-                                                                        <TextField style="-fx-border-width: 1 1 1 1; -fx-border-color: #0066ff;" styleClass="labelMonospaced12" text="=======================================" />
-                                                                     </children>
-                                                                  </VBox>
+                                                                  <VBox />
                                                                </children>
                                                             </VBox>
                                                          </children>

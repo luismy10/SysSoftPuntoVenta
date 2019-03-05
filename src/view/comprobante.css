@@ -726,21 +726,21 @@
  ******************************************************************************/
 
 .buttonBorder{
-    BACKGROUND: transparent;
-    BACKGROUND_PRESSED: #cccccc;
+    BACKGROUND: #cccccc;
+    BACKGROUND_PRESSED: #999999;
 
-    BORDER_HOVER: #175a75;
+    BORDER_HOVER: #7a7a7a;
 
-    TEXT: #ffffff;
+    TEXT: #111;
     DEFAULT_BUTTON_TEXT: white;
 
-    FOCUS_RING_BORDER: #ffffff;
+    FOCUS_RING_BORDER: #111;
 
     -shrink-animate-on-press: true;
 }
 
 .buttonBorder{
-     -fx-padding: 0.3333333333333333em 1.666666em 0.3333333333333333em 1.666666em; /*4 20 4 20*/
+    -fx-padding: 0.3333333333333333em 1.666666em 0.3333333333333333em 1.666666em; /*4 20 4 20*/
 
     -fx-border-color: #999999;
     -fx-border-width: 1;
@@ -749,7 +749,7 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Monospaced";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 }
