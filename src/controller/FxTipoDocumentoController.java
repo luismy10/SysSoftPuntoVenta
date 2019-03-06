@@ -9,7 +9,6 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,7 +22,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
@@ -41,8 +39,6 @@ public class FxTipoDocumentoController implements Initializable {
     @FXML
     private TableColumn<TipoDocumentoTB, ImageView> tcPredeterminado;
 
-    private boolean stateRequest;
-
     private boolean stateUpdate;
 
     private AnchorPane content;
@@ -51,9 +47,7 @@ public class FxTipoDocumentoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tcMoneda.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombre()));
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
-        stateRequest = false;
         stateUpdate = false;
-
     }
 
     public void fillTabletTipoDocumento() {
@@ -72,7 +66,6 @@ public class FxTipoDocumentoController implements Initializable {
         task.setOnSucceeded((WorkerStateEvent e) -> {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
-            stateRequest = true;
             if (stateUpdate) {
                 List<TipoDocumentoTB> list = TipoDocumentoADO.GetDocumentoCombBox();
                 for (int i = 0; i < list.size(); i++) {
@@ -81,18 +74,16 @@ public class FxTipoDocumentoController implements Initializable {
                         break;
                     }
                 }
-                stateUpdate=false;
+                stateUpdate = false;
             }
 
         });
         task.setOnFailed((WorkerStateEvent event) -> {
             lblLoad.setVisible(false);
-            stateRequest = false;
         });
 
         task.setOnScheduled((WorkerStateEvent event) -> {
             lblLoad.setVisible(true);
-            stateRequest = false;
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -118,7 +109,9 @@ public class FxTipoDocumentoController implements Initializable {
 
     @FXML
     private void onKeyPressedEdit(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
 
+        }
     }
 
     @FXML

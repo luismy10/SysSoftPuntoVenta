@@ -125,6 +125,19 @@ public class FxConfiguracionController implements Initializable {
         content.getChildren().add(node);
         controller.fillTabletTax();
     }
+    
+    private void openWindowTickets() throws IOException {
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_TICKET));
+        ScrollPane node = fXMLPrincipal.load();
+        FxTicketController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        content.getChildren().add(node);
+    }
 
     @FXML
     private void onKeyPressedTablasBasicas(KeyEvent event) throws IOException {
@@ -210,10 +223,24 @@ public class FxConfiguracionController implements Initializable {
     private void onActionTax(ActionEvent event) throws IOException {
         openWindowTex();
     }
+    
+     @FXML
+    private void onKeyPressedTickets(KeyEvent event) throws IOException {
+        if(event.getCode() == KeyCode.ENTER){
+            openWindowTickets();
+        }
+    }
+
+    @FXML
+    private void onActionTickets(ActionEvent event) throws IOException {
+        openWindowTickets();
+    }
 
     public void setContent(AnchorPane windowinit, AnchorPane content) {
         this.windowinit = windowinit;
         this.content = content;
     }
+
+   
 
 }
