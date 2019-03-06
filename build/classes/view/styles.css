@@ -205,7 +205,7 @@
 }
 
 .scroll-pane> .viewport{
-    -fx-background-color:  #999999;
+    -fx-background-color:  white;
 }
 
 /*******************************************************************************
