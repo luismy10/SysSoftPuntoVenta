@@ -12,7 +12,7 @@ import javafx.scene.control.TableView;
 
 public class CompraADO {
 
-    public static String CrudCompra(CompraTB compraTB, TableView<ArticuloTB> tableView, ObservableList<LoteTB> loteTBs) {
+    public static String CrudCompra(CompraTB compraTB, TableView<ArticuloTB> tableView, ObservableList<LoteTB> loteTBs, PagoProveedoresTB pagoProveedoresTB) {
 
         CallableStatement codigo_compra = null;
         PreparedStatement compra = null;
@@ -20,6 +20,8 @@ public class CompraADO {
         PreparedStatement articulo_update = null;
 //        PreparedStatement preparedHistorialArticulo = null;
         PreparedStatement lote_compra = null;
+
+        PreparedStatement pago_Proveedores = null;
 
         try {
             DBUtil.dbConnect();
@@ -38,6 +40,9 @@ public class CompraADO {
 
             articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad + ?, PrecioCompra = ?, PrecioVentaNombre1 = ?, PrecioVenta1 = ?, Margen1 = ?, Utilidad1 = ?, PrecioVentaNombre2 = ?, PrecioVenta2 = ?, Margen2 = ?, Utilidad2 = ?, PrecioVentaNombre3 = ?, PrecioVenta3 = ?, Margen3 = ?, Utilidad3 = ?, Impuesto = ? WHERE IdArticulo = ?");
 
+            pago_Proveedores = DBUtil.getConnection().prepareStatement("insert into PagoProveedoresTB(MontoTotal,MontoActual,CuotaTotal,CuotaActual,Plazos,FechaInicial,FechaActual,FechaFinal,Observacion,Estado,IdProveedor,IdCompra) "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?)");
+
 //           preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("INSERT INTO HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
 //                    + "VALUES(?,GETDATE(),?,?,?,?,?)");
 //
@@ -45,7 +50,7 @@ public class CompraADO {
                     + "VALUES(?,?,?,?,?,?)");
 
             compra.setString(1, id_compra);
-            compra.setString(2, compraTB.getProveedor());            
+            compra.setString(2, compraTB.getProveedor());
             compra.setInt(3, compraTB.getComprobante());
             compra.setString(4, compraTB.getNumeracion().toUpperCase());
             compra.setInt(5, compraTB.getTipoMoneda());
@@ -65,7 +70,7 @@ public class CompraADO {
                 detalle_compra.setDouble(3, tableView.getItems().get(i).getCantidad());
                 detalle_compra.setDouble(4, tableView.getItems().get(i).getPrecioCompraReal());
                 detalle_compra.setDouble(5, tableView.getItems().get(i).getDescuento());
-                
+
                 detalle_compra.setDouble(6, tableView.getItems().get(i).getPrecioVenta());
                 detalle_compra.setShort(7, tableView.getItems().get(i).getMargen());
                 detalle_compra.setDouble(8, tableView.getItems().get(i).getUtilidad());
@@ -75,7 +80,7 @@ public class CompraADO {
                 detalle_compra.setDouble(12, tableView.getItems().get(i).getPrecioVenta3());
                 detalle_compra.setShort(13, tableView.getItems().get(i).getMargen3());
                 detalle_compra.setDouble(14, tableView.getItems().get(i).getUtilidad3());
-                
+
                 detalle_compra.setInt(15, tableView.getItems().get(i).getImpuestoArticulo());
                 detalle_compra.setString(16, tableView.getItems().get(i).getImpuestoArticuloName());
                 detalle_compra.setDouble(17, tableView.getItems().get(i).getImpuestoValor());
@@ -85,22 +90,22 @@ public class CompraADO {
 
                 articulo_update.setDouble(1, tableView.getItems().get(i).getCantidad());
                 articulo_update.setDouble(2, tableView.getItems().get(i).getPrecioCompraReal());
-                
+
                 articulo_update.setInt(3, tableView.getItems().get(i).getPrecioVentaId());
                 articulo_update.setDouble(4, tableView.getItems().get(i).getPrecioVenta());
                 articulo_update.setInt(5, tableView.getItems().get(i).getMargen());
                 articulo_update.setDouble(6, tableView.getItems().get(i).getUtilidad());
-                
+
                 articulo_update.setInt(7, tableView.getItems().get(i).getPrecioVentaId2());
                 articulo_update.setDouble(8, tableView.getItems().get(i).getPrecioVenta2());
                 articulo_update.setInt(9, tableView.getItems().get(i).getMargen2());
                 articulo_update.setDouble(10, tableView.getItems().get(i).getUtilidad2());
-                
+
                 articulo_update.setInt(11, tableView.getItems().get(i).getPrecioVentaId3());
                 articulo_update.setDouble(12, tableView.getItems().get(i).getPrecioVenta3());
                 articulo_update.setInt(13, tableView.getItems().get(i).getMargen3());
                 articulo_update.setDouble(14, tableView.getItems().get(i).getUtilidad3());
-                
+
                 articulo_update.setInt(15, tableView.getItems().get(i).getImpuestoArticulo());
                 articulo_update.setString(16, tableView.getItems().get(i).getIdArticulo());
                 articulo_update.addBatch();
@@ -117,7 +122,23 @@ public class CompraADO {
 //
 //                preparedHistorialArticulo.addBatch();
             }
-//
+
+            if (compraTB.getTipoCompra().equals("credito")) {
+                pago_Proveedores.setDouble(1, pagoProveedoresTB.getMontoTotal());
+                pago_Proveedores.setDouble(2, pagoProveedoresTB.getMontoActual());
+                pago_Proveedores.setInt(3, pagoProveedoresTB.getCuotaTotal());
+                pago_Proveedores.setInt(4, pagoProveedoresTB.getCuotaActual());
+                pago_Proveedores.setString(5, pagoProveedoresTB.getPlazos());
+                pago_Proveedores.setTimestamp(6, pagoProveedoresTB.getFechaInicial());
+                pago_Proveedores.setTimestamp(7, pagoProveedoresTB.getFechaActual());
+                pago_Proveedores.setTimestamp(8, pagoProveedoresTB.getFechaFinal());
+                pago_Proveedores.setString(9, pagoProveedoresTB.getObservacion());
+                pago_Proveedores.setString(10, pagoProveedoresTB.getEstado());
+                pago_Proveedores.setString(11, pagoProveedoresTB.getIdProveedor());
+                pago_Proveedores.setString(12, id_compra);
+                pago_Proveedores.addBatch();
+            }
+
             for (int i = 0; i < loteTBs.size(); i++) {
                 lote_compra.setString(1, loteTBs.get(i).getNumeroLote().equalsIgnoreCase("") ? id_compra + loteTBs.get(i).getIdArticulo() : loteTBs.get(i).getNumeroLote());
                 lote_compra.setDate(2, Date.valueOf(loteTBs.get(i).getFechaCaducidad()));
@@ -133,6 +154,7 @@ public class CompraADO {
             articulo_update.executeBatch();
 //            preparedHistorialArticulo.executeBatch();
             lote_compra.executeBatch();
+            pago_Proveedores.executeBatch();
             DBUtil.getConnection().commit();
             return "register";
         } catch (SQLException ex) {
@@ -163,14 +185,17 @@ public class CompraADO {
                 if (lote_compra != null) {
                     lote_compra.close();
                 }
+                if (pago_Proveedores != null) {
+                    pago_Proveedores.close();
+                }
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {
             }
         }
     }
 
-    public static ObservableList<CompraTB> ListComprasRealizadas(short opcion, String value, String fechaInicial, String fechaFinal) {
-        String selectStmt = "{call Sp_Listar_Compras(?,?,?,?)}";
+    public static ObservableList<CompraTB> ListComprasRealizadas(short opcion, String value, String fechaInicial, String fechaFinal, String estadoCompra) {
+        String selectStmt = "{call Sp_Listar_Compras(?,?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<CompraTB> empList = FXCollections.observableArrayList();
@@ -181,6 +206,7 @@ public class CompraADO {
             preparedStatement.setString(2, value);
             preparedStatement.setString(3, fechaInicial);
             preparedStatement.setString(4, fechaFinal);
+            preparedStatement.setString(5, estadoCompra);
             rsEmps = preparedStatement.executeQuery();
 
             while (rsEmps.next()) {
@@ -190,6 +216,7 @@ public class CompraADO {
                 compraTB.setFechaCompra(rsEmps.getDate("Fecha").toLocalDate());
                 compraTB.setNumeracion(rsEmps.getString("Numeracion"));
                 compraTB.setProveedorTB(new ProveedorTB(rsEmps.getString("NumeroDocumento"), rsEmps.getString("RazonSocial")));
+                compraTB.setEstadoCompra(rsEmps.getString("EstadoCompra"));
                 compraTB.setTipoMonedaName(rsEmps.getString("Simbolo"));
                 compraTB.setTotal(rsEmps.getDouble("Total"));
                 empList.add(compraTB);
@@ -308,7 +335,7 @@ public class CompraADO {
 
     public static ArrayList<Object> ListCompletaDetalleCompra(String value) {
         PreparedStatement statementCompra = null;
-        PreparedStatement statementProveedor = null;       
+        PreparedStatement statementProveedor = null;
         ArrayList<Object> objects = new ArrayList<>();
 
         try {
@@ -360,7 +387,7 @@ public class CompraADO {
                 if (statementProveedor != null) {
                     statementProveedor.close();
                 }
-                
+
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
 

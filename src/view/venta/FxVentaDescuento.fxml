@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="controller.FxVentaDescuentoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentaDescuentoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -62,30 +61,12 @@
                               </ImageView>
                            </graphic>
                         </Label>
-                        <TextField fx:id="txtPorcentajeDescuento" onKeyReleased="#onKeyReleasedPorcentajeDescuento" onKeyTyped="#onKeyTypedPorcentajeDescuento" prefHeight="30.0" />
+                        <TextField fx:id="txtPorcentajeDescuento" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedPorcentajeDescuento" prefHeight="30.0" />
                      </children>
                   </VBox>
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <HBox>
-               <children>
-                  <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="labelRoboto14" text="Precio con Descuento">
-                           <graphic>
-                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../billetes.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Label>
-                        <TextField fx:id="txtPrecioDescuento" onKeyReleased="#onKeyReleasedPrecioDescuento" onKeyTyped="#onKeyTypedPrecioDescuento" prefHeight="30.0" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Aceptar">

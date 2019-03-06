@@ -107,7 +107,7 @@ public class FxCompraController implements Initializable {
 
     private double totalImporte;
 
-    private ArrayList<ImpuestoTB> arrayArticulos;
+    private ArrayList<ImpuestoTB> arrayArticulosImpuesto;
 
     private ObservableList<LoteTB> loteTBs;
 
@@ -120,9 +120,9 @@ public class FxCompraController implements Initializable {
         loteTBs = FXCollections.observableArrayList();
         Tools.actualDate(Tools.getDate(), tpFechaCompra);
 
-        arrayArticulos = new ArrayList<>();
+        arrayArticulosImpuesto = new ArrayList<>();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
         });
 
         cbComprobante.getItems().clear();
@@ -462,15 +462,15 @@ public class FxCompraController implements Initializable {
         hbAgregarImpuesto.getChildren().clear();
         boolean addElement = false;
         double sumaElement = 0;
-        for (int k = 0; k < arrayArticulos.size(); k++) {
+        for (int k = 0; k < arrayArticulosImpuesto.size(); k++) {
             for (int i = 0; i < tvList.getItems().size(); i++) {
-                if (arrayArticulos.get(k).getIdImpuesto() == tvList.getItems().get(i).getImpuestoArticulo()) {
+                if (arrayArticulosImpuesto.get(k).getIdImpuesto() == tvList.getItems().get(i).getImpuestoArticulo()) {
                     addElement = true;
                     sumaElement += tvList.getItems().get(i).getImpuestoSumado();
                 }
             }
             if (addElement) {
-                addElementImpuesto(arrayArticulos.get(k).getIdImpuesto() + "", arrayArticulos.get(k).getNombre(), monedaSimbolo, Tools.roundingValue(sumaElement, 2));
+                addElementImpuesto(arrayArticulosImpuesto.get(k).getIdImpuesto() + "", arrayArticulosImpuesto.get(k).getNombre(), monedaSimbolo, Tools.roundingValue(sumaElement, 2));
                 addElement = false;
                 sumaElement = 0;
             }

@@ -18,7 +18,7 @@
 
 <ScrollPane fx:id="window" fitToWidth="true" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxCompraDetalleController">
    <content>
-      <VBox>
+      <VBox style="-fx-background-color: white;">
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;" styleClass="paddinContainer">
                <children>

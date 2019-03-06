@@ -1,10 +1,8 @@
 package controller;
 
 import br.com.adilson.util.PrinterMatrix;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -27,15 +25,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javax.print.Doc;
-import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintException;
 import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import javax.print.SimpleDoc;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
 import model.DBUtil;
 import model.DetalleVentaTB;
 import model.EmpleadoTB;
@@ -92,7 +82,7 @@ public class FxVentaDetalleController implements Initializable {
         tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getArticuloTB().getNombreMarca()));
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
         tcMedida.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getArticuloTB().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel"));
-        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioUnitario(), 2)));
+        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVenta(), 2)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getDescuento(), 2)));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getImporte(), 2)));
     }

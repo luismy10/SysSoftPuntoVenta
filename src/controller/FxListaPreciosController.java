@@ -1,7 +1,6 @@
 package controller;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -75,6 +74,10 @@ public class FxListaPreciosController implements Initializable {
                 arrayList.add(a1);
             }
             tvList.setItems(arrayList);
+            if(!tvList.getItems().isEmpty()){
+                tvList.requestFocus();
+                tvList.getSelectionModel().select(0);
+            }
         }
 
         lblNombreArticulo.setText(articuloTB.getNombreMarca());

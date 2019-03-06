@@ -9,6 +9,7 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,6 +23,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
@@ -51,6 +53,7 @@ public class FxTipoDocumentoController implements Initializable {
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
         stateRequest = false;
         stateUpdate = false;
+
     }
 
     public void fillTabletTipoDocumento() {

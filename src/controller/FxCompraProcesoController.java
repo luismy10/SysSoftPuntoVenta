@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
@@ -110,25 +111,33 @@ public class FxCompraProcesoController implements Initializable {
 
     private void executeCrud(String estadoCompra, String tipoCompra) {
         
+        double deuda_pendiente = 0;
+        double valor_cuota = 0;
+        
         PagoProveedoresTB pagoProveedoresTB = new PagoProveedoresTB();
         
-        pagoProveedoresTB.setMontoTotal(Double.parseDouble(lblTotal.getText()));
+        pagoProveedoresTB.setMontoTotal(compraTB.getTotal().get());
         pagoProveedoresTB.setMontoActual(Double.parseDouble(txtMonto.getText()));
         pagoProveedoresTB.setCuotaTotal(Integer.parseInt(txtCuotas.getText()));
-        pagoProveedoresTB.setCuotaActual(0);
+        pagoProveedoresTB.setCuotaActual(1);
+        
+        deuda_pendiente = compraTB.getTotal().get() - Double.parseDouble(txtMonto.getText());
+        valor_cuota = deuda_pendiente / Integer.parseInt(txtCuotas.getText());
+        
+        pagoProveedoresTB.setPlazos(cbPlazos.getSelectionModel().getSelectedItem().getNombre());
         
         
-        pagoProveedoresTB.setFechaInicial(Timestamp.valueOf(Tools.getDatePicker(dpFecha)));
-        pagoProveedoresTB.setFechaActual(Timestamp.valueOf(Tools.getDatePicker(dpFecha)));
-        pagoProveedoresTB.setFechaFinal(Timestamp.valueOf(Tools.getDatePicker(dpFecha)));
-        pagoProveedoresTB.setObservacion("");
-        pagoProveedoresTB.setEstado("");
-        pagoProveedoresTB.setIdproveedor(compraTB.getProveedor());
+        pagoProveedoresTB.setFechaInicial(Timestamp.valueOf(Tools.getDatePicker(dpFecha) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
+        pagoProveedoresTB.setFechaActual(Timestamp.valueOf(Tools.getDatePicker(dpFecha) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
+        pagoProveedoresTB.setFechaFinal(Timestamp.valueOf(Tools.getDatePicker(dpFecha) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
+        pagoProveedoresTB.setObservacion("ninguno".toUpperCase());
+        pagoProveedoresTB.setEstado("activo".toUpperCase());
+        pagoProveedoresTB.setIdProveedor(compraTB.getProveedor());
         
         compraTB.setEstadoCompra(estadoCompra);
         compraTB.setTipoCompra(tipoCompra);
         
-        String result = CompraADO.CrudCompra(compraTB, tvList, loteTBs);
+        String result = CompraADO.CrudCompra(compraTB, tvList, loteTBs, pagoProveedoresTB);
         if (result.equalsIgnoreCase("register")) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Compra", "Se registró correctamente la compra.", false);
             Tools.Dispose(window);
@@ -140,16 +149,12 @@ public class FxCompraProcesoController implements Initializable {
 
     private void onEventProcess() {
         
-        String estadoCompra,  tipoCompra;
-        
         if (rbContado.isSelected()) {
             if (!Tools.isNumeric(txtEfectivo.getText())) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo efectivo.", false);
                 txtEfectivo.requestFocus();
             } else {
-                estadoCompra = "pagado";
-                tipoCompra = "contado";
-                executeCrud(estadoCompra, tipoCompra);
+                executeCrud("PAGADO", "CONTADO");
             }
         } else if (rbCredito.isSelected()) {
             if (!Tools.isNumeric(txtMonto.getText())) {
@@ -162,18 +167,14 @@ public class FxCompraProcesoController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo fecha de vencimiento.", false);
                 dpFecha.requestFocus();
             } else {
-                estadoCompra = "pendiente";
-                tipoCompra = "credito";
-                executeCrud(estadoCompra, tipoCompra);
+                executeCrud("PENDIENTE", "CREDITO");
             }
         } else if (rbOtroPago.isSelected()) {
             if (txtDescripcion.getText().isEmpty()) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo descripción.", false);
                 txtDescripcion.requestFocus();
             } else {
-                estadoCompra = "otro";
-                tipoCompra = "otro";
-                executeCrud(estadoCompra, tipoCompra);
+                executeCrud("PENDIENTE", "PENDIENTE");
             }
         }
 

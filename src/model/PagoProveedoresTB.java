@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  */
 public class PagoProveedoresTB {
 
-    private int idagoProveedores;
+    private int idPagoProveedores;
     private double montoTotal;
     private double montoActual;
     private int cuotaTotal;
@@ -24,13 +24,13 @@ public class PagoProveedoresTB {
     private Timestamp fechaFinal;
     private String observacion;
     private String estado;
-    private String idproveedor;
-    private String idcompra;
+    private String idProveedor;
+    private String idCompra;
 
     public PagoProveedoresTB(){}
 
-    public PagoProveedoresTB(int idagoProveedores, double montoTotal, double montoActual, int cuotaTotal, int cuotaActual, String plazos, Timestamp fechaInicial, Timestamp fechaActual, Timestamp fechaFinal, String observacion, String estado, String idproveedor, String idcompra) {
-        this.idagoProveedores = idagoProveedores;
+    public PagoProveedoresTB(int idPagoProveedores, double montoTotal, double montoActual, int cuotaTotal, int cuotaActual, String plazos, Timestamp fechaInicial, Timestamp fechaActual, Timestamp fechaFinal, String observacion, String estado, String idProveedor, String idCompra) {
+        this.idPagoProveedores = idPagoProveedores;
         this.montoTotal = montoTotal;
         this.montoActual = montoActual;
         this.cuotaTotal = cuotaTotal;
@@ -41,16 +41,16 @@ public class PagoProveedoresTB {
         this.fechaFinal = fechaFinal;
         this.observacion = observacion;
         this.estado = estado;
-        this.idproveedor = idproveedor;
-        this.idcompra = idcompra;
+        this.idProveedor = idProveedor;
+        this.idCompra = idCompra;
     }
 
-    public int getIdagoProveedores() {
-        return idagoProveedores;
+    public int getIdPagoProveedores() {
+        return idPagoProveedores;
     }
 
-    public void setIdagoProveedores(int idagoProveedores) {
-        this.idagoProveedores = idagoProveedores;
+    public void setIdPagoProveedores(int idPagoProveedores) {
+        this.idPagoProveedores = idPagoProveedores;
     }
 
     public double getMontoTotal() {
@@ -133,22 +133,23 @@ public class PagoProveedoresTB {
         this.estado = estado;
     }
 
-    public String getIdproveedor() {
-        return idproveedor;
+    public String getIdProveedor() {
+        return idProveedor;
     }
 
-    public void setIdproveedor(String idproveedor) {
-        this.idproveedor = idproveedor;
+    public void setIdProveedor(String idProveedor) {
+        this.idProveedor = idProveedor;
     }
 
-    public String getIdcompra() {
-        return idcompra;
+    public String getIdCompra() {
+        return idCompra;
     }
 
-    public void setIdcompra(String idcompra) {
-        this.idcompra = idcompra;
+    public void setIdCompra(String idCompra) {
+        this.idCompra = idCompra;
     }
     
-
+    
+    
 }
 

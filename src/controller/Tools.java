@@ -87,8 +87,8 @@ public class Tools {
     static final String FX_FILE_MONEDA = "/view/moneda/FxMoneda.fxml";
     static final String FX_FILE_MONEDAPROCESO = "/view/moneda/FxMonedaProceso.fxml";
     static final String FX_FILE_IMPRESORATICKET = "/view/venta/FxImpresoraTicket.fxml";
-    static final String FX_FILE_TIPODOCUMENTO = "/view/mantenimiento/FxTipoDocumento.fxml";
-    static final String FX_FILE_IMPUESTO = "/view/impuesto/tipodocumento.fxml";
+    static final String FX_FILE_TIPODOCUMENTO = "/view/tipodocumento/FxTipoDocumento.fxml";
+    static final String FX_FILE_IMPUESTO = "/view/impuesto/FxImpuesto.fxml";
     static final String FX_FILE_IMPUESTOPROCESO = "/view/impuesto/FxImpuestoProceso.fxml";
     static final String FX_FILE_VENTAREPORTE = "/view/venta/FxVentaReporte.fxml";
     static final String FX_FILE_LISTAPRECIOS = "/view/venta/FxListaPrecios.fxml";

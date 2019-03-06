@@ -582,12 +582,12 @@ public class ArticuloADO {
                 articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 articuloTB.setMarcaName(rsEmps.getString("Marca"));
                 articuloTB.setPresentacionName(rsEmps.getString("Presentacion"));
-                articuloTB.setEstadoName(rsEmps.getString("Estado"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta1"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 articuloTB.setLote(rsEmps.getBoolean("Lote"));
                 articuloTB.setInventario(rsEmps.getBoolean("Inventario"));
+                articuloTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));                
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);

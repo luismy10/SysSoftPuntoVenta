@@ -21,9 +21,7 @@ public class VentaTB {
     private Timestamp fechaVenta;
     private LocalDateTime fechaRegistro;
     private double subTotal;
-    private double gravada;
     private double descuento;
-    private double igv;
     private double total;
     private int estado;
     private String estadoName;
@@ -148,28 +146,12 @@ public class VentaTB {
         this.subTotal = subTotal;
     }
 
-    public double getGravada() {
-        return gravada;
-    }
-
-    public void setGravada(double gravada) {
-        this.gravada = gravada;
-    }
-
     public double getDescuento() {
         return descuento;
     }
 
     public void setDescuento(double descuento) {
         this.descuento = descuento;
-    }
-
-    public double getIgv() {
-        return igv;
-    }
-
-    public void setIgv(double igv) {
-        this.igv = igv;
     }
 
     public double getTotal() {

@@ -32,7 +32,7 @@
                                     <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
                                        <children>
                                           <Label styleClass="labelOpenSansRegular18" text="Total a Pagar" />
-                                          <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold30" text="S/ 100.00" textFill="#1a2226">
+                                          <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold30" text="M. 00.00" textFill="#1a2226">
                                              <graphic>
                                                 <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -115,8 +115,7 @@
                                                       </Label>
                                                       <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                                                          <children>
-                                                            <Label fx:id="lblVueltoMoneda" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold26" text=" S/." textFill="#0754b9" />
-                                                            <Label fx:id="lblVuelto" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold28" text="00.00" textFill="#0754b9" />
+                                                            <Label fx:id="lblVuelto" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold28" text="M. 00.00" textFill="#0754b9" />
                                                          </children>
                                                       </HBox>
                                                    </children>

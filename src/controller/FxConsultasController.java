@@ -38,7 +38,8 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         vbContent.getChildren().add(node);
-        controller.fillPurchasesTable((short)0,"",Tools.getDate(),Tools.getDate());
+        
+        controller.fillPurchasesTable((short)1,"",Tools.getDate(),Tools.getDate(),"");
     }
 
     private void openWindowDirectory() throws IOException {

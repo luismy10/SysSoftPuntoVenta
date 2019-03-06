@@ -37,6 +37,7 @@ public class ArticuloTB {
     private int precioVentaId;
     private String precioVentaNombre;
     private double precioVenta;
+    private double precioVentaReal;
     private short margen;
     private double utilidad;
 
@@ -284,6 +285,14 @@ public class ArticuloTB {
 
     public void setPrecioVenta(double precioVenta) {
         this.precioVenta = precioVenta;
+    }
+
+    public double getPrecioVentaReal() {
+        return precioVentaReal;
+    }
+
+    public void setPrecioVentaReal(double precioVentaReal) {
+        this.precioVentaReal = precioVentaReal;
     }
 
     public short getMargen() {
