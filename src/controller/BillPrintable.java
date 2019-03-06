@@ -175,24 +175,24 @@ public class BillPrintable implements Printable {
         Date date = new Date();
         SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss aa");
-
+        int column = 30;
         try {
             PrinterMatrix p = new PrinterMatrix();
-            p.setOutSize(rows, 40);
+            p.setOutSize(rows, column);
             for (int i = 0; i < object.size(); i++) {
                 if (null != object.get(i).getAlignment()) {
                     switch (object.get(i).getAlignment()) {
                         case CENTER_LEFT:
-                            p.printTextWrap((i + 1), 0, 0, 40, object.get(i).getText());
+                            p.printTextWrap((i + 1), 0, 0, column, object.get(i).getText());
                             break;
                         case CENTER:
-                            p.printTextWrap((i + 1), 0, (40 - object.get(i).getText().length()) / 2, 40, object.get(i).getText());
+                            p.printTextWrap((i + 1), 0, (column - object.get(i).getText().length()) / 2, column, object.get(i).getText());
                             break;
                         case CENTER_RIGHT:
-                            p.printTextWrap((i + 1), 0, 40-object.get(i).getText().length(), 40, object.get(i).getText());
+                            p.printTextWrap((i + 1), 0, column - object.get(i).getText().length(), column, object.get(i).getText());
                             break;
                         default:
-                            p.printTextWrap((i + 1), 0, 0, 40, object.get(i).getText());
+                            p.printTextWrap((i + 1), 0, 0, column, object.get(i).getText());
                             break;
                     }
                 }

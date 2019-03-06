@@ -128,7 +128,7 @@ public class FxConfiguracionController implements Initializable {
     
     private void openWindowTickets() throws IOException {
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_TICKET));
-        ScrollPane node = fXMLPrincipal.load();
+        VBox node = fXMLPrincipal.load();
         FxTicketController controller = fXMLPrincipal.getController();
         controller.setContent(windowinit);
         content.getChildren().clear();

@@ -14,7 +14,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -31,7 +30,7 @@ import org.json.simple.parser.ParseException;
 public class FxTicketController implements Initializable {
 
     @FXML
-    private ScrollPane window;
+    private VBox window;
     @FXML
     private VBox hbEncabezado;
 
@@ -90,14 +89,14 @@ public class FxTicketController implements Initializable {
         field.setId(id);
         field.setEditable(editable);
         field.setPrefHeight(30);
-        field.setStyle("-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;" + (editable ? "-fx-text-fill: #009900;" : "-fx-text-fill: black;"));
-        field.getStyleClass().add("labelMonospaced12");
+        field.setStyle("-fx-padding:0.333333em;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;" + (editable ? "-fx-text-fill: #009900;" : "-fx-text-fill: black;"));
+        field.getStyleClass().add("labelMonospaced13");
         field.setAlignment(align);
         field.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) -> {
             if (newPropertyValue) {
-                field.setStyle("-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-text-fill: black;-fx-background-color: rgb(250, 198, 203);");
+                field.setStyle("-fx-padding:0.333333em;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-text-fill: black;-fx-background-color: rgb(250, 198, 203);");
             } else {
-                field.setStyle("-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;" + (editable ? "-fx-text-fill: #009900;" : "-fx-text-fill:black;") + "-fx-background-color: white;");
+                field.setStyle("-fx-padding:0.333333em;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;" + (editable ? "-fx-text-fill: #009900;" : "-fx-text-fill:black;") + "-fx-background-color: white;");
             }
         });
         ContextMenu contextMenu = new ContextMenu();
@@ -152,19 +151,6 @@ public class FxTicketController implements Initializable {
         contextMenu.getItems().addAll(text, textUnaLinea, textDosLineas, remove, separatorMenuItem, textLeft, textCenter, textRight);
         field.setContextMenu(contextMenu);
         hbEncabezado.getChildren().add(field);
-    }
-
-    private void addElementoWithId(String idText, String value, Pos align, boolean editable) {
-        if (hbEncabezado.getChildren().isEmpty()) {
-            addElement(idText + "1", value, align, editable);
-        } else {
-            TextField field = (TextField) hbEncabezado.getChildren().get(hbEncabezado.getChildren().size() - 1);
-            String idGenerate = field.getId();
-            String codigo = idGenerate.substring(2);
-            int valor = Integer.parseInt(codigo) + 1;
-            String newCodigo = idText + valor;
-            addElement(newCodigo, value, align, editable);
-        }
     }
 
     private String leerArchivoTexto(String ruta) {
@@ -222,12 +208,13 @@ public class FxTicketController implements Initializable {
     @FXML
     private void onKeyPressedPrint(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            printTicket();
         }
     }
 
     @FXML
     private void onActionPrint(ActionEvent event) {
+        printTicket();
     }
 
     @FXML
