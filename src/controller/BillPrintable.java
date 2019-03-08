@@ -23,6 +23,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.stage.Window;
 import javax.print.Doc;
 import javax.print.DocFlavor;
@@ -170,35 +171,76 @@ public class BillPrintable implements Printable {
         return Tools.roundingValue(value, 2);
     }
 
-    public void modelTicket(Window window, int rows, ArrayList<TextField> object, String messageClassTitle, String messageClassContent) {
-
+    public void modelTicket(Window window,int sheetWidth,int rows, ArrayList<HBox> object, String messageClassTitle, String messageClassContent) {
         Date date = new Date();
         SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss aa");
-        int column = 30;
+        int column = sheetWidth;
         try {
             PrinterMatrix p = new PrinterMatrix();
             p.setOutSize(rows, column);
             for (int i = 0; i < object.size(); i++) {
-                if (null != object.get(i).getAlignment()) {
-                    switch (object.get(i).getAlignment()) {
-                        case CENTER_LEFT:
-                            p.printTextWrap((i + 1), 0, 0, column, object.get(i).getText());
-                            break;
-                        case CENTER:
-                            p.printTextWrap((i + 1), 0, (column - object.get(i).getText().length()) / 2, column, object.get(i).getText());
-                            break;
-                        case CENTER_RIGHT:
-                            p.printTextWrap((i + 1), 0, column - object.get(i).getText().length(), column, object.get(i).getText());
-                            break;
-                        default:
-                            p.printTextWrap((i + 1), 0, 0, column, object.get(i).getText());
-                            break;
+                HBox hBox = object.get(i);
+                if (hBox.getChildren().size() > 1) {
+                    int columnI = 0;
+                    int columnF = 0;
+                    int columnA = 0;
+                    for (int v = 0; v < hBox.getChildren().size(); v++) {
+                        TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
+                        columnI = columnA;
+                        columnF = columnI + field.getColumnWidth();
+                        columnA = columnF;
+                        if (null != field.getAlignment()) {
+                            switch (field.getAlignment()) {
+                                case CENTER_LEFT:
+                                    p.printTextWrap((i + 1), 0, columnI, columnF, field.getText());
+                                    break;
+                                case CENTER:
+                                    p.printTextWrap((i + 1), 0, ((columnI + columnF) - field.getText().length()) / 2, columnF, field.getText());
+                                    break;
+                                case CENTER_RIGHT:
+                                    p.printTextWrap((i + 1), 0, columnF - field.getText().length(), columnF, field.getText());
+                                    break;
+                                default:
+                                    p.printTextWrap((i + 1), 0, columnI, columnF, field.getText());
+                                    break;
+                            }
+                        }
+
+                    }
+                } else {
+                    TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
+                    if (null != field.getAlignment()) {
+                        switch (field.getAlignment()) {
+                            case CENTER_LEFT:
+                                p.printTextWrap((i + 1), 0, 0, column, field.getText());
+                                break;
+                            case CENTER:
+                                p.printTextWrap((i + 1), 0, (column - field.getText().length()) / 2, column, field.getText());
+                                break;
+                            case CENTER_RIGHT:
+                                p.printTextWrap((i + 1), 0, column - field.getText().length(), column, field.getText());
+                                break;
+                            default:
+                                p.printTextWrap((i + 1), 0, 0, column, field.getText());
+                                break;
+                        }
                     }
                 }
-
             }
+            int salida = object.size();
+            salida++;
+            p.printTextWrap(salida, 0, 0, column, "\n");
+            salida++;
+            p.printTextWrap(salida, 0, 0, column, "\n");
+            salida++;
+            p.printTextWrap(salida, 0, 0, column, "\n");
+            salida++;
+            p.printTextWrap(salida, 0, 0, column, "\n");
+            salida++;
+            p.printTextWrap(salida, 0, 0, column, "\n");
             p.toFile("c:\\temp\\impresion.txt");
+            printDoc("c:\\temp\\impresion.txt");
         } catch (Exception e) {
             Tools.AlertMessage(window, Alert.AlertType.ERROR, messageClassTitle, messageClassContent, false);
         }

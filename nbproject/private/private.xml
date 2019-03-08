@@ -12,10 +12,9 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/TickesLista.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaController.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxArticuloListaController.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaProcesoController.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxTicketController.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaDetalleController.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/BillPrintable.java</file>
         </group>
     </open-files>
 </project-private>

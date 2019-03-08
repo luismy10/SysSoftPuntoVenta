@@ -51,7 +51,7 @@
     -fx-background-color: #999999, #cccccc, #cccccc;
     -fx-background-insets: 3, 4, 5;
     -fx-background-radius: 3, 2, 1;
-     
+
 }
 .scroll-bar:horizontal .thumb:hover,
 .scroll-bar:vertical .thumb:hover {
@@ -254,7 +254,7 @@
  ******************************************************************************/
 
 .labelMonospaced13{
-    -fx-font-size:1.0833333333333333em; /*13px*/
+    -fx-font-size:13px; /*13px*/
     -fx-font-family:"Monospaced"; 
     -fx-font-smoothing-type: lcd;
 }
@@ -690,3 +690,96 @@
 .buttonLightDefault:default:pressed {
     -fx-background-color: derive(ACCENT_COLOR, -40%);
 }
+
+/*******************************************************************************
+ *                                                                             *
+ * Text Field (and Password Field)                                             *
+ *                                                                             *
+ ******************************************************************************/
+
+.text-field {
+    ACCENT_COLOR: #2796c4;
+    BORDER: #999999;
+    BORDER_HOVER: #666666;
+
+    BACKGROUND: white;
+    BACKGROUND_FOCUSED: #00aff0;
+    BACKGROUND_HOVER: white;
+
+    TEXT_COLOR: #111;
+    PROMPT_TEXT: #666666;
+
+    HIGHLIGHT: ACCENT_COLOR;
+    HIGHLIGHT_TEXT: white;
+
+    GRAPHIC: #747474;
+}
+
+.text-field-contenido{
+    -fx-background-radius: 0, 0;
+
+    -fx-background-color: BORDER, BACKGROUND;
+    -fx-border-width:1;
+    -fx-border-color: #999999;
+
+    -fx-font-size:1.1666666666666667em; 
+    -fx-font-family:"Roboto"; 
+}
+
+.text-field-contenido:hover{
+    -fx-background-color: BORDER_HOVER, BACKGROUND_HOVER;
+    -fx-border-color: #7a7a7a;
+}
+
+.text-field-contenido:focused{
+    -fx-border-width:1;
+    -fx-border-color: #00aff0;
+}
+
+.text-field-contenido > .right-button{
+    -fx-cursor: default;
+
+    -fx-background-insets: -0.1666665em -0.45em -0.1666665em -0.45em; /* 4 7 4 7 -> this values are subtracted by 2px in em because of the border of the textfield */
+    -fx-background-color: BACKGROUND_FOCUSED;  /* We must give it a color so that it reacts to the mouse */
+}
+
+.text-field-contenido > .right-button > .right-button-graphic {
+
+    -fx-padding: 0.416667em;
+    -fx-background-color: GRAPHIC;
+}
+
+.text-field-contenido > .right-button:hover > .right-button-graphic {
+    -fx-background-color: ACCENT_COLOR;
+}
+
+.text-field-contenido:disabled
+{
+    -fx-opacity: 1;
+    -fx-background-color: #d9d9d9, #eaeaea;
+    -fx-text-fill: #adadad;
+}
+
+
+.text-field-ticket{
+    -fx-background-radius: 0, 0;
+
+    -fx-background-color: transparent, white;
+    -fx-border-width:0 1px 0 0;
+    -fx-border-color: #999999;
+    -fx-padding:0.16666666666666666em 0 0.16666666666666666em 0;
+
+    -fx-font-size:13px; 
+    -fx-font-family:"Monospaced"; 
+}
+.text-field-ticket:hover{
+    -fx-background-color: transparent, white;
+    -fx-border-width:0 1px 0 0;
+    -fx-border-color: #999999;
+}
+.text-field-ticket:focused{
+     -fx-background-color: transparent, white;
+    -fx-border-width:0 1px 0 0;
+    -fx-border-color: #999999;
+}
+

@@ -6,12 +6,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-
 
 <VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../comprobante.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxTicketController">
    <children>
@@ -86,13 +87,13 @@
                      <children>
                         <HBox HBox.hgrow="ALWAYS">
                            <children>
-                              <ScrollPane fitToWidth="true" prefHeight="320.0" styleClass="scroll-pane-ticket" HBox.hgrow="ALWAYS">
+                              <ScrollPane fitToWidth="true" styleClass="scroll-pane-ticket" HBox.hgrow="ALWAYS">
                                  <content>
                                     <VBox>
                                        <children>
                                           <HBox alignment="CENTER">
                                              <children>
-                                                <VBox prefWidth="330.0" style="-fx-background-color: white;">
+                                                <VBox prefWidth="323.0" style="-fx-background-color: white;">
                                                    <children>
                                                       <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;">
                                                          <children>
@@ -125,16 +126,35 @@
                                     </VBox>
                                  </content>
                               </ScrollPane>
-                              <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0  0.8333333333333334em 0  0.8333333333333334em;" HBox.hgrow="SOMETIMES">
+                              <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="SOMETIMES">
                                  <children>
-                                    <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em  0 0.4166666666666667em 0; -fx-border-color: #999999; -fx-border-width: 1 0 1 0;">
+                                    <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0  0.8333333333333334em 0  0.8333333333333334em;" VBox.vgrow="SOMETIMES">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Agregar campos" />
+                                          <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em  0 0.4166666666666667em 0; -fx-border-color: #999999; -fx-border-width: 1 0 1 0;">
+                                             <children>
+                                                <Label styleClass="labelRoboto14" text="Agregar campos" />
+                                             </children>
+                                          </HBox>
+                                          <Label styleClass="labelOpenSansRegular14" text="Ordenar" />
+                                          <ComboBox fx:id="cbOrdenar" maxWidth="1.7976931348623157E308" />
+                                          <ListView prefHeight="260.0" VBox.vgrow="SOMETIMES" />
                                        </children>
-                                    </HBox>
-                                    <Label styleClass="labelOpenSansRegular14" text="Ordenar" />
-                                    <ComboBox maxWidth="1.7976931348623157E308" />
-                                    <ListView VBox.vgrow="SOMETIMES" />
+                                    </VBox>
+                                    <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0  0.8333333333333334em 0  0.8333333333333334em;">
+                                       <children>
+                                          <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em  0 0.4166666666666667em 0; -fx-border-color: #999999; -fx-border-width: 1 0 1 0;">
+                                             <children>
+                                                <Label styleClass="labelRoboto14" text="Opciones del Texto" />
+                                             </children>
+                                          </HBox>
+                                          <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                             <children>
+                                                <Label styleClass="labelOpenSansRegular14" text="Ancho en columnas" />
+                                                <TextField fx:id="txtAnchoColumna" onAction="#onActionAnchoColumna" onKeyTyped="#onKeyTypedAnchoColumna" prefHeight="30.0" styleClass="text-field-contenido" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </VBox>
                            </children>
@@ -142,6 +162,23 @@
                               <Insets />
                            </HBox.margin>
                         </HBox>
+                     </children>
+                  </HBox>
+                  <HBox style="-fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <VBox>
+                           <children>
+                              <Label styleClass="labelRoboto14" text="Formato de ticket" />
+                              <Label styleClass="labelRobotoBold16" text="Venta" textFill="#0f67a1" />
+                           </children>
+                        </VBox>
+                        <Separator orientation="VERTICAL" />
+                        <VBox>
+                           <children>
+                              <Label styleClass="labelRoboto14" text="Columnas por Renglón" />
+                              <Label styleClass="labelRobotoBold16" text="40" textFill="#0f67a1" />
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
                </children>
