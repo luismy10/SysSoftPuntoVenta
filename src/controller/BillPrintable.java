@@ -19,10 +19,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.Window;
 import javax.print.Doc;
@@ -171,7 +169,7 @@ public class BillPrintable implements Printable {
         return Tools.roundingValue(value, 2);
     }
 
-    public void modelTicket(Window window,int sheetWidth,int rows, ArrayList<HBox> object, String messageClassTitle, String messageClassContent) {
+    public void modelTicket(Window window, int sheetWidth, int rows, int lines, ArrayList<HBox> object, String messageClassTitle, String messageClassContent) {
         Date date = new Date();
         SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss aa");
@@ -179,6 +177,7 @@ public class BillPrintable implements Printable {
         try {
             PrinterMatrix p = new PrinterMatrix();
             p.setOutSize(rows, column);
+            int linesbefore = 0;
             for (int i = 0; i < object.size(); i++) {
                 HBox hBox = object.get(i);
                 if (hBox.getChildren().size() > 1) {
@@ -193,16 +192,16 @@ public class BillPrintable implements Printable {
                         if (null != field.getAlignment()) {
                             switch (field.getAlignment()) {
                                 case CENTER_LEFT:
-                                    p.printTextWrap((i + 1), 0, columnI, columnF, field.getText());
+                                    p.printTextWrap((i + 1), field.getLines(), columnI, columnF, field.getText());
                                     break;
                                 case CENTER:
-                                    p.printTextWrap((i + 1), 0, ((columnI + columnF) - field.getText().length()) / 2, columnF, field.getText());
+                                    p.printTextWrap((i + 1), field.getLines(), ((columnI + columnF) - field.getText().length()) / 2, columnF, field.getText());
                                     break;
                                 case CENTER_RIGHT:
-                                    p.printTextWrap((i + 1), 0, columnF - field.getText().length(), columnF, field.getText());
+                                    p.printTextWrap((i + 1), field.getLines(), columnF - field.getText().length(), columnF, field.getText());
                                     break;
                                 default:
-                                    p.printTextWrap((i + 1), 0, columnI, columnF, field.getText());
+                                    p.printTextWrap((i + 1), field.getLines(), columnI, columnF, field.getText());
                                     break;
                             }
                         }
@@ -213,22 +212,26 @@ public class BillPrintable implements Printable {
                     if (null != field.getAlignment()) {
                         switch (field.getAlignment()) {
                             case CENTER_LEFT:
-                                p.printTextWrap((i + 1), 0, 0, column, field.getText());
+                                p.printTextWrap((i + 1) + linesbefore, field.getLines(), 0, field.getColumnWidth(), field.getText());
+                                linesbefore = field.getLines();
                                 break;
                             case CENTER:
-                                p.printTextWrap((i + 1), 0, (column - field.getText().length()) / 2, column, field.getText());
+                                p.printTextWrap((i + 1) + linesbefore, field.getLines(), (field.getColumnWidth() - field.getText().length()) / 2, field.getColumnWidth(), field.getText());
+                                linesbefore = field.getLines();
                                 break;
                             case CENTER_RIGHT:
-                                p.printTextWrap((i + 1), 0, column - field.getText().length(), column, field.getText());
+                                p.printTextWrap((i + 1) + linesbefore, field.getLines(), field.getColumnWidth() - field.getText().length(), field.getColumnWidth(), field.getText());
+                                linesbefore = field.getLines();
                                 break;
                             default:
-                                p.printTextWrap((i + 1), 0, 0, column, field.getText());
+                                p.printTextWrap((i + 1) + linesbefore, field.getLines(), 0, field.getColumnWidth(), field.getText());
+                                linesbefore = field.getLines();
                                 break;
                         }
                     }
                 }
             }
-            int salida = object.size();
+            int salida = object.size() + lines;
             salida++;
             p.printTextWrap(salida, 0, 0, column, "\n");
             salida++;
@@ -240,7 +243,7 @@ public class BillPrintable implements Printable {
             salida++;
             p.printTextWrap(salida, 0, 0, column, "\n");
             p.toFile("c:\\temp\\impresion.txt");
-            printDoc("c:\\temp\\impresion.txt");
+//            printDoc("c:\\temp\\impresion.txt");
         } catch (Exception e) {
             Tools.AlertMessage(window, Alert.AlertType.ERROR, messageClassTitle, messageClassContent, false);
         }

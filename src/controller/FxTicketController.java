@@ -5,16 +5,18 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
@@ -30,6 +32,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -44,6 +49,8 @@ public class FxTicketController implements Initializable {
     private TextField txtAnchoColumna;
     @FXML
     private ComboBox<String> cbOrdenar;
+    @FXML
+    private ComboBox<Integer> cbMultilinea;
 
     private AnchorPane content;
 
@@ -57,7 +64,8 @@ public class FxTicketController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         pointWidth = 7.825;
         sheetWidth = 40;
-        cbOrdenar.getItems().addAll("Encabezado","Detalle","Pie");
+        cbOrdenar.getItems().addAll("Encabezado", "Detalle", "Pie");
+        cbMultilinea.getItems().addAll(1, 2);
 //        File file = new File("c:\\temp\\modelo.json");
 //        if (file.exists()) {
 //            JSONObject ticket = obtenerObjetoJSON(leerArchivoTexto(file.getAbsolutePath()));
@@ -76,7 +84,108 @@ public class FxTicketController implements Initializable {
 //        }
     }
 
-    private void addElement(String id, String titulo, Pos align, boolean editable) {
+    private void InitializationTransparentBackground() {
+        Session.pane.setStyle("-fx-background-color: black");
+        Session.pane.setTranslateX(0);
+        Session.pane.setTranslateY(0);
+        Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.pane.setOpacity(0.7f);
+        content.getChildren().add(Session.pane);
+    }
+
+    private void saveTicket() {
+        try {
+            JSONObject sampleObject = new JSONObject();
+            JSONObject cabecera = new JSONObject();
+            for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+                HBox hBox = (HBox) hbEncabezado.getChildren().get(i);
+                JSONObject cb = new JSONObject();
+                if (hBox.getChildren().size() > 1) {
+                    JSONArray kids = new JSONArray();
+                    for (int v = 0; v < hBox.getChildren().size(); v++) {
+                        TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
+                        JSONObject cbkid = new JSONObject();
+                        cbkid.put("value", field.getText());
+                        cbkid.put("width", field.getColumnWidth());
+                        cbkid.put("aling", field.getAlignment().toString());
+                        kids.add(cbkid);
+                    }
+                    cb.put("list", kids);
+                } else {
+                    TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
+                    JSONObject cbkid = new JSONObject();
+                    cbkid.put("value", field.getText());
+                    cbkid.put("width", field.getColumnWidth());
+                    cbkid.put("aling", field.getAlignment().toString());
+                    cb.put("text", cbkid);
+                }
+                cabecera.put("cb_" + (i + 1), cb);
+            }
+
+            JSONObject detalle = new JSONObject();
+            JSONObject pie = new JSONObject();
+
+            sampleObject.put("cabecera", cabecera);
+            sampleObject.put("detalle", detalle);
+            sampleObject.put("pie", pie);
+
+            Files.write(Paths.get("./archivos/ticketventa.json"), sampleObject.toJSONString().getBytes());
+        } catch (IOException ex) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Ticket", "No se pudo guardar la hoja con problemas de formato.", false);
+            System.out.println(ex.getLocalizedMessage());
+            System.out.println(ex);
+        }
+    }
+
+    private void searchTicket() {
+        try {
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_TICKETBUSQUEDA);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxTicketBusquedaController controller = fXMLLoader.getController();
+            controller.setInitTicketController(this);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Seleccionar formato", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.pane);
+            });
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
+    private void windowTextMultilinea(HBox hBox) {
+        try {
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_TICKETMULTILINEA);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxTicketMultilineaController controller = fXMLLoader.getController();
+            controller.setInitTicketController(this);
+            controller.setLoadComponent(hBox);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Agregar texto multilinea", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.pane);
+            });
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
+    private void addElement(String id) {
         ImageView imgRemove = new ImageView(new Image("/view/remove-item.png"));
         imgRemove.setFitWidth(20);
         imgRemove.setFitHeight(20);
@@ -84,6 +193,10 @@ public class FxTicketController implements Initializable {
         ImageView imgText = new ImageView(new Image("/view/text.png"));
         imgText.setFitWidth(20);
         imgText.setFitHeight(20);
+
+        ImageView imgTextLines = new ImageView(new Image("/view/text-lines.png"));
+        imgTextLines.setFitWidth(20);
+        imgTextLines.setFitHeight(20);
 
         ImageView imgUnaLinea = new ImageView(new Image("/view/linea.png"));
         imgUnaLinea.setFitWidth(20);
@@ -113,23 +226,36 @@ public class FxTicketController implements Initializable {
         MenuItem text = new MenuItem("Agregar Texto");
         text.setGraphic(imgText);
         text.setOnAction((ActionEvent event) -> {
-            TextField field = addElementTextField("iu", "Escriba aqui.", 13, Pos.CENTER_LEFT, true);
+            TextField field = addElementTextField("iu", "Escriba aqui.", false, 0, 13, Pos.CENTER_LEFT, true);
             hBox.getChildren().add(field);
+        });
+        MenuItem textMultilinea = new MenuItem("Agregar Texto Multilínea");
+        textMultilinea.setGraphic(imgTextLines);
+        textMultilinea.setOnAction((ActionEvent event) -> {
+            windowTextMultilinea(hBox);
         });
         MenuItem textUnaLinea = new MenuItem("Agregar Línea");
         textUnaLinea.setGraphic(imgUnaLinea);
         textUnaLinea.setOnAction((ActionEvent event) -> {
-            TextField field = addElementTextField("iug", "----------------------------------------", sheetWidth, Pos.CENTER_LEFT, false);
+            String value = "";
+            for (int i = 0; i < sheetWidth; i++) {
+                value += "-";
+            }
+            TextField field = addElementTextField("iug", value, false, 0, sheetWidth, Pos.CENTER_LEFT, false);
             hBox.getChildren().add(field);
         });
         MenuItem textDosLineas = new MenuItem("Agregar Doble Línea");
         textDosLineas.setGraphic(imgDobleLinea);
         textDosLineas.setOnAction((ActionEvent event) -> {
-            TextField field = addElementTextField("iugd", "========================================", sheetWidth, Pos.CENTER_LEFT, false);
+            String value = "";
+            for (int i = 0; i < sheetWidth; i++) {
+                value += "=";
+            }
+            TextField field = addElementTextField("iugd", value, false, 0, sheetWidth, Pos.CENTER_LEFT, false);
             hBox.getChildren().add(field);
         });
 
-        contextMenu.getItems().addAll(text, textUnaLinea, textDosLineas, remove);
+        contextMenu.getItems().addAll(text, textMultilinea, textUnaLinea, textDosLineas, remove);
         hBox.setOnContextMenuRequested((ContextMenuEvent event) -> {
             contextMenu.show(hBox, event.getSceneX(), event.getSceneY());
             int widthContent = 0;
@@ -155,17 +281,20 @@ public class FxTicketController implements Initializable {
         hbEncabezado.getChildren().add(hBox);
     }
 
-    private TextField addElementTextField(String id, String titulo, int widthColumn, Pos align, boolean editable) {
+    public TextField addElementTextField(String id, String titulo, boolean multilinea, int lines, int widthColumn, Pos align, boolean editable) {
         TextFieldTicket field = new TextFieldTicket(titulo, id);
+        field.setMultilineas(multilinea);
+        field.setLines(lines);
         field.setColumnWidth(widthColumn);
         field.setEditable(editable);
-        field.setPreferredSize(((double) field.getText().length() * pointWidth), 30);
+        field.setPreferredSize(multilinea ? ((double) widthColumn * pointWidth) : ((double) field.getText().length() * pointWidth), 30);
         field.getStyleClass().add("text-field-ticket");
         field.setAlignment(align);
         field.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) -> {
             if (newPropertyValue) {
                 field.setStyle("-fx-background-color: #cecece;");
                 txtAnchoColumna.setText(field.getColumnWidth() + "");
+                cbMultilinea.setDisable(!field.isMultilineas());
                 reference = field;
             } else {
                 field.setStyle("-fx-background-color: white;");
@@ -289,10 +418,17 @@ public class FxTicketController implements Initializable {
         BillPrintable billPrintable = new BillPrintable();
         if (!hbEncabezado.getChildren().isEmpty()) {
             ArrayList<HBox> object = new ArrayList<>();
+            int rows = 0;
+            int lines = 0;
             for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                 object.add((HBox) hbEncabezado.getChildren().get(i));
+                HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+                rows++;
+                for (int j = 0; j < box.getChildren().size(); j++) {
+                    lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
+                }
             }
-            billPrintable.modelTicket(window.getScene().getWindow(), sheetWidth, object.size() + 1 + 5, object, "Ticket", "Error el imprimir el ticket.");
+            billPrintable.modelTicket(window.getScene().getWindow(), sheetWidth, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.");
         }
     }
 
@@ -309,17 +445,44 @@ public class FxTicketController implements Initializable {
                 if ((widthContent + Integer.parseInt(txtAnchoColumna.getText())) > sheetWidth) {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "No puede sobrepasar al ancho de la hoja.", false);
                 } else {
-                    if (reference.getText().length() < Integer.parseInt(txtAnchoColumna.getText())) {
-                        reference.setColumnWidth(Integer.parseInt(txtAnchoColumna.getText()));
-                        reference.setPrefWidth(((double) reference.getColumnWidth() * pointWidth));
+                    if (!reference.isMultilineas()) {
+                        if (reference.getText().length() < Integer.parseInt(txtAnchoColumna.getText())) {
+                            reference.setColumnWidth(Integer.parseInt(txtAnchoColumna.getText()));
+                            reference.setPrefWidth(((double) reference.getColumnWidth() * pointWidth));
+                        } else {
+                            reference.setColumnWidth(Integer.parseInt(txtAnchoColumna.getText()));
+                            reference.setPrefWidth(((double) reference.getColumnWidth() * pointWidth));
+                            reference.setText(reference.getText().substring(0, reference.getColumnWidth()));
+                        }
                     } else {
-                        reference.setColumnWidth(Integer.parseInt(txtAnchoColumna.getText()));
-                        reference.setPrefWidth(((double) reference.getColumnWidth() * pointWidth));
-                        reference.setText(reference.getText().substring(0, reference.getColumnWidth()));
+                        if (reference.getText().length() < Integer.parseInt(txtAnchoColumna.getText())) {
+                            reference.setColumnWidth(Integer.parseInt(txtAnchoColumna.getText()));
+                            reference.setPrefWidth(((double) reference.getColumnWidth() * pointWidth));
+                        } else {
+                            reference.setColumnWidth(Integer.parseInt(txtAnchoColumna.getText()));
+                            reference.setPrefWidth(((double) reference.getColumnWidth() * pointWidth));
+                        }
                     }
                 }
             }
         }
+    }
+
+    @FXML
+    private void onActionMultilinea(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void onKeyPressedSave(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            saveTicket();
+        }
+    }
+
+    @FXML
+    private void onActionSave(ActionEvent event) {
+        saveTicket();
     }
 
     @FXML
@@ -337,14 +500,14 @@ public class FxTicketController implements Initializable {
     @FXML
     private void onMouseClickedEncabezadoAdd(MouseEvent event) {
         if (hbEncabezado.getChildren().isEmpty()) {
-            addElement("cb1", "", Pos.CENTER_LEFT, false);
+            addElement("cb1");
         } else {
             HBox hBox = (HBox) hbEncabezado.getChildren().get(hbEncabezado.getChildren().size() - 1);
             String idGenerate = hBox.getId();
             String codigo = idGenerate.substring(2);
             int valor = Integer.parseInt(codigo) + 1;
             String newCodigo = "cb" + valor;
-            addElement(newCodigo, "", Pos.CENTER_LEFT, false);
+            addElement(newCodigo);
         }
     }
 
@@ -359,6 +522,18 @@ public class FxTicketController implements Initializable {
         if ((c < '0' || c > '9') && (c != '\b')) {
             event.consume();
         }
+    }
+
+    @FXML
+    private void onKeyPressedSearch(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            searchTicket();
+        }
+    }
+
+    @FXML
+    private void onActionSearch(ActionEvent event) {
+        searchTicket();
     }
 
     public void setContent(AnchorPane content) {

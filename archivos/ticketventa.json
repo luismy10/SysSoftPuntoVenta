@@ -1,0 +1,51 @@
+{
+    "cabecera": {
+        "cb_4": {
+            "text": {
+                "width": 40,
+                "value": "========================================",
+                "aling": "CENTER_LEFT"
+            }
+        },
+        "cb_2": {
+            "text": {
+                "width": 40,
+                "value": "RUC 20101247865",
+                "aling": "CENTER"
+            }
+        },
+        "cb_3": {
+            "list": [
+                {
+                    "width": 10,
+                    "value": "CANT.",
+                    "aling": "CENTER"
+                },
+                {
+                    "width": 10,
+                    "value": "P.UNIT.",
+                    "aling": "CENTER"
+                },
+                {
+                    "width": 10,
+                    "value": "DSCTO.",
+                    "aling": "CENTER"
+                },
+                {
+                    "width": 10,
+                    "value": "IMPORTE",
+                    "aling": "CENTER_RIGHT"
+                }
+            ]
+        },
+        "cb_1": {
+            "text": {
+                "width": 40,
+                "value": "COOPERATIVA LISSON",
+                "aling": "CENTER"
+            }
+        }
+    },
+    "pie": {},
+    "detalle": {}
+}

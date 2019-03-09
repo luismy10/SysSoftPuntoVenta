@@ -30,7 +30,7 @@
          <children>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Button mnemonicParsing="false" styleClass="buttonLight" text="Buscar">
+                  <Button mnemonicParsing="false" onAction="#onActionSearch" onKeyPressed="#onKeyPressedSearch" styleClass="buttonLight" text="Buscar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -48,7 +48,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" styleClass="buttonLight" text="Guardar">
+                  <Button mnemonicParsing="false" onAction="#onActionSave" onKeyPressed="#onKeyPressedSave" styleClass="buttonLight" text="Guardar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -136,7 +136,7 @@
                                              </children>
                                           </HBox>
                                           <Label styleClass="labelOpenSansRegular14" text="Ordenar" />
-                                          <ComboBox fx:id="cbOrdenar" maxWidth="1.7976931348623157E308" />
+                                          <ComboBox fx:id="cbOrdenar" maxWidth="1.7976931348623157E308" prefHeight="30.0" promptText="Seleccione" />
                                           <ListView prefHeight="260.0" VBox.vgrow="SOMETIMES" />
                                        </children>
                                     </VBox>
@@ -151,6 +151,12 @@
                                              <children>
                                                 <Label styleClass="labelOpenSansRegular14" text="Ancho en columnas" />
                                                 <TextField fx:id="txtAnchoColumna" onAction="#onActionAnchoColumna" onKeyTyped="#onKeyTypedAnchoColumna" prefHeight="30.0" styleClass="text-field-contenido" />
+                                             </children>
+                                          </VBox>
+                                          <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                             <children>
+                                                <Label styleClass="labelOpenSansRegular14" text="Multilinea" />
+                                                <ComboBox fx:id="cbMultilinea" disable="true" maxWidth="1.7976931348623157E308" onAction="#onActionMultilinea" prefHeight="30.0" promptText="Seleccione" />
                                              </children>
                                           </VBox>
                                        </children>

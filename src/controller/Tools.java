@@ -94,7 +94,9 @@ public class Tools {
     static final String FX_FILE_LISTAPRECIOS = "/view/venta/FxListaPrecios.fxml";
     static final String FX_FILE_COMPRASPROCESO = "/view/compra/FxCompraProceso.fxml";
     static final String FX_FILE_TICKET = "/view/tipodocumento/FxTicket.fxml";
-
+    static final String FX_FILE_TICKETBUSQUEDA = "/view/tipodocumento/FxTicketBusqueda.fxml";
+    static final String FX_FILE_TICKETMULTILINEA = "/view/tipodocumento/FxTicketMultilinea.fxml";
+    
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);
