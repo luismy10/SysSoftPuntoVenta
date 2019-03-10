@@ -24,6 +24,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.PagoProveedoresADO;
 import model.PagoProveedoresTB;
 
@@ -144,6 +145,9 @@ public class FxHistorialPagosController implements Initializable {
         Stage stage = FxWindow.StageLoaderModal(parent, "Amortizar deuda", window.getScene().getWindow());
         stage.setResizable(false);
         stage.sizeToScene();
+        stage.setOnHiding((WindowEvent WindowEvent) -> {
+            
+        });
         stage.show();
 
         controller.setInitTexField();
