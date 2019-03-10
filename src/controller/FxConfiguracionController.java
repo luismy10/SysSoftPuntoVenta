@@ -3,6 +3,8 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,9 +25,21 @@ public class FxConfiguracionController implements Initializable {
 
     private AnchorPane windowinit;
 
+    private FXMLLoader fXMLTicket;
+
+    private VBox nodeTicketa;
+
+    private FxTicketController controllerTicket;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        try {
+            fXMLTicket = new FXMLLoader(getClass().getResource(Tools.FX_FILE_TICKET));
+            nodeTicketa = fXMLTicket.load();
+            controllerTicket = fXMLTicket.getController();
+        } catch (IOException ex) {
+            Logger.getLogger(FxOperacionesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void openWindowTablasBasicas() throws IOException {
@@ -125,18 +139,15 @@ public class FxConfiguracionController implements Initializable {
         content.getChildren().add(node);
         controller.fillTabletTax();
     }
-    
+
     private void openWindowTickets() throws IOException {
-        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_TICKET));
-        VBox node = fXMLPrincipal.load();
-        FxTicketController controller = fXMLPrincipal.getController();
-        controller.setContent(windowinit);
+        controllerTicket.setContent(windowinit);
         content.getChildren().clear();
-        AnchorPane.setLeftAnchor(node, 0d);
-        AnchorPane.setTopAnchor(node, 0d);
-        AnchorPane.setRightAnchor(node, 0d);
-        AnchorPane.setBottomAnchor(node, 0d);
-        content.getChildren().add(node);
+        AnchorPane.setLeftAnchor(nodeTicketa, 0d);
+        AnchorPane.setTopAnchor(nodeTicketa, 0d);
+        AnchorPane.setRightAnchor(nodeTicketa, 0d);
+        AnchorPane.setBottomAnchor(nodeTicketa, 0d);
+        content.getChildren().add(nodeTicketa);
     }
 
     @FXML
@@ -223,10 +234,10 @@ public class FxConfiguracionController implements Initializable {
     private void onActionTax(ActionEvent event) throws IOException {
         openWindowTex();
     }
-    
-     @FXML
+
+    @FXML
     private void onKeyPressedTickets(KeyEvent event) throws IOException {
-        if(event.getCode() == KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             openWindowTickets();
         }
     }
@@ -240,7 +251,5 @@ public class FxConfiguracionController implements Initializable {
         this.windowinit = windowinit;
         this.content = content;
     }
-
-   
 
 }

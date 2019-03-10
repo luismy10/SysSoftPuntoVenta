@@ -46,6 +46,8 @@ public class FxTicketController implements Initializable {
     @FXML
     private VBox hbEncabezado;
     @FXML
+    private VBox hbPie;
+    @FXML
     private TextField txtAnchoColumna;
     @FXML
     private ComboBox<String> cbOrdenar;
@@ -59,6 +61,8 @@ public class FxTicketController implements Initializable {
     private int sheetWidth;
 
     private double pointWidth;
+    @FXML
+    private VBox hbDetalleCabecera;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -170,7 +174,7 @@ public class FxTicketController implements Initializable {
             //Controlller here
             FxTicketMultilineaController controller = fXMLLoader.getController();
             controller.setInitTicketController(this);
-            controller.setLoadComponent(hBox);
+            controller.setLoadComponent(hBox, sheetWidth);
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Agregar texto multilinea", window.getScene().getWindow());
             stage.setResizable(false);
@@ -185,7 +189,7 @@ public class FxTicketController implements Initializable {
         }
     }
 
-    private void addElement(String id) {
+    private void addElement(VBox contenedor, String id) {
         ImageView imgRemove = new ImageView(new Image("/view/remove-item.png"));
         imgRemove.setFitWidth(20);
         imgRemove.setFitHeight(20);
@@ -221,7 +225,7 @@ public class FxTicketController implements Initializable {
         MenuItem remove = new MenuItem("Remover Renglón");
         remove.setGraphic(imgRemove);
         remove.setOnAction((ActionEvent event) -> {
-            hbEncabezado.getChildren().remove(hBox);
+            contenedor.getChildren().remove(hBox);
         });
         MenuItem text = new MenuItem("Agregar Texto");
         text.setGraphic(imgText);
@@ -267,6 +271,15 @@ public class FxTicketController implements Initializable {
             } else {
                 text.setDisable(false);
             }
+
+            int widthNew = sheetWidth - widthContent;
+            System.out.println(widthContent + " - " + widthNew);
+            if ((widthContent + widthNew) <= sheetWidth) {
+                textMultilinea.setDisable(false);
+            } else {
+                textMultilinea.setDisable(true);
+            }
+
             if ((widthContent + sheetWidth) > sheetWidth) {
                 textUnaLinea.setDisable(true);
             } else {
@@ -278,7 +291,7 @@ public class FxTicketController implements Initializable {
                 textDosLineas.setDisable(false);
             }
         });
-        hbEncabezado.getChildren().add(hBox);
+        contenedor.getChildren().add(hBox);
     }
 
     public TextField addElementTextField(String id, String titulo, boolean multilinea, int lines, int widthColumn, Pos align, boolean editable) {
@@ -302,9 +315,11 @@ public class FxTicketController implements Initializable {
         });
 
         field.lengthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-            if (newValue.intValue() > oldValue.intValue()) {
-                if (field.getText().length() >= field.getColumnWidth()) {
-                    field.setText(field.getText().substring(0, field.getColumnWidth()));
+            if (!field.isMultilineas()) {
+                if (newValue.intValue() > oldValue.intValue()) {
+                    if (field.getText().length() >= field.getColumnWidth()) {
+                        field.setText(field.getText().substring(0, field.getColumnWidth()));
+                    }
                 }
             }
         });
@@ -369,6 +384,11 @@ public class FxTicketController implements Initializable {
             if (((HBox) field.getParent()).getChildren().size() > 1) {
                 textAdaptWidth.setDisable(true);
             }
+            if (field.isMultilineas()) {
+                textLeft.setDisable(true);
+                textCenter.setDisable(true);
+                textRight.setDisable(true);
+            }
         });
         return field;
     }
@@ -416,7 +436,7 @@ public class FxTicketController implements Initializable {
 
     private void printTicket() {
         BillPrintable billPrintable = new BillPrintable();
-        if (!hbEncabezado.getChildren().isEmpty()) {
+        if (!hbEncabezado.getChildren().isEmpty() && !hbDetalleCabecera.getChildren().isEmpty() && !hbPie.getChildren().isEmpty()) {
             ArrayList<HBox> object = new ArrayList<>();
             int rows = 0;
             int lines = 0;
@@ -428,6 +448,23 @@ public class FxTicketController implements Initializable {
                     lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
                 }
             }
+            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                object.add((HBox) hbDetalleCabecera.getChildren().get(i));
+                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                rows++;
+                for (int j = 0; j < box.getChildren().size(); j++) {
+                    lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
+                }
+            }
+            for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                object.add((HBox) hbPie.getChildren().get(i));
+                HBox box = ((HBox) hbPie.getChildren().get(i));
+                rows++;
+                for (int j = 0; j < box.getChildren().size(); j++) {
+                    lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
+                }
+            }
+
             billPrintable.modelTicket(window.getScene().getWindow(), sheetWidth, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.");
         }
     }
@@ -500,15 +537,48 @@ public class FxTicketController implements Initializable {
     @FXML
     private void onMouseClickedEncabezadoAdd(MouseEvent event) {
         if (hbEncabezado.getChildren().isEmpty()) {
-            addElement("cb1");
+            addElement(hbEncabezado, "cb1");
         } else {
             HBox hBox = (HBox) hbEncabezado.getChildren().get(hbEncabezado.getChildren().size() - 1);
             String idGenerate = hBox.getId();
             String codigo = idGenerate.substring(2);
             int valor = Integer.parseInt(codigo) + 1;
             String newCodigo = "cb" + valor;
-            addElement(newCodigo);
+            addElement(hbEncabezado, newCodigo);
         }
+    }
+
+    @FXML
+    private void onMouseClickedPieAdd(MouseEvent event) {
+        if (hbPie.getChildren().isEmpty()) {
+            addElement(hbPie, "cp1");
+        } else {
+            HBox hBox = (HBox) hbPie.getChildren().get(hbPie.getChildren().size() - 1);
+            String idGenerate = hBox.getId();
+            String codigo = idGenerate.substring(2);
+            int valor = Integer.parseInt(codigo) + 1;
+            String newCodigo = "cp" + valor;
+            addElement(hbPie, newCodigo);
+        }
+    }
+
+    @FXML
+    private void onMouseClickedDetalleCabeceraAdd(MouseEvent event) {
+        if (hbDetalleCabecera.getChildren().isEmpty()) {
+            addElement(hbDetalleCabecera, "dr1");
+        } else {
+            HBox hBox = (HBox) hbDetalleCabecera.getChildren().get(hbDetalleCabecera.getChildren().size() - 1);
+            String idGenerate = hBox.getId();
+            String codigo = idGenerate.substring(2);
+            int valor = Integer.parseInt(codigo) + 1;
+            String newCodigo = "dr" + valor;
+            addElement(hbDetalleCabecera, newCodigo);
+        }
+    }
+
+    @FXML
+    private void onMouseClickedDetalleCuerpoAdd(MouseEvent event) {
+
     }
 
     @FXML

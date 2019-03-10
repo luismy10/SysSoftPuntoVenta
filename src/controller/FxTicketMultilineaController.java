@@ -26,14 +26,17 @@ public class FxTicketMultilineaController implements Initializable {
     private FxTicketController ticketController;
 
     private HBox hBox;
+    
+    private int sheetWidth;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void setLoadComponent(HBox hBox) {
+    public void setLoadComponent(HBox hBox,int sheetWidth) {
         this.hBox = hBox;
+        this.sheetWidth = sheetWidth;
     }
 
     private void addTextMultilinea() {
@@ -43,8 +46,8 @@ public class FxTicketMultilineaController implements Initializable {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) hBox.getChildren().get(i));
                 widthContent += fieldTicket.getColumnWidth();
             }
-            if (widthContent <= 40) {
-                int widthNew = 40 - widthContent;
+            if (widthContent <= sheetWidth) {
+                int widthNew = sheetWidth - widthContent;
                 TextField field = ticketController.addElementTextField("iu", textArea.getText(), true, 1, widthNew, Pos.CENTER_LEFT, true);
                 hBox.getChildren().add(field);
                 Tools.Dispose(window);

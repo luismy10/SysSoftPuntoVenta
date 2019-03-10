@@ -176,14 +176,24 @@ public class BillPrintable implements Printable {
         int column = sheetWidth;
         try {
             PrinterMatrix p = new PrinterMatrix();
+
             p.setOutSize(rows, column);
-            int linesbefore = 0;
+            short linesbefore = 0;
+            short linescurrent = 0;
+            short linesafter = 0;
+            int linescount = 0;
+            int rowscount = 0;
             for (int i = 0; i < object.size(); i++) {
                 HBox hBox = object.get(i);
+                rowscount += 1;
+                linescount = rowscount + linesafter;
+                linesafter = 0;
                 if (hBox.getChildren().size() > 1) {
                     int columnI = 0;
                     int columnF = 0;
                     int columnA = 0;
+                    int countColumns = 0;
+                    rowscount = linescount;
                     for (int v = 0; v < hBox.getChildren().size(); v++) {
                         TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
                         columnI = columnA;
@@ -192,40 +202,57 @@ public class BillPrintable implements Printable {
                         if (null != field.getAlignment()) {
                             switch (field.getAlignment()) {
                                 case CENTER_LEFT:
-                                    p.printTextWrap((i + 1), field.getLines(), columnI, columnF, field.getText());
+                                    p.printTextWrap(linescount + linesafter, field.getLines(), columnI, columnF, field.getText());
+                                    linesbefore = (short) field.getLines();
+                                    linescurrent = (short) (linesbefore == 1 ? linesbefore : linescurrent);
+                                    countColumns++;
+                                    linesafter = hBox.getChildren().size() == countColumns ? linescurrent : 0;
                                     break;
                                 case CENTER:
-                                    p.printTextWrap((i + 1), field.getLines(), ((columnI + columnF) - field.getText().length()) / 2, columnF, field.getText());
+                                    p.printTextWrap(linescount + linesafter, field.getLines(), ((columnI + columnF) - field.getText().length()) / 2, columnF, field.getText());
+                                    linesbefore = (short) field.getLines();
+                                    linescurrent = (short) (linesbefore == 1 ? linesbefore : linescurrent);
+                                    countColumns++;
+                                    linesafter = hBox.getChildren().size() == countColumns ? linescurrent : 0;
                                     break;
                                 case CENTER_RIGHT:
-                                    p.printTextWrap((i + 1), field.getLines(), columnF - field.getText().length(), columnF, field.getText());
+                                    p.printTextWrap(linescount + linesafter, field.getLines(), columnF - field.getText().length(), columnF, field.getText());
+                                    linesbefore = (short) field.getLines();
+                                    linescurrent = (short) (linesbefore == 1 ? linesbefore : linescurrent);
+                                    countColumns++;
+                                    linesafter = hBox.getChildren().size() == countColumns ? linescurrent : 0;
                                     break;
                                 default:
-                                    p.printTextWrap((i + 1), field.getLines(), columnI, columnF, field.getText());
+                                    p.printTextWrap(linescount + linesafter, field.getLines(), columnI, columnF, field.getText());
+                                    linesbefore = (short) field.getLines();
+                                    linescurrent = (short) (linesbefore == 1 ? linesbefore : linescurrent);
+                                    countColumns++;
+                                    linesafter = hBox.getChildren().size() == countColumns ? linescurrent : 0;
                                     break;
                             }
                         }
 
                     }
                 } else {
+                    rowscount = linescount;
                     TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
                     if (null != field.getAlignment()) {
                         switch (field.getAlignment()) {
                             case CENTER_LEFT:
-                                p.printTextWrap((i + 1) + linesbefore, field.getLines(), 0, field.getColumnWidth(), field.getText());
-                                linesbefore = field.getLines();
+                                p.printTextWrap(linescount + linesafter, field.getLines(), 0, field.getColumnWidth(), field.getText());
+                                linesafter = (short) field.getLines();
                                 break;
                             case CENTER:
-                                p.printTextWrap((i + 1) + linesbefore, field.getLines(), (field.getColumnWidth() - field.getText().length()) / 2, field.getColumnWidth(), field.getText());
-                                linesbefore = field.getLines();
+                                p.printTextWrap(linescount + linesafter, field.getLines(), (field.getColumnWidth() - field.getText().length()) / 2, field.getColumnWidth(), field.getText());
+                                linesafter = (short) field.getLines();
                                 break;
                             case CENTER_RIGHT:
-                                p.printTextWrap((i + 1) + linesbefore, field.getLines(), field.getColumnWidth() - field.getText().length(), field.getColumnWidth(), field.getText());
-                                linesbefore = field.getLines();
+                                p.printTextWrap(linescount + linesafter, field.getLines(), field.getColumnWidth() - field.getText().length(), field.getColumnWidth(), field.getText());
+                                linesafter = (short) field.getLines();
                                 break;
                             default:
-                                p.printTextWrap((i + 1) + linesbefore, field.getLines(), 0, field.getColumnWidth(), field.getText());
-                                linesbefore = field.getLines();
+                                p.printTextWrap(linescount + linesafter, field.getLines(), 0, field.getColumnWidth(), field.getText());
+                                linesafter = (short) field.getLines();
                                 break;
                         }
                     }
