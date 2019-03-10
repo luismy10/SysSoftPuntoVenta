@@ -18,10 +18,10 @@ public class CompraADO {
         PreparedStatement compra = null;
         PreparedStatement detalle_compra = null;
         PreparedStatement articulo_update = null;
+        PreparedStatement pago_Proveedores = null;
 //        PreparedStatement preparedHistorialArticulo = null;
         PreparedStatement lote_compra = null;
 
-        PreparedStatement pago_Proveedores = null;
 
         try {
             DBUtil.dbConnect();
@@ -40,8 +40,8 @@ public class CompraADO {
 
             articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad + ?, PrecioCompra = ?, PrecioVentaNombre1 = ?, PrecioVenta1 = ?, Margen1 = ?, Utilidad1 = ?, PrecioVentaNombre2 = ?, PrecioVenta2 = ?, Margen2 = ?, Utilidad2 = ?, PrecioVentaNombre3 = ?, PrecioVenta3 = ?, Margen3 = ?, Utilidad3 = ?, Impuesto = ? WHERE IdArticulo = ?");
 
-            pago_Proveedores = DBUtil.getConnection().prepareStatement("insert into PagoProveedoresTB(MontoTotal,MontoActual,CuotaTotal,CuotaActual,Plazos,FechaInicial,FechaActual,FechaFinal,Observacion,Estado,IdProveedor,IdCompra) "
-                    + "values(?,?,?,?,?,?,?,?,?,?,?,?)");
+            pago_Proveedores = DBUtil.getConnection().prepareStatement("insert into PagoProveedoresTB(MontoTotal,MontoActual,CuotaTotal,CuotaActual,ValorCuota,Plazos,FechaInicial,FechaActual,FechaFinal,Observacion,Estado,IdProveedor,IdCompra) "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 //           preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("INSERT INTO HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
 //                    + "VALUES(?,GETDATE(),?,?,?,?,?)");
@@ -123,19 +123,20 @@ public class CompraADO {
 //                preparedHistorialArticulo.addBatch();
             }
 
-            if (compraTB.getTipoCompra().equals("credito")) {
+            if (compraTB.getTipoCompra().equals("CREDITO")) {
                 pago_Proveedores.setDouble(1, pagoProveedoresTB.getMontoTotal());
                 pago_Proveedores.setDouble(2, pagoProveedoresTB.getMontoActual());
                 pago_Proveedores.setInt(3, pagoProveedoresTB.getCuotaTotal());
                 pago_Proveedores.setInt(4, pagoProveedoresTB.getCuotaActual());
-                pago_Proveedores.setString(5, pagoProveedoresTB.getPlazos());
-                pago_Proveedores.setTimestamp(6, pagoProveedoresTB.getFechaInicial());
-                pago_Proveedores.setTimestamp(7, pagoProveedoresTB.getFechaActual());
-                pago_Proveedores.setTimestamp(8, pagoProveedoresTB.getFechaFinal());
-                pago_Proveedores.setString(9, pagoProveedoresTB.getObservacion());
-                pago_Proveedores.setString(10, pagoProveedoresTB.getEstado());
-                pago_Proveedores.setString(11, pagoProveedoresTB.getIdProveedor());
-                pago_Proveedores.setString(12, id_compra);
+                pago_Proveedores.setDouble(5, pagoProveedoresTB.getValorCuota());
+                pago_Proveedores.setString(6, pagoProveedoresTB.getPlazos());
+                pago_Proveedores.setTimestamp(7, pagoProveedoresTB.getFechaInicial());
+                pago_Proveedores.setTimestamp(8, pagoProveedoresTB.getFechaActual());
+                pago_Proveedores.setTimestamp(9, pagoProveedoresTB.getFechaFinal());
+                pago_Proveedores.setString(10, pagoProveedoresTB.getObservacion());
+                pago_Proveedores.setString(11, pagoProveedoresTB.getEstado());
+                pago_Proveedores.setString(12, pagoProveedoresTB.getIdProveedor());
+                pago_Proveedores.setString(13, id_compra);
                 pago_Proveedores.addBatch();
             }
 
@@ -152,9 +153,9 @@ public class CompraADO {
             compra.executeBatch();
             detalle_compra.executeBatch();
             articulo_update.executeBatch();
+            pago_Proveedores.executeBatch();
 //            preparedHistorialArticulo.executeBatch();
             lote_compra.executeBatch();
-            pago_Proveedores.executeBatch();
             DBUtil.getConnection().commit();
             return "register";
         } catch (SQLException ex) {
@@ -358,7 +359,7 @@ public class CompraADO {
             } else {
                 objects.add(compraTB);
             }
-            statementProveedor = DBUtil.getConnection().prepareStatement("select p.NumeroDocumento,p.RazonSocial as Proveedor,p.Telefono,p.Celular,p.Direccion \n"
+            statementProveedor = DBUtil.getConnection().prepareStatement("select p.IdProveedor,p.NumeroDocumento,p.RazonSocial as Proveedor,p.Telefono,p.Celular,p.Direccion \n"
                     + "from CompraTB as c inner join ProveedorTB as p\n"
                     + "on c.Proveedor = p.IdProveedor\n"
                     + "where c.IdCompra = ?");
@@ -367,6 +368,8 @@ public class CompraADO {
             ProveedorTB proveedorTB = null;
             if (resultSetProveedor.next()) {
                 proveedorTB = new ProveedorTB();
+                
+                proveedorTB.setIdProveedor(resultSetProveedor.getString("IdProveedor"));
                 proveedorTB.setNumeroDocumento(resultSetProveedor.getString("NumeroDocumento"));
                 proveedorTB.setRazonSocial(resultSetProveedor.getString("Proveedor"));
                 proveedorTB.setTelefono(resultSetProveedor.getString("Telefono"));

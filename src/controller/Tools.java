@@ -95,6 +95,8 @@ public class Tools {
     static final String FX_FILE_COMPRASPROCESO = "/view/compra/FxCompraProceso.fxml";
     static final String FX_FILE_PLAZOS = "/view/compra/FxPlazos.fxml";
     static final String FX_FILE_TICKET = "/view/tipodocumento/FxTicket.fxml";
+    static final String FX_FILE_HISTORIAL_PAGOS = "/view/compra/FxHistorialPagos.fxml";
+    static final String FX_FILE_AMORTIZAR_PAGOS = "/view/compra/FxAmortizarPagos.fxml";
 
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {

@@ -88,7 +88,7 @@
                                           <TextField fx:id="txtCuotas" onKeyTyped="#onKeyTypedCuotas" prefWidth="180.0" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <Label styleClass="labelOpenSansRegular14" text="Numero de Cuotas" GridPane.columnIndex="1" />
                                           <Label styleClass="labelOpenSansRegular14" text="Fecha de Registro" GridPane.columnIndex="3" />
-                                          <DatePicker fx:id="dpFecha" prefWidth="180.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                          <DatePicker fx:id="dpFecha" disable="true" prefWidth="180.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                           <Label contentDisplay="RIGHT" onMouseClicked="#OnMouseClickedPlazos" styleClass="labelOpenSansRegular14" text="Plazos" GridPane.columnIndex="2">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">

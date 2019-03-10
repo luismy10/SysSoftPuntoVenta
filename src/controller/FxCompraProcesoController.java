@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -79,7 +80,7 @@ public class FxCompraProcesoController implements Initializable {
 
     private ObservableList<LoteTB> loteTBs;
     
-    private int plazos; 
+    private int diasPlazo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -90,8 +91,8 @@ public class FxCompraProcesoController implements Initializable {
         System.out.println(hbPagoContado.isDisable());
         System.out.println(vbPagoCredito.isDisable());
         System.out.println(vbOtroPago.isDisable());
-        setInitializePlazos();
         Tools.actualDate(Tools.getDate(), dpFecha);
+        setInitializePlazos();   
     }
     
     public void setInitializePlazos(){
@@ -99,6 +100,9 @@ public class FxCompraProcesoController implements Initializable {
         PlazosADO.GetTipoPlazoCombBox().forEach(e -> {
             this.cbPlazos.getItems().add(new PlazosTB(e.getIdPlazos(), e.getNombre(), e.getDias(), e.getEstado(), e.getPredeterminado()));
         });
+        cbPlazos.getSelectionModel().select(0);
+        diasPlazo = cbPlazos.getSelectionModel().getSelectedItem().getDias();
+        
     }
 
     public void setLoadProcess(CompraTB compraTB, TableView<ArticuloTB> tvList, ObservableList<LoteTB> loteTBs, String total, String proveedor) {
@@ -114,22 +118,24 @@ public class FxCompraProcesoController implements Initializable {
         double deuda_pendiente = 0;
         double valor_cuota = 0;
         
-        PagoProveedoresTB pagoProveedoresTB = new PagoProveedoresTB();
-        
+        PagoProveedoresTB pagoProveedoresTB = new PagoProveedoresTB(); 
         pagoProveedoresTB.setMontoTotal(compraTB.getTotal().get());
         pagoProveedoresTB.setMontoActual(Double.parseDouble(txtMonto.getText()));
         pagoProveedoresTB.setCuotaTotal(Integer.parseInt(txtCuotas.getText()));
-        pagoProveedoresTB.setCuotaActual(1);
+        pagoProveedoresTB.setCuotaActual(Integer.parseInt(txtMonto.getText())> 0 ? 1:0);
         
         deuda_pendiente = compraTB.getTotal().get() - Double.parseDouble(txtMonto.getText());
         valor_cuota = deuda_pendiente / Integer.parseInt(txtCuotas.getText());
         
         pagoProveedoresTB.setPlazos(cbPlazos.getSelectionModel().getSelectedItem().getNombre());
-        
+        pagoProveedoresTB.setValorCuota(valor_cuota);
         
         pagoProveedoresTB.setFechaInicial(Timestamp.valueOf(Tools.getDatePicker(dpFecha) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
         pagoProveedoresTB.setFechaActual(Timestamp.valueOf(Tools.getDatePicker(dpFecha) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
-        pagoProveedoresTB.setFechaFinal(Timestamp.valueOf(Tools.getDatePicker(dpFecha) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
+        
+        LocalDate fecha_final = LocalDate.parse(Tools.getDatePicker(dpFecha)).plusDays(diasPlazo * Integer.parseInt(txtCuotas.getText()));
+        
+        pagoProveedoresTB.setFechaFinal(Timestamp.valueOf(fecha_final + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
         pagoProveedoresTB.setObservacion("ninguno".toUpperCase());
         pagoProveedoresTB.setEstado("activo".toUpperCase());
         pagoProveedoresTB.setIdProveedor(compraTB.getProveedor());
@@ -174,7 +180,7 @@ public class FxCompraProcesoController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo descripción.", false);
                 txtDescripcion.requestFocus();
             } else {
-                executeCrud("PENDIENTE", "PENDIENTE");
+                executeCrud("PENDIENTE", "CREDITO");
             }
         }
 
@@ -192,7 +198,6 @@ public class FxCompraProcesoController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.show();
-
     }
 
     @FXML
@@ -257,7 +262,7 @@ public class FxCompraProcesoController implements Initializable {
 
     @FXML
     private void OnActionPlazos(ActionEvent event) {
-        
+        diasPlazo = cbPlazos.getSelectionModel().getSelectedItem().getDias();
     }
 
     @FXML

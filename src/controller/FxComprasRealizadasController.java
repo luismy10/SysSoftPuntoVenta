@@ -152,7 +152,7 @@ public class FxComprasRealizadasController implements Initializable {
             ScrollPane node = fXMLPrincipal.load();
             FxCompraDetalleController controller = fXMLPrincipal.getController();
             controller.setInitComptrasController(this, windowinit, vbContent);
-            controller.setLoadDetalle(tvList.getSelectionModel().getSelectedItem().getIdCompra());
+            controller.setLoadDetalle(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getEstadoCompra(), tvList.getSelectionModel().getSelectedItem().getTotal().get());
             vbContent.getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);

@@ -18,6 +18,7 @@ public class PagoProveedoresTB {
     private double montoActual;
     private int cuotaTotal;
     private int cuotaActual;
+    private double valorCuota;
     private String plazos;
     private Timestamp fechaInicial;
     private Timestamp fechaActual;
@@ -29,12 +30,13 @@ public class PagoProveedoresTB {
 
     public PagoProveedoresTB(){}
 
-    public PagoProveedoresTB(int idPagoProveedores, double montoTotal, double montoActual, int cuotaTotal, int cuotaActual, String plazos, Timestamp fechaInicial, Timestamp fechaActual, Timestamp fechaFinal, String observacion, String estado, String idProveedor, String idCompra) {
+    public PagoProveedoresTB(int idPagoProveedores, double montoTotal, double montoActual, int cuotaTotal, int cuotaActual, double valorCuota, String plazos, Timestamp fechaInicial, Timestamp fechaActual, Timestamp fechaFinal, String observacion, String estado, String idProveedor, String idCompra) {
         this.idPagoProveedores = idPagoProveedores;
         this.montoTotal = montoTotal;
         this.montoActual = montoActual;
         this.cuotaTotal = cuotaTotal;
         this.cuotaActual = cuotaActual;
+        this.valorCuota = valorCuota;
         this.plazos = plazos;
         this.fechaInicial = fechaInicial;
         this.fechaActual = fechaActual;
@@ -44,7 +46,7 @@ public class PagoProveedoresTB {
         this.idProveedor = idProveedor;
         this.idCompra = idCompra;
     }
-
+    
     public int getIdPagoProveedores() {
         return idPagoProveedores;
     }
@@ -83,6 +85,14 @@ public class PagoProveedoresTB {
 
     public void setCuotaActual(int cuotaActual) {
         this.cuotaActual = cuotaActual;
+    }
+
+    public double getValorCuota() {
+        return valorCuota;
+    }
+
+    public void setValorCuota(double valorCuota) {
+        this.valorCuota = valorCuota;
     }
 
     public String getPlazos() {
