@@ -20,6 +20,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -31,6 +33,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -100,8 +104,14 @@ public class FxCompraDetalleController implements Initializable {
     private AnchorPane windowinit;
 
     private AnchorPane vbContent;
+    
+    private String idProveedor;
 
     private String idCompra;
+
+    private String estadoCompra;
+    
+    private double total;
 
     private String simboloMoneda;
 
@@ -116,6 +126,7 @@ public class FxCompraDetalleController implements Initializable {
             arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
         });
         simboloMoneda = "M";
+
     }
 
     private Label addElementGridPane(String id, String nombre, Pos pos) {
@@ -173,11 +184,13 @@ public class FxCompraDetalleController implements Initializable {
         }
     }
 
-    public void setLoadDetalle(String idCompra) {
+    public void setLoadDetalle(String idCompra, String estadoCompra, double total) {
         this.idCompra = idCompra;
+        this.estadoCompra = estadoCompra;
+        this.total = total;
         ArrayList<Object> objects = CompraADO.ListCompletaDetalleCompra(idCompra);
         CompraTB compraTB = (CompraTB) objects.get(0);
-        ProveedorTB proveedorTB = (ProveedorTB) objects.get(1);       
+        ProveedorTB proveedorTB = (ProveedorTB) objects.get(1);
 
         if (compraTB != null) {
             lblFechaCompra.setText(compraTB.getFechaCompra().get().format(DateTimeFormatter.ofPattern("EEEE d 'de' MMMM 'de' yyyy")));
@@ -196,9 +209,10 @@ public class FxCompraDetalleController implements Initializable {
                     ? "No tiene un domicilio registrado"
                     : proveedorTB.getDireccion());
             lblContacto.setText("Tel: " + proveedorTB.getTelefono() + " Cel: " + proveedorTB.getCelular());
+            
+            idProveedor = proveedorTB.getIdProveedor().get();
+     
         }
-
-        
 
         fillArticlesTable(idCompra);
 
@@ -273,7 +287,7 @@ public class FxCompraDetalleController implements Initializable {
             map.put("LOGO", imgInputStream);
             map.put("EMAIL", "EMAIL" + Session.EMAIL);
             map.put("TELEFONOCELULAR", "TEL:" + Session.TELEFONO + " CEL:" + Session.CELULAR);
-            map.put("DIRECCION", Session.DIRECCION);            
+            map.put("DIRECCION", Session.DIRECCION);
 
             map.put("FECHACOMPRA", lblFechaCompra.getText());
             map.put("PROVEEDOR", lblProveedor.getText());
@@ -325,7 +339,47 @@ public class FxCompraDetalleController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         vbContent.getChildren().add(node);
-        controller.fillPurchasesTable((short)0,"",Tools.getDate(),Tools.getDate());
+
+        controller.fillPurchasesTable((short) 1, "", Tools.getDate(), Tools.getDate(), "");
+    }
+
+    private void openWindowHistorialPagos() throws IOException {
+        InitializationTransparentBackground();
+        URL url = getClass().getResource(Tools.FX_FILE_HISTORIAL_PAGOS);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+
+        FxHistorialPagosController controller = fXMLLoader.getController();
+        controller.setInitHistorialPagosController(this, idProveedor , idCompra, total);
+
+        Stage stage = FxWindow.StageLoaderModal(parent, "Historial de Pagos", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.setOnHiding((WindowEvent WindowEvent) -> {
+            windowinit.getChildren().remove(Session.pane);
+        });
+        stage.show();
+        controller.initListHistorialPagos();
+
+    }
+
+    private void InitializationTransparentBackground() {
+        Session.pane.setStyle("-fx-background-color: black");
+        Session.pane.setTranslateX(0);
+        Session.pane.setTranslateY(0);
+        Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.pane.setOpacity(0.7f);
+        windowinit.getChildren().add(Session.pane);
+    }
+
+    @FXML
+    private void onActionHistorialPagos(ActionEvent event) throws IOException {
+        if (estadoCompra.equals("PENDIENTE".toUpperCase())) {
+            openWindowHistorialPagos();
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Compra", "La compra no se hiso al credito", false);
+        }
     }
 
     public void setInitComptrasController(FxComprasRealizadasController comprascontroller, AnchorPane windowinit, AnchorPane vbContent) {
@@ -333,5 +387,4 @@ public class FxCompraDetalleController implements Initializable {
         this.windowinit = windowinit;
         this.vbContent = vbContent;
     }
-
 }

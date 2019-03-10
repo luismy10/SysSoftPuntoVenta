@@ -26,6 +26,10 @@ public class CompraTB {
     private SimpleDoubleProperty total;
     private String observaciones;
     private String notas;
+    
+    private String TipoCompra;
+    private String EstadoCompra;
+    
     private ProveedorTB proveedorTB;
     private ArticuloTB articuloTB;
 
@@ -221,4 +225,19 @@ public class CompraTB {
         this.totalReporte = totalReporte;
     }
 
+    public String getTipoCompra() {
+        return TipoCompra;
+    }
+
+    public void setTipoCompra(String TipoCompra) {
+        this.TipoCompra = TipoCompra;
+    }
+
+    public String getEstadoCompra() {
+        return EstadoCompra;
+    }
+
+    public void setEstadoCompra(String EstadoCompra) {
+        this.EstadoCompra = EstadoCompra;
+    }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="3">
         <file>
             <url>src/controller/FxMonedaProcesoController.java</url>
             <bookmark id="1">
@@ -9,13 +9,37 @@
                 <key/>
             </bookmark>
         </file>
+        <file>
+            <url>src/controller/FxCompraDetalleController.java</url>
+            <bookmark id="3">
+                <name/>
+                <line>379</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/model/PagoProveedoresTB.java</url>
+            <bookmark id="2">
+                <name/>
+                <line>21</line>
+                <key/>
+            </bookmark>
+        </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
+            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxCompraProcesoController.java</file>
+            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxHistorialPagosController.java</file>
+            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxVentaGranelController.java</file>
+            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxCompraDetalleController.java</file>
+            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxAmortizarPagosController.java</file>
+=======
             <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxTicketController.java</file>
             <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaDetalleController.java</file>
             <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/BillPrintable.java</file>
             <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxTicketMultilineaController.java</file>
+>>>>>>> 54ec4ae761ae64b04dee37b47c99a6c6e4d17f32
         </group>
     </open-files>
 </project-private>
