@@ -10,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -48,7 +47,7 @@ public class FxTicketMultilineaController implements Initializable {
             }
             if (widthContent <= sheetWidth) {
                 int widthNew = sheetWidth - widthContent;
-                TextField field = ticketController.addElementTextField("iu", textArea.getText(), true, 1, widthNew, Pos.CENTER_LEFT, true);
+                TextFieldTicket field = ticketController.addElementTextField("iu", textArea.getText(), true, 1, widthNew, Pos.CENTER_LEFT, true);
                 hBox.getChildren().add(field);
                 Tools.Dispose(window);
             }

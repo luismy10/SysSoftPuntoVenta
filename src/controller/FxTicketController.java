@@ -75,7 +75,6 @@ public class FxTicketController implements Initializable {
         sheetWidth = 40;
         cbOrdenar.getItems().addAll("Encabezado", "Detalle", "Pie");
         cbMultilinea.getItems().addAll(1, 2);
-
     }
 
     private void InitializationTransparentBackground() {
@@ -102,19 +101,32 @@ public class FxTicketController implements Initializable {
                     JSONObject objectObtener = obtenerObjetoJSON(cabeceraObjects.get("cb_" + (i + 1)).toString());
                     if (objectObtener.get("text") != null) {
                         JSONObject object = obtenerObjetoJSON(objectObtener.get("text").toString());
-                        TextField field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), Pos.CENTER_LEFT, false);
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), false);
                         box.getChildren().add(field);
                     } else if (objectObtener.get("list") != null) {
                         JSONArray array = obtenerArrayJSON(objectObtener.get("list").toString());
                         Iterator it = array.iterator();
                         while (it.hasNext()) {
                             JSONObject object = obtenerObjetoJSON(it.next().toString());
-                            TextField field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), Pos.CENTER_LEFT, false);
+                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), false);
                             box.getChildren().add(field);
                         }
                     }
                 }
             }
+        }
+    }
+
+    private Pos getAlignment(String align) {
+        switch (align) {
+            case "CENTER":
+                return Pos.CENTER;
+            case "CENTER_LEFT":
+                return Pos.CENTER_LEFT;
+            case "CENTER_RIGHT":
+                return Pos.CENTER_RIGHT;
+            default:
+                return Pos.CENTER_LEFT;
         }
     }
 
@@ -132,7 +144,7 @@ public class FxTicketController implements Initializable {
                         JSONObject cbkid = new JSONObject();
                         cbkid.put("value", field.getText());
                         cbkid.put("width", field.getColumnWidth());
-                        cbkid.put("aling", field.getAlignment().toString());
+                        cbkid.put("align", field.getAlignment().toString());
                         cbkid.put("multiline", field.isMultilineas());
                         cbkid.put("lines", field.getLines());
                         kids.add(cbkid);
@@ -143,7 +155,7 @@ public class FxTicketController implements Initializable {
                     JSONObject cbkid = new JSONObject();
                     cbkid.put("value", field.getText());
                     cbkid.put("width", field.getColumnWidth());
-                    cbkid.put("aling", field.getAlignment().toString());
+                    cbkid.put("align", field.getAlignment().toString());
                     cbkid.put("multiline", field.isMultilineas());
                     cbkid.put("lines", field.getLines());
                     cb.put("text", cbkid);
@@ -152,7 +164,36 @@ public class FxTicketController implements Initializable {
             }
 
             JSONObject detalle = new JSONObject();
+
             JSONObject pie = new JSONObject();
+            for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                HBox hBox = (HBox) hbPie.getChildren().get(i);
+                JSONObject cb = new JSONObject();
+                if (hBox.getChildren().size() > 1) {
+                    JSONArray kids = new JSONArray();
+                    for (int v = 0; v < hBox.getChildren().size(); v++) {
+                        TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
+                        JSONObject cbkid = new JSONObject();
+                        cbkid.put("value", field.getText());
+                        cbkid.put("width", field.getColumnWidth());
+                        cbkid.put("align", field.getAlignment().toString());
+                        cbkid.put("multiline", field.isMultilineas());
+                        cbkid.put("lines", field.getLines());
+                        kids.add(cbkid);
+                    }
+                    cb.put("list", kids);
+                } else {
+                    TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
+                    JSONObject cbkid = new JSONObject();
+                    cbkid.put("value", field.getText());
+                    cbkid.put("width", field.getColumnWidth());
+                    cbkid.put("align", field.getAlignment().toString());
+                    cbkid.put("multiline", field.isMultilineas());
+                    cbkid.put("lines", field.getLines());
+                    cb.put("text", cbkid);
+                }
+                pie.put("cp_" + (i + 1), cb);
+            }
 
             sampleObject.put("cabecera", cabecera);
             sampleObject.put("detalle", detalle);
@@ -254,7 +295,7 @@ public class FxTicketController implements Initializable {
         MenuItem text = new MenuItem("Agregar Texto");
         text.setGraphic(imgText);
         text.setOnAction((ActionEvent event) -> {
-            TextField field = addElementTextField("iu", "Escriba aqui.", false, 0, 13, Pos.CENTER_LEFT, true);
+            TextFieldTicket field = addElementTextField("iu", "Escriba aqui.", false, 0, 13, Pos.CENTER_LEFT, true);
             hBox.getChildren().add(field);
         });
         MenuItem textMultilinea = new MenuItem("Agregar Texto Multilínea");
@@ -326,7 +367,6 @@ public class FxTicketController implements Initializable {
         field.setColumnWidth(widthColumn);
         field.setEditable(editable);
         field.setPreferredSize((double) widthColumn * pointWidth, 30);
-        System.out.println(widthColumn);
         field.getStyleClass().add("text-field-ticket");
         field.setAlignment(align);
         field.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) -> {

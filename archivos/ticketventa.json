@@ -1,64 +1,66 @@
 {
     "cabecera": {
+        "cb_6": {
+            "text": {
+                "multiline": false,
+                "width": 40,
+                "align": "CENTER",
+                "lines": 0,
+                "value": "T001-000000009"
+            }
+        },
+        "cb_7": {
+            "text": {
+                "multiline": false,
+                "width": 40,
+                "align": "CENTER",
+                "lines": 0,
+                "value": "FECHA DE EMISION:02\/03\/2019 08:43:29 AM"
+            }
+        },
         "cb_4": {
             "text": {
-                "multiline": true,
+                "multiline": false,
                 "width": 40,
-                "lines": 1,
-                "value": "AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE LIMA PERU",
-                "aling": "CENTER_LEFT"
+                "align": "CENTER",
+                "lines": 0,
+                "value": "TEL: 0000000 CEL: 000000000"
             }
         },
         "cb_5": {
             "text": {
                 "multiline": false,
                 "width": 40,
+                "align": "CENTER",
                 "lines": 0,
-                "value": "========================================",
-                "aling": "CENTER_LEFT"
+                "value": "TICKET DE VENTA"
             }
         },
         "cb_2": {
             "text": {
                 "multiline": false,
                 "width": 40,
+                "align": "CENTER",
                 "lines": 0,
-                "value": "RUC 20101247867",
-                "aling": "CENTER"
+                "value": "RUC 20101247867"
             }
         },
         "cb_3": {
-            "list": [
-                {
-                    "multiline": false,
-                    "width": 13,
-                    "lines": 0,
-                    "value": "ESTADO",
-                    "aling": "CENTER_LEFT"
-                },
-                {
-                    "multiline": false,
-                    "width": 13,
-                    "lines": 0,
-                    "value": "RECURSOS",
-                    "aling": "CENTER_LEFT"
-                },
-                {
-                    "multiline": false,
-                    "width": 13,
-                    "lines": 0,
-                    "value": "MITADES",
-                    "aling": "CENTER_LEFT"
-                }
-            ]
+            "text": {
+                "multiline": true,
+                "width": 40,
+                "align": "CENTER_LEFT",
+                "lines": 1,
+                "value": "AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE LIMA PERU"
+            }
         },
         "cb_1": {
             "text": {
                 "multiline": false,
                 "width": 40,
+                "align": "CENTER",
                 "lines": 0,
-                "value": "COOPERATIVA LISSON",
-                "aling": "CENTER"
+                "value": "COOPERATIVA LISSON"
             }
         }
     },
