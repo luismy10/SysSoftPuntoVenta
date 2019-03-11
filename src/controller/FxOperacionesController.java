@@ -33,6 +33,12 @@ public class FxOperacionesController implements Initializable {
     private VBox nodeVenta;
 
     private FxVentaController controllerVenta;
+    
+    private FXMLLoader fXMLArticulo;
+
+    private VBox nodeArticulo;
+
+    private FxArticulosController controllerArticulo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -40,6 +46,10 @@ public class FxOperacionesController implements Initializable {
             fXMLVenta = new FXMLLoader(getClass().getResource(Tools.FX_FILE_VENTA));
             nodeVenta = fXMLVenta.load();
             controllerVenta = fXMLVenta.getController();
+            
+            fXMLArticulo = new FXMLLoader(getClass().getResource(Tools.FX_FILE_ARTICULO));
+            nodeArticulo = fXMLArticulo.load();
+            controllerArticulo = fXMLArticulo.getController();
         } catch (IOException ex) {
             Logger.getLogger(FxOperacionesController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -74,18 +84,15 @@ public class FxOperacionesController implements Initializable {
 
     }
 
-    private void openWindowArticulos() throws IOException {
-        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_ARTICULO));
-        VBox node = fXMLPrincipal.load();
-        FxArticulosController controller = fXMLPrincipal.getController();
-        controller.setContent(windowinit);
+    private void openWindowArticulos() throws IOException {       
+        controllerArticulo.setContent(windowinit);
         content.getChildren().clear();
-        AnchorPane.setLeftAnchor(node, 0d);
-        AnchorPane.setTopAnchor(node, 0d);
-        AnchorPane.setRightAnchor(node, 0d);
-        AnchorPane.setBottomAnchor(node, 0d);
-        content.getChildren().add(node);
-        controller.fillArticlesTable("");
+        AnchorPane.setLeftAnchor(nodeArticulo, 0d);
+        AnchorPane.setTopAnchor(nodeArticulo, 0d);
+        AnchorPane.setRightAnchor(nodeArticulo, 0d);
+        AnchorPane.setBottomAnchor(nodeArticulo, 0d);
+        content.getChildren().add(nodeArticulo);
+        controllerArticulo.fillArticlesTable("");
 
     }
 

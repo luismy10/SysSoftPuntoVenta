@@ -8,15 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-<<<<<<< HEAD
-    <jar href="SysSoftProcess.jar" size="1280961" download="eager" />
-=======
-<<<<<<< HEAD
-    <jar href="SysSoftProcess.jar" size="1296764" download="eager" />
-=======
-    <jar href="SysSoftProcess.jar" size="1279851" download="eager" />
->>>>>>> 54ec4ae761ae64b04dee37b47c99a6c6e4d17f32
->>>>>>> 44f719a23a58b1ecc35891a60d77acf7685f5a40
+    <jar href="SysSoftProcess.jar" size="1314365" download="eager" />
     <jar href="lib\Util.jar" size="11957" download="eager" />
     <jar href="lib\barbecue-1.5-beta1.jar" size="91079" download="eager" />
     <jar href="lib\commons-beanutils-1.8.2.jar" size="231891" download="eager" />

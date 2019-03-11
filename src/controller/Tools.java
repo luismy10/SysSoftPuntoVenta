@@ -95,16 +95,11 @@ public class Tools {
     static final String FX_FILE_COMPRASPROCESO = "/view/compra/FxCompraProceso.fxml";
     static final String FX_FILE_PLAZOS = "/view/compra/FxPlazos.fxml";
     static final String FX_FILE_TICKET = "/view/tipodocumento/FxTicket.fxml";
-<<<<<<< HEAD
     static final String FX_FILE_HISTORIAL_PAGOS = "/view/compra/FxHistorialPagos.fxml";
     static final String FX_FILE_AMORTIZAR_PAGOS = "/view/compra/FxAmortizarPagos.fxml";
-
-
-=======
     static final String FX_FILE_TICKETBUSQUEDA = "/view/tipodocumento/FxTicketBusqueda.fxml";
     static final String FX_FILE_TICKETMULTILINEA = "/view/tipodocumento/FxTicketMultilinea.fxml";
     
->>>>>>> 54ec4ae761ae64b04dee37b47c99a6c6e4d17f32
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);

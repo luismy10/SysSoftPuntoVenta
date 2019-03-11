@@ -2,45 +2,61 @@
     "cabecera": {
         "cb_4": {
             "text": {
+                "multiline": true,
                 "width": 40,
+                "lines": 1,
+                "value": "AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE LIMA PERU",
+                "aling": "CENTER_LEFT"
+            }
+        },
+        "cb_5": {
+            "text": {
+                "multiline": false,
+                "width": 40,
+                "lines": 0,
                 "value": "========================================",
                 "aling": "CENTER_LEFT"
             }
         },
         "cb_2": {
             "text": {
+                "multiline": false,
                 "width": 40,
-                "value": "RUC 20101247865",
+                "lines": 0,
+                "value": "RUC 20101247867",
                 "aling": "CENTER"
             }
         },
         "cb_3": {
             "list": [
                 {
-                    "width": 10,
-                    "value": "CANT.",
-                    "aling": "CENTER"
+                    "multiline": false,
+                    "width": 13,
+                    "lines": 0,
+                    "value": "ESTADO",
+                    "aling": "CENTER_LEFT"
                 },
                 {
-                    "width": 10,
-                    "value": "P.UNIT.",
-                    "aling": "CENTER"
+                    "multiline": false,
+                    "width": 13,
+                    "lines": 0,
+                    "value": "RECURSOS",
+                    "aling": "CENTER_LEFT"
                 },
                 {
-                    "width": 10,
-                    "value": "DSCTO.",
-                    "aling": "CENTER"
-                },
-                {
-                    "width": 10,
-                    "value": "IMPORTE",
-                    "aling": "CENTER_RIGHT"
+                    "multiline": false,
+                    "width": 13,
+                    "lines": 0,
+                    "value": "MITADES",
+                    "aling": "CENTER_LEFT"
                 }
             ]
         },
         "cb_1": {
             "text": {
+                "multiline": false,
                 "width": 40,
+                "lines": 0,
                 "value": "COOPERATIVA LISSON",
                 "aling": "CENTER"
             }

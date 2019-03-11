@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +9,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -20,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextField;
@@ -46,6 +49,8 @@ public class FxTicketController implements Initializable {
     @FXML
     private VBox hbEncabezado;
     @FXML
+    private VBox hbDetalleCabecera;
+    @FXML
     private VBox hbPie;
     @FXML
     private TextField txtAnchoColumna;
@@ -53,6 +58,8 @@ public class FxTicketController implements Initializable {
     private ComboBox<String> cbOrdenar;
     @FXML
     private ComboBox<Integer> cbMultilinea;
+    @FXML
+    private ListView<?> lvLista;
 
     private AnchorPane content;
 
@@ -61,8 +68,6 @@ public class FxTicketController implements Initializable {
     private int sheetWidth;
 
     private double pointWidth;
-    @FXML
-    private VBox hbDetalleCabecera;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -70,22 +75,7 @@ public class FxTicketController implements Initializable {
         sheetWidth = 40;
         cbOrdenar.getItems().addAll("Encabezado", "Detalle", "Pie");
         cbMultilinea.getItems().addAll(1, 2);
-//        File file = new File("c:\\temp\\modelo.json");
-//        if (file.exists()) {
-//            JSONObject ticket = obtenerObjetoJSON(leerArchivoTexto(file.getAbsolutePath()));
-//            JSONObject cabecera = obtenerObjetoJSON(ticket.get("Ticket").toString());
-//            if (cabecera.get("Cabecera") != null) {
-//                JSONObject cabeceraObjects = obtenerObjetoJSON(cabecera.get("Cabecera").toString());
-//                addElementoWithId("cb", cabeceraObjects.get("cb_1").toString(), Pos.CENTER, true);
-//                addElementoWithId("cb", cabeceraObjects.get("cb_2").toString(), Pos.CENTER, true);
-//                addElementoWithId("cb", cabeceraObjects.get("cb_3").toString(), Pos.CENTER, true);
-//                addElementoWithId("cb", cabeceraObjects.get("cb_4").toString(), Pos.CENTER, true);
-//                addElementoWithId("cb", cabeceraObjects.get("cb_5").toString(), Pos.CENTER, true);
-//                addElementoWithId("cb", cabeceraObjects.get("cb_6").toString(), Pos.CENTER, true);
-//                addElementoWithId("cb", cabeceraObjects.get("cb_7").toString(), Pos.CENTER, true);
-//                addElementoWithId("cb", cabeceraObjects.get("cb_8").toString(), Pos.CENTER_LEFT, false);
-//            }
-//        }
+
     }
 
     private void InitializationTransparentBackground() {
@@ -96,6 +86,36 @@ public class FxTicketController implements Initializable {
         Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
         Session.pane.setOpacity(0.7f);
         content.getChildren().add(Session.pane);
+    }
+
+    private void editTicket() {
+        File file = new File("./archivos/ticketventa.json");
+        if (file.exists()) {
+            JSONObject cabecera = obtenerObjetoJSON(leerArchivoTexto(file.getAbsolutePath()));
+            hbEncabezado.getChildren().clear();
+            hbDetalleCabecera.getChildren().clear();
+            hbPie.getChildren().clear();
+            if (cabecera.get("cabecera") != null) {
+                JSONObject cabeceraObjects = obtenerObjetoJSON(cabecera.get("cabecera").toString());
+                for (int i = 0; i < cabeceraObjects.size(); i++) {
+                    HBox box = generateElement(hbEncabezado, "cb");
+                    JSONObject objectObtener = obtenerObjetoJSON(cabeceraObjects.get("cb_" + (i + 1)).toString());
+                    if (objectObtener.get("text") != null) {
+                        JSONObject object = obtenerObjetoJSON(objectObtener.get("text").toString());
+                        TextField field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), Pos.CENTER_LEFT, false);
+                        box.getChildren().add(field);
+                    } else if (objectObtener.get("list") != null) {
+                        JSONArray array = obtenerArrayJSON(objectObtener.get("list").toString());
+                        Iterator it = array.iterator();
+                        while (it.hasNext()) {
+                            JSONObject object = obtenerObjetoJSON(it.next().toString());
+                            TextField field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), Pos.CENTER_LEFT, false);
+                            box.getChildren().add(field);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void saveTicket() {
@@ -113,6 +133,8 @@ public class FxTicketController implements Initializable {
                         cbkid.put("value", field.getText());
                         cbkid.put("width", field.getColumnWidth());
                         cbkid.put("aling", field.getAlignment().toString());
+                        cbkid.put("multiline", field.isMultilineas());
+                        cbkid.put("lines", field.getLines());
                         kids.add(cbkid);
                     }
                     cb.put("list", kids);
@@ -122,6 +144,8 @@ public class FxTicketController implements Initializable {
                     cbkid.put("value", field.getText());
                     cbkid.put("width", field.getColumnWidth());
                     cbkid.put("aling", field.getAlignment().toString());
+                    cbkid.put("multiline", field.isMultilineas());
+                    cbkid.put("lines", field.getLines());
                     cb.put("text", cbkid);
                 }
                 cabecera.put("cb_" + (i + 1), cb);
@@ -189,7 +213,7 @@ public class FxTicketController implements Initializable {
         }
     }
 
-    private void addElement(VBox contenedor, String id) {
+    private HBox addElement(VBox contenedor, String id) {
         ImageView imgRemove = new ImageView(new Image("/view/remove-item.png"));
         imgRemove.setFitWidth(20);
         imgRemove.setFitHeight(20);
@@ -245,7 +269,7 @@ public class FxTicketController implements Initializable {
             for (int i = 0; i < sheetWidth; i++) {
                 value += "-";
             }
-            TextField field = addElementTextField("iug", value, false, 0, sheetWidth, Pos.CENTER_LEFT, false);
+            TextFieldTicket field = addElementTextField("iug", value, false, 0, sheetWidth, Pos.CENTER_LEFT, false);
             hBox.getChildren().add(field);
         });
         MenuItem textDosLineas = new MenuItem("Agregar Doble Línea");
@@ -255,7 +279,7 @@ public class FxTicketController implements Initializable {
             for (int i = 0; i < sheetWidth; i++) {
                 value += "=";
             }
-            TextField field = addElementTextField("iugd", value, false, 0, sheetWidth, Pos.CENTER_LEFT, false);
+            TextFieldTicket field = addElementTextField("iugd", value, false, 0, sheetWidth, Pos.CENTER_LEFT, false);
             hBox.getChildren().add(field);
         });
 
@@ -273,7 +297,7 @@ public class FxTicketController implements Initializable {
             }
 
             int widthNew = sheetWidth - widthContent;
-            System.out.println(widthContent + " - " + widthNew);
+//            System.out.println(widthContent + " - " + widthNew);
             if ((widthContent + widthNew) <= sheetWidth) {
                 textMultilinea.setDisable(false);
             } else {
@@ -292,15 +316,17 @@ public class FxTicketController implements Initializable {
             }
         });
         contenedor.getChildren().add(hBox);
+        return hBox;
     }
 
-    public TextField addElementTextField(String id, String titulo, boolean multilinea, int lines, int widthColumn, Pos align, boolean editable) {
+    public TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, int lines, int widthColumn, Pos align, boolean editable) {
         TextFieldTicket field = new TextFieldTicket(titulo, id);
         field.setMultilineas(multilinea);
         field.setLines(lines);
         field.setColumnWidth(widthColumn);
         field.setEditable(editable);
-        field.setPreferredSize(multilinea ? ((double) widthColumn * pointWidth) : ((double) field.getText().length() * pointWidth), 30);
+        field.setPreferredSize((double) widthColumn * pointWidth, 30);
+        System.out.println(widthColumn);
         field.getStyleClass().add("text-field-ticket");
         field.setAlignment(align);
         field.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) -> {
@@ -434,6 +460,21 @@ public class FxTicketController implements Initializable {
         return objectJSON;
     }
 
+    private JSONArray obtenerArrayJSON(final String codigoJSON) {
+        JSONParser lector = new JSONParser();
+        JSONArray arrayJSON = null;
+
+        try {
+            Object recuperado = lector.parse(codigoJSON);
+            arrayJSON = (JSONArray) recuperado;
+        } catch (ParseException e) {
+            System.out.println("Posicion: " + e.getPosition());
+            System.out.println(e);
+        }
+
+        return arrayJSON;
+    }
+
     private void printTicket() {
         BillPrintable billPrintable = new BillPrintable();
         if (!hbEncabezado.getChildren().isEmpty() && !hbDetalleCabecera.getChildren().isEmpty() && !hbPie.getChildren().isEmpty()) {
@@ -505,9 +546,34 @@ public class FxTicketController implements Initializable {
         }
     }
 
+    private HBox generateElement(VBox contenedor, String id) {
+        if (contenedor.getChildren().isEmpty()) {
+            return addElement(contenedor, id + "1");
+        } else {
+            HBox hBox = (HBox) contenedor.getChildren().get(contenedor.getChildren().size() - 1);
+            String idGenerate = hBox.getId();
+            String codigo = idGenerate.substring(2);
+            int valor = Integer.parseInt(codigo) + 1;
+            String newCodigo = id + valor;
+            return addElement(contenedor, newCodigo);
+        }
+    }
+
     @FXML
     private void onActionMultilinea(ActionEvent event) {
 
+    }
+
+    @FXML
+    private void onKeyPressEditar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            editTicket();
+        }
+    }
+
+    @FXML
+    private void onActionEditar(ActionEvent event) {
+        editTicket();
     }
 
     @FXML
@@ -536,16 +602,7 @@ public class FxTicketController implements Initializable {
 
     @FXML
     private void onMouseClickedEncabezadoAdd(MouseEvent event) {
-        if (hbEncabezado.getChildren().isEmpty()) {
-            addElement(hbEncabezado, "cb1");
-        } else {
-            HBox hBox = (HBox) hbEncabezado.getChildren().get(hbEncabezado.getChildren().size() - 1);
-            String idGenerate = hBox.getId();
-            String codigo = idGenerate.substring(2);
-            int valor = Integer.parseInt(codigo) + 1;
-            String newCodigo = "cb" + valor;
-            addElement(hbEncabezado, newCodigo);
-        }
+        generateElement(hbEncabezado, "cb");
     }
 
     @FXML
