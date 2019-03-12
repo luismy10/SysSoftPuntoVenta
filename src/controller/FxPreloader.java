@@ -150,14 +150,14 @@ public class FxPreloader extends Preloader {
 //                    service.start();
                     ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
                     if (!list.isEmpty()) {
-                        Session.EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();
-                        Session.NOMBREEMPRESA = list.get(0).getNombre();
-                        Session.RUC = list.get(0).getNumeroDocumento();
-                        Session.TELEFONO = list.get(0).getTelefono();
-                        Session.CELULAR = list.get(0).getCelular();
-                        Session.PAGINAWEB = list.get(0).getPaginaWeb();
-                        Session.EMAIL = list.get(0).getEmail();
-                        Session.DIRECCION = list.get(0).getDomicilio();
+                        Session.NOMBRE_EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();
+                        Session.NOMBRE_REPRESENTANTE = list.get(0).getNombre();
+                        Session.RUC_EMPRESA = list.get(0).getNumeroDocumento();
+                        Session.TELEFONO_EMPRESA = list.get(0).getTelefono();
+                        Session.CELULAR_EMPRESA = list.get(0).getCelular();
+                        Session.PAGINAWEB_EMPRESA = list.get(0).getPaginaWeb();
+                        Session.EMAIL_EMPRESA = list.get(0).getEmail();
+                        Session.DIRECCION_EMPRESA = list.get(0).getDomicilio();
                     }                    
 //
                     Session.MONEDA = MonedaADO.GetMonedaPredetermined();

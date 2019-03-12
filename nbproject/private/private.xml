@@ -16,9 +16,7 @@
             <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaDetalleController.java</file>
             <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/BillPrintable.java</file>
             <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxTicketMultilineaController.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxOperacionesController.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxConfiguracionController.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxArticulosController.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxTicketVariableController.java</file>
         </group>
     </open-files>
 </project-private>

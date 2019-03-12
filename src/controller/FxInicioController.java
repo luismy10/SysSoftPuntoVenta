@@ -138,12 +138,12 @@ public class FxInicioController implements Initializable {
     public void initWindowSize() {
         window.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             Session.WIDTH_WINDOW = (double) newValue;
-            Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
+            Session.PANE.setPrefWidth(Session.WIDTH_WINDOW);
         });
 
         window.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             Session.HEIGHT_WINDOW = (double) newValue;
-            Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
+            Session.PANE.setPrefHeight(Session.HEIGHT_WINDOW);
         });
     }
 

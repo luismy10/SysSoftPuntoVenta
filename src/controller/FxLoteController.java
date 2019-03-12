@@ -115,13 +115,13 @@ public class FxLoteController implements Initializable {
     }
 
     private void InitializationTransparentBackground() {
-        Session.pane.setStyle("-fx-background-color: black");
-        Session.pane.setTranslateX(0);
-        Session.pane.setTranslateY(0);
-        Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
-        Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
-        Session.pane.setOpacity(0.7f);
-        content.getChildren().add(Session.pane);
+        Session.PANE.setStyle("-fx-background-color: black");
+        Session.PANE.setTranslateX(0);
+        Session.PANE.setTranslateY(0);
+        Session.PANE.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.PANE.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.PANE.setOpacity(0.7f);
+        content.getChildren().add(Session.PANE);
     }
 
     public void loadDataInitial() {
@@ -210,7 +210,7 @@ public class FxLoteController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(Session.pane);
+            content.getChildren().remove(Session.PANE);
         });
         stage.show();
 

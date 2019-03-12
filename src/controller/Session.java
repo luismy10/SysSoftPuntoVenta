@@ -4,23 +4,34 @@ import javafx.scene.layout.Pane;
 
 public class Session {
 
+    /*
+    Datos de la vista
+    */
     public static String USER_ID;
     public static String USER_NAME;
     public static double WIDTH_WINDOW;
     public static double HEIGHT_WINDOW;
-    public static String EMPRESA;
-    public static String NOMBREEMPRESA;
-    public static String RUC;
-    public static String DIRECCION;
-    public static String TELEFONO;
-    public static String CELULAR;
-    public static String PAGINAWEB;
-    public static String EMAIL;
+    /*
+    Datos de la empresa
+    */
+    public static String NOMBRE_REPRESENTANTE;
+    public static String NOMBRE_EMPRESA;
+    public static String RUC_EMPRESA;
+    public static String DIRECCION_EMPRESA;
+    public static String TELEFONO_EMPRESA;
+    public static String CELULAR_EMPRESA;
+    public static String PAGINAWEB_EMPRESA;
+    public static String EMAIL_EMPRESA;
+    /*
+    
+    */
     public static boolean CONNECTION_SESSION;
     public static String IDCLIENTE;
     public static String DATOSCLIENTE;
-    public static Pane pane;
-
+    public static Pane PANE;
+    /*
+    
+    */
     public static String ARTICULOS_TOTAL;
     public static String CLIENTES_TOTAL;
     public static String PROVEEDORES_TOTAL;
@@ -35,7 +46,6 @@ public class Session {
     public static String CORTA_PAPEL;
     
     public static int DEFAULT_COMPROBANTE;
-//    public static int DEFAULT_MONEDA;
     public static int DEFAULT_IMPUESTO;
     
 }

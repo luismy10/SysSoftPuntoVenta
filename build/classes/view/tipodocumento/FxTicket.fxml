@@ -4,7 +4,6 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -122,7 +121,7 @@
                                                 </ImageView>
                                              </children>
                                           </HBox>
-                                          <VBox />
+                                          <VBox fx:id="hbDetalleCuerpo" />
                                           <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;">
                                              <children>
                                                 <Label styleClass="labelMonospaced13" text="Pie" textFill="WHITE" />
@@ -150,20 +149,13 @@
                      <children>
                         <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em  0 0.4166666666666667em 0; -fx-border-color: #999999; -fx-border-width: 1 0 1 0;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Agregar campos" />
+                              <Label styleClass="labelRoboto14" text="Caracteristicas" />
                            </children>
                         </HBox>
-                        <VBox style="-fx-spacing: 0.8333333333333334em;">
-                           <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Ordenar" />
-                              <ComboBox fx:id="cbOrdenar" maxWidth="1.7976931348623157E308" prefHeight="30.0" promptText="Seleccione" />
-                           </children>
-                        </VBox>
-                        <ListView fx:id="lvLista" prefHeight="50.0" prefWidth="260.0" VBox.vgrow="SOMETIMES" />
                         <VBox style="-fx-spacing: 0.4166666666666667em;">
                            <children>
                               <Label styleClass="labelOpenSansRegular14" text="Ancho en columnas" />
-                              <TextField fx:id="txtAnchoColumna" onAction="#onActionAnchoColumna" onKeyTyped="#onKeyTypedAnchoColumna" prefHeight="30.0" styleClass="text-field-contenido" />
+                              <TextField fx:id="txtAnchoColumna" onAction="#onActionAnchoColumna" onKeyTyped="#onKeyTypedAnchoColumna" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-contenido" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.4166666666666667em;">

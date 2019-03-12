@@ -55,17 +55,17 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
                      <children>
-                        <Label prefWidth="76.0" styleClass="labelRoboto14" text="Nombre:" textFill="#23283a">
+                        <Label styleClass="labelRoboto14" text="Representante" textFill="#23283a">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtNombre" onAction="#onActionToRegister" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtRepresentante" onAction="#onActionToRegister" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
                      <children>
-                        <Label prefWidth="76.0" styleClass="labelRoboto14" text="Teléfono:" textFill="#23283a">
+                        <Label styleClass="labelRoboto14" text="Teléfono:" textFill="#23283a">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -103,7 +103,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
                      <children>
-                        <Label prefWidth="76.0" styleClass="labelRoboto14" text="Domicilio:" textFill="#23283a">
+                        <Label styleClass="labelRoboto14" text="Domicilio:" textFill="#23283a">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>

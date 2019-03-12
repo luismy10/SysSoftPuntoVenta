@@ -85,7 +85,7 @@ public class BillPrintable implements Printable {
 
             g2d.setFont(new Font("Arial", Font.PLAIN, 9));
             g2d.setPaint(Color.BLACK);
-            g2d.drawString(Session.NOMBREEMPRESA, centerText(width, metrics, Session.NOMBREEMPRESA), y);
+            g2d.drawString(Session.NOMBRE_EMPRESA, centerText(width, metrics, Session.NOMBRE_EMPRESA), y);
 //                y += yShift;
 //                g2d.drawString(Session.DIRECCION, centerText(width, metrics, Session.DIRECCION), y);
 //                y += yShift;

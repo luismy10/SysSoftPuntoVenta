@@ -99,7 +99,8 @@ public class Tools {
     static final String FX_FILE_AMORTIZAR_PAGOS = "/view/compra/FxAmortizarPagos.fxml";
     static final String FX_FILE_TICKETBUSQUEDA = "/view/tipodocumento/FxTicketBusqueda.fxml";
     static final String FX_FILE_TICKETMULTILINEA = "/view/tipodocumento/FxTicketMultilinea.fxml";
-    
+    static final String FX_FILE_TICKETVARIABLE = "/view/tipodocumento/FxTicketVariable.fxml";
+
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);
@@ -280,6 +281,12 @@ public class Tools {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
         return dateFormat.format(date);
+    }
+
+    public static String getHour(String format) {
+        Date date = new Date();
+        SimpleDateFormat hour = new SimpleDateFormat(format);
+        return hour.format(date);
     }
 
     public static Timestamp getDateHour() {

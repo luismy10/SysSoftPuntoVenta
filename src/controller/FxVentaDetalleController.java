@@ -156,8 +156,8 @@ public class FxVentaDetalleController implements Initializable {
             SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss aa");
 
             try {
-                String ruc = "RUC " + Session.RUC;
-                String telcel = "TEL: " + Session.TELEFONO + " CEL:" + Session.CELULAR;
+                String ruc = "RUC " + Session.RUC_EMPRESA;
+                String telcel = "TEL: " + Session.TELEFONO_EMPRESA + " CEL:" + Session.CELULAR_EMPRESA;
                 String documento = "";
                 if (ticket.substring(0, 1).equalsIgnoreCase("b")) {
                     documento = "BOLETA DE VENTA ELECTRONICA";
@@ -177,9 +177,9 @@ public class FxVentaDetalleController implements Initializable {
 
                 p.setOutSize(getSizePaper(filas, count), 40);
 
-                p.printTextWrap(1, 0, (int) (40 - Session.NOMBREEMPRESA.length()) / 2, 40, Session.NOMBREEMPRESA);
+                p.printTextWrap(1, 0, (int) (40 - Session.NOMBRE_EMPRESA.length()) / 2, 40, Session.NOMBRE_EMPRESA);
                 p.printTextWrap(2, 0, (int) (40 - ruc.length()) / 2, 40, ruc);
-                p.printTextWrap(3, 1, 0, 40, Session.DIRECCION);
+                p.printTextWrap(3, 1, 0, 40, Session.DIRECCION_EMPRESA);
                 p.printTextWrap(5, 0, (int) (40 - telcel.length()) / 2, 40, telcel);
 
                 p.printTextWrap(6, 0, (int) (40 - documento.length()) / 2, 40, documento);

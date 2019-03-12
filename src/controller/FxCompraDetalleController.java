@@ -283,17 +283,17 @@ public class FxCompraDetalleController implements Initializable {
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
             Map map = new HashMap();
             map.put("IDCOMPRA", idCompra);
-            map.put("EMPRESA", Session.EMPRESA);
+            map.put("EMPRESA", Session.NOMBRE_EMPRESA);
             map.put("LOGO", imgInputStream);
-            map.put("EMAIL", "EMAIL" + Session.EMAIL);
-            map.put("TELEFONOCELULAR", "TEL:" + Session.TELEFONO + " CEL:" + Session.CELULAR);
-            map.put("DIRECCION", Session.DIRECCION);
+            map.put("EMAIL", "EMAIL" + Session.EMAIL_EMPRESA);
+            map.put("TELEFONOCELULAR", "TEL:" + Session.TELEFONO_EMPRESA + " CEL:" + Session.CELULAR_EMPRESA);
+            map.put("DIRECCION", Session.DIRECCION_EMPRESA);
 
             map.put("FECHACOMPRA", lblFechaCompra.getText());
             map.put("PROVEEDOR", lblProveedor.getText());
             map.put("PRODIRECCION", lblDomicilio.getText());
             map.put("PROTELEFONOCELULAR", lblContacto.getText());
-            map.put("PROEMAIL", Session.EMAIL);
+            map.put("PROEMAIL", Session.EMAIL_EMPRESA);
             map.put("TOTAL", lblTotal.getText());
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, DBUtil.getConnection());
@@ -356,7 +356,7 @@ public class FxCompraDetalleController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            windowinit.getChildren().remove(Session.pane);
+            windowinit.getChildren().remove(Session.PANE);
         });
         stage.show();
         controller.initListHistorialPagos();
@@ -364,13 +364,13 @@ public class FxCompraDetalleController implements Initializable {
     }
 
     private void InitializationTransparentBackground() {
-        Session.pane.setStyle("-fx-background-color: black");
-        Session.pane.setTranslateX(0);
-        Session.pane.setTranslateY(0);
-        Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
-        Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
-        Session.pane.setOpacity(0.7f);
-        windowinit.getChildren().add(Session.pane);
+        Session.PANE.setStyle("-fx-background-color: black");
+        Session.PANE.setTranslateX(0);
+        Session.PANE.setTranslateY(0);
+        Session.PANE.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.PANE.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.PANE.setOpacity(0.7f);
+        windowinit.getChildren().add(Session.PANE);
     }
 
     @FXML

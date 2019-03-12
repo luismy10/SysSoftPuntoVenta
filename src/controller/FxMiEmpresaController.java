@@ -34,7 +34,7 @@ public class FxMiEmpresaController implements Initializable {
     @FXML
     private ComboBox<DetalleTB> cbGiroComercial;
     @FXML
-    private TextField txtNombre;
+    private TextField txtRepresentante;
     @FXML
     private TextField txtTelefono;
     @FXML
@@ -94,7 +94,7 @@ public class FxMiEmpresaController implements Initializable {
                 }
             }
 
-            txtNombre.setText(list.get(0).getNombre());
+            txtRepresentante.setText(list.get(0).getNombre());
             txtTelefono.setText(list.get(0).getTelefono());
             txtCelular.setText(list.get(0).getCelular());
             txtPaginasWeb.setText(list.get(0).getPaginaWeb());
@@ -174,9 +174,9 @@ public class FxMiEmpresaController implements Initializable {
         if (cbGiroComercial.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Seleccione el giro comercial, por favor.", false);
             cbGiroComercial.requestFocus();
-        } else if (txtNombre.getText().equalsIgnoreCase("")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese el nombre de la empresa, por favor.", false);
-            txtNombre.requestFocus();
+        } else if (txtRepresentante.getText().equalsIgnoreCase("")) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese el nombre del representante, por favor.", false);
+            txtRepresentante.requestFocus();
         } else if (txtDomicilio.getText().isEmpty()) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese la dirección fiscal de la empresa, por favor.", false);
             txtDomicilio.requestFocus();
@@ -195,7 +195,7 @@ public class FxMiEmpresaController implements Initializable {
                 EmpresaTB empresaTB = new EmpresaTB();
                 empresaTB.setIdEmpresa(validate == true ? idEmpresa : 0);
                 empresaTB.setGiroComerial(cbGiroComercial.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                empresaTB.setNombre(txtNombre.getText().trim());
+                empresaTB.setNombre(txtRepresentante.getText().trim());
                 empresaTB.setTelefono(txtTelefono.getText().trim().isEmpty() ? "0000000" : txtTelefono.getText().trim());
                 empresaTB.setCelular(txtCelular.getText().trim().isEmpty() ? "000000000" : txtCelular.getText().trim());
                 empresaTB.setPaginaWeb(txtPaginasWeb.getText().trim());
@@ -205,7 +205,7 @@ public class FxMiEmpresaController implements Initializable {
                         ? cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get()
                         : 0);
                 empresaTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().isEmpty() ? "000000000000" : txtNumeroDocumento.getText().trim());
-                empresaTB.setRazonSocial(txtRazonSocial.getText().trim().isEmpty() ? txtNombre.getText().trim() : txtRazonSocial.getText().trim());
+                empresaTB.setRazonSocial(txtRazonSocial.getText().trim().isEmpty() ? txtRepresentante.getText().trim() : txtRazonSocial.getText().trim());
                 empresaTB.setNombreComercial(txtNombreComercial.getText().trim());
                 empresaTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0
                         ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()
@@ -221,25 +221,25 @@ public class FxMiEmpresaController implements Initializable {
                 switch (result) {
                     case "registered":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Registrado correctamente.", false);
-                        Session.EMPRESA = txtRazonSocial.getText();
-                        Session.NOMBREEMPRESA = txtNombre.getText();
-                        Session.RUC = txtNumeroDocumento.getText();
-                        Session.TELEFONO = txtTelefono.getText();
-                        Session.CELULAR = txtCelular.getText();
-                        Session.PAGINAWEB = txtPaginasWeb.getText();
-                        Session.EMAIL = txtEmail.getText();
-                        Session.DIRECCION = txtDomicilio.getText();
+                        Session.NOMBRE_REPRESENTANTE = txtRepresentante.getText();
+                        Session.NOMBRE_EMPRESA = txtRazonSocial.getText();
+                        Session.RUC_EMPRESA = txtNumeroDocumento.getText();
+                        Session.TELEFONO_EMPRESA = txtTelefono.getText();
+                        Session.CELULAR_EMPRESA = txtCelular.getText();
+                        Session.PAGINAWEB_EMPRESA = txtPaginasWeb.getText();
+                        Session.EMAIL_EMPRESA = txtEmail.getText();
+                        Session.DIRECCION_EMPRESA = txtDomicilio.getText();
                         break;
                     case "updated":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Actualizado correctamente.", false);
-                        Session.EMPRESA = txtRazonSocial.getText();
-                        Session.NOMBREEMPRESA = txtNombre.getText();
-                        Session.RUC = txtNumeroDocumento.getText();
-                        Session.TELEFONO = txtTelefono.getText();
-                        Session.CELULAR = txtCelular.getText();
-                        Session.PAGINAWEB = txtPaginasWeb.getText();
-                        Session.EMAIL = txtEmail.getText();
-                        Session.DIRECCION = txtDomicilio.getText();
+                        Session.NOMBRE_REPRESENTANTE = txtRepresentante.getText();
+                        Session.NOMBRE_EMPRESA = txtRazonSocial.getText();
+                        Session.RUC_EMPRESA = txtNumeroDocumento.getText();
+                        Session.TELEFONO_EMPRESA = txtTelefono.getText();
+                        Session.CELULAR_EMPRESA= txtCelular.getText();
+                        Session.PAGINAWEB_EMPRESA = txtPaginasWeb.getText();
+                        Session.EMAIL_EMPRESA = txtEmail.getText();
+                        Session.DIRECCION_EMPRESA = txtDomicilio.getText();
                         break;
                     case "error":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "No se puedo completar la ejecución.", false);

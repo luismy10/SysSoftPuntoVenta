@@ -39,7 +39,7 @@ public class SysSoft extends Application {
         FXMLLoader fXMLLoaderLogin = FxWindow.LoaderWindow(urllogin);
         parent = fXMLLoaderLogin.load(urllogin.openStream());
         loginController = fXMLLoaderLogin.getController();
-        Session.pane = new Pane();
+        Session.PANE = new Pane();
         scene = new Scene(parent);
         for (int i = 0; i < COUNT_LIMIT; i++) {
             double progress = (100 * i) / COUNT_LIMIT;
