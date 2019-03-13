@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.application.Preloader;
 import javafx.geometry.Pos;
@@ -95,22 +94,22 @@ public class FxPreloader extends Preloader {
                     try {
                         archivo = new File("./archivos/impresoraticket.txt");
                         if (archivo.exists()) {
-                            Session.STATE_IMPRESORA = true;
+                            Session.ESTADO_IMPRESORA = true;
                             // Apertura del fichero y creacion de BufferedReader para poder
                             // hacer una lectura comoda (disponer del metodo readLine()).
                             fr = new FileReader(archivo);
                             br = new BufferedReader(fr);
                             // Lectura del fichero                           
-                            Session.NAME_IMPRESORA = br.readLine();
-                            Session.CORTA_PAPEL = br.readLine();
-                            System.out.println(Session.NAME_IMPRESORA);
-                            System.out.println(Session.CORTA_PAPEL);
+                            Session.NOMBRE_IMPRESORA = br.readLine();
+                            Session.CORTAPAPEL_IMPRESORA = br.readLine();
+                            System.out.println(Session.NOMBRE_IMPRESORA);
+                            System.out.println(Session.CORTAPAPEL_IMPRESORA);
                         } else {
-                            Session.STATE_IMPRESORA = false;
+                            Session.ESTADO_IMPRESORA = false;
                         }
 
                     } catch (IOException e) {
-                        Session.STATE_IMPRESORA = false;
+                        Session.ESTADO_IMPRESORA = false;
                     } finally {
                         // En el finally cerramos el fichero, para asegurarnos
                         // que se cierra tanto si todo va bien como si salta 
@@ -148,18 +147,19 @@ public class FxPreloader extends Preloader {
 //
 //                    });
 //                    service.start();
-                    ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
-                    if (!list.isEmpty()) {
-                        Session.NOMBRE_EMPRESA = list.get(0).getRazonSocial().equalsIgnoreCase(list.get(0).getNombre()) ? list.get(0).getNombre() : list.get(0).getRazonSocial();
-                        Session.NOMBRE_REPRESENTANTE = list.get(0).getNombre();
-                        Session.RUC_EMPRESA = list.get(0).getNumeroDocumento();
-                        Session.TELEFONO_EMPRESA = list.get(0).getTelefono();
-                        Session.CELULAR_EMPRESA = list.get(0).getCelular();
-                        Session.PAGINAWEB_EMPRESA = list.get(0).getPaginaWeb();
-                        Session.EMAIL_EMPRESA = list.get(0).getEmail();
-                        Session.DIRECCION_EMPRESA = list.get(0).getDomicilio();
+                    EmpresaTB list = EmpresaADO.GetEmpresa();
+                    if (list != null) {
+                        Session.REPRESENTANTE_EMPRESA = list.getNombre();
+                        Session.RAZONSOCIAL_EMPRESA = list.getRazonSocial();
+                        Session.NOMBRECOMERCIAL_EMPRESA = list.getNombreComercial();
+                        Session.RUC_EMPRESA = list.getNumeroDocumento();
+                        Session.TELEFONO_EMPRESA = list.getTelefono();
+                        Session.CELULAR_EMPRESA = list.getCelular();
+                        Session.PAGINAWEB_EMPRESA = list.getPaginaWeb();
+                        Session.EMAIL_EMPRESA = list.getEmail();
+                        Session.DIRECCION_EMPRESA = list.getDomicilio();
                     }                    
-//
+
                     Session.MONEDA = MonedaADO.GetMonedaPredetermined();
 
                     ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");

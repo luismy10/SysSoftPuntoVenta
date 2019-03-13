@@ -38,13 +38,13 @@ public class FxImpresoraTicketController implements Initializable {
             cbImpresoras.getItems().add(e);
         });
         for (int i = 0; i < cbImpresoras.getItems().size(); i++) {
-            if (cbImpresoras.getItems().get(i).equalsIgnoreCase(Session.NAME_IMPRESORA)) {
+            if (cbImpresoras.getItems().get(i).equalsIgnoreCase(Session.NOMBRE_IMPRESORA)) {
                 cbImpresoras.getSelectionModel().select(i);
                 break;
             }
         }
-        if (Session.CORTA_PAPEL != null) {
-            cbCortarPapel.setSelected(Session.CORTA_PAPEL.equalsIgnoreCase("1"));
+        if (Session.CORTAPAPEL_IMPRESORA != null) {
+            cbCortarPapel.setSelected(Session.CORTAPAPEL_IMPRESORA.equalsIgnoreCase("1"));
         }
     }
 
@@ -94,25 +94,25 @@ public class FxImpresoraTicketController implements Initializable {
         try {
             archivo = new File("./archivos/impresoraticket.txt");
             if (archivo.exists()) {
-                Session.STATE_IMPRESORA = true;
+                Session.ESTADO_IMPRESORA = true;
                 // Apertura del fichero y creacion de BufferedReader para poder
                 // hacer una lectura comoda (disponer del metodo readLine()).
                 fr = new FileReader(archivo);
                 br = new BufferedReader(fr);
                 // Lectura del fichero                           
-                Session.NAME_IMPRESORA = br.readLine();
-                Session.CORTA_PAPEL = br.readLine();
-                System.out.println(Session.NAME_IMPRESORA);
-                System.out.println(Session.CORTA_PAPEL);
+                Session.NOMBRE_IMPRESORA = br.readLine();
+                Session.CORTAPAPEL_IMPRESORA = br.readLine();
+                System.out.println(Session.NOMBRE_IMPRESORA);
+                System.out.println(Session.CORTAPAPEL_IMPRESORA);
                 Tools.Dispose(window);
             } else {
-                Session.STATE_IMPRESORA = false;
+                Session.ESTADO_IMPRESORA = false;
                 Tools.Dispose(window);
             }
 
         } catch (IOException e) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Impresora de ticket", "Error al leer el archivo:" + e.getLocalizedMessage(), false);
-            Session.STATE_IMPRESORA = false;
+            Session.ESTADO_IMPRESORA = false;
         } finally {
             // En el finally cerramos el fichero, para asegurarnos
             // que se cierra tanto si todo va bien como si salta 

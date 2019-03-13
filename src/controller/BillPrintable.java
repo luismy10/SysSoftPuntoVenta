@@ -85,7 +85,7 @@ public class BillPrintable implements Printable {
 
             g2d.setFont(new Font("Arial", Font.PLAIN, 9));
             g2d.setPaint(Color.BLACK);
-            g2d.drawString(Session.NOMBRE_EMPRESA, centerText(width, metrics, Session.NOMBRE_EMPRESA), y);
+            g2d.drawString(Session.RAZONSOCIAL_EMPRESA, centerText(width, metrics, Session.RAZONSOCIAL_EMPRESA), y);
 //                y += yShift;
 //                g2d.drawString(Session.DIRECCION, centerText(width, metrics, Session.DIRECCION), y);
 //                y += yShift;
@@ -170,9 +170,6 @@ public class BillPrintable implements Printable {
     }
 
     public void modelTicket(Window window, int sheetWidth, int rows, int lines, ArrayList<HBox> object, String messageClassTitle, String messageClassContent) {
-        Date date = new Date();
-        SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss aa");
         int column = sheetWidth;
         try {
             PrinterMatrix p = new PrinterMatrix();
@@ -270,7 +267,7 @@ public class BillPrintable implements Printable {
             salida++;
             p.printTextWrap(salida, 0, 0, column, "\n");
             p.toFile("c:\\temp\\impresion.txt");
-//            printDoc("c:\\temp\\impresion.txt");
+            printDoc("c:\\temp\\impresion.txt");
         } catch (Exception e) {
             Tools.AlertMessage(window, Alert.AlertType.ERROR, messageClassTitle, messageClassContent, false);
         }
@@ -290,7 +287,7 @@ public class BillPrintable implements Printable {
             DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
             PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
             PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
-            PrintService service = findPrintService(Session.NAME_IMPRESORA, printService);
+            PrintService service = findPrintService(Session.NOMBRE_IMPRESORA, printService);
             DocPrintJob job = service.createPrintJob();
 
             byte[] bytes = readFileToByteArray(file);
@@ -310,27 +307,6 @@ public class BillPrintable implements Printable {
                 }
             }
         }
-    }
-
-    private int getSizePaper(int filas, int inicial) {
-        int recorrido = inicial;
-        for (int i = 0; i < filas; i++) {
-            recorrido += 2;
-            recorrido++;
-        }
-        recorrido++;
-        recorrido += 2;
-        recorrido++;
-        recorrido += 2;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        return recorrido;
     }
 
     private PrintService findPrintService(String printerName, PrintService[] services) {

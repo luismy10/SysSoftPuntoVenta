@@ -47,7 +47,7 @@ public class FxTicketMultilineaController implements Initializable {
             }
             if (widthContent <= sheetWidth) {
                 int widthNew = sheetWidth - widthContent;
-                TextFieldTicket field = ticketController.addElementTextField("iu", textArea.getText(), true, 1, widthNew, Pos.CENTER_LEFT, true);
+                TextFieldTicket field = ticketController.addElementTextField("iu", textArea.getText(), true, 1, widthNew, Pos.CENTER_LEFT, true,"");
                 hBox.getChildren().add(field);
                 Tools.Dispose(window);
             }

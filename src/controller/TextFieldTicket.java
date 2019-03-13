@@ -10,7 +10,7 @@ public class TextFieldTicket extends TextField {
 
     private int lines;
     
-    private boolean editable;
+    private String variable;
 
     public TextFieldTicket(String title, String id) {
         super(title);
@@ -44,6 +44,14 @@ public class TextFieldTicket extends TextField {
 
     public void setLines(int lines) {
         this.lines = lines;
+    }
+
+    public String getVariable() {
+        return variable;
+    }
+
+    public void setVariable(String variable) {
+        this.variable = variable;
     }
 
 

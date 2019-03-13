@@ -1,7 +1,6 @@
 package controller;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -79,46 +78,46 @@ public class FxMiEmpresaController implements Initializable {
         DetalleADO.GetDetailIdName("0", "0003", "RUC").forEach(e -> {
             cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
-        ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
-        if (!list.isEmpty()) {
+        EmpresaTB list = EmpresaADO.GetEmpresa();
+        if (list != null) {
             validate = true;
-            idEmpresa = list.get(0).getIdEmpresa();
+            idEmpresa = list.getIdEmpresa();
 
             ObservableList<DetalleTB> lsgiro = cbGiroComercial.getItems();
-            if (list.get(0).getGiroComerial() != 0) {
+            if (list.getGiroComerial() != 0) {
                 for (int i = 0; i < lsgiro.size(); i++) {
-                    if (list.get(0).getGiroComerial() == lsgiro.get(i).getIdDetalle().get()) {
+                    if (list.getGiroComerial() == lsgiro.get(i).getIdDetalle().get()) {
                         cbGiroComercial.getSelectionModel().select(i);
                         break;
                     }
                 }
             }
 
-            txtRepresentante.setText(list.get(0).getNombre());
-            txtTelefono.setText(list.get(0).getTelefono());
-            txtCelular.setText(list.get(0).getCelular());
-            txtPaginasWeb.setText(list.get(0).getPaginaWeb());
-            txtEmail.setText(list.get(0).getEmail());
-            txtDomicilio.setText(list.get(0).getDomicilio());
+            txtRepresentante.setText(list.getNombre());
+            txtTelefono.setText(list.getTelefono());
+            txtCelular.setText(list.getCelular());
+            txtPaginasWeb.setText(list.getPaginaWeb());
+            txtEmail.setText(list.getEmail());
+            txtDomicilio.setText(list.getDomicilio());
 
             ObservableList<DetalleTB> lsdoc = cbTipoDocumento.getItems();
-            if (list.get(0).getTipoDocumento() != 0) {
+            if (list.getTipoDocumento() != 0) {
                 for (int i = 0; i < lsdoc.size(); i++) {
-                    if (list.get(0).getTipoDocumento() == lsdoc.get(i).getIdDetalle().get()) {
+                    if (list.getTipoDocumento() == lsdoc.get(i).getIdDetalle().get()) {
                         cbTipoDocumento.getSelectionModel().select(i);
                         break;
                     }
                 }
             }
 
-            txtNumeroDocumento.setText(list.get(0).getNumeroDocumento());
-            txtRazonSocial.setText(list.get(0).getRazonSocial());
-            txtNombreComercial.setText(list.get(0).getNombreComercial());
+            txtNumeroDocumento.setText(list.getNumeroDocumento());
+            txtRazonSocial.setText(list.getRazonSocial());
+            txtNombreComercial.setText(list.getNombreComercial());
 
             ObservableList<PaisTB> lspais = cbPais.getItems();
-            if (list.get(0).getPais() != null || !list.get(0).getPais().equals("")) {
+            if (list.getPais() != null || !list.getPais().equals("")) {
                 for (int i = 0; i < lspais.size(); i++) {
-                    if (list.get(0).getPais().equals(lspais.get(i).getPaisCodigo())) {
+                    if (list.getPais().equals(lspais.get(i).getPaisCodigo())) {
                         cbPais.getSelectionModel().select(i);
                         CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
                             cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
@@ -129,9 +128,9 @@ public class FxMiEmpresaController implements Initializable {
             }
 
             ObservableList<CiudadTB> lsciudad = cbCiudad.getItems();
-            if (list.get(0).getCiudad() != 0) {
+            if (list.getCiudad() != 0) {
                 for (int i = 0; i < lsciudad.size(); i++) {
-                    if (list.get(0).getCiudad() == lsciudad.get(i).getIdCiudad()) {
+                    if (list.getCiudad() == lsciudad.get(i).getIdCiudad()) {
                         cbCiudad.getSelectionModel().select(i);
                         ProvinciaADO.ListProvincia(cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
                             cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
@@ -142,9 +141,9 @@ public class FxMiEmpresaController implements Initializable {
             }
 
             ObservableList<ProvinciaTB> lsprovin = cbProvincia.getItems();
-            if (list.get(0).getProvincia() != 0) {
+            if (list.getProvincia() != 0) {
                 for (int i = 0; i < lsprovin.size(); i++) {
-                    if (list.get(0).getProvincia() == lsprovin.get(i).getIdProvincia()) {
+                    if (list.getProvincia() == lsprovin.get(i).getIdProvincia()) {
                         cbProvincia.getSelectionModel().select(i);
                         DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
                             cbCiudadDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
@@ -155,9 +154,9 @@ public class FxMiEmpresaController implements Initializable {
             }
 
             ObservableList<DistritoTB> lsdistrito = cbCiudadDistrito.getItems();
-            if (list.get(0).getDistrito() != 0) {
+            if (list.getDistrito() != 0) {
                 for (int i = 0; i < lsdistrito.size(); i++) {
-                    if (list.get(0).getDistrito() == lsdistrito.get(i).getIdDistrito()) {
+                    if (list.getDistrito() == lsdistrito.get(i).getIdDistrito()) {
                         cbCiudadDistrito.getSelectionModel().select(i);
                         break;
                     }
@@ -221,8 +220,9 @@ public class FxMiEmpresaController implements Initializable {
                 switch (result) {
                     case "registered":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Registrado correctamente.", false);
-                        Session.NOMBRE_REPRESENTANTE = txtRepresentante.getText();
-                        Session.NOMBRE_EMPRESA = txtRazonSocial.getText();
+                        Session.REPRESENTANTE_EMPRESA = txtRepresentante.getText();
+                        Session.RAZONSOCIAL_EMPRESA = txtRazonSocial.getText();
+                        Session.NOMBRECOMERCIAL_EMPRESA = txtNombreComercial.getText();
                         Session.RUC_EMPRESA = txtNumeroDocumento.getText();
                         Session.TELEFONO_EMPRESA = txtTelefono.getText();
                         Session.CELULAR_EMPRESA = txtCelular.getText();
@@ -232,8 +232,9 @@ public class FxMiEmpresaController implements Initializable {
                         break;
                     case "updated":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Actualizado correctamente.", false);
-                        Session.NOMBRE_REPRESENTANTE = txtRepresentante.getText();
-                        Session.NOMBRE_EMPRESA = txtRazonSocial.getText();
+                        Session.REPRESENTANTE_EMPRESA = txtRepresentante.getText();
+                        Session.RAZONSOCIAL_EMPRESA = txtRazonSocial.getText();
+                        Session.NOMBRECOMERCIAL_EMPRESA = txtNombreComercial.getText();
                         Session.RUC_EMPRESA = txtNumeroDocumento.getText();
                         Session.TELEFONO_EMPRESA = txtTelefono.getText();
                         Session.CELULAR_EMPRESA= txtCelular.getText();

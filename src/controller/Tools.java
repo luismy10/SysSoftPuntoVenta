@@ -1,8 +1,11 @@
 package controller;
 
 import java.awt.Desktop;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
@@ -30,6 +33,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class Tools {
 
@@ -100,6 +107,7 @@ public class Tools {
     static final String FX_FILE_TICKETBUSQUEDA = "/view/tipodocumento/FxTicketBusqueda.fxml";
     static final String FX_FILE_TICKETMULTILINEA = "/view/tipodocumento/FxTicketMultilinea.fxml";
     static final String FX_FILE_TICKETVARIABLE = "/view/tipodocumento/FxTicketVariable.fxml";
+    static final String FX_FILE_TICKETPROCESO = "/view/tipodocumento/FxTicketProceso.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
@@ -300,6 +308,62 @@ public class Tools {
         } catch (IOException ex) {
             Logger.getLogger(Tools.class.getName()).log(Level.INFO, ex.getLocalizedMessage());
         }
+    }
+
+    public static String leerArchivoTexto(String ruta) {
+        String contenido = "";
+        InputStream inStream = null;
+        BufferedInputStream bis = null;
+        try {
+            inStream = new FileInputStream(ruta);
+            bis = new BufferedInputStream(inStream);
+            while (bis.available() > 0) {
+                char c = (char) bis.read();
+                contenido += c;
+            }
+        } catch (IOException e) {
+            System.out.println(e.getLocalizedMessage());
+        } finally {
+            try {
+                if (inStream != null) {
+                    inStream.close();
+                }
+                if (bis != null) {
+                    bis.close();
+                }
+            } catch (IOException ex) {
+                System.out.println(ex.getLocalizedMessage());
+            }
+        }
+        return contenido;
+    }
+
+    public static JSONObject obtenerObjetoJSON(final String codigoJSON) {
+        JSONParser lector = new JSONParser();
+        JSONObject objectJSON = null;
+        try {
+            Object recuperado = lector.parse(codigoJSON);
+            objectJSON = (JSONObject) recuperado;
+        } catch (ParseException ex) {
+            System.out.println("Posicion:" + ex.getPosition());
+            System.out.println(ex);
+        }
+        return objectJSON;
+    }
+
+    public static JSONArray obtenerArrayJSON(final String codigoJSON) {
+        JSONParser lector = new JSONParser();
+        JSONArray arrayJSON = null;
+
+        try {
+            Object recuperado = lector.parse(codigoJSON);
+            arrayJSON = (JSONArray) recuperado;
+        } catch (ParseException e) {
+            System.out.println("Posicion: " + e.getPosition());
+            System.out.println(e);
+        }
+
+        return arrayJSON;
     }
 
 }

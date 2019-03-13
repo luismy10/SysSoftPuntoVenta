@@ -283,7 +283,7 @@ public class FxCompraDetalleController implements Initializable {
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
             Map map = new HashMap();
             map.put("IDCOMPRA", idCompra);
-            map.put("EMPRESA", Session.NOMBRE_EMPRESA);
+            map.put("EMPRESA", Session.RAZONSOCIAL_EMPRESA);
             map.put("LOGO", imgInputStream);
             map.put("EMAIL", "EMAIL" + Session.EMAIL_EMPRESA);
             map.put("TELEFONOCELULAR", "TEL:" + Session.TELEFONO_EMPRESA + " CEL:" + Session.CELULAR_EMPRESA);

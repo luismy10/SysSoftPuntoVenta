@@ -433,7 +433,7 @@ public class FxArticulosController implements Initializable {
 
     @FXML
     private void onActionCantidad(ActionEvent event) throws IOException {
-        onViewArticuloUpdateStock();
+//        onViewArticuloUpdateStock();
     }
 
     @FXML

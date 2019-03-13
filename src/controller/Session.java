@@ -14,8 +14,9 @@ public class Session {
     /*
     Datos de la empresa
     */
-    public static String NOMBRE_REPRESENTANTE;
-    public static String NOMBRE_EMPRESA;
+    public static String REPRESENTANTE_EMPRESA;
+    public static String RAZONSOCIAL_EMPRESA;
+    public static String NOMBRECOMERCIAL_EMPRESA;
     public static String RUC_EMPRESA;
     public static String DIRECCION_EMPRESA;
     public static String TELEFONO_EMPRESA;
@@ -41,9 +42,9 @@ public class Session {
     
     public static int ROL;
     
-    public static boolean STATE_IMPRESORA;
-    public static String NAME_IMPRESORA;
-    public static String CORTA_PAPEL;
+    public static boolean ESTADO_IMPRESORA;
+    public static String NOMBRE_IMPRESORA;
+    public static String CORTAPAPEL_IMPRESORA;
     
     public static int DEFAULT_COMPROBANTE;
     public static int DEFAULT_IMPUESTO;

@@ -146,10 +146,8 @@ public class FxVentaDetalleController implements Initializable {
         }
     }
 
-    
-
     public void imprimirVenta(String ticket) {
-        if (Session.STATE_IMPRESORA && Session.NAME_IMPRESORA != null && Session.CORTA_PAPEL != null) {
+        if (Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA != null && Session.CORTAPAPEL_IMPRESORA != null) {
 
             Date date = new Date();
             SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -177,7 +175,7 @@ public class FxVentaDetalleController implements Initializable {
 
                 p.setOutSize(getSizePaper(filas, count), 40);
 
-                p.printTextWrap(1, 0, (int) (40 - Session.NOMBRE_EMPRESA.length()) / 2, 40, Session.NOMBRE_EMPRESA);
+                p.printTextWrap(1, 0, (int) (40 - Session.RAZONSOCIAL_EMPRESA.length()) / 2, 40, Session.RAZONSOCIAL_EMPRESA);
                 p.printTextWrap(2, 0, (int) (40 - ruc.length()) / 2, 40, ruc);
                 p.printTextWrap(3, 1, 0, 40, Session.DIRECCION_EMPRESA);
                 p.printTextWrap(5, 0, (int) (40 - telcel.length()) / 2, 40, telcel);

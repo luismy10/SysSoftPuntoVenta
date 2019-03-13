@@ -1,7 +1,7 @@
 package model;
 
 public class EmpresaTB {
-    
+
     private int idEmpresa;
     private int giroComerial;
     private String nombre;
@@ -14,7 +14,7 @@ public class EmpresaTB {
     private String numeroDocumento;
     private String razonSocial;
     private String nombreComercial;
-    private String pais;    
+    private String pais;
     private int ciudad;
     private int distrito;
     private int provincia;
@@ -123,7 +123,7 @@ public class EmpresaTB {
     }
 
     public void setRazonSocial(String razonSocial) {
-        this.razonSocial = razonSocial;
+        this.razonSocial = razonSocial == null ? "" : razonSocial;
     }
 
     public String getNombreComercial() {
@@ -131,7 +131,7 @@ public class EmpresaTB {
     }
 
     public void setNombreComercial(String nombreComercial) {
-        this.nombreComercial = nombreComercial;
+        this.nombreComercial = nombreComercial == null ? "" : nombreComercial;
     }
 
     public String getPais() {
@@ -165,6 +165,5 @@ public class EmpresaTB {
     public void setProvincia(int provincia) {
         this.provincia = provincia;
     }
-    
-    
+
 }

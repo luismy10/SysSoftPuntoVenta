@@ -12,6 +12,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import model.TicketTB;
@@ -21,13 +22,15 @@ public class FxTicketVariableController implements Initializable {
     @FXML
     private AnchorPane window;
     @FXML
-    private TextField txtSearch;
-    @FXML
     private ListView<TicketTB> lvLista;
+    @FXML
+    private TextField txtContenido;
 
     private FxTicketController ticketController;
 
     private ArrayList<TicketTB> listCabecera;
+
+    private ArrayList<TicketTB> listPie;
 
     private HBox hBox;
 
@@ -37,22 +40,36 @@ public class FxTicketVariableController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         listCabecera = new ArrayList<>();
-        listCabecera.add(new TicketTB("Representante de la empresa", Session.NOMBRE_REPRESENTANTE));
-        listCabecera.add(new TicketTB("Telefono de la empresa", Session.TELEFONO_EMPRESA));
-        listCabecera.add(new TicketTB("Celular de la empresa", Session.CELULAR_EMPRESA));
-        listCabecera.add(new TicketTB("Pagina web de la empresa", Session.PAGINAWEB_EMPRESA));
-        listCabecera.add(new TicketTB("Email de la empresa", Session.EMAIL_EMPRESA));
-        listCabecera.add(new TicketTB("Dirección de la empresa", Session.DIRECCION_EMPRESA));
-        listCabecera.add(new TicketTB("Ruc de la empresa", Session.RUC_EMPRESA));
-        listCabecera.add(new TicketTB("Nombre de la empresa", Session.NOMBRE_EMPRESA));
-        listCabecera.add(new TicketTB("Fecha actual", Tools.getDate("dd/MM/yyyy")));
-        listCabecera.add(new TicketTB("Hora actual", Tools.getHour("hh:mm:ss aa")));
-        lvLista.getItems().addAll(listCabecera);
+        listPie = new ArrayList<>();
     }
 
     public void setLoadComponent(HBox hBox, int sheetWidth) {
         this.hBox = hBox;
         this.sheetWidth = sheetWidth;
+        if (hBox.getId().substring(0, 2).equalsIgnoreCase("cb")) {
+            listCabecera.add(new TicketTB("Representante de la empresa", Session.REPRESENTANTE_EMPRESA, "repeempresa"));
+            listCabecera.add(new TicketTB("Telefono de la empresa", Session.TELEFONO_EMPRESA, "telempresa"));
+            listCabecera.add(new TicketTB("Celular de la empresa", Session.CELULAR_EMPRESA, "celempresa"));
+            listCabecera.add(new TicketTB("Pagina web de la empresa", Session.PAGINAWEB_EMPRESA, "pagwempresa"));
+            listCabecera.add(new TicketTB("Email de la empresa", Session.EMAIL_EMPRESA, "emailempresa"));
+            listCabecera.add(new TicketTB("Dirección de la empresa", Session.DIRECCION_EMPRESA, "direcempresa"));
+            listCabecera.add(new TicketTB("Ruc de la empresa", Session.RUC_EMPRESA, "rucempresa"));
+            listCabecera.add(new TicketTB("Razón social de la empresa", Session.RAZONSOCIAL_EMPRESA, "razoempresa"));
+            listCabecera.add(new TicketTB("Nombre comercial de la empresa", Session.NOMBRECOMERCIAL_EMPRESA, "nomcomempresa"));
+            listCabecera.add(new TicketTB("Fecha actual", Tools.getDate("dd/MM/yyyy"), "fchactual"));
+            listCabecera.add(new TicketTB("Hora actual", Tools.getHour("hh:mm:ss aa"), "horactual"));
+            lvLista.getItems().addAll(listCabecera);
+        } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("dr")) {
+
+        } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("cp")) {
+            listPie.add(new TicketTB("Importe total", "M 00.00", "imptotal"));
+            listPie.add(new TicketTB("Sub total", "M 00.00", "subtotal"));
+            listPie.add(new TicketTB("Descuento total", "M 00.00", "dscttotal"));
+            listPie.add(new TicketTB("Total a pagar", "M 00.00", "totalpagar"));
+            listPie.add(new TicketTB("Efectivo", "M 00.00", "efectivo"));
+            listPie.add(new TicketTB("Vuelto", "M 00.00", "vuelto"));
+            lvLista.getItems().addAll(listPie);
+        }
     }
 
     private void addTextVariable() {
@@ -64,7 +81,7 @@ public class FxTicketVariableController implements Initializable {
             }
             if (widthContent <= sheetWidth) {
                 int widthNew = sheetWidth - widthContent;
-                TextFieldTicket field = ticketController.addElementTextField("iu", lvLista.getSelectionModel().getSelectedItem().getVariable().toString(), false, 1, widthNew, Pos.CENTER_LEFT, false);
+                TextFieldTicket field = ticketController.addElementTextField("iu", lvLista.getSelectionModel().getSelectedItem().getVariable().toString(), false, 0, widthNew, Pos.CENTER_LEFT, false, lvLista.getSelectionModel().getSelectedItem().getIdVariable());
                 hBox.getChildren().add(field);
                 Tools.Dispose(window);
             }
@@ -95,6 +112,17 @@ public class FxTicketVariableController implements Initializable {
     @FXML
     private void onActionCancelar(ActionEvent event) {
         Tools.Dispose(window);
+    }
+
+    @FXML
+    private void onMouseClickedList(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            addTextVariable();
+        } else if (event.getClickCount() == 1) {
+            if (!lvLista.getItems().isEmpty()) {
+                txtContenido.setText(lvLista.getSelectionModel().getSelectedItem().getVariable().toString());
+            }
+        }
     }
 
     public void setInitTicketController(FxTicketController ticketController) {

@@ -60,6 +60,8 @@ public class FxVentaProcesoController implements Initializable {
 
     private boolean state_view_pago;
 
+    private String subTotal, descuento, importeTotal;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
@@ -67,9 +69,12 @@ public class FxVentaProcesoController implements Initializable {
         tota_venta = 0;
     }
 
-    public void setInitComponents(VentaTB ventaTB, String cliente, TableView<ArticuloTB> tvList, String total) {
+    public void setInitComponents(VentaTB ventaTB, String cliente, TableView<ArticuloTB> tvList, String subTotal, String descuento, String importeTotal, String total) {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
+        this.subTotal = moneda_simbolo + " " + Tools.roundingValue(Double.parseDouble(subTotal), 2);
+        this.descuento = moneda_simbolo + " " + Tools.roundingValue(Double.parseDouble(descuento), 2);
+        this.importeTotal = moneda_simbolo + " " + Tools.roundingValue(Double.parseDouble(importeTotal), 2);
         moneda_simbolo = ventaTB.getMonedaName();
         lblComprobante.setText(ventaTB.getComprobanteName());
         lblCliente.setText("Cliente: " + cliente);
@@ -92,7 +97,7 @@ public class FxVentaProcesoController implements Initializable {
                     case "register":
                         short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Venta", "Se realiazo la venta con éxito, ¿Desea imprimir el comprobante?");
                         if (value == 1) {
-                            ventaController.imprimirVenta(ventaTB, Tools.roundingValue(Double.parseDouble(txtEfectivo.getText()), 2), lblVuelto.getText(), result[1]);
+                            ventaController.imprimirVenta(subTotal,descuento,importeTotal,lblTotal.getText(), moneda_simbolo + " " + Tools.roundingValue(Double.parseDouble(txtEfectivo.getText()), 2), lblVuelto.getText(), result[1]);
                             ventaController.resetVenta();
                             Tools.Dispose(window);
                         } else {
