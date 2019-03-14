@@ -49,4 +49,10 @@ public class Session {
     public static int DEFAULT_COMPROBANTE;
     public static int DEFAULT_IMPUESTO;
     
+    /*
+    
+    */
+    public static String RUTA_TICKET_VENTA;
+    
+    
 }

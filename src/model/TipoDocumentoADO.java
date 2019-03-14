@@ -12,6 +12,58 @@ import javafx.scene.image.ImageView;
 
 public class TipoDocumentoADO {
 
+    public static String CrudTipoDocumento(TipoDocumentoTB documentoTB) {
+        String result = null;
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statementUpdate = null;
+            PreparedStatement statementState = null;
+            try {
+                DBUtil.getConnection().setAutoCommit(false);
+                statementState = DBUtil.getConnection().prepareStatement("SELECT * FROM TipoDocumentoTB WHERE IdTipoDocumento <> ? AND Nombre = ? ");
+                statementState.setInt(1, documentoTB.getIdTipoDocumento());
+                statementState.setString(2, documentoTB.getNombre());
+                if (statementState.executeQuery().next()) {
+                    DBUtil.getConnection().rollback();
+                    result = "duplicate";
+                } else {
+                    statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TipoDocumentoTB SET Nombre = ?,Predeterminado=?,NombreImpresion=? WHERE IdTipoDocumento = ?");
+                    statementUpdate.setString(1, documentoTB.getNombre());
+                    statementUpdate.setBoolean(2, documentoTB.isPredeterminado());
+                    statementUpdate.setString(3, documentoTB.getNombreDocumento());
+                    statementUpdate.setInt(4, documentoTB.getIdTipoDocumento());
+                    statementUpdate.addBatch();
+
+                    statementUpdate.executeBatch();
+                    DBUtil.getConnection().commit();
+                    result = "updated";
+                }
+            } catch (SQLException ex) {
+                try {
+                    DBUtil.getConnection().rollback();
+                    result = ex.getLocalizedMessage();
+                } catch (SQLException e) {
+                    result = e.getLocalizedMessage();
+                }
+            } finally {
+                try {
+                    if (statementUpdate != null) {
+                        statementUpdate.close();
+                    }
+                    if (statementState != null) {
+                        statementState.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    result = ex.getLocalizedMessage();
+                }
+            }
+        } else {
+            result = "No se puedo establecer conexión con el servidor, revice y vuelva a intentarlo.";
+        }
+        return result;
+    }
+
     public static ObservableList<TipoDocumentoTB> ListTipoDocumento() {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -25,6 +77,7 @@ public class TipoDocumentoADO {
                         resultSet.getInt("IdTipoDocumento"),
                         resultSet.getString("Nombre"),
                         resultSet.getBoolean("Predeterminado"),
+                        resultSet.getString("NombreImpresion"),
                         resultSet.getBoolean("Predeterminado")
                         ? new ImageView(new Image("/view/checked.png", 22, 22, false, false))
                         : new ImageView(new Image("/view/unchecked.png", 22, 22, false, false))));
@@ -117,13 +170,14 @@ public class TipoDocumentoADO {
             PreparedStatement statement = null;
             ResultSet resultSet = null;
             try {
-                statement = DBUtil.getConnection().prepareStatement("SELECT IdTipoDocumento,Nombre,Predeterminado FROM TipoDocumentoTB");
+                statement = DBUtil.getConnection().prepareStatement("SELECT IdTipoDocumento,Nombre,Predeterminado,NombreImpresion FROM TipoDocumentoTB");
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
                     TipoDocumentoTB documentoTB = new TipoDocumentoTB();
                     documentoTB.setIdTipoDocumento(resultSet.getInt("IdTipoDocumento"));
                     documentoTB.setNombre(resultSet.getString("Nombre"));
                     documentoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
+                    documentoTB.setNombreDocumento(resultSet.getString("NombreImpresion"));
                     list.add(documentoTB);
                 }
             } catch (SQLException ex) {
@@ -145,5 +199,4 @@ public class TipoDocumentoADO {
         return list;
     }
 
- 
 }

@@ -323,7 +323,7 @@ public class FxArticuloProcesoController implements Initializable {
         } else if (!Tools.isNumeric(txtPrecioVenta2.getText())) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el segundo precio de venta, por favor.", false);
             txtPrecioVenta2.requestFocus();
-        } else if (Double.parseDouble(txtPrecioVenta2.getText())<=0) {
+        } else if (Double.parseDouble(txtPrecioVenta2.getText()) <= 0) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "El precio de venta 2 no puede ser menos o igual a 0, por favor.", false);
             txtPrecioVenta2.requestFocus();
         } else if (!Tools.isNumeric(txtPrecioVenta3.getText())) {
@@ -413,6 +413,10 @@ public class FxArticuloProcesoController implements Initializable {
                     case "duplicate":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puede haber 2 artículos con la misma clave.", false);
                         txtClave.requestFocus();
+                        break;
+                    case "duplicatename":
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puede haber 2 artículos con la misma nombre.", false);
+                        txtNombreMarca.requestFocus();
                         break;
                     default:
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Articulo", result, false);

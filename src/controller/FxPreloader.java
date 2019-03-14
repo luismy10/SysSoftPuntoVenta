@@ -22,6 +22,8 @@ import model.EmpresaADO;
 import model.EmpresaTB;
 import model.FacturacionTB;
 import model.MonedaADO;
+import model.TicketADO;
+import model.TicketTB;
 
 public class FxPreloader extends Preloader {
 
@@ -147,6 +149,11 @@ public class FxPreloader extends Preloader {
 //
 //                    });
 //                    service.start();
+                    TicketTB ticketTB = TicketADO.GetTicketRuta(1);
+                    if (ticketTB != null) {
+                        Session.RUTA_TICKET_VENTA = ticketTB.getRuta();
+                    }
+
                     EmpresaTB list = EmpresaADO.GetEmpresa();
                     if (list != null) {
                         Session.REPRESENTANTE_EMPRESA = list.getNombre();
@@ -158,7 +165,7 @@ public class FxPreloader extends Preloader {
                         Session.PAGINAWEB_EMPRESA = list.getPaginaWeb();
                         Session.EMAIL_EMPRESA = list.getEmail();
                         Session.DIRECCION_EMPRESA = list.getDomicilio();
-                    }                    
+                    }
 
                     Session.MONEDA = MonedaADO.GetMonedaPredetermined();
 

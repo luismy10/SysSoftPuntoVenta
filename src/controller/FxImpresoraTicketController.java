@@ -151,16 +151,18 @@ public class FxImpresoraTicketController implements Initializable {
                         + "\nPara uso de todo tipo de tickets"
                         + "\nCorta papel"
                         + "\n\n\n\n\n\n\n\n\n\n";
-                printerService.printString(cbImpresoras.getSelectionModel().getSelectedItem(), text);
-                byte[] cutP = new byte[]{0x1d, 'V', 1};
-                printerService.printBytes(cbImpresoras.getSelectionModel().getSelectedItem(), cutP);
-            } else {
-                String text = "Impresora " + cbImpresoras.getSelectionModel().getSelectedItem()
-                        + "\nPara uso de todo tipo de tickets"
-                        + "\nNo corta papel"
-                        + "\n\n\n\n\n\n\n\n\n\n";
-                printerService.printString(cbImpresoras.getSelectionModel().getSelectedItem(), text);
+                printerService.printString(cbImpresoras.getSelectionModel().getSelectedItem(), text, true);
+                ventaController.imprimirVenta("Impresion de prueba", "00.00", "00.00", "00.00", "00.00", "00.00", "00.00", "0000-00000000");
             }
+//            else {
+//                String text = "Impresora " + cbImpresoras.getSelectionModel().getSelectedItem()
+//                        + "\nPara uso de todo tipo de tickets"
+//                        + "\nNo corta papel"
+//                        + "\n\n\n\n\n\n\n\n\n\n";
+//                printerService.printString(cbImpresoras.getSelectionModel().getSelectedItem(), text, false);
+//                ventaController.imprimirVenta("Impresion de prueba", "00.00", "00.00", "00.00", "00.00", "00.00", "00.00", "0000-00000000");
+//
+//            }
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Impresora de ticket", "Seleccione una impresora", false);
         }

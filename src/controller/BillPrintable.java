@@ -267,7 +267,7 @@ public class BillPrintable implements Printable {
             salida++;
             p.printTextWrap(salida, 0, 0, column, "\n");
             p.toFile("c:\\temp\\impresion.txt");
-            printDoc("c:\\temp\\impresion.txt");
+//            printDoc("c:\\temp\\impresion.txt");
         } catch (Exception e) {
             Tools.AlertMessage(window, Alert.AlertType.ERROR, messageClassTitle, messageClassContent, false);
         }

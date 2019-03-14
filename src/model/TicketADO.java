@@ -26,8 +26,8 @@ public class TicketADO {
                         result = "duplicate";
                     } else {
                         statementTicket = DBUtil.getConnection().prepareStatement("UPDATE TicketTB SET ruta = ? WHERE idTicket = ?");
-                        statementTicket.setString(1, ticketTB.getRuta());  
-                        statementTicket.setInt(2, ticketTB.getId());                                              
+                        statementTicket.setString(1, ticketTB.getRuta());
+                        statementTicket.setInt(2, ticketTB.getId());
                         statementTicket.addBatch();
 
                         statementTicket.executeBatch();
@@ -153,5 +153,39 @@ public class TicketADO {
             }
         }
         return list;
+    }
+
+    public static TicketTB GetTicketRuta(int id) {
+        TicketTB ticketTB = null;
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statementLista = null;
+            ResultSet resultSet = null;
+            try {
+                statementLista = DBUtil.getConnection().prepareStatement("SELECT ruta FROM TicketTB WHERE idTicket = ?");
+                statementLista.setInt(1, id);
+                resultSet = statementLista.executeQuery();
+                if (resultSet.next()) {
+                    ticketTB = new TicketTB();
+                    ticketTB.setRuta(resultSet.getString("ruta"));
+                }
+            } catch (SQLException ex) {
+
+            } finally {
+                try {
+                    if (statementLista != null) {
+                        statementLista.close();
+                    }
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+
+                }
+
+            }
+        }
+        return ticketTB;
     }
 }

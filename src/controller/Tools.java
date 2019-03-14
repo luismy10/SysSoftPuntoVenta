@@ -108,6 +108,7 @@ public class Tools {
     static final String FX_FILE_TICKETMULTILINEA = "/view/tipodocumento/FxTicketMultilinea.fxml";
     static final String FX_FILE_TICKETVARIABLE = "/view/tipodocumento/FxTicketVariable.fxml";
     static final String FX_FILE_TICKETPROCESO = "/view/tipodocumento/FxTicketProceso.fxml";
+    static final String FX_FILE_TIPODOCUMENTOPROCESO = "/view/tipodocumento/FxTipoDocumentoProceso.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");

@@ -30,6 +30,8 @@ public class FxTicketVariableController implements Initializable {
 
     private ArrayList<TicketTB> listCabecera;
 
+    private ArrayList<TicketTB> listDetalleCuerpo;
+
     private ArrayList<TicketTB> listPie;
 
     private HBox hBox;
@@ -40,6 +42,7 @@ public class FxTicketVariableController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         listCabecera = new ArrayList<>();
+        listDetalleCuerpo = new ArrayList<>();
         listPie = new ArrayList<>();
     }
 
@@ -58,9 +61,19 @@ public class FxTicketVariableController implements Initializable {
             listCabecera.add(new TicketTB("Nombre comercial de la empresa", Session.NOMBRECOMERCIAL_EMPRESA, "nomcomempresa"));
             listCabecera.add(new TicketTB("Fecha actual", Tools.getDate("dd/MM/yyyy"), "fchactual"));
             listCabecera.add(new TicketTB("Hora actual", Tools.getHour("hh:mm:ss aa"), "horactual"));
+            listCabecera.add(new TicketTB("Nombre del documento de venta", "Documento de venta", "docventa"));
+            listCabecera.add(new TicketTB("Numeración del documento de venta", "V000-00000000", "numventa"));
             lvLista.getItems().addAll(listCabecera);
         } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("dr")) {
 
+        } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("dc")) {
+            listDetalleCuerpo.add(new TicketTB("Código de barras", "789456123789", "codbarrasarticulo"));
+            listDetalleCuerpo.add(new TicketTB("Descripción del árticulo", "Descripcion del articulo para la venta", "nombretarticulo"));
+            listDetalleCuerpo.add(new TicketTB("Cantidad por árticulo", "1000", "cantarticulo"));
+            listDetalleCuerpo.add(new TicketTB("Precio unitario por árticulo", "0000.00", "precarticulo"));
+            listDetalleCuerpo.add(new TicketTB("Descuento por árticulo", "0000.00", "descarticulo"));
+            listDetalleCuerpo.add(new TicketTB("Importe por árticulo", "0000.00", "impoarticulo"));
+            lvLista.getItems().addAll(listDetalleCuerpo);
         } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("cp")) {
             listPie.add(new TicketTB("Importe total", "M 00.00", "imptotal"));
             listPie.add(new TicketTB("Sub total", "M 00.00", "subtotal"));

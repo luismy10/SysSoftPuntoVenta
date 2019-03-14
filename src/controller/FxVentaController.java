@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -90,7 +89,6 @@ public class FxVentaController implements Initializable {
     private Text lblImporteTotalMoneda;
     @FXML
     private Text lblTotalPagarMoneda;
-
     @FXML
     private VBox vbImpuestos;
 
@@ -114,6 +112,8 @@ public class FxVentaController implements Initializable {
 
     private VBox hbDetalleCabecera;
 
+    private VBox hbDetalleCuerpo;
+
     private VBox hbPie;
 
     private int sheetWidth;
@@ -124,6 +124,7 @@ public class FxVentaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         hbEncabezado = new VBox();
         hbDetalleCabecera = new VBox();
+        hbDetalleCuerpo = new VBox();
         hbPie = new VBox();
         pointWidth = 7.825;
         sheetWidth = 40;
@@ -159,6 +160,9 @@ public class FxVentaController implements Initializable {
                             }
                             event.consume();
                             break;
+                        case F10:
+                            resetVenta();
+                            break;
                         case DELETE:
                             removeArticulo();
                             event.consume();
@@ -182,7 +186,7 @@ public class FxVentaController implements Initializable {
     private void loadWindow() {
         cbComprobante.getItems().clear();
         TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
-            cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado()));
+            cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado(), e.getNombreDocumento()));
         });
         if (!cbComprobante.getItems().isEmpty()) {
             for (int i = 0; i < cbComprobante.getItems().size(); i++) {
@@ -304,7 +308,7 @@ public class FxVentaController implements Initializable {
             ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
             ventaTB.setTotal(Double.parseDouble(lblImporteTotal.getText()));
 
-            controller.setInitComponents(ventaTB, txtCliente.getText(), tvList,
+            controller.setInitComponents(ventaTB, txtCliente.getText(), cbComprobante.getSelectionModel().getSelectedItem().getNombreDocumento(), tvList,
                     lblSubTotal.getText(), lblDescuento.getText(), lblImporteTotal.getText(), lblTotalPagar.getText());
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventas", "Debes agregar artículos a la venta", false);
@@ -550,10 +554,7 @@ public class FxVentaController implements Initializable {
     }
 
     public void resetVenta() {
-        String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
-        lblSerie.setText(array[0]);
-        lblNumeracion.setText(array[1]);
-        this.tvList.getItems().clear();
+        tvList.getItems().clear();
         lblMoneda.setText(monedaSimbolo);
         lblSubTotalMoneda.setText(monedaSimbolo);
         lblDescuentoMoneda.setText(monedaSimbolo);
@@ -567,6 +568,28 @@ public class FxVentaController implements Initializable {
         lblTotalPagar.setText("0.0000");
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
 
+        cbComprobante.getItems().clear();
+        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
+            cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado(), e.getNombreDocumento()));
+        });
+        if (!cbComprobante.getItems().isEmpty()) {
+            for (int i = 0; i < cbComprobante.getItems().size(); i++) {
+                if (cbComprobante.getItems().get(i).isPredeterminado() == true) {
+                    cbComprobante.getSelectionModel().select(i);
+                    Session.DEFAULT_COMPROBANTE = i;
+                    break;
+                }
+            }
+            String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
+            lblSerie.setText(array[0]);
+            lblNumeracion.setText(array[1]);
+        }
+        cbComprobante.getSelectionModel().select(Session.DEFAULT_COMPROBANTE);
+
+        cbMoneda.getItems().clear();
+        MonedaADO.GetMonedasCombBox().forEach(e -> {
+            cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getSimbolo(), e.getPredeterminado()));
+        });
         if (!cbMoneda.getItems().isEmpty()) {
             for (int i = 0; i < cbMoneda.getItems().size(); i++) {
                 if (cbMoneda.getItems().get(i).getPredeterminado() == true) {
@@ -575,13 +598,18 @@ public class FxVentaController implements Initializable {
                 }
             }
         }
-        cbComprobante.getSelectionModel().select(Session.DEFAULT_COMPROBANTE);
+
+        arrayArticulosImpuesto.clear();
+        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
+            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+        });
+
         txtSearch.requestFocus();
 
         calculateTotales();
     }
 
-    public void imprimirVenta(String subTotal,String descuento,String importeTotal,String total, String efec, String vuel, String ticket) {
+    public void imprimirVenta(String documento, TableView<ArticuloTB> tvList, String subTotal, String descuento, String importeTotal, String total, String efec, String vuel, String ticket) {
         if (Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA != null && Session.CORTAPAPEL_IMPRESORA != null) {
             loadTicket();
             ArrayList<HBox> object = new ArrayList<>();
@@ -592,7 +620,35 @@ public class FxVentaController implements Initializable {
                 HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                 rows++;
                 for (int j = 0; j < box.getChildren().size(); j++) {
-                    lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
+                    TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
+                    if (fieldTicket.getVariable().equalsIgnoreCase("repeempresa")) {
+                        fieldTicket.setText(Session.REPRESENTANTE_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("telempresa")) {
+                        fieldTicket.setText(Session.TELEFONO_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("celempresa")) {
+                        fieldTicket.setText(Session.CELULAR_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("pagwempresa")) {
+                        fieldTicket.setText(Session.PAGINAWEB_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("emailempresa")) {
+                        fieldTicket.setText(Session.EMAIL_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("direcempresa")) {
+                        fieldTicket.setText(Session.DIRECCION_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("rucempresa")) {
+                        fieldTicket.setText(Session.RUC_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("razoempresa")) {
+                        fieldTicket.setText(Session.RAZONSOCIAL_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("nomcomempresa")) {
+                        fieldTicket.setText(Session.NOMBRECOMERCIAL_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("fchactual")) {
+                        fieldTicket.setText(Tools.getDate("dd/MM/yyyy"));
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("horactual")) {
+                        fieldTicket.setText(Tools.getHour("hh:mm:ss aa"));
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("docventa")) {
+                        fieldTicket.setText(documento);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("numventa")) {
+                        fieldTicket.setText(ticket);
+                    }
+                    lines += fieldTicket.getLines();
                 }
             }
             for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
@@ -603,6 +659,33 @@ public class FxVentaController implements Initializable {
                     lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
                 }
             }
+
+            for (int m = 0; m < tvList.getItems().size(); m++) {
+                for (int i = 0; i < hbDetalleCuerpo.getChildren().size(); i++) {
+                    object.add((HBox) hbDetalleCuerpo.getChildren().get(i));
+                    HBox box = ((HBox) hbDetalleCuerpo.getChildren().get(i));
+                    rows++;
+                    for (int j = 0; j < box.getChildren().size(); j++) {
+                        TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
+                        if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
+                            fieldTicket.setText(tvList.getItems().get(m).getClave());
+                        } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
+                            fieldTicket.setText(tvList.getItems().get(m).getNombreMarca());
+                        } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
+                            fieldTicket.setText(Tools.roundingValue(tvList.getItems().get(m).getCantidad(), 2));
+                        } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
+                            fieldTicket.setText(Tools.roundingValue(tvList.getItems().get(m).getPrecioVenta(), 2));
+                        } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
+                            fieldTicket.setText(Tools.roundingValue(tvList.getItems().get(m).getDescuento(), 0) + "%");
+                        } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
+                            fieldTicket.setText(Tools.roundingValue(tvList.getItems().get(m).getTotalImporte(), 2));
+                        }
+                        lines += fieldTicket.getLines();
+                    }
+                }
+                System.out.println(m);
+            }
+
             for (int i = 0; i < hbPie.getChildren().size(); i++) {
                 object.add((HBox) hbPie.getChildren().get(i));
                 HBox box = ((HBox) hbPie.getChildren().get(i));
@@ -647,10 +730,11 @@ public class FxVentaController implements Initializable {
     }
 
     private void loadTicket() {
-        File file = new File("./archivos/ticketventa.json");
-        JSONObject jSONObject = Tools.obtenerObjetoJSON(Tools.leerArchivoTexto(file.getAbsolutePath()));
+//        File file = new File("./archivos/ticketventa.json");
+        JSONObject jSONObject = Tools.obtenerObjetoJSON(Session.RUTA_TICKET_VENTA);
         hbEncabezado.getChildren().clear();
         hbDetalleCabecera.getChildren().clear();
+        hbDetalleCuerpo.getChildren().clear();
         hbPie.getChildren().clear();
         if (jSONObject.get("cabecera") != null) {
             JSONObject cabeceraObjects = Tools.obtenerObjetoJSON(jSONObject.get("cabecera").toString());
@@ -677,6 +761,26 @@ public class FxVentaController implements Initializable {
             for (int i = 0; i < detalleObjects.size(); i++) {
                 HBox box = generateElement(hbDetalleCabecera, "dr");
                 JSONObject objectObtener = Tools.obtenerObjetoJSON(detalleObjects.get("dr_" + (i + 1)).toString());
+                if (objectObtener.get("text") != null) {
+                    JSONObject object = Tools.obtenerObjetoJSON(objectObtener.get("text").toString());
+                    TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                    box.getChildren().add(field);
+                } else if (objectObtener.get("list") != null) {
+                    JSONArray array = Tools.obtenerArrayJSON(objectObtener.get("list").toString());
+                    Iterator it = array.iterator();
+                    while (it.hasNext()) {
+                        JSONObject object = Tools.obtenerObjetoJSON(it.next().toString());
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        box.getChildren().add(field);
+                    }
+                }
+            }
+        }
+        if (jSONObject.get("detallecuerpo") != null) {
+            JSONObject detalleObjects = Tools.obtenerObjetoJSON(jSONObject.get("detallecuerpo").toString());
+            for (int i = 0; i < detalleObjects.size(); i++) {
+                HBox box = generateElement(hbDetalleCuerpo, "dc");
+                JSONObject objectObtener = Tools.obtenerObjetoJSON(detalleObjects.get("dc_" + (i + 1)).toString());
                 if (objectObtener.get("text") != null) {
                     JSONObject object = Tools.obtenerObjetoJSON(objectObtener.get("text").toString());
                     TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
@@ -1155,6 +1259,18 @@ public class FxVentaController implements Initializable {
         hBox.setStyle("-fx-spacing: 0.8333333333333334em;");
 
         vbImpuestos.getChildren().add(hBox);
+    }
+
+    @FXML
+    private void onKeyPressedReiniciar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            resetVenta();
+        }
+    }
+
+    @FXML
+    private void onActionReiniciar(ActionEvent event) {
+        resetVenta();
     }
 
     public TextField getTxtSearch() {

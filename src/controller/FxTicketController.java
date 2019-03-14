@@ -210,6 +210,26 @@ public class FxTicketController implements Initializable {
                     }
                 }
             }
+            if (jSONObject.get("detallecuerpo") != null) {
+                JSONObject detalleObjects = obtenerObjetoJSON(jSONObject.get("detallecuerpo").toString());
+                for (int i = 0; i < detalleObjects.size(); i++) {
+                    HBox box = generateElement(hbDetalleCuerpo, "dc");
+                    JSONObject objectObtener = obtenerObjetoJSON(detalleObjects.get("dc_" + (i + 1)).toString());
+                    if (objectObtener.get("text") != null) {
+                        JSONObject object = obtenerObjetoJSON(objectObtener.get("text").toString());
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        box.getChildren().add(field);
+                    } else if (objectObtener.get("list") != null) {
+                        JSONArray array = obtenerArrayJSON(objectObtener.get("list").toString());
+                        Iterator it = array.iterator();
+                        while (it.hasNext()) {
+                            JSONObject object = obtenerObjetoJSON(it.next().toString());
+                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                            box.getChildren().add(field);
+                        }
+                    }
+                }
+            }
             if (jSONObject.get("pie") != null) {
                 JSONObject pieObjects = obtenerObjetoJSON(jSONObject.get("pie").toString());
                 for (int i = 0; i < pieObjects.size(); i++) {
@@ -248,7 +268,7 @@ public class FxTicketController implements Initializable {
 
     private void saveTicket() {
         try {
-            if (!hbEncabezado.getChildren().isEmpty() && !hbDetalleCabecera.getChildren().isEmpty() && !hbPie.getChildren().isEmpty()) {
+            if (!hbEncabezado.getChildren().isEmpty() && !hbDetalleCabecera.getChildren().isEmpty() &&  !hbDetalleCuerpo.getChildren().isEmpty() && !hbPie.getChildren().isEmpty()) {
                 JSONObject sampleObject = new JSONObject();
                 JSONObject cabecera = new JSONObject();
                 for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
@@ -317,6 +337,40 @@ public class FxTicketController implements Initializable {
                     }
                     detalle.put("dr_" + (i + 1), cb);
                 }
+                
+                JSONObject detallecuerpo = new JSONObject();
+                for (int i = 0; i < hbDetalleCuerpo.getChildren().size(); i++) {
+                    HBox hBox = (HBox) hbDetalleCuerpo.getChildren().get(i);
+                    JSONObject cb = new JSONObject();
+                    if (hBox.getChildren().size() > 1) {
+                        JSONArray kids = new JSONArray();
+                        for (int v = 0; v < hBox.getChildren().size(); v++) {
+                            TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
+                            JSONObject cbkid = new JSONObject();
+                            cbkid.put("value", field.getText());
+                            cbkid.put("width", field.getColumnWidth());
+                            cbkid.put("align", field.getAlignment().toString());
+                            cbkid.put("multiline", field.isMultilineas());
+                            cbkid.put("lines", field.getLines());
+                            cbkid.put("editable", field.isEditable());
+                            cbkid.put("variable", field.getVariable());
+                            kids.add(cbkid);
+                        }
+                        cb.put("list", kids);
+                    } else {
+                        TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
+                        JSONObject cbkid = new JSONObject();
+                        cbkid.put("value", field.getText());
+                        cbkid.put("width", field.getColumnWidth());
+                        cbkid.put("align", field.getAlignment().toString());
+                        cbkid.put("multiline", field.isMultilineas());
+                        cbkid.put("lines", field.getLines());
+                        cbkid.put("editable", field.isEditable());
+                        cbkid.put("variable", field.getVariable());
+                        cb.put("text", cbkid);
+                    }
+                    detallecuerpo.put("dc_" + (i + 1), cb);
+                }
 
                 JSONObject pie = new JSONObject();
                 for (int i = 0; i < hbPie.getChildren().size(); i++) {
@@ -355,32 +409,38 @@ public class FxTicketController implements Initializable {
 
                 sampleObject.put("cabecera", cabecera);
                 sampleObject.put("detalle", detalle);
+                sampleObject.put("detallecuerpo", detallecuerpo);
                 sampleObject.put("pie", pie);
 
                 Files.write(Paths.get("./archivos/ticketventa.json"), sampleObject.toJSONString().getBytes());
                 TicketTB ticketTB = new TicketTB();
                 ticketTB.setId(idTicket);
-                ticketTB.setNombreTicket("Venta(s)"); 
-                ticketTB.setRuta(leerArchivoTexto("./archivos/ticketventa.json"));
+                ticketTB.setNombreTicket("Venta(s)");
+                ticketTB.setRuta(sampleObject.toJSONString());
                 String result = TicketADO.CrudTicket(ticketTB);
                 if (result.equalsIgnoreCase("duplicate")) {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El nombre del formato ya existe, intente con otro.", false);
                 } else if (result.equalsIgnoreCase("updated")) {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Ticket", "Se actualizo correctamente el formato.", false);
+                    Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
                 } else if (result.equalsIgnoreCase("registered")) {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Ticket", "Se guardo correctamente el formato.", false);
+                    Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
                 } else {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Ticket", result, false);
                 }
             } else {
                 if (hbEncabezado.getChildren().isEmpty()) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El encabezado esta vacío.", false);
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El encabezado está vacío.", false);
                 }
                 if (hbDetalleCabecera.getChildren().isEmpty()) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El detalle cabecera esta vacío.", false);
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El detalle cabecera está vacío.", false);
+                }
+                if (hbDetalleCuerpo.getChildren().isEmpty()) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El detalle cuerpo está vacío.", false);
                 }
                 if (hbPie.getChildren().isEmpty()) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El pie esta vacío.", false);
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El pie está vacío.", false);
                 }
             }
 
@@ -767,7 +827,7 @@ public class FxTicketController implements Initializable {
 
     private void printTicket() {
         BillPrintable billPrintable = new BillPrintable();
-        if (!hbEncabezado.getChildren().isEmpty() && !hbDetalleCabecera.getChildren().isEmpty() && !hbPie.getChildren().isEmpty()) {
+        if (!hbEncabezado.getChildren().isEmpty() && !hbDetalleCabecera.getChildren().isEmpty() && !hbDetalleCuerpo.getChildren().isEmpty() && !hbPie.getChildren().isEmpty()) {
             ArrayList<HBox> object = new ArrayList<>();
             int rows = 0;
             int lines = 0;
@@ -787,6 +847,14 @@ public class FxTicketController implements Initializable {
                     lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
                 }
             }
+            for (int i = 0; i < hbDetalleCuerpo.getChildren().size(); i++) {
+                object.add((HBox) hbDetalleCuerpo.getChildren().get(i));
+                HBox box = ((HBox) hbDetalleCuerpo.getChildren().get(i));
+                rows++;
+                for (int j = 0; j < box.getChildren().size(); j++) {
+                    lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
+                }
+            }
             for (int i = 0; i < hbPie.getChildren().size(); i++) {
                 object.add((HBox) hbPie.getChildren().get(i));
                 HBox box = ((HBox) hbPie.getChildren().get(i));
@@ -795,8 +863,21 @@ public class FxTicketController implements Initializable {
                     lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
                 }
             }
- 
+
             billPrintable.modelTicket(window.getScene().getWindow(), sheetWidth, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.");
+        } else {
+            if (hbEncabezado.getChildren().isEmpty()) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El encabezado está vacío.", false);
+            }
+            if (hbDetalleCabecera.getChildren().isEmpty()) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El detalle cabecera está vacío.", false);
+            }
+            if (hbDetalleCuerpo.getChildren().isEmpty()) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El detalle cuerpo está vacío.", false);
+            }
+            if (hbPie.getChildren().isEmpty()) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El pie está vacío.", false);
+            }
         }
     }
 
@@ -933,6 +1014,16 @@ public class FxTicketController implements Initializable {
 
     @FXML
     private void onMouseClickedDetalleCuerpoAdd(MouseEvent event) {
+        if (hbDetalleCuerpo.getChildren().isEmpty()) {
+            addElement(hbDetalleCuerpo, "dc1");
+        } else {
+            HBox hBox = (HBox) hbDetalleCuerpo.getChildren().get(hbDetalleCuerpo.getChildren().size() - 1);
+            String idGenerate = hBox.getId();
+            String codigo = idGenerate.substring(2);
+            int valor = Integer.parseInt(codigo) + 1;
+            String newCodigo = "dc" + valor;
+            addElement(hbDetalleCuerpo, newCodigo);
+        }
 
     }
 

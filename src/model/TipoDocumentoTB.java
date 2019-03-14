@@ -7,9 +7,11 @@ public class TipoDocumentoTB {
     private int idTipoDocumento;
     private String nombre;
     private boolean predeterminado;
+    private String nombreDocumento;
     private ImageView imagePredeterminado;
 
     public TipoDocumentoTB() {
+        
     }
 
     public TipoDocumentoTB(int idTipoDocumento, String nombre) {
@@ -17,8 +19,6 @@ public class TipoDocumentoTB {
         this.nombre = nombre;
     }
     
-    
-
     public TipoDocumentoTB(int idTipoDocumento, String nombre, boolean predeterminado) {
         this.idTipoDocumento = idTipoDocumento;
         this.nombre = nombre;
@@ -30,6 +30,21 @@ public class TipoDocumentoTB {
         this.nombre = nombre;
         this.predeterminado = predeterminado;
         this.imagePredeterminado = imagePredeterminado;
+    }
+
+    public TipoDocumentoTB(int idTipoDocumento, String nombre, boolean predeterminado, String nombreDocumento, ImageView imagePredeterminado) {
+        this.idTipoDocumento = idTipoDocumento;
+        this.nombre = nombre;
+        this.predeterminado = predeterminado;
+        this.nombreDocumento = nombreDocumento;
+        this.imagePredeterminado = imagePredeterminado;
+    }
+
+    public TipoDocumentoTB(int idTipoDocumento, String nombre, boolean predeterminado, String nombreDocumento) {
+        this.idTipoDocumento = idTipoDocumento;
+        this.nombre = nombre;
+        this.predeterminado = predeterminado;
+        this.nombreDocumento = nombreDocumento;
     }
 
     public int getIdTipoDocumento() {
@@ -54,6 +69,14 @@ public class TipoDocumentoTB {
 
     public void setPredeterminado(boolean predeterminado) {
         this.predeterminado = predeterminado;
+    }
+
+    public String getNombreDocumento() {
+        return nombreDocumento;
+    }
+
+    public void setNombreDocumento(String nombreDocumento) {
+        this.nombreDocumento = nombreDocumento;
     }
 
     public ImageView getImagePredeterminado() {
