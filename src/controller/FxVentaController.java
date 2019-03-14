@@ -112,8 +112,6 @@ public class FxVentaController implements Initializable {
 
     private VBox hbDetalleCabecera;
 
-    private VBox hbDetalleCuerpo;
-
     private VBox hbPie;
 
     private int sheetWidth;
@@ -124,7 +122,6 @@ public class FxVentaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         hbEncabezado = new VBox();
         hbDetalleCabecera = new VBox();
-        hbDetalleCuerpo = new VBox();
         hbPie = new VBox();
         pointWidth = 7.825;
         sheetWidth = 40;
@@ -134,6 +131,10 @@ public class FxVentaController implements Initializable {
                     switch (event.getCode()) {
                         case F5:
                             openWindowGranel("Cambiar precio al Artículo", false);
+                            event.consume();
+                            break;
+                        case F6:
+                            openWindowDescuento();
                             event.consume();
                             break;
                         case F7:
@@ -651,19 +652,12 @@ public class FxVentaController implements Initializable {
                     lines += fieldTicket.getLines();
                 }
             }
-            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-                object.add((HBox) hbDetalleCabecera.getChildren().get(i));
-                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                rows++;
-                for (int j = 0; j < box.getChildren().size(); j++) {
-                    lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
-                }
-            }
 
             for (int m = 0; m < tvList.getItems().size(); m++) {
-                for (int i = 0; i < hbDetalleCuerpo.getChildren().size(); i++) {
-                    object.add((HBox) hbDetalleCuerpo.getChildren().get(i));
-                    HBox box = ((HBox) hbDetalleCuerpo.getChildren().get(i));
+                for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                    HBox hBox = new HBox();
+                    hBox.setId("dc_" + m + "" + i);
+                    HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
                     rows++;
                     for (int j = 0; j < box.getChildren().size(); j++) {
                         TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
@@ -674,16 +668,18 @@ public class FxVentaController implements Initializable {
                         } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
                             fieldTicket.setText(Tools.roundingValue(tvList.getItems().get(m).getCantidad(), 2));
                         } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
-                            fieldTicket.setText(Tools.roundingValue(tvList.getItems().get(m).getPrecioVenta(), 2));
+                            fieldTicket.setText(Tools.roundingValue(tvList.getItems().get(m).getPrecioVentaReal(), 2));
                         } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
                             fieldTicket.setText(Tools.roundingValue(tvList.getItems().get(m).getDescuento(), 0) + "%");
                         } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
                             fieldTicket.setText(Tools.roundingValue(tvList.getItems().get(m).getTotalImporte(), 2));
                         }
+                        hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(),
+                                fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable()));
                         lines += fieldTicket.getLines();
                     }
+                    object.add(hBox);
                 }
-                System.out.println(m);
             }
 
             for (int i = 0; i < hbPie.getChildren().size(); i++) {
@@ -734,7 +730,6 @@ public class FxVentaController implements Initializable {
         JSONObject jSONObject = Tools.obtenerObjetoJSON(Session.RUTA_TICKET_VENTA);
         hbEncabezado.getChildren().clear();
         hbDetalleCabecera.getChildren().clear();
-        hbDetalleCuerpo.getChildren().clear();
         hbPie.getChildren().clear();
         if (jSONObject.get("cabecera") != null) {
             JSONObject cabeceraObjects = Tools.obtenerObjetoJSON(jSONObject.get("cabecera").toString());
@@ -776,26 +771,7 @@ public class FxVentaController implements Initializable {
                 }
             }
         }
-        if (jSONObject.get("detallecuerpo") != null) {
-            JSONObject detalleObjects = Tools.obtenerObjetoJSON(jSONObject.get("detallecuerpo").toString());
-            for (int i = 0; i < detalleObjects.size(); i++) {
-                HBox box = generateElement(hbDetalleCuerpo, "dc");
-                JSONObject objectObtener = Tools.obtenerObjetoJSON(detalleObjects.get("dc_" + (i + 1)).toString());
-                if (objectObtener.get("text") != null) {
-                    JSONObject object = Tools.obtenerObjetoJSON(objectObtener.get("text").toString());
-                    TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
-                    box.getChildren().add(field);
-                } else if (objectObtener.get("list") != null) {
-                    JSONArray array = Tools.obtenerArrayJSON(objectObtener.get("list").toString());
-                    Iterator it = array.iterator();
-                    while (it.hasNext()) {
-                        JSONObject object = Tools.obtenerObjetoJSON(it.next().toString());
-                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
-                        box.getChildren().add(field);
-                    }
-                }
-            }
-        }
+
         if (jSONObject.get("pie") != null) {
             JSONObject pieObjects = Tools.obtenerObjetoJSON(jSONObject.get("pie").toString());
             for (int i = 0; i < pieObjects.size(); i++) {
@@ -847,7 +823,6 @@ public class FxVentaController implements Initializable {
         field.setVariable(variable);
         field.setEditable(editable);
         field.setPreferredSize((double) widthColumn * pointWidth, 30);
-        field.getStyleClass().add("text-field-ticket");
         field.setAlignment(align);
         return field;
     }

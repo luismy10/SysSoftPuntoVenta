@@ -185,6 +185,7 @@ public class BillPrintable implements Printable {
                 rowscount += 1;
                 linescount = rowscount + linesafter;
                 linesafter = 0;
+                linescurrent = 0;
                 if (hBox.getChildren().size() > 1) {
                     int columnI = 0;
                     int columnF = 0;
@@ -200,31 +201,39 @@ public class BillPrintable implements Printable {
                             switch (field.getAlignment()) {
                                 case CENTER_LEFT:
                                     p.printTextWrap(linescount + linesafter, field.getLines(), columnI, columnF, field.getText());
+                                    System.out.println(field.getLines());
                                     linesbefore = (short) field.getLines();
                                     linescurrent = (short) (linesbefore == 1 ? linesbefore : linescurrent);
                                     countColumns++;
                                     linesafter = hBox.getChildren().size() == countColumns ? linescurrent : 0;
+                                    System.out.println(linesafter);
                                     break;
                                 case CENTER:
                                     p.printTextWrap(linescount + linesafter, field.getLines(), ((columnI + columnF) - field.getText().length()) / 2, columnF, field.getText());
+                                    System.out.println(field.getLines());
                                     linesbefore = (short) field.getLines();
                                     linescurrent = (short) (linesbefore == 1 ? linesbefore : linescurrent);
                                     countColumns++;
                                     linesafter = hBox.getChildren().size() == countColumns ? linescurrent : 0;
+                                    System.out.println(linesafter);
                                     break;
                                 case CENTER_RIGHT:
                                     p.printTextWrap(linescount + linesafter, field.getLines(), columnF - field.getText().length(), columnF, field.getText());
+                                    System.out.println(field.getLines());
                                     linesbefore = (short) field.getLines();
                                     linescurrent = (short) (linesbefore == 1 ? linesbefore : linescurrent);
                                     countColumns++;
                                     linesafter = hBox.getChildren().size() == countColumns ? linescurrent : 0;
+                                    System.out.println(linesafter);
                                     break;
                                 default:
                                     p.printTextWrap(linescount + linesafter, field.getLines(), columnI, columnF, field.getText());
+                                    System.out.println(field.getLines());
                                     linesbefore = (short) field.getLines();
                                     linescurrent = (short) (linesbefore == 1 ? linesbefore : linescurrent);
                                     countColumns++;
                                     linesafter = hBox.getChildren().size() == countColumns ? linescurrent : 0;
+                                    System.out.println(linesafter);
                                     break;
                             }
                         }
@@ -267,7 +276,7 @@ public class BillPrintable implements Printable {
             salida++;
             p.printTextWrap(salida, 0, 0, column, "\n");
             p.toFile("c:\\temp\\impresion.txt");
-//            printDoc("c:\\temp\\impresion.txt");
+            printDoc("c:\\temp\\impresion.txt");
         } catch (Exception e) {
             Tools.AlertMessage(window, Alert.AlertType.ERROR, messageClassTitle, messageClassContent, false);
         }

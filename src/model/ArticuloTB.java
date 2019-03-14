@@ -80,11 +80,11 @@ public class ArticuloTB {
         this.nombreMarca = nombreMarca;
         this.unidadVenta = unidadVenta;
     }
-
-    public ArticuloTB(String idArticulo, String nombreMarca, int unidadVenta) {
+    
+    public ArticuloTB(String idArticulo, String nombreMarca,String unidadCompraName) {
         this.idArticulo = idArticulo;
         this.nombreMarca = nombreMarca;
-        this.unidadVenta = unidadVenta;
+        this.unidadCompraName = unidadCompraName;
     }
 
     public ArticuloTB(String clave, String nombreMarca) {

@@ -121,6 +121,7 @@ public class Tools {
         alert.setHeaderText(null);
         alert.setContentText(value);
         alert.getDialogPane().getStylesheets().add(url.toExternalForm());
+        alert.getButtonTypes().clear();
 
         ButtonType buttonTypeOne = new ButtonType("Aceptar", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeTwo = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -166,6 +167,7 @@ public class Tools {
         alert.setHeaderText(null);
         alert.setContentText(value);
         alert.getDialogPane().getStylesheets().add(url.toExternalForm());
+        alert.getButtonTypes().clear();
 
         ButtonType buttonTypeTwo = new ButtonType("Aceptar y no Imprimir", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeOne = new ButtonType("Aceptar e Imprimir", ButtonBar.ButtonData.CANCEL_CLOSE);

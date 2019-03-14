@@ -17,11 +17,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -30,8 +30,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.TipoDocumentoADO;
@@ -74,7 +72,9 @@ public class FxVentaRealizadasController implements Initializable {
     @FXML
     private ComboBox<TipoDocumentoTB> cbComprobante;
 
-    private AnchorPane content;
+    private AnchorPane windowinit;
+
+    private AnchorPane vbContent;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -106,16 +106,6 @@ public class FxVentaRealizadasController implements Initializable {
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                     cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
         }
-    }
-
-    private void InitializationTransparentBackground() {
-        Session.PANE.setStyle("-fx-background-color: black");
-        Session.PANE.setTranslateX(0);
-        Session.PANE.setTranslateY(0);
-        Session.PANE.setPrefWidth(Session.WIDTH_WINDOW);
-        Session.PANE.setPrefHeight(Session.HEIGHT_WINDOW);
-        Session.PANE.setOpacity(0.7f);
-        content.getChildren().add(Session.PANE);
     }
 
     private void fillVentasTable(String value) {
@@ -180,29 +170,19 @@ public class FxVentaRealizadasController implements Initializable {
 
     private void openWindowDetalleVenta() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            InitializationTransparentBackground();
-            URL url = getClass().getResource(Tools.FX_FILE_VENTADETALLE);
-            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
+            FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource(Tools.FX_FILE_VENTADETALLE));
+            ScrollPane node = fXMLLoader.load();
             //Controlller here
             FxVentaDetalleController controller = fXMLLoader.getController();
-            controller.setInitVentasController(this);
+            controller.setInitVentasController(this, windowinit, vbContent);
+            controller.setInitComponents(tvList.getSelectionModel().getSelectedItem().getFechaRegistro(), tvList.getSelectionModel().getSelectedItem().getCliente(), tvList.getSelectionModel().getSelectedItem().getComprobanteName(), tvList.getSelectionModel().getSelectedItem().getSerie(), tvList.getSelectionModel().getSelectedItem().getNumeracion(), tvList.getSelectionModel().getSelectedItem().getObservaciones(), tvList.getSelectionModel().getSelectedItem().getIdVenta());
             //
-            Stage stage = FxWindow.StageLoaderModal(parent, "Detalle de venta", window.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding((WindowEvent WindowEvent) -> {
-                content.getChildren().remove(Session.PANE);
-            });
-            stage.show();
-            controller.setInitComponents(
-                    tvList.getSelectionModel().getSelectedItem().getFechaRegistro(),
-                    tvList.getSelectionModel().getSelectedItem().getCliente(),
-                    tvList.getSelectionModel().getSelectedItem().getComprobanteName(),
-                    tvList.getSelectionModel().getSelectedItem().getSerie(),
-                    tvList.getSelectionModel().getSelectedItem().getNumeracion(),
-                    tvList.getSelectionModel().getSelectedItem().getObservaciones(),
-                    tvList.getSelectionModel().getSelectedItem().getIdVenta());
+            vbContent.getChildren().clear();
+            AnchorPane.setLeftAnchor(node, 0d);
+            AnchorPane.setTopAnchor(node, 0d);
+            AnchorPane.setRightAnchor(node, 0d);
+            AnchorPane.setBottomAnchor(node, 0d);
+            vbContent.getChildren().add(node);
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
         }
@@ -284,7 +264,7 @@ public class FxVentaRealizadasController implements Initializable {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());           
+                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
         }
     }
 
@@ -297,8 +277,9 @@ public class FxVentaRealizadasController implements Initializable {
         }
     }
 
-    public void setContent(AnchorPane content) {
-        this.content = content;
+    public void setContent(AnchorPane windowinit, AnchorPane vbContent) {
+        this.windowinit = windowinit;
+        this.vbContent = vbContent;
     }
 
 }

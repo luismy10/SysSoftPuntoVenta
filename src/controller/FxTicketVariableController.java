@@ -65,8 +65,6 @@ public class FxTicketVariableController implements Initializable {
             listCabecera.add(new TicketTB("Numeración del documento de venta", "V000-00000000", "numventa"));
             lvLista.getItems().addAll(listCabecera);
         } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("dr")) {
-
-        } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("dc")) {
             listDetalleCuerpo.add(new TicketTB("Código de barras", "789456123789", "codbarrasarticulo"));
             listDetalleCuerpo.add(new TicketTB("Descripción del árticulo", "Descripcion del articulo para la venta", "nombretarticulo"));
             listDetalleCuerpo.add(new TicketTB("Cantidad por árticulo", "1000", "cantarticulo"));

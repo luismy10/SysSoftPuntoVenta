@@ -32,8 +32,9 @@ public class FxTipoDocumentoProcesoController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void initUpdate(int codigo) {
+    public void initUpdate(int codigo,String nombre) {
         idTipoDocumento = codigo;
+        txtNombre.setText(nombre);
         btnGuardar.setText("Actualizar");
         btnGuardar.getStyleClass().add("buttonLightWarning");
     }

@@ -14,9 +14,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import model.ArticuloTB;
 
 public class FxImpresoraTicketController implements Initializable {
 
@@ -152,7 +154,7 @@ public class FxImpresoraTicketController implements Initializable {
                         + "\nCorta papel"
                         + "\n\n\n\n\n\n\n\n\n\n";
                 printerService.printString(cbImpresoras.getSelectionModel().getSelectedItem(), text, true);
-                ventaController.imprimirVenta("Impresion de prueba", "00.00", "00.00", "00.00", "00.00", "00.00", "00.00", "0000-00000000");
+                ventaController.imprimirVenta("Impresion de prueba", new TableView<>(),"00.00", "00.00", "00.00", "00.00", "00.00", "00.00", "0000-00000000");
             }
 //            else {
 //                String text = "Impresora " + cbImpresoras.getSelectionModel().getSelectedItem()

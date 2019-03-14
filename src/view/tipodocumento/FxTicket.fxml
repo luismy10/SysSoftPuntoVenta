@@ -111,7 +111,7 @@
                                           <VBox fx:id="hbEncabezado" />
                                           <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em;">
                                              <children>
-                                                <Label styleClass="labelMonospaced13" text="Detalle Cabecera" textFill="WHITE" />
+                                                <Label styleClass="labelMonospaced13" text="Detalle" textFill="WHITE" />
                                                 <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onMouseClickedDetalleCabeceraAdd" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                                    <image>
                                                       <Image url="@../plus.png" />
@@ -120,17 +120,6 @@
                                              </children>
                                           </HBox>
                                           <VBox fx:id="hbDetalleCabecera" />
-                                          <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em;">
-                                             <children>
-                                                <Label styleClass="labelMonospaced13" text="Detalle Cuerpo" textFill="WHITE" />
-                                                <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onMouseClickedDetalleCuerpoAdd" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
-                                                   <image>
-                                                      <Image url="@../plus.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </children>
-                                          </HBox>
-                                          <VBox fx:id="hbDetalleCuerpo" />
                                           <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;">
                                              <children>
                                                 <Label styleClass="labelMonospaced13" text="Pie" textFill="WHITE" />
@@ -191,6 +180,12 @@
                                     </VBox>
                                  </children>
                               </HBox>
+                           </children>
+                        </VBox>
+                        <VBox style="-fx-spacing: 0.4166666666666667em;">
+                           <children>
+                              <Label styleClass="labelOpenSansRegular14" text="Variable" />
+                              <TextField fx:id="txtVariable" disable="true" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-contenido" />
                            </children>
                         </VBox>
                      </children>
