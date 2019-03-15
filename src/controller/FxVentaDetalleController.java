@@ -1,63 +1,47 @@
 package controller;
 
-import br.com.adilson.util.PrinterMatrix;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.Date;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleIntegerProperty;
+import java.util.ArrayList;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javax.print.PrintService;
-import model.DBUtil;
-import model.DetalleVentaTB;
+import model.ArticuloTB;
 import model.EmpleadoTB;
+import model.ImpuestoADO;
+import model.ImpuestoTB;
 import model.VentaADO;
 import model.VentaTB;
 
 public class FxVentaDetalleController implements Initializable {
 
     @FXML
-    private AnchorPane window;
+    private ScrollPane window;
     @FXML
     private Label lblLoad;
     @FXML
     private Text lblFechaVenta;
     @FXML
     private Text lblComprobante;
-    @FXML
-    private TableView<DetalleVentaTB> tvList;
-    @FXML
-    private TableColumn<DetalleVentaTB, Integer> tcId;
-    @FXML
-    private TableColumn<DetalleVentaTB, String> tcDescripcion;
-    @FXML
-    private TableColumn<DetalleVentaTB, String> tcCantidad;
-    @FXML
-    private TableColumn<DetalleVentaTB, String> tcImporte;
-    @FXML
-    private TableColumn<DetalleVentaTB, String> tcMedida;
-    @FXML
-    private TableColumn<DetalleVentaTB, String> tcPrecio;
-    @FXML
-    private TableColumn<DetalleVentaTB, String> tcDescuento;
     @FXML
     private Text lblTotal;
     @FXML
@@ -70,26 +54,62 @@ public class FxVentaDetalleController implements Initializable {
     private Text lblVendedor;
     @FXML
     private Text lblSerie;
+    @FXML
+    private GridPane gpList;
+    @FXML
+    private Text lblSubTotal;
+    @FXML
+    private Text lblDescuento;
+    @FXML
+    private Text lblSubTotalNuevo;
+    @FXML
+    private VBox hbAgregarImpuesto;
+
+    private AnchorPane windowinit;
+
+    private AnchorPane vbContent;
 
     private String idVenta;
 
+    private double subImporte;
+
+    private double descuento;
+
+    private double subTotalImporte;
+
+    private double totalImporte;
+
+    private String simboloMoneda;
+
     private FxVentaRealizadasController ventaRealizadasController;
+
+    private ObservableList<ArticuloTB> arrList = null;
+
+    private ArrayList<ImpuestoTB> arrayArticulos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
-        tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-        tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getArticuloTB().getNombreMarca()));
-        tcCantidad.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
-        tcMedida.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getArticuloTB().getUnidadVenta() == 1 ? "Por Unidad/Pza" : "A Granel"));
-        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVenta(), 2)));
-        tcDescuento.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getDescuento(), 2)));
-        tcImporte.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getImporte(), 2)));
+        arrayArticulos = new ArrayList<>();
+        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
+            arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+        });
+        simboloMoneda = "M";
     }
 
-    private void fillVentasDetalleTable(String value) throws SQLException {
-        tvList.setItems(VentaADO.ListVentasDetalle(value));
-        lblLoad.setVisible(false);
+    private void fillVentasDetalleTable(String value) {
+        arrList = VentaADO.ListVentasDetalle(value);                
+        for (int i = 0; i < arrList.size(); i++) {
+            gpList.add(addElementGridPane("l1" + (i + 1), arrList.get(i).getId().get() + "", Pos.CENTER), 0, (i + 1));
+            gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getClave() + "\n" + arrList.get(i).getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
+            gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
+            gpList.add(addElementGridPane("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
+            gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
+            gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getImpuestoValor(), 2) + "%", Pos.CENTER_RIGHT), 5, (i + 1));
+            gpList.add(addElementGridPane("l7" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
+            gpList.add(addElementGridPane("l8" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getTotalImporte(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
+        }
+        calcularTotales();
+
     }
 
     public void setInitComponents(LocalDateTime fechaRegistro, String cliente, String comprobanteName, String serie, String numeracion, String observaciones, String idVenta) {
@@ -99,25 +119,17 @@ public class FxVentaDetalleController implements Initializable {
         lblSerie.setText(serie + "-" + numeracion);
         lblObservaciones.setText(observaciones);
         this.idVenta = idVenta;
-        DBUtil.dbConnect();
-        if (DBUtil.getConnection() != null) {
-            try {
-                VentaTB ventaTB = VentaADO.GetVenta(idVenta);
-                if (ventaTB != null) {
-                    lblEstado.setText(ventaTB.getEstadoName());
-                    lblTotal.setText(ventaTB.getMonedaName() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
-                }
-                EmpleadoTB empleadoTB = VentaADO.GetEmpleadoVenta(idVenta);
-                if (empleadoTB != null) {
-                    lblVendedor.setText(empleadoTB.getApellidos() + " " + empleadoTB.getNombres());
-                }
-                fillVentasDetalleTable(idVenta);
-            } catch (SQLException ex) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle de venta", "No se pudo completar la petición, intente nuevamente.\n Error en: " + ex.getLocalizedMessage(), false);
-            } finally {
-                DBUtil.dbDisconnect();
-            }
+
+        VentaTB ventaTB = VentaADO.GetVenta(idVenta);
+        if (ventaTB != null) {
+            lblEstado.setText(ventaTB.getEstadoName());
+            simboloMoneda = ventaTB.getMonedaName();
         }
+        EmpleadoTB empleadoTB = VentaADO.GetEmpleadoVenta(idVenta);
+        if (empleadoTB != null) {
+            lblVendedor.setText(empleadoTB.getApellidos() + " " + empleadoTB.getNombres());
+        }
+        fillVentasDetalleTable(idVenta);
 
     }
 
@@ -132,160 +144,20 @@ public class FxVentaDetalleController implements Initializable {
     private void onActionCancelar(ActionEvent event) {
         short validate = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Detalle de ventas", "¿Está seguro de cancelar la venta?", true);
         if (validate == 1) {
-            String result = VentaADO.CancelTheSale(idVenta, tvList);
+            String result = VentaADO.CancelTheSale(idVenta, arrList);
             if (result.equalsIgnoreCase("update")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle de venta", "Se ha cancelado con éxito", false);
-//                ventaRealizadasController.fillVentasTable("");
-                Tools.Dispose(window);
             } else if (result.equalsIgnoreCase("scrambled")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de venta", "Ya está cancelada la venta!", false);
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle de venta", result, false);
-
             }
         }
     }
 
-    
-
     public void imprimirVenta(String ticket) {
-        if (Session.STATE_IMPRESORA && Session.NAME_IMPRESORA != null && Session.CORTA_PAPEL != null) {
+        if (Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA != null && Session.CORTAPAPEL_IMPRESORA != null) {
 
-            Date date = new Date();
-            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss aa");
-
-            try {
-                String ruc = "RUC " + Session.RUC;
-                String telcel = "TEL: " + Session.TELEFONO + " CEL:" + Session.CELULAR;
-                String documento = "";
-                if (ticket.substring(0, 1).equalsIgnoreCase("b")) {
-                    documento = "BOLETA DE VENTA ELECTRONICA";
-                } else if (ticket.substring(0, 1).equalsIgnoreCase("f")) {
-                    documento = "FACTURA DE VENTA ELECTRONICA";
-                } else if (ticket.substring(0, 1).equalsIgnoreCase("t")) {
-                    documento = "NOTA DE VENTA";
-                }
-                String efectivo = "EFECTIVO SOLES  --";
-                String vuelto = "Cambio  --";
-                String total = lblTotal.getText();
-                PrinterMatrix p = new PrinterMatrix();
-
-                int filas = tvList.getItems().size();
-
-                int count = 13;
-
-                p.setOutSize(getSizePaper(filas, count), 40);
-
-                p.printTextWrap(1, 0, (int) (40 - Session.NOMBREEMPRESA.length()) / 2, 40, Session.NOMBREEMPRESA);
-                p.printTextWrap(2, 0, (int) (40 - ruc.length()) / 2, 40, ruc);
-                p.printTextWrap(3, 1, 0, 40, Session.DIRECCION);
-                p.printTextWrap(5, 0, (int) (40 - telcel.length()) / 2, 40, telcel);
-
-                p.printTextWrap(6, 0, (int) (40 - documento.length()) / 2, 40, documento);
-                p.printTextWrap(7, 0, (int) (40 - ticket.length()) / 2, 40, ticket);
-                p.printTextWrap(8, 0, 0, 40, "FECHA DE EMISION:" + fecha.format(date) + " " + hora.format(date));
-
-                p.printCharAtCol(10, 0, 40, "=");
-
-                p.printTextWrap(10, 1, 0, 40, "Descripcion");
-                p.printTextWrap(11, 0, 0, "Cantidad x P.Unitario".length(), "Cantidad x P.Unitario");
-                p.printTextWrap(11, 0, (40 - "Importe".length()), 40, "Importe");
-
-                p.printCharAtCol(13, 0, 40, "=");
-
-                for (int i = 0; i < filas; i++) {
-                    p.printTextWrap(count, 1, 0, 40, Tools.getValueTable(tvList, 1));
-                    count += 2;
-                    p.printTextWrap(count, 0, 0, 40, Tools.getValueTable(tvList, 2) + " x " + Tools.getValueTable(tvList, 4));
-                    p.printTextWrap(count, 0, 40 - Tools.getValueTable(tvList, 6).length(), 40, Tools.getValueTable(tvList, 6));
-                    count++;
-                }
-                count++;
-
-                p.printCharAtCol(count, 0, 40, "=");
-
-                p.printTextWrap(count, 1, 0, 40, "IMPORTE TOTAL");
-                p.printTextWrap(count, 1, 40 - total.length(), 40, total);
-
-                count += 2;
-                p.printCharAtCol(count, 0, 40, "=");
-
-                p.printTextWrap(count, 1, 40 - efectivo.length(), 40, efectivo);
-
-                count++;
-                p.printTextWrap(count, 0, 40 - vuelto.length(), 40, vuelto);
-
-                count += 2;
-                p.printCharAtCol(count, 0, 40, "=");
-
-                p.printTextWrap(count, 1, (int) (40 - "Representacion Impresa del Documento".length()) / 2, 40, "Representacion Impresa del Documento");
-
-                count++;
-                p.printTextWrap(count, 0, (int) (40 - "de Venta Electronica".length()) / 2, 40, "de Venta Electronica");
-
-                count++;
-                p.printTextWrap(count, 0, 0, 40, "GRACIAS POR SU COMPRA...");
-
-                count++;
-                p.printTextWrap(count, 0, 0, 40, "\n");
-
-                count++;
-                p.printTextWrap(count, 0, 0, 40, "\n");
-
-                count++;
-                p.printTextWrap(count, 0, 0, 40, "\n");
-
-                count++;
-                p.printTextWrap(count, 0, 0, 40, "\n");
-
-                count++;
-                p.printTextWrap(count, 0, 0, 40, "\n");
-
-                p.toFile("c:\\temp\\impresion.txt");
-//                File file = new File("c:\\temp\\impresion.txt");
-//                FileInputStream inputStream = null;
-//                try {
-//                    try {
-//                        inputStream = new FileInputStream(file);
-//                    } catch (FileNotFoundException ex) {
-//
-//                    }
-//                    if (inputStream == null) {
-//                        return;
-//                    }
-//                    DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
-//                    PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
-//                    PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
-//                    PrintService service = findPrintService(Session.NAME_IMPRESORA, printService);
-//                    DocPrintJob job = service.createPrintJob();
-//
-//                    byte[] bytes = readFileToByteArray(file);
-//                    byte[] cutP = new byte[]{0x1d, 'V', 1};
-//                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//                    outputStream.write(bytes);
-//                    outputStream.write(cutP);
-//                    byte c[] = outputStream.toByteArray();
-//
-//                    Doc doc = new SimpleDoc(c, flavor, null);
-//
-//                    job.print(doc, null);
-//                } catch (IOException | PrintException e) {
-//                    // TODO Auto-generated catch block
-//
-//                } finally {
-//                    if (inputStream != null) {
-//                        try {
-//                            inputStream.close();
-//                        } catch (IOException ex) {
-//
-//                        }
-//                    }
-//                }
-            } catch (Exception e) {
-                System.out.println("Error de impresion de venta: "+e);
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Venta", "Error al imprimir, configure correctamente su impresora.", false);
-            }
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Venta", "No esta configurado la impresora :D", false);
 
@@ -293,47 +165,75 @@ public class FxVentaDetalleController implements Initializable {
 
     }
 
-    private int getSizePaper(int filas, int inicial) {
-        int recorrido = inicial;
-        for (int i = 0; i < filas; i++) {
-            recorrido += 2;
-            recorrido++;
-        }
-        recorrido++;
-        recorrido += 2;
-        recorrido++;
-        recorrido += 2;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        return recorrido;
-    }
+    private void calcularTotales() {
+        if (arrList != null) {
+            arrList.forEach(e -> subImporte += e.getSubImporte());
+            lblSubTotal.setText(simboloMoneda + " " + Tools.roundingValue(subImporte, 2));
+            subImporte = 0;
 
-    private PrintService findPrintService(String printerName, PrintService[] services) {
-        for (PrintService service : services) {
-            if (service.getName().equalsIgnoreCase(printerName)) {
-                return service;
+            arrList.forEach(e -> descuento += e.getDescuentoSumado());
+            lblDescuento.setText(simboloMoneda + " " + Tools.roundingValue(descuento, 2));
+            descuento = 0;
+
+            arrList.forEach(e -> subTotalImporte += e.getSubImporteDescuento());
+            lblSubTotalNuevo.setText(simboloMoneda + " " + Tools.roundingValue(subTotalImporte, 2));
+            subTotalImporte = 0;
+
+            hbAgregarImpuesto.getChildren().clear();
+            boolean addElement = false;
+            double sumaElement = 0;
+            for (int k = 0; k < arrayArticulos.size(); k++) {
+                for (int i = 0; i < arrList.size(); i++) {
+                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoArticulo()) {
+                        addElement = true;
+                        sumaElement += arrList.get(i).getImpuestoSumado();
+                    }
+                }
+                if (addElement) {
+                    addElementImpuesto(arrayArticulos.get(k).getIdImpuesto() + "", arrayArticulos.get(k).getNombre(), simboloMoneda + " " + Tools.roundingValue(sumaElement, 2));
+                    addElement = false;
+                    sumaElement = 0;
+                }
             }
+
+            arrList.forEach(e -> totalImporte += e.getTotalImporte());
+            lblTotal.setText(simboloMoneda + " " + Tools.roundingValue(totalImporte, 2));
+            totalImporte = 0;
         }
-        return null;
+
     }
 
-    private static byte[] readFileToByteArray(File file) {
-        byte[] bArray = new byte[(int) file.length()];
-        try (FileInputStream fis = new FileInputStream(file)) {
-            fis.read(bArray);
-            fis.close();
-
-        } catch (IOException ioExp) {
-        }
-        return bArray;
+    private Label addElementGridPane(String id, String nombre, Pos pos) {
+        Label label = new Label(nombre);
+        label.setId(id);
+        label.setStyle("-fx-text-fill:#020203;-fx-background-color: #dddddd;-fx-padding: 0.4166666666666667em 0.8333333333333334em 0.4166666666666667em 0.8333333333333334em;");
+        label.getStyleClass().add("labelRoboto14");
+        label.setAlignment(pos);
+        label.setWrapText(true);
+        label.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        label.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setMaxHeight(Double.MAX_VALUE);
+        return label;
     }
-    
+
+    private void addElementImpuesto(String id, String titulo, String total) {
+        Text text = new Text(titulo);
+        text.setStyle("-fx-fill:#020203;");
+        text.getStyleClass().add("labelOpenSansRegular14");
+
+        Text text1 = new Text(total);
+        text1.setStyle("-fx-fill:#1976d2;");
+        text1.getStyleClass().add("labelOpenSansRegular14");
+
+        HBox hBox = new HBox(text, text1);
+        hBox.setStyle("-fx-padding: 0.5em 0  0.5em 0;-fx-spacing:1em");
+        hBox.setAlignment(Pos.CENTER_RIGHT);
+        hBox.setId(id);
+
+        hbAgregarImpuesto.getChildren().add(hBox);
+    }
+
     @FXML
     private void onKeyPressedImprimir(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -343,11 +243,25 @@ public class FxVentaDetalleController implements Initializable {
 
     @FXML
     private void onActionImprimir(ActionEvent event) {
-         imprimirVenta(lblSerie.getText());
+        imprimirVenta(lblSerie.getText());
     }
 
-    public void setInitVentasController(FxVentaRealizadasController ventaRealizadasController) {
+    @FXML
+    private void onMouseClickedBehind(MouseEvent event) throws IOException {
+        vbContent.getChildren().remove(window);      
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(ventaRealizadasController.getWindow(), 0d);
+        AnchorPane.setTopAnchor(ventaRealizadasController.getWindow(), 0d);
+        AnchorPane.setRightAnchor(ventaRealizadasController.getWindow(), 0d);
+        AnchorPane.setBottomAnchor(ventaRealizadasController.getWindow(), 0d);
+        vbContent.getChildren().add(ventaRealizadasController.getWindow());
+
+    }
+
+    public void setInitVentasController(FxVentaRealizadasController ventaRealizadasController, AnchorPane windowinit, AnchorPane vbContent) {
         this.ventaRealizadasController = ventaRealizadasController;
+        this.windowinit = windowinit;
+        this.vbContent = vbContent;
     }
 
 }

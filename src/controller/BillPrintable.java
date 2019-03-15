@@ -85,7 +85,7 @@ public class BillPrintable implements Printable {
 
             g2d.setFont(new Font("Arial", Font.PLAIN, 9));
             g2d.setPaint(Color.BLACK);
-            g2d.drawString(Session.NOMBREEMPRESA, centerText(width, metrics, Session.NOMBREEMPRESA), y);
+            g2d.drawString(Session.RAZONSOCIAL_EMPRESA, centerText(width, metrics, Session.RAZONSOCIAL_EMPRESA), y);
 //                y += yShift;
 //                g2d.drawString(Session.DIRECCION, centerText(width, metrics, Session.DIRECCION), y);
 //                y += yShift;
@@ -170,20 +170,28 @@ public class BillPrintable implements Printable {
     }
 
     public void modelTicket(Window window, int sheetWidth, int rows, int lines, ArrayList<HBox> object, String messageClassTitle, String messageClassContent) {
-        Date date = new Date();
-        SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss aa");
         int column = sheetWidth;
         try {
             PrinterMatrix p = new PrinterMatrix();
+
             p.setOutSize(rows, column);
-            int linesbefore = 0;
+            short linesbefore = 0;
+            short linescurrent = 0;
+            short linesafter = 0;
+            int linescount = 0;
+            int rowscount = 0;
             for (int i = 0; i < object.size(); i++) {
                 HBox hBox = object.get(i);
+                rowscount += 1;
+                linescount = rowscount + linesafter;
+                linesafter = 0;
+                linescurrent = 0;
                 if (hBox.getChildren().size() > 1) {
                     int columnI = 0;
                     int columnF = 0;
                     int columnA = 0;
+                    int countColumns = 0;
+                    rowscount = linescount;
                     for (int v = 0; v < hBox.getChildren().size(); v++) {
                         TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
                         columnI = columnA;
@@ -192,40 +200,65 @@ public class BillPrintable implements Printable {
                         if (null != field.getAlignment()) {
                             switch (field.getAlignment()) {
                                 case CENTER_LEFT:
-                                    p.printTextWrap((i + 1), field.getLines(), columnI, columnF, field.getText());
+                                    p.printTextWrap(linescount + linesafter, field.getLines(), columnI, columnF, field.getText());
+                                    System.out.println(field.getLines());
+                                    linesbefore = (short) field.getLines();
+                                    linescurrent = (short) (linesbefore == 1 ? linesbefore : linescurrent);
+                                    countColumns++;
+                                    linesafter = hBox.getChildren().size() == countColumns ? linescurrent : 0;
+                                    System.out.println(linesafter);
                                     break;
                                 case CENTER:
-                                    p.printTextWrap((i + 1), field.getLines(), ((columnI + columnF) - field.getText().length()) / 2, columnF, field.getText());
+                                    p.printTextWrap(linescount + linesafter, field.getLines(), ((columnI + columnF) - field.getText().length()) / 2, columnF, field.getText());
+                                    System.out.println(field.getLines());
+                                    linesbefore = (short) field.getLines();
+                                    linescurrent = (short) (linesbefore == 1 ? linesbefore : linescurrent);
+                                    countColumns++;
+                                    linesafter = hBox.getChildren().size() == countColumns ? linescurrent : 0;
+                                    System.out.println(linesafter);
                                     break;
                                 case CENTER_RIGHT:
-                                    p.printTextWrap((i + 1), field.getLines(), columnF - field.getText().length(), columnF, field.getText());
+                                    p.printTextWrap(linescount + linesafter, field.getLines(), columnF - field.getText().length(), columnF, field.getText());
+                                    System.out.println(field.getLines());
+                                    linesbefore = (short) field.getLines();
+                                    linescurrent = (short) (linesbefore == 1 ? linesbefore : linescurrent);
+                                    countColumns++;
+                                    linesafter = hBox.getChildren().size() == countColumns ? linescurrent : 0;
+                                    System.out.println(linesafter);
                                     break;
                                 default:
-                                    p.printTextWrap((i + 1), field.getLines(), columnI, columnF, field.getText());
+                                    p.printTextWrap(linescount + linesafter, field.getLines(), columnI, columnF, field.getText());
+                                    System.out.println(field.getLines());
+                                    linesbefore = (short) field.getLines();
+                                    linescurrent = (short) (linesbefore == 1 ? linesbefore : linescurrent);
+                                    countColumns++;
+                                    linesafter = hBox.getChildren().size() == countColumns ? linescurrent : 0;
+                                    System.out.println(linesafter);
                                     break;
                             }
                         }
 
                     }
                 } else {
+                    rowscount = linescount;
                     TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
                     if (null != field.getAlignment()) {
                         switch (field.getAlignment()) {
                             case CENTER_LEFT:
-                                p.printTextWrap((i + 1) + linesbefore, field.getLines(), 0, field.getColumnWidth(), field.getText());
-                                linesbefore = field.getLines();
+                                p.printTextWrap(linescount + linesafter, field.getLines(), 0, field.getColumnWidth(), field.getText());
+                                linesafter = (short) field.getLines();
                                 break;
                             case CENTER:
-                                p.printTextWrap((i + 1) + linesbefore, field.getLines(), (field.getColumnWidth() - field.getText().length()) / 2, field.getColumnWidth(), field.getText());
-                                linesbefore = field.getLines();
+                                p.printTextWrap(linescount + linesafter, field.getLines(), (field.getColumnWidth() - field.getText().length()) / 2, field.getColumnWidth(), field.getText());
+                                linesafter = (short) field.getLines();
                                 break;
                             case CENTER_RIGHT:
-                                p.printTextWrap((i + 1) + linesbefore, field.getLines(), field.getColumnWidth() - field.getText().length(), field.getColumnWidth(), field.getText());
-                                linesbefore = field.getLines();
+                                p.printTextWrap(linescount + linesafter, field.getLines(), field.getColumnWidth() - field.getText().length(), field.getColumnWidth(), field.getText());
+                                linesafter = (short) field.getLines();
                                 break;
                             default:
-                                p.printTextWrap((i + 1) + linesbefore, field.getLines(), 0, field.getColumnWidth(), field.getText());
-                                linesbefore = field.getLines();
+                                p.printTextWrap(linescount + linesafter, field.getLines(), 0, field.getColumnWidth(), field.getText());
+                                linesafter = (short) field.getLines();
                                 break;
                         }
                     }
@@ -243,7 +276,7 @@ public class BillPrintable implements Printable {
             salida++;
             p.printTextWrap(salida, 0, 0, column, "\n");
             p.toFile("c:\\temp\\impresion.txt");
-//            printDoc("c:\\temp\\impresion.txt");
+            printDoc("c:\\temp\\impresion.txt");
         } catch (Exception e) {
             Tools.AlertMessage(window, Alert.AlertType.ERROR, messageClassTitle, messageClassContent, false);
         }
@@ -263,7 +296,7 @@ public class BillPrintable implements Printable {
             DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
             PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
             PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
-            PrintService service = findPrintService(Session.NAME_IMPRESORA, printService);
+            PrintService service = findPrintService(Session.NOMBRE_IMPRESORA, printService);
             DocPrintJob job = service.createPrintJob();
 
             byte[] bytes = readFileToByteArray(file);
@@ -283,27 +316,6 @@ public class BillPrintable implements Printable {
                 }
             }
         }
-    }
-
-    private int getSizePaper(int filas, int inicial) {
-        int recorrido = inicial;
-        for (int i = 0; i < filas; i++) {
-            recorrido += 2;
-            recorrido++;
-        }
-        recorrido++;
-        recorrido += 2;
-        recorrido++;
-        recorrido += 2;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        recorrido++;
-        return recorrido;
     }
 
     private PrintService findPrintService(String printerName, PrintService[] services) {

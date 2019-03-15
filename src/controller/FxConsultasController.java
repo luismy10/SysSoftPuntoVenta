@@ -22,24 +22,37 @@ public class FxConsultasController implements Initializable {
 
     private AnchorPane windowinit;
 
+    //Venta realizadas
+    private FXMLLoader fXMLVentaRealizadas;
+
+    private VBox nodeVentaRealizadas;
+
+    private FxVentaRealizadasController ventaRealizadasController;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+            fXMLVentaRealizadas = new FXMLLoader(getClass().getResource(Tools.FX_FILE_VENTAREALIZADAS));
+            nodeVentaRealizadas = fXMLVentaRealizadas.load();
+            ventaRealizadasController = fXMLVentaRealizadas.getController();
+        } catch (IOException ex) {
 
+        }
     }
 
     private void openWindowPurchasesMade() throws IOException {
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_COMPRASREALIZADAS));
         VBox node = fXMLPrincipal.load();
         FxComprasRealizadasController controller = fXMLPrincipal.getController();
-        controller.setContent(windowinit,vbContent);
+        controller.setContent(windowinit, vbContent);
         vbContent.getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         vbContent.getChildren().add(node);
-        
-        controller.fillPurchasesTable((short)1,"",Tools.getDate(),Tools.getDate(),"");
+
+        controller.fillPurchasesTable((short) 1, "", Tools.getDate(), Tools.getDate(), "");
     }
 
     private void openWindowDirectory() throws IOException {
@@ -69,17 +82,15 @@ public class FxConsultasController implements Initializable {
         vbContent.getChildren().add(node);
     }
 
-    private void openWindowVentas() throws IOException {
-        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_VENTAREALIZADAS));
-        VBox node = fXMLPrincipal.load();
-        FxVentaRealizadasController controller = fXMLPrincipal.getController();
-        controller.setContent(windowinit);
+    private void openWindowVentas() {
+        ventaRealizadasController.setContent(windowinit,vbContent);
         vbContent.getChildren().clear();
-        AnchorPane.setLeftAnchor(node, 0d);
-        AnchorPane.setTopAnchor(node, 0d);
-        AnchorPane.setRightAnchor(node, 0d);
-        AnchorPane.setBottomAnchor(node, 0d);
-        vbContent.getChildren().add(node);
+        AnchorPane.setLeftAnchor(nodeVentaRealizadas, 0d);
+        AnchorPane.setTopAnchor(nodeVentaRealizadas, 0d);
+        AnchorPane.setRightAnchor(nodeVentaRealizadas, 0d);
+        AnchorPane.setBottomAnchor(nodeVentaRealizadas, 0d);
+        vbContent.getChildren().add(nodeVentaRealizadas);
+        ventaRealizadasController.loadInit();
     }
 
     private void openWindowInvetario() throws IOException {

@@ -1,4 +1,3 @@
-
 package controller;
 
 import java.net.URL;
@@ -11,26 +10,34 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-
+import model.TicketADO;
+import model.TicketTB;
 
 public class FxTicketBusquedaController implements Initializable {
 
     @FXML
     private AnchorPane window;
     @FXML
-    private ListView<?> lvLista;
-    
+    private ListView<TicketTB> lvLista;
+
     private FxTicketController ticketController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
-    }    
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
+        lvLista.getItems().addAll(TicketADO.ListTicket());
+    }
 
+    private void selectTicket() {
+        if (lvLista.getSelectionModel().getSelectedIndex() >= 0) {
+            ticketController.loadTicket(lvLista.getSelectionModel().getSelectedItem().getId(),lvLista.getSelectionModel().getSelectedItem().getRuta());
+            Tools.Dispose(window);
+        }
+    }
 
     @FXML
     private void onKeyPressedCancelar(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             Tools.Dispose(window);
         }
     }
@@ -42,13 +49,24 @@ public class FxTicketBusquedaController implements Initializable {
 
     @FXML
     private void onMouseClickedLista(MouseEvent event) {
-        if(lvLista.getSelectionModel().getSelectedIndex()>=0){
-            
+        if (event.getClickCount() == 2) {
+            selectTicket();
         }
     }
 
-    public void setInitTicketController(FxTicketController ticketController) {
-        this.ticketController=ticketController;
+    @FXML
+    private void onKeyPressedSelect(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            selectTicket();
+        }
     }
-    
+
+    @FXML
+    private void onActionSelect(ActionEvent event) {
+        selectTicket();
+    }
+
+    public void setInitTicketController(FxTicketController ticketController) {
+        this.ticketController = ticketController;
+    }
 }

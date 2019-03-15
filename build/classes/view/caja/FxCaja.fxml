@@ -71,6 +71,7 @@
                   </HBox>
                   <HBox style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc;" VBox.vgrow="ALWAYS">
                      <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" />
                         <VBox style="-fx-spacing: 0.5833333333333334em;" HBox.hgrow="ALWAYS">
                            <children>
                               <Label styleClass="labelRoboto18" text="Ventas Totales" textFill="#1a2226">
@@ -97,32 +98,32 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <Label styleClass="labelRoboto14" text="Fondo de Caja" textFill="#1a2226">
+                              <Label styleClass="labelRoboto14" text="Fondo de caja" textFill="#1a2226">
                                  <VBox.margin>
                                     <Insets left="50.0" />
                                  </VBox.margin>
                               </Label>
-                              <Label styleClass="labelRoboto14" text="Ventas en Efectivo" textFill="#1a2226">
+                              <Label styleClass="labelRoboto14" text="Ingreso de efectivo" textFill="#1a2226">
                                  <VBox.margin>
                                     <Insets left="50.0" />
                                  </VBox.margin>
                               </Label>
-                              <Label styleClass="labelRoboto14" text="Abonos en Efectivo" textFill="#1a2226">
-                                 <VBox.margin>
-                                    <Insets left="50.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label styleClass="labelRoboto14" text="Entradas" textFill="#1a2226">
-                                 <VBox.margin>
-                                    <Insets left="50.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label styleClass="labelRoboto14" text="Salidas" textFill="#1a2226">
+                              <Label styleClass="labelRoboto14" text="Egresos de efectivo" textFill="#1a2226">
                                  <VBox.margin>
                                     <Insets left="50.0" />
                                  </VBox.margin>
                               </Label>
                               <Label styleClass="labelRoboto14" text="Devoluciones" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="Cobro a clientes" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="Pago a proveedores" textFill="#1a2226">
                                  <VBox.margin>
                                     <Insets left="50.0" />
                                  </VBox.margin>
@@ -193,12 +194,12 @@
                               <Label fx:id="lblVentasTotales" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
                               <Label styleClass="labelRoboto18" textFill="#1a2226" />
                               <Label fx:id="lblFondoCaja" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
-                              <Label fx:id="lblVentasEfectivo" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
-                              <Label fx:id="lblAhorrosEfectivo" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label fx:id="lblIngresos" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label fx:id="lblEgresos" styleClass="labelRoboto14" text="M 0000.00" textFill="RED" />
+                              <Label fx:id="lblDevoluciones" styleClass="labelRoboto14" text="M 0000.00" textFill="RED" />
                               <Label fx:id="lblEntradas" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
-                              <Label fx:id="lblSalidas" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
-                              <Label fx:id="lblDevoluciones" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" VBox.vgrow="ALWAYS" />
-                              <Label style="-fx-border-width: 2px 0 0 0; -fx-border-color: #f00;" styleClass="labelRoboto16" text="M 0000.00" textFill="#1a2226" />
+                              <Label fx:id="lblSalidas" styleClass="labelRoboto14" text="M 0000.00" textFill="RED" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="lblTotalDineroCaja" style="-fx-border-width: 2px 0 0 0; -fx-border-color: #f00;" styleClass="labelRoboto16" text="M 0000.00" textFill="#1a2226" />
                               <Label styleClass="labelRoboto18" textFill="#1a2226" />
                               <Label styleClass="labelRoboto14" text="-" textFill="#1a2226" />
                               <Label styleClass="labelRoboto18" textFill="#1a2226" />

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxImpresoraTicketController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxImpresoraTicketController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -55,7 +55,7 @@
                               <ComboBox fx:id="cbImpresoras" prefWidth="240.0" />
                            </children>
                         </HBox>
-                        <HBox style="-fx-padding: 0.8333333333333334em;">
+                        <HBox style="-fx-padding: 0.8333333333333334em;" visible="false">
                            <children>
                               <CheckBox fx:id="cbCortarPapel" mnemonicParsing="false" selected="true" text="Cortar papel" />
                            </children>

@@ -284,30 +284,58 @@ public class VentaADO {
         return empList;
     }
 
-    public static ObservableList<DetalleVentaTB> ListVentasDetalle(String value) throws SQLException {
+    public static ObservableList<ArticuloTB> ListVentasDetalle(String value) {
         String selectStmt = "{call Sp_Listar_Ventas_Detalle_By_Id(?)}";
-        PreparedStatement preparedStatement;
-        ResultSet rsEmps;
-        ObservableList<DetalleVentaTB> empList = FXCollections.observableArrayList();
-        preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-        preparedStatement.setString(1, value);
-        rsEmps = preparedStatement.executeQuery();
-        while (rsEmps.next()) {
-            DetalleVentaTB detalleVentaTB = new DetalleVentaTB();
-            detalleVentaTB.setId(rsEmps.getInt("Filas"));
-            detalleVentaTB.setCantidad(rsEmps.getDouble("Cantidad"));
-            detalleVentaTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
-            detalleVentaTB.setDescuento(rsEmps.getDouble("Descuento"));
-            detalleVentaTB.setImporte(rsEmps.getDouble("Importe"));
-            detalleVentaTB.setArticuloTB(new ArticuloTB(rsEmps.getString("IdArticulo"), rsEmps.getString("NombreMarca"), rsEmps.getInt("UnidadVenta")));
-            empList.add(detalleVentaTB);
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<ArticuloTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, value);
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+
+                ArticuloTB articuloTB = new ArticuloTB();
+                articuloTB.setId(rsEmps.getRow());
+                articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
+                articuloTB.setClave(rsEmps.getString("Clave"));
+                articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                articuloTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
+                articuloTB.setImpuestoArticulo(rsEmps.getInt("IdImpuesto"));
+                articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                articuloTB.setDescuento(rsEmps.getDouble("Descuento"));
+                articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+                double porcentajeDecimal = articuloTB.getDescuento() / 100.00;
+                double porcentajeRestante = articuloTB.getPrecioCompra() * porcentajeDecimal;
+                articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
+                articuloTB.setImpuestoValor(rsEmps.getDouble("ValorImpuesto"));
+                articuloTB.setImpuestoSumado(rsEmps.getDouble("ImpuestoSumado"));
+                articuloTB.setSubImporteDescuento(articuloTB.getSubImporte() - articuloTB.getDescuentoSumado());
+                articuloTB.setTotalImporte(rsEmps.getDouble("Importe"));
+
+                empList.add(articuloTB);
+            }
+        } catch (SQLException e) {
+            System.out.println("ListVentasDetalle:La operación de selección de SQL ha fallado: " + e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
         }
-        preparedStatement.close();
-        rsEmps.close();
         return empList;
     }
 
-    public static String CancelTheSale(String idVenta, TableView<DetalleVentaTB> tvList) {
+    public static String CancelTheSale(String idVenta, ObservableList<ArticuloTB> tvList) {
 
         PreparedStatement statementVenta = null;
         PreparedStatement statementArticulo = null;
@@ -332,14 +360,14 @@ public class VentaADO {
 
                 statementDetalleVenta = DBUtil.getConnection().prepareStatement("update DetalleVentaTB set Importe = ? where IdVenta = ? and IdArticulo = ?");
                 statementArticulo = DBUtil.getConnection().prepareStatement("update ArticuloTB set Cantidad = Cantidad + ? where IdArticulo = ?");
-                for (int i = 0; i < tvList.getItems().size(); i++) {
-                    statementDetalleVenta.setDouble(1, -tvList.getItems().get(i).getImporte());
+                for (int i = 0; i < tvList.size(); i++) {
+                    statementDetalleVenta.setDouble(1, -tvList.get(i).getTotalImporte());
                     statementDetalleVenta.setString(2, idVenta);
-                    statementDetalleVenta.setString(3, tvList.getItems().get(i).getArticuloTB().getIdArticulo());
+                    statementDetalleVenta.setString(3, tvList.get(i).getIdArticulo());
                     statementDetalleVenta.addBatch();
 
-                    statementArticulo.setDouble(1, tvList.getItems().get(i).getCantidad());
-                    statementArticulo.setString(2, tvList.getItems().get(i).getArticuloTB().getIdArticulo());
+                    statementArticulo.setDouble(1, tvList.get(i).getCantidad());
+                    statementArticulo.setString(2, tvList.get(i).getIdArticulo());
                     statementArticulo.addBatch();
                 }
 
@@ -378,43 +406,69 @@ public class VentaADO {
         }
     }
 
-    public static VentaTB GetVenta(String value) throws SQLException {
-        PreparedStatement statementVendedor;
+    public static VentaTB GetVenta(String value) {
+        PreparedStatement statementVendedor = null;
         VentaTB ventaTB = null;
-        statementVendedor = DBUtil.getConnection().prepareStatement("select  dbo.Fc_Obtener_Nombre_Detalle(v.Estado,'0009') Estado,m.Simbolo,v.Total\n"
-                + "from VentaTB as v inner join MonedaTB as m on v.Moneda = m.IdMoneda\n"
-                + "where v.IdVenta = ?");
-        statementVendedor.setString(1, value);
-        try (ResultSet resultSet = statementVendedor.executeQuery()) {
-            if (resultSet.next()) {
-                ventaTB = new VentaTB();
-                ventaTB.setEstadoName(resultSet.getString("Estado"));
-                ventaTB.setMonedaName(resultSet.getString("Simbolo"));
-                ventaTB.setTotal(resultSet.getDouble("Total"));
+        try {
+            DBUtil.dbConnect();
+            statementVendedor = DBUtil.getConnection().prepareStatement("select  dbo.Fc_Obtener_Nombre_Detalle(v.Estado,'0009') Estado,m.Simbolo\n"
+                    + "from VentaTB as v inner join MonedaTB as m on v.Moneda = m.IdMoneda\n"
+                    + "where v.IdVenta = ?");
+            statementVendedor.setString(1, value);
+            try (ResultSet resultSet = statementVendedor.executeQuery()) {
+                if (resultSet.next()) {
+                    ventaTB = new VentaTB();
+                    ventaTB.setEstadoName(resultSet.getString("Estado"));
+                    ventaTB.setMonedaName(resultSet.getString("Simbolo"));
+                    ventaTB.setTotal(resultSet.getDouble("Total"));
+                }
+                statementVendedor.close();
             }
-            statementVendedor.close();
+        } catch (SQLException ex) {
+
+        } finally {
+            try {
+                if (statementVendedor != null) {
+                    statementVendedor.close();
+                }
+            } catch (SQLException ex) {
+
+            }
         }
-        statementVendedor.close();
+
         return ventaTB;
     }
 
-    public static EmpleadoTB GetEmpleadoVenta(String value) throws SQLException {
-        PreparedStatement statementVendedor;
+    public static EmpleadoTB GetEmpleadoVenta(String value) {
+        PreparedStatement statementVendedor = null;
         EmpleadoTB empleadoTB = null;
-        statementVendedor = DBUtil.getConnection().prepareStatement("select e.Apellidos,e.Nombres \n"
-                + "from VentaTB as v inner join EmpleadoTB as e \n"
-                + "on v.Vendedor = e.IdEmpleado\n"
-                + "where v.IdVenta = ?");
-        statementVendedor.setString(1, value);
-        try (ResultSet resultSet = statementVendedor.executeQuery()) {
-            if (resultSet.next()) {
-                empleadoTB = new EmpleadoTB();
-                empleadoTB.setApellidos(resultSet.getString("Apellidos"));
-                empleadoTB.setNombres(resultSet.getString("Nombres"));
+        try {
+            DBUtil.dbConnect();
+            statementVendedor = DBUtil.getConnection().prepareStatement("select e.Apellidos,e.Nombres \n"
+                    + "from VentaTB as v inner join EmpleadoTB as e \n"
+                    + "on v.Vendedor = e.IdEmpleado\n"
+                    + "where v.IdVenta = ?");
+            statementVendedor.setString(1, value);
+            try (ResultSet resultSet = statementVendedor.executeQuery()) {
+                if (resultSet.next()) {
+                    empleadoTB = new EmpleadoTB();
+                    empleadoTB.setApellidos(resultSet.getString("Apellidos"));
+                    empleadoTB.setNombres(resultSet.getString("Nombres"));
+                }
+                statementVendedor.close();
             }
-            statementVendedor.close();
+        } catch (SQLException ex) {
+
+        } finally {
+            try {
+                if (statementVendedor != null) {
+                    statementVendedor.close();
+                }
+            } catch (SQLException ex) {
+
+            }
         }
-        statementVendedor.close();
+
         return empleadoTB;
     }
 

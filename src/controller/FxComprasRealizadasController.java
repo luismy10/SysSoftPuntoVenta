@@ -45,8 +45,6 @@ import model.CompraADO;
 import model.CompraTB;
 import model.DetalleADO;
 import model.DetalleTB;
-import model.PlazosADO;
-import model.PlazosTB;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -98,19 +96,19 @@ public class FxComprasRealizadasController implements Initializable {
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getProveedorTB().getNumeroDocumento().get() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial().get()
         ));
-        tcEstadoCompra.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoCompra()+ ""));
+        tcEstadoCompra.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoCompra() + ""));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal().get(), 2)));
 
         Tools.actualDate(Tools.getDate(), dtFechaInicial);
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
         validationSearch = false;
-        
+
         cbEstadoCompra.getItems().add(new DetalleTB(new SimpleIntegerProperty(0), new SimpleStringProperty("TODOS")));
         DetalleADO.GetDetailId("0009").forEach(e -> {
             cbEstadoCompra.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
         cbEstadoCompra.getSelectionModel().select(0);
-        
+
     }
 
     public void fillPurchasesTable(short opcion, String value, String fechaInicial, String fechaFinal, String estadoCompra) {
@@ -123,7 +121,7 @@ public class FxComprasRealizadasController implements Initializable {
         Task<List<CompraTB>> task = new Task<List<CompraTB>>() {
             @Override
             public ObservableList<CompraTB> call() {
-                return CompraADO.ListComprasRealizadas(opcion, value, fechaInicial, fechaFinal,estadoCompra);
+                return CompraADO.ListComprasRealizadas(opcion, value, fechaInicial, fechaFinal, estadoCompra);
             }
         };
         task.setOnSucceeded((WorkerStateEvent e) -> {
@@ -290,7 +288,7 @@ public class FxComprasRealizadasController implements Initializable {
                 && event.getCode() != KeyCode.PAUSE
                 && event.getCode() != KeyCode.ENTER) {
             if (!validationSearch) {
-                fillPurchasesTable((short) 0, txtSearch.getText().trim(), "", "","");
+                fillPurchasesTable((short) 0, txtSearch.getText().trim(), "", "", "");
                 cbEstadoCompra.getSelectionModel().select(0);
             }
         }
@@ -308,30 +306,31 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private void onActionFechaFinal(ActionEvent actionEvent) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),"");
-            cbEstadoCompra.getSelectionModel().select(0);
-            this.txtSearch.setText("");
-        }
-    }
-
-    public void setContent(AnchorPane windowinit, AnchorPane vbContent) {
-        this.windowinit = windowinit;
-        this.vbContent = vbContent;
-    }
-
-    @FXML
-    private void OnActionEstadoCompra(ActionEvent event) {
-        if(cbEstadoCompra.getSelectionModel().getSelectedIndex()!= 0){
-            fillPurchasesTable((short) 2, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), cbEstadoCompra.getSelectionModel().getSelectedItem().getNombre().get());
-            this.txtSearch.setText("");
-        }
-        else{
             fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
             cbEstadoCompra.getSelectionModel().select(0);
             this.txtSearch.setText("");
         }
     }
+
+    @FXML
+    private void OnActionEstadoCompra(ActionEvent event) {
+        if (cbEstadoCompra.getSelectionModel().getSelectedIndex() != 0) {
+            fillPurchasesTable((short) 2, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), cbEstadoCompra.getSelectionModel().getSelectedItem().getNombre().get());
+            this.txtSearch.setText("");
+        } else {
+            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            cbEstadoCompra.getSelectionModel().select(0);
+            this.txtSearch.setText("");
+        }
+    }
+
+    public VBox getWindow() {
+        return window;
+    }
     
-    
+    public void setContent(AnchorPane windowinit, AnchorPane vbContent) {
+        this.windowinit = windowinit;
+        this.vbContent = vbContent;
+    }
 
 }

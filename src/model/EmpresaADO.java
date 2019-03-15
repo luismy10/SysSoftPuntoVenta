@@ -4,7 +4,6 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class EmpresaADO {
 
@@ -49,16 +48,16 @@ public class EmpresaADO {
         }
     }
 
-    public static ArrayList<EmpresaTB> GetEmpresa() {
+    public static EmpresaTB GetEmpresa() {
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
-        ArrayList<EmpresaTB> arrayList = new ArrayList<>();        
+        EmpresaTB empresaTB = null;
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement("select * from EmpresaTB");
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
-                EmpresaTB empresaTB = new EmpresaTB();
+                empresaTB = new EmpresaTB();
                 empresaTB.setIdEmpresa(rsEmps.getInt("IdEmpresa"));
                 empresaTB.setGiroComerial(rsEmps.getInt("GiroComercial"));
                 empresaTB.setNombre(rsEmps.getString("Nombre"));
@@ -76,7 +75,6 @@ public class EmpresaADO {
                 empresaTB.setCiudad(rsEmps.getInt("Ciudad"));
                 empresaTB.setProvincia(rsEmps.getInt("Provincia"));
                 empresaTB.setDistrito(rsEmps.getInt("Distrito"));
-                arrayList.add(empresaTB);
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
@@ -93,7 +91,7 @@ public class EmpresaADO {
 
             }
         }
-        return arrayList;
+        return empresaTB;
     }
 
 }

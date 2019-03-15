@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -11,7 +12,9 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -23,6 +26,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
 
@@ -35,7 +40,9 @@ public class FxTipoDocumentoController implements Initializable {
     @FXML
     private TableView<TipoDocumentoTB> tvList;
     @FXML
-    private TableColumn<TipoDocumentoTB, String> tcMoneda;
+    private TableColumn<TipoDocumentoTB, String> tcTipoComprobante;
+    @FXML
+    private TableColumn<TipoDocumentoTB, String> tcNombreImpresion;
     @FXML
     private TableColumn<TipoDocumentoTB, ImageView> tcPredeterminado;
 
@@ -45,9 +52,20 @@ public class FxTipoDocumentoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tcMoneda.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombre()));
+        tcTipoComprobante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombre()));
+        tcNombreImpresion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreDocumento()));
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
         stateUpdate = false;
+    }
+
+    private void InitializationTransparentBackground() {
+        Session.PANE.setStyle("-fx-background-color: black");
+        Session.PANE.setTranslateX(0);
+        Session.PANE.setTranslateY(0);
+        Session.PANE.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.PANE.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.PANE.setOpacity(0.7f);
+        content.getChildren().add(Session.PANE);
     }
 
     public void fillTabletTipoDocumento() {
@@ -92,6 +110,30 @@ public class FxTipoDocumentoController implements Initializable {
 
     }
 
+    private void openWindowEdit() throws IOException {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_TIPODOCUMENTOPROCESO);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxTipoDocumentoProcesoController controller = fXMLLoader.getController();
+//            controller.setInitMoneyController(this);
+            controller.initUpdate(tvList.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
+                    tvList.getSelectionModel().getSelectedItem().getNombre());
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Actualizar el comprobante", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.PANE);
+            });
+            stage.show();
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Tipo de comprobante", "Seleccione un elemento de la lista.", false);
+        }
+    }
+
     private void onEventPredeterminado() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             String result = TipoDocumentoADO.ChangeDefaultState(true, tvList.getSelectionModel().getSelectedItem().getIdTipoDocumento());
@@ -108,15 +150,15 @@ public class FxTipoDocumentoController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedEdit(KeyEvent event) {
+    private void onKeyPressedEdit(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-
+            openWindowEdit();
         }
     }
 
     @FXML
-    private void onActionEdit(ActionEvent event) {
-
+    private void onActionEdit(ActionEvent event) throws IOException {
+        openWindowEdit();
     }
 
     @FXML
@@ -138,6 +180,18 @@ public class FxTipoDocumentoController implements Initializable {
 
     public void setContent(AnchorPane content) {
         this.content = content;
+    }
+
+    @FXML
+    private void onKeyPressedReload(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+             fillTabletTipoDocumento();
+        }
+    }
+
+    @FXML
+    private void onActionReload(ActionEvent event) {
+         fillTabletTipoDocumento();
     }
 
 }

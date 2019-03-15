@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ import javax.print.attribute.PrintRequestAttributeSet;
 
 public class PrinterService {
 
-    public  List<String> getPrinters() {
+    public List<String> getPrinters() {
         DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
         PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 
@@ -31,22 +33,29 @@ public class PrinterService {
         return printerList;
     }
 
-    public void printString(String printerName, String text) {
+    public void printString(String printerName, String text, boolean cortar) {
         DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
         PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
         PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
         PrintService service = findPrintService(printerName, printService);
-        
-        DocPrintJob job  = service.createPrintJob();
-       
+
+        DocPrintJob job = service.createPrintJob();
+
         try {
-            byte[] bytes;
             // important for umlaut chars
-            bytes = text.getBytes("CP437");
-            
-            Doc doc = new SimpleDoc(bytes, flavor, null);
+            byte[] bytes = text.getBytes("CP437");
+            byte[] cutP = new byte[]{0x1d, 'V', 1};
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            outputStream.write(bytes);
+            if (cortar) {
+                outputStream.write(cutP);
+            }
+            byte c[] = outputStream.toByteArray();
+            Doc doc = new SimpleDoc(c, flavor, null);
             job.print(doc, null);
         } catch (UnsupportedEncodingException | PrintException e) {
+            Tools.AlertMessage(null, Alert.AlertType.ERROR, "Imprimir ticket", "Error al imprimir, verifique la conexión:" + e.getLocalizedMessage(), false);
+        } catch (IOException e) {
             Tools.AlertMessage(null, Alert.AlertType.ERROR, "Imprimir ticket", "Error al imprimir, verifique la conexión:" + e.getLocalizedMessage(), false);
         }
 
@@ -61,16 +70,4 @@ public class PrinterService {
         return null;
     }
 
-    public void printBytes(String printerName, byte[] bytes) {
-        DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
-        PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
-        PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
-        PrintService service = findPrintService(printerName, printService);
-        DocPrintJob job = service.createPrintJob();
-        try {
-            Doc doc = new SimpleDoc(bytes, flavor, null);
-            job.print(doc, null);
-        } catch (PrintException e) {
-        }
-    }
 }

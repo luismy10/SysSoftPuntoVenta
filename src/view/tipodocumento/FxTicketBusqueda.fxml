@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.FxTicketBusquedaController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxTicketBusquedaController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -20,7 +19,7 @@
                <children>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../ticket.png" />
+                        <Image url="@../search.png" />
                      </image>
                   </ImageView>
                   <Label styleClass="labelRobotoMedium18" text="Formato de ticket" textFill="#1a2226" />
@@ -35,18 +34,18 @@
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Text>
-                        <ListView fx:id="lvLista" onMouseClicked="#onMouseClickedLista" prefHeight="260.0" prefWidth="280.0" VBox.vgrow="ALWAYS" />
+                        <ListView fx:id="lvLista" onMouseClicked="#onMouseClickedLista" prefHeight="280.0" prefWidth="340.0" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>
             </HBox>
             <HBox alignment="CENTER" style="-fx-border-width: 1 0 0 0; -fx-border-color: #999999; -fx-background-color: white;" styleClass="paddinContainer">
                <children>
-                  <Button mnemonicParsing="false" styleClass="buttonLightDefault" text="Guardar">
+                  <Button mnemonicParsing="false" onAction="#onActionSelect" onKeyPressed="#onKeyPressedSelect" styleClass="buttonLightDefault" text="Seleccionar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../save.png" />
+                              <Image url="@../accept.png" />
                            </image>
                         </ImageView>
                      </graphic>

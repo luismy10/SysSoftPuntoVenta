@@ -1,7 +1,6 @@
 package controller;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,7 +33,7 @@ public class FxMiEmpresaController implements Initializable {
     @FXML
     private ComboBox<DetalleTB> cbGiroComercial;
     @FXML
-    private TextField txtNombre;
+    private TextField txtRepresentante;
     @FXML
     private TextField txtTelefono;
     @FXML
@@ -79,46 +78,46 @@ public class FxMiEmpresaController implements Initializable {
         DetalleADO.GetDetailIdName("0", "0003", "RUC").forEach(e -> {
             cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
-        ArrayList<EmpresaTB> list = EmpresaADO.GetEmpresa();
-        if (!list.isEmpty()) {
+        EmpresaTB list = EmpresaADO.GetEmpresa();
+        if (list != null) {
             validate = true;
-            idEmpresa = list.get(0).getIdEmpresa();
+            idEmpresa = list.getIdEmpresa();
 
             ObservableList<DetalleTB> lsgiro = cbGiroComercial.getItems();
-            if (list.get(0).getGiroComerial() != 0) {
+            if (list.getGiroComerial() != 0) {
                 for (int i = 0; i < lsgiro.size(); i++) {
-                    if (list.get(0).getGiroComerial() == lsgiro.get(i).getIdDetalle().get()) {
+                    if (list.getGiroComerial() == lsgiro.get(i).getIdDetalle().get()) {
                         cbGiroComercial.getSelectionModel().select(i);
                         break;
                     }
                 }
             }
 
-            txtNombre.setText(list.get(0).getNombre());
-            txtTelefono.setText(list.get(0).getTelefono());
-            txtCelular.setText(list.get(0).getCelular());
-            txtPaginasWeb.setText(list.get(0).getPaginaWeb());
-            txtEmail.setText(list.get(0).getEmail());
-            txtDomicilio.setText(list.get(0).getDomicilio());
+            txtRepresentante.setText(list.getNombre());
+            txtTelefono.setText(list.getTelefono());
+            txtCelular.setText(list.getCelular());
+            txtPaginasWeb.setText(list.getPaginaWeb());
+            txtEmail.setText(list.getEmail());
+            txtDomicilio.setText(list.getDomicilio());
 
             ObservableList<DetalleTB> lsdoc = cbTipoDocumento.getItems();
-            if (list.get(0).getTipoDocumento() != 0) {
+            if (list.getTipoDocumento() != 0) {
                 for (int i = 0; i < lsdoc.size(); i++) {
-                    if (list.get(0).getTipoDocumento() == lsdoc.get(i).getIdDetalle().get()) {
+                    if (list.getTipoDocumento() == lsdoc.get(i).getIdDetalle().get()) {
                         cbTipoDocumento.getSelectionModel().select(i);
                         break;
                     }
                 }
             }
 
-            txtNumeroDocumento.setText(list.get(0).getNumeroDocumento());
-            txtRazonSocial.setText(list.get(0).getRazonSocial());
-            txtNombreComercial.setText(list.get(0).getNombreComercial());
+            txtNumeroDocumento.setText(list.getNumeroDocumento());
+            txtRazonSocial.setText(list.getRazonSocial());
+            txtNombreComercial.setText(list.getNombreComercial());
 
             ObservableList<PaisTB> lspais = cbPais.getItems();
-            if (list.get(0).getPais() != null || !list.get(0).getPais().equals("")) {
+            if (list.getPais() != null || !list.getPais().equals("")) {
                 for (int i = 0; i < lspais.size(); i++) {
-                    if (list.get(0).getPais().equals(lspais.get(i).getPaisCodigo())) {
+                    if (list.getPais().equals(lspais.get(i).getPaisCodigo())) {
                         cbPais.getSelectionModel().select(i);
                         CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
                             cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
@@ -129,9 +128,9 @@ public class FxMiEmpresaController implements Initializable {
             }
 
             ObservableList<CiudadTB> lsciudad = cbCiudad.getItems();
-            if (list.get(0).getCiudad() != 0) {
+            if (list.getCiudad() != 0) {
                 for (int i = 0; i < lsciudad.size(); i++) {
-                    if (list.get(0).getCiudad() == lsciudad.get(i).getIdCiudad()) {
+                    if (list.getCiudad() == lsciudad.get(i).getIdCiudad()) {
                         cbCiudad.getSelectionModel().select(i);
                         ProvinciaADO.ListProvincia(cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
                             cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
@@ -142,9 +141,9 @@ public class FxMiEmpresaController implements Initializable {
             }
 
             ObservableList<ProvinciaTB> lsprovin = cbProvincia.getItems();
-            if (list.get(0).getProvincia() != 0) {
+            if (list.getProvincia() != 0) {
                 for (int i = 0; i < lsprovin.size(); i++) {
-                    if (list.get(0).getProvincia() == lsprovin.get(i).getIdProvincia()) {
+                    if (list.getProvincia() == lsprovin.get(i).getIdProvincia()) {
                         cbProvincia.getSelectionModel().select(i);
                         DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
                             cbCiudadDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
@@ -155,9 +154,9 @@ public class FxMiEmpresaController implements Initializable {
             }
 
             ObservableList<DistritoTB> lsdistrito = cbCiudadDistrito.getItems();
-            if (list.get(0).getDistrito() != 0) {
+            if (list.getDistrito() != 0) {
                 for (int i = 0; i < lsdistrito.size(); i++) {
-                    if (list.get(0).getDistrito() == lsdistrito.get(i).getIdDistrito()) {
+                    if (list.getDistrito() == lsdistrito.get(i).getIdDistrito()) {
                         cbCiudadDistrito.getSelectionModel().select(i);
                         break;
                     }
@@ -174,9 +173,9 @@ public class FxMiEmpresaController implements Initializable {
         if (cbGiroComercial.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Seleccione el giro comercial, por favor.", false);
             cbGiroComercial.requestFocus();
-        } else if (txtNombre.getText().equalsIgnoreCase("")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese el nombre de la empresa, por favor.", false);
-            txtNombre.requestFocus();
+        } else if (txtRepresentante.getText().equalsIgnoreCase("")) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese el nombre del representante, por favor.", false);
+            txtRepresentante.requestFocus();
         } else if (txtDomicilio.getText().isEmpty()) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese la dirección fiscal de la empresa, por favor.", false);
             txtDomicilio.requestFocus();
@@ -195,7 +194,7 @@ public class FxMiEmpresaController implements Initializable {
                 EmpresaTB empresaTB = new EmpresaTB();
                 empresaTB.setIdEmpresa(validate == true ? idEmpresa : 0);
                 empresaTB.setGiroComerial(cbGiroComercial.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                empresaTB.setNombre(txtNombre.getText().trim());
+                empresaTB.setNombre(txtRepresentante.getText().trim());
                 empresaTB.setTelefono(txtTelefono.getText().trim().isEmpty() ? "0000000" : txtTelefono.getText().trim());
                 empresaTB.setCelular(txtCelular.getText().trim().isEmpty() ? "000000000" : txtCelular.getText().trim());
                 empresaTB.setPaginaWeb(txtPaginasWeb.getText().trim());
@@ -205,7 +204,7 @@ public class FxMiEmpresaController implements Initializable {
                         ? cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get()
                         : 0);
                 empresaTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().isEmpty() ? "000000000000" : txtNumeroDocumento.getText().trim());
-                empresaTB.setRazonSocial(txtRazonSocial.getText().trim().isEmpty() ? txtNombre.getText().trim() : txtRazonSocial.getText().trim());
+                empresaTB.setRazonSocial(txtRazonSocial.getText().trim().isEmpty() ? txtRepresentante.getText().trim() : txtRazonSocial.getText().trim());
                 empresaTB.setNombreComercial(txtNombreComercial.getText().trim());
                 empresaTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0
                         ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()
@@ -221,25 +220,27 @@ public class FxMiEmpresaController implements Initializable {
                 switch (result) {
                     case "registered":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Registrado correctamente.", false);
-                        Session.EMPRESA = txtRazonSocial.getText();
-                        Session.NOMBREEMPRESA = txtNombre.getText();
-                        Session.RUC = txtNumeroDocumento.getText();
-                        Session.TELEFONO = txtTelefono.getText();
-                        Session.CELULAR = txtCelular.getText();
-                        Session.PAGINAWEB = txtPaginasWeb.getText();
-                        Session.EMAIL = txtEmail.getText();
-                        Session.DIRECCION = txtDomicilio.getText();
+                        Session.REPRESENTANTE_EMPRESA = txtRepresentante.getText();
+                        Session.RAZONSOCIAL_EMPRESA = txtRazonSocial.getText();
+                        Session.NOMBRECOMERCIAL_EMPRESA = txtNombreComercial.getText();
+                        Session.RUC_EMPRESA = txtNumeroDocumento.getText();
+                        Session.TELEFONO_EMPRESA = txtTelefono.getText();
+                        Session.CELULAR_EMPRESA = txtCelular.getText();
+                        Session.PAGINAWEB_EMPRESA = txtPaginasWeb.getText();
+                        Session.EMAIL_EMPRESA = txtEmail.getText();
+                        Session.DIRECCION_EMPRESA = txtDomicilio.getText();
                         break;
                     case "updated":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Actualizado correctamente.", false);
-                        Session.EMPRESA = txtRazonSocial.getText();
-                        Session.NOMBREEMPRESA = txtNombre.getText();
-                        Session.RUC = txtNumeroDocumento.getText();
-                        Session.TELEFONO = txtTelefono.getText();
-                        Session.CELULAR = txtCelular.getText();
-                        Session.PAGINAWEB = txtPaginasWeb.getText();
-                        Session.EMAIL = txtEmail.getText();
-                        Session.DIRECCION = txtDomicilio.getText();
+                        Session.REPRESENTANTE_EMPRESA = txtRepresentante.getText();
+                        Session.RAZONSOCIAL_EMPRESA = txtRazonSocial.getText();
+                        Session.NOMBRECOMERCIAL_EMPRESA = txtNombreComercial.getText();
+                        Session.RUC_EMPRESA = txtNumeroDocumento.getText();
+                        Session.TELEFONO_EMPRESA = txtTelefono.getText();
+                        Session.CELULAR_EMPRESA= txtCelular.getText();
+                        Session.PAGINAWEB_EMPRESA = txtPaginasWeb.getText();
+                        Session.EMAIL_EMPRESA = txtEmail.getText();
+                        Session.DIRECCION_EMPRESA = txtDomicilio.getText();
                         break;
                     case "error":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "No se puedo completar la ejecución.", false);

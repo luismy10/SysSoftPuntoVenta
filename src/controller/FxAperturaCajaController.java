@@ -59,13 +59,15 @@ public class FxAperturaCajaController implements Initializable {
         CajaTB cajaTB = new CajaTB();
         
         cajaTB.setMontoInicial(Double.parseDouble(this.txtMonto.getText()));
-        cajaTB.setMontoFinal(Double.parseDouble(this.txtMonto.getText()));
-        cajaTB.setEntrada(0);
-        cajaTB.setSalida(0);
-        cajaTB.setDevolucion(0);
+        cajaTB.setMontoFinal(0.00);
+        cajaTB.setIngresos(0.00);
+        cajaTB.setEgresos(0.00);
+        cajaTB.setDevoluciones(0.00);
+        cajaTB.setEntradas(0.00);
+        cajaTB.setSalidas(0.00);
         cajaTB.setFechaApertura(Timestamp.valueOf(Tools.getDate() + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
         cajaTB.setFechaCierre(Timestamp.valueOf(Tools.getDate() + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
-        cajaTB.setEstado("activo".toUpperCase());
+        cajaTB.setEstado("ACTIVO".toUpperCase());
         cajaTB.setIdEmpleado(Session.USER_ID);
         return CajaADO.CrudInsertar(cajaTB);
         

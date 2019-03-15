@@ -697,7 +697,7 @@
  *                                                                             *
  ******************************************************************************/
 
-.text-field {
+.text-field-contenido {
     ACCENT_COLOR: #2796c4;
     BORDER: #999999;
     BORDER_HOVER: #666666;
@@ -761,6 +761,7 @@
 }
 
 
+
 .text-field-ticket{
     -fx-background-radius: 0, 0;
 
@@ -783,3 +784,283 @@
     -fx-border-color: #999999;
 }
 
+/*******************************************************************************
+ *                                                                             *
+ * Check Box                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.check-box-contenido {
+    -fx-text-fill:  black;
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 1.1666666666666667em;
+}
+
+/* unselected */
+.check-box-contenido > .box {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+
+    -fx-border-color: #999999;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+
+    -fx-padding: 0.3333333333333333em 0.16666666666666666em 0.3333333333333333em 0.16666666666666666em;/*4px 2px 4px 2px*/
+}
+
+.check-box-contenido > .box > .mark {
+    -fx-shape: "M17.939,5.439L7.5,15.889l-5.439-5.449l0.879-0.879L7.5,14.111 l9.561-9.551L17.939,5.439z";
+
+    -fx-pref-width: 1.3333333333333333em;/*16px*/
+    -fx-pref-height: 1em;/*12px*/
+
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+/* hover */
+.check-box-contenido:hover > .box, .check-box-contenido:selected:hover > .box  {
+    -fx-border-color: #7a7a7a;
+}
+
+/* selected */
+.check-box-contenido:selected > .box{
+    -fx-background-color: #3c8dbc;
+    -fx-border-color: #666666;
+}
+
+.check-box-contenido:selected > .box > .mark{
+    -fx-background-color: white;
+}
+
+/* pressed */
+.check-box-contenido:pressed > .box, .check-box-contenido:selected:pressed > .box
+{
+    -fx-background-color: #666666;
+    -fx-border-color: #666666;
+}
+
+/* indeterminate */
+.check-box-contenido:indeterminate > .box {
+    -fx-padding: 0.3333333333333333em 0.16666666666666666em 0.3333333333333333em 0.16666666666666666em;/*4px 2px 4px 2px*/
+
+    -fx-border-color: ACCENT_COLOR;
+}
+
+.check-box-contenido:indeterminate > .box > .mark {
+    -fx-shape: null;
+
+    -fx-pref-width: 0.8333333333333334em;/*10px*/
+    -fx-max-width: 0.8333333333333334em;
+    -fx-min-width: 0.8333333333333334em;
+    -fx-pref-height: 0.8333333333333334em;
+    -fx-max-height: 0.8333333333333334em;
+    -fx-min-height: 0.8333333333333334em;
+
+    -fx-background-color: #333333;
+    /*-fx-background-insets: 3px;*/
+}
+
+/* -- indeterminate - pressed */
+.check-box-contenido:indeterminate:pressed > .box > .mark {
+    -fx-background-color: #666666;
+}
+
+.check-box-contenido:indeterminate:pressed > .box {
+    -fx-background-color: white;
+    -fx-border-color: #666666;
+}
+
+/* focused */
+
+.check-box-contenido:focused > .box{
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    /* - first border is focus ring
+       - second border is control border */
+    -fx-border-color: #00aff0;
+    -fx-border-width: 1;
+    /*noinspection CssInvalidFunction*/
+    /*-fx-border-style: segments(1, 2), solid;*
+    -fx-border-insets: -3, 0;*/
+}
+
+/* -- focused - selected */
+.check-box-contenido:focused:selected > .box{
+    -fx-border-color: #00aff0;
+}
+
+/* -- focused - selected, hover */
+.check-box-contenido:focused:selected:hover > .box{
+    -fx-border-color: #666666;
+}
+
+/* -- focused - pressed */
+.check-box-contenido:focused:pressed > .box{
+    -fx-border-color: #666666, #666666;
+}
+
+.check-box-contenido:focused:selected:pressed > .box{
+    -fx-border-color: #666666, #666666;
+}
+
+.check-box-contenido:focused:indeterminate:pressed > .box{
+    -fx-border-color: #666666, #666666;
+}
+
+/* -- focused - indeterminate*/
+.check-box-contenido:focused:indeterminate > .box {
+    -fx-border-color: #666666, #666666;
+}
+
+/* disabled */
+.check-box-contenido:disabled
+{
+    -fx-opacity: 0.8;
+}
+
+.check-box-contenido:disabled > .box
+{
+    -fx-background-color: #cdcdcd;
+    -fx-border-color: #aaa;
+}
+
+/*
+*/
+
+.check-box-ticket {
+    -fx-text-fill:  #0f67a1;
+    -fx-font-family:"Roboto Bold";  
+    -fx-font-size: 1.3333333333333333em;
+}
+
+/* unselected */
+.check-box-ticket > .box {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+
+    -fx-border-color: #999999;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+
+    -fx-padding: 0.3333333333333333em 0.16666666666666666em 0.3333333333333333em 0.16666666666666666em;/*4px 2px 4px 2px*/
+}
+
+.check-box-ticket > .box > .mark {
+    -fx-shape: "M17.939,5.439L7.5,15.889l-5.439-5.449l0.879-0.879L7.5,14.111 l9.561-9.551L17.939,5.439z";
+
+    -fx-pref-width: 1.3333333333333333em;/*16px*/
+    -fx-pref-height: 1em;/*12px*/
+
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+/* hover */
+.check-box-ticket:hover > .box, .check-box-ticket:selected:hover > .box  {
+    -fx-border-color: #7a7a7a;
+}
+
+/* selected */
+.check-box-ticket:selected > .box{
+    -fx-background-color: #3c8dbc;
+    -fx-border-color: #666666;
+}
+
+.check-box-ticket:selected > .box > .mark{
+    -fx-background-color: white;
+}
+
+/* pressed */
+.check-box-ticket:pressed > .box, .check-box-ticket:selected:pressed > .box
+{
+    -fx-background-color: #666666;
+    -fx-border-color: #666666;
+}
+
+/* indeterminate */
+.check-box-ticket:indeterminate > .box {
+    -fx-padding: 0.3333333333333333em 0.16666666666666666em 0.3333333333333333em 0.16666666666666666em;/*4px 2px 4px 2px*/
+
+    -fx-border-color: ACCENT_COLOR;
+}
+
+.check-box-ticket:indeterminate > .box > .mark {
+    -fx-shape: null;
+
+    -fx-pref-width: 0.8333333333333334em;/*10px*/
+    -fx-max-width: 0.8333333333333334em;
+    -fx-min-width: 0.8333333333333334em;
+    -fx-pref-height: 0.8333333333333334em;
+    -fx-max-height: 0.8333333333333334em;
+    -fx-min-height: 0.8333333333333334em;
+
+    -fx-background-color: #333333;
+    /*-fx-background-insets: 3px;*/
+}
+
+/* -- indeterminate - pressed */
+.check-box-ticket:indeterminate:pressed > .box > .mark {
+    -fx-background-color: #666666;
+}
+
+.check-box-ticket:indeterminate:pressed > .box {
+    -fx-background-color: white;
+    -fx-border-color: #666666;
+}
+
+/* focused */
+
+.check-box-ticket:focused > .box{
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    /* - first border is focus ring
+       - second border is control border */
+    -fx-border-color: #00aff0;
+    -fx-border-width: 1;
+    /*noinspection CssInvalidFunction*/
+    /*-fx-border-style: segments(1, 2), solid;*
+    -fx-border-insets: -3, 0;*/
+}
+
+/* -- focused - selected */
+.check-box-ticket:focused:selected > .box{
+    -fx-border-color: #00aff0;
+}
+
+/* -- focused - selected, hover */
+.check-box-ticket:focused:selected:hover > .box{
+    -fx-border-color: #666666;
+}
+
+/* -- focused - pressed */
+.check-box-ticket:focused:pressed > .box{
+    -fx-border-color: #666666, #666666;
+}
+
+.check-box-ticket:focused:selected:pressed > .box{
+    -fx-border-color: #666666, #666666;
+}
+
+.check-box-ticket:focused:indeterminate:pressed > .box{
+    -fx-border-color: #666666, #666666;
+}
+
+/* -- focused - indeterminate*/
+.check-box-ticket:focused:indeterminate > .box {
+    -fx-border-color: #666666, #666666;
+}
+
+/* disabled */
+.check-box-ticket:disabled
+{
+    -fx-opacity: 0.8;
+}
+
+.check-box-ticket:disabled > .box
+{
+    -fx-background-color: #cdcdcd;
+    -fx-border-color: #aaa;
+}

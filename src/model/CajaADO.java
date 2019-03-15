@@ -5,9 +5,6 @@
  */
 package model;
 
-import controller.Session;
-import java.sql.CallableStatement;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,41 +14,36 @@ import java.sql.SQLException;
  * @author Ruberfc
  */
 public class CajaADO {
-    
-     public static String CrudInsertar(CajaTB cajaTB) {
 
-        PreparedStatement caja = null;
-//        PreparedStatement caja_Trabajador = null;
+    public static String CrudInsertar(CajaTB cajaTB) {
+
+        PreparedStatement caja_apertura = null;
 
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
 
-            caja = DBUtil.getConnection().prepareStatement("INSERT INTO CajaTB(MontoInicial,MontoFinal,Entrada,Salida,Devolucion,FechaApertura,FechaCierre,Estado,IdEmpleado)"
-                    + "VALUES(?,?,?,?,?,?,?,?,?)");
+            caja_apertura = DBUtil.getConnection().prepareStatement("insert into CajaTB(MontoInicial,MontoFinal,Ingresos,Egresos,Devoluciones,Entradas,Salidas,FechaApertura,FechaCierre,Estado,IdEmpleado)"
+                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 
-//            caja_Trabajador = DBUtil.getConnection().prepareStatement("INSERT INTO CajaTrabajadorTB(IdEmpleado,MontoInicial,Entrada,Salida,Devolucion,Estado,FechaApertura,FechaCierre)"
-//                    + "VALUES(?,?,?,?,?,?,?,?)");
-            caja.setDouble(1, cajaTB.getMontoInicial());
-            caja.setDouble(2, cajaTB.getMontoFinal());
-            caja.setDouble(3, cajaTB.getEntrada());
-            caja.setDouble(4, cajaTB.getSalida());
-            caja.setDouble(5, cajaTB.getDevolucion());
-            caja.setTimestamp(6, cajaTB.getFechaApertura());
-            caja.setTimestamp(7, cajaTB.getFechaCierre());
-            caja.setString(8, cajaTB.getEstado());
-            caja.setString(9, cajaTB.getIdEmpleado());
+            caja_apertura.setDouble(1, cajaTB.getMontoInicial());
+            caja_apertura.setDouble(2, cajaTB.getMontoFinal());
+            caja_apertura.setDouble(3, cajaTB.getIngresos());
+            caja_apertura.setDouble(4, cajaTB.getEgresos());
+            caja_apertura.setDouble(5, cajaTB.getDevoluciones());
+            caja_apertura.setDouble(6, cajaTB.getEntradas());
+            caja_apertura.setDouble(7, cajaTB.getSalidas());
+            caja_apertura.setTimestamp(8, cajaTB.getFechaApertura());
+            caja_apertura.setTimestamp(9, cajaTB.getFechaCierre());
+            caja_apertura.setString(10, cajaTB.getEstado());
+            caja_apertura.setString(11, cajaTB.getIdEmpleado());
 
-            caja.addBatch();
-//            caja_Trabajador.addBatch();
-
-            caja.executeBatch();
-//            caja_Trabajador.executeBatch();
-            System.out.println("registro algo");
+            caja_apertura.addBatch();
+            caja_apertura.executeBatch();
 
             DBUtil.getConnection().commit();
 
-            return "Se realizó la apertura de caja para el empleado actual ";
+            return "Se realizó la apertura de caja con éxito para el usuario actual";
         } catch (SQLException ex) {
             try {
                 DBUtil.getConnection().rollback();
@@ -61,19 +53,16 @@ public class CajaADO {
             }
         } finally {
             try {
-                if (caja != null) {
-                    caja.close();
+                if (caja_apertura != null) {
+                    caja_apertura.close();
                 }
-//                if (caja_Trabajador != null ){
-//                    caja_Trabajador.close();
-//                }
 
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {
             }
         }
     }
-    
+
     public static String consultarEstadoCaja(String estado, String idEmpleado) {
 
         PreparedStatement consultar_Caja = null;
@@ -97,69 +86,47 @@ public class CajaADO {
         }
 
     }
-    
+
     public static CajaTB consultarMontosCaja(String idEmpleado, String estado) {
-        PreparedStatement entrada = null, salida = null, devolucion = null, fondoCaja = null;
-        ResultSet resultSetEntrada = null, resultSetSalida = null, resultSetDevolucion = null, resultSetFondoCaja = null;
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         CajaTB cajaTB = null;
 
         try {
             DBUtil.dbConnect();
-            entrada = DBUtil.getConnection().prepareStatement("select Entrada from CajaTB where IdEmpleado = ? and Estado = ?");
-            entrada.setString(1, idEmpleado);
-            entrada.setString(2, estado);
+            preparedStatement = DBUtil.getConnection().prepareStatement("select MontoInicial,MontoFinal,Ingresos,Egresos,Devoluciones,Entradas,Salidas,FechaApertura,FechaCierre,Estado,IdEmpleado from CajaTB where IdEmpleado = ? and Estado = ?");
+            preparedStatement.setString(1, idEmpleado);
+            preparedStatement.setString(2, estado);
 
-            salida = DBUtil.getConnection().prepareStatement("select Salida from CajaTB where IdEmpleado = ? and Estado = ?");
-            salida.setString(1, idEmpleado);
-            salida.setString(2, estado);
+            resultSet = preparedStatement.executeQuery();
 
-            devolucion = DBUtil.getConnection().prepareStatement("select Devolucion from CajaTB where IdEmpleado = ? and Estado = ?");
-            devolucion.setString(1, idEmpleado);
-            devolucion.setString(2, estado);
-
-            fondoCaja = DBUtil.getConnection().prepareStatement("select MontoInicial from CajaTB where IdEmpleado = ? and Estado = ?");
-            fondoCaja.setString(1, idEmpleado);
-            fondoCaja.setString(2, estado);
-
-            resultSetEntrada = entrada.executeQuery();
-            resultSetSalida = salida.executeQuery();
-            resultSetDevolucion = devolucion.executeQuery();
-            resultSetFondoCaja = fondoCaja.executeQuery();
-
-            cajaTB = new CajaTB();
-            cajaTB.setEntrada(resultSetEntrada.next()? resultSetEntrada.getDouble("Entrada"):0.0);
-            cajaTB.setSalida(resultSetSalida.next()? resultSetSalida.getDouble("Salida"):0.0);
-            cajaTB.setDevolucion(resultSetDevolucion.next()? resultSetDevolucion.getDouble("Devolucion"):0.0);
-            cajaTB.setMontoInicial(resultSetFondoCaja.next() ? resultSetFondoCaja.getDouble("MontoInicial") : 0.0);
+            if (resultSet.next()) {
+                cajaTB = new CajaTB();
+                cajaTB.setMontoInicial(resultSet.getDouble("MontoInicial"));
+                cajaTB.setMontoFinal(resultSet.getDouble("MontoFinal"));
+                cajaTB.setIngresos(resultSet.getDouble("Ingresos"));
+                cajaTB.setEgresos(resultSet.getDouble("Salida"));
+                cajaTB.setDevoluciones(resultSet.getDouble("Devolucion"));
+                cajaTB.setEntradas(resultSet.getDouble("Entradas"));
+                cajaTB.setSalidas(resultSet.getDouble("Salidas"));
+                cajaTB.setFechaApertura(resultSet.getTimestamp("FechaApertura"));
+                cajaTB.setFechaCierre(resultSet.getTimestamp("FechaCierre"));
+                cajaTB.setEstado(resultSet.getString("Estado"));
+                cajaTB.setIdEmpleado(resultSet.getString("IdEmpleado"));
+            }
 
         } catch (SQLException ex) {
         } finally {
 
             try {
-                if (entrada != null) {
-                    entrada.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
                 }
-                if (resultSetEntrada != null) {
-                    resultSetEntrada.close();
+                if (resultSet != null) {
+                    resultSet.close();
                 }
-                if (salida != null) {
-                    salida.close();
-                }
-                if (resultSetSalida != null) {
-                    resultSetSalida.close();
-                }
-                if (devolucion != null) {
-                    devolucion.close();
-                }
-                if (resultSetDevolucion != null) {
-                    resultSetDevolucion.close();
-                }
-                if (fondoCaja != null) {
-                    fondoCaja.close();
-                }
-                if (resultSetFondoCaja != null) {
-                    resultSetFondoCaja.close();
-                }
+
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {
             }
@@ -179,7 +146,7 @@ public class CajaADO {
             ventasTotales = DBUtil.getConnection().prepareCall("select sum(total) as Total from VentaTB as v inner join CajaTB as c on v.Vendedor = c.IdEmpleado where c.IdEmpleado = ? and c.Estado = ?");
             ventasTotales.setString(1, idEmpleado);
             ventasTotales.setString(2, estado);
-
+            
             resultSetVentasTotales = ventasTotales.executeQuery();
 
             if (resultSetVentasTotales.next()) {
@@ -203,23 +170,22 @@ public class CajaADO {
         }
         return ventaTB;
     }
-    
-    
-    public static String crudCorteCaja(CajaTB cajaTB){
+
+    public static String crudCorteCaja(CajaTB cajaTB) {
         PreparedStatement corte_caja = null;
-        
+
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
-            corte_caja = DBUtil.getConnection().prepareStatement("update CajaTB set FechaCierre = ?, Estado = ? where Estado = ? and IdEmpleado = ?");
-            
-            corte_caja.setTimestamp(1, cajaTB.getFechaCierre());
-            corte_caja.setString(2, "inactivo".toUpperCase());
-            corte_caja.setString(3, cajaTB.getEstado());
-            corte_caja.setString(4, cajaTB.getIdEmpleado());
-            
+            corte_caja = DBUtil.getConnection().prepareStatement("update CajaTB set MontoFinal = ?, FechaCierre = ?, Estado = ? where Estado = ? and IdEmpleado = ?");
+            corte_caja.setDouble(1, cajaTB.getMontoFinal());
+            corte_caja.setTimestamp(2, cajaTB.getFechaCierre());
+            corte_caja.setString(3, "INACTIVO".toUpperCase());
+            corte_caja.setString(4, cajaTB.getEstado());
+            corte_caja.setString(5, cajaTB.getIdEmpleado());
+
             corte_caja.addBatch();
-            
+
             corte_caja.executeBatch();
             DBUtil.getConnection().commit();
             return "update".toUpperCase();
@@ -234,6 +200,6 @@ public class CajaADO {
             } catch (SQLException e) {
             }
         }
-   
+
     }
 }

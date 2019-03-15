@@ -53,23 +53,24 @@ public class FxCajaController implements Initializable {
     @FXML
     private Label lblFondoCaja;
     @FXML
-    private Label lblVentasEfectivo;
+    private Label lblIngresos;
     @FXML
-    private Label lblAhorrosEfectivo;
+    private Label lblEgresos;
+    @FXML
+    private Label lblDevoluciones;
     @FXML
     private Label lblEntradas;
     @FXML
     private Label lblSalidas;
     @FXML
-    private Label lblDevoluciones;
+    private Label lblTotalDineroCaja;
 
     private AnchorPane content;
 
     private String simbolo_Moneda;
-
-    /**
-     * Initializes the controller class.
-     */
+    
+    private double totalDineroCaja;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.lblCargo.setText(Session.USER_NAME);
@@ -92,27 +93,34 @@ public class FxCajaController implements Initializable {
             }
         }
 
-        //CajaADO.consultarMontos(Session.USER_ID, "activo");
-        CajaTB cajaTB = CajaADO.consultarMontosCaja(Session.USER_ID, "activo");
-        VentaTB ventaTB = CajaADO.consultarMontosVenta(Session.USER_ID, "activo");
-
+        CajaTB cajaTB = CajaADO.consultarMontosCaja(Session.USER_ID, "activo".toUpperCase());
+        VentaTB ventaTB = CajaADO.consultarMontosVenta(Session.USER_ID, "activo".toUpperCase());
+        
         this.lblVentasTotales.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(ventaTB.getTotal(), 2)));
 
         this.lblFondoCaja.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getMontoInicial(), 2)));
-        this.lblEntradas.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getEntrada(), 2)));
-        this.lblSalidas.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getSalida(), 2)));
-        this.lblDevoluciones.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getDevolucion(), 2)));
+        this.lblIngresos.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getIngresos(), 2)));
+        this.lblEgresos.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getEgresos(), 2)));
+        this.lblDevoluciones.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getDevoluciones(), 2)));
+        this.lblEntradas.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getEntradas(), 2)));
+        this.lblSalidas.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getSalidas(), 2)));
+        
+        totalDineroCaja = (cajaTB.getMontoInicial()+cajaTB.getIngresos()+cajaTB.getEntradas())-(cajaTB.getEgresos()+cajaTB.getDevoluciones()+cajaTB.getSalidas());
+        
+        this.lblTotalDineroCaja.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(totalDineroCaja, 2)));
     }
 
     @FXML
     private void onActionCorte(ActionEvent event) throws IOException {
+
         short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Caja", "Esta seguro(a) de hacer el corte de caja. ", "Aceptar", "Cancelar");
         if (value == 0) {
 
             CajaTB cajaTB = new CajaTB();
 
+            cajaTB.setMontoFinal(totalDineroCaja);
             cajaTB.setFechaCierre(Timestamp.valueOf(LocalDateTime.now()));
-            cajaTB.setEstado("activo".toUpperCase());
+            cajaTB.setEstado("ACTIVO".toUpperCase());
             cajaTB.setIdEmpleado(Session.USER_ID);
 
             String result = CajaADO.crudCorteCaja(cajaTB);
@@ -136,7 +144,6 @@ public class FxCajaController implements Initializable {
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Caja", result, false);
             }
-
         }
 
     }

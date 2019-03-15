@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -11,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
@@ -36,6 +38,8 @@ import model.MonedaTB;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
 import model.VentaTB;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class FxVentaController implements Initializable {
 
@@ -85,7 +89,6 @@ public class FxVentaController implements Initializable {
     private Text lblImporteTotalMoneda;
     @FXML
     private Text lblTotalPagarMoneda;
-
     @FXML
     private VBox vbImpuestos;
 
@@ -103,14 +106,35 @@ public class FxVentaController implements Initializable {
 
     private ArrayList<ImpuestoTB> arrayArticulosImpuesto;
 
+    private BillPrintable billPrintable;
+
+    private VBox hbEncabezado;
+
+    private VBox hbDetalleCabecera;
+
+    private VBox hbPie;
+
+    private int sheetWidth;
+
+    private double pointWidth;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        hbEncabezado = new VBox();
+        hbDetalleCabecera = new VBox();
+        hbPie = new VBox();
+        pointWidth = 7.825;
+        sheetWidth = 40;
         window.setOnKeyReleased((KeyEvent event) -> {
             try {
                 if (null != event.getCode()) {
                     switch (event.getCode()) {
                         case F5:
                             openWindowGranel("Cambiar precio al Artículo", false);
+                            event.consume();
+                            break;
+                        case F6:
+                            openWindowDescuento();
                             event.consume();
                             break;
                         case F7:
@@ -137,6 +161,9 @@ public class FxVentaController implements Initializable {
                             }
                             event.consume();
                             break;
+                        case F10:
+                            resetVenta();
+                            break;
                         case DELETE:
                             removeArticulo();
                             event.consume();
@@ -150,6 +177,7 @@ public class FxVentaController implements Initializable {
                 System.out.println(ex.getLocalizedMessage());
             }
         });
+        billPrintable = new BillPrintable();
         monedaSimbolo = "M";
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
         initTable();
@@ -159,7 +187,7 @@ public class FxVentaController implements Initializable {
     private void loadWindow() {
         cbComprobante.getItems().clear();
         TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
-            cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado()));
+            cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado(), e.getNombreDocumento()));
         });
         if (!cbComprobante.getItems().isEmpty()) {
             for (int i = 0; i < cbComprobante.getItems().size(); i++) {
@@ -216,13 +244,13 @@ public class FxVentaController implements Initializable {
     }
 
     private void InitializationTransparentBackground() {
-        Session.pane.setStyle("-fx-background-color: black");
-        Session.pane.setTranslateX(0);
-        Session.pane.setTranslateY(0);
-        Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
-        Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
-        Session.pane.setOpacity(0.7f);
-        content.getChildren().add(Session.pane);
+        Session.PANE.setStyle("-fx-background-color: black");
+        Session.PANE.setTranslateX(0);
+        Session.PANE.setTranslateY(0);
+        Session.PANE.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.PANE.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.PANE.setOpacity(0.7f);
+        content.getChildren().add(Session.PANE);
     }
 
     private void openWindowArticulos() throws IOException {
@@ -238,7 +266,7 @@ public class FxVentaController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(Session.pane);
+            content.getChildren().remove(Session.PANE);
         });
         stage.show();
         controller.fillProvidersTable("");
@@ -258,7 +286,7 @@ public class FxVentaController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding((WindowEvent WindowEvent) -> {
-                content.getChildren().remove(Session.pane);
+                content.getChildren().remove(Session.PANE);
             });
             stage.show();
             VentaTB ventaTB = new VentaTB();
@@ -281,7 +309,8 @@ public class FxVentaController implements Initializable {
             ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
             ventaTB.setTotal(Double.parseDouble(lblImporteTotal.getText()));
 
-            controller.setInitComponents(ventaTB, txtCliente.getText(), tvList, lblTotalPagar.getText());
+            controller.setInitComponents(ventaTB, txtCliente.getText(), cbComprobante.getSelectionModel().getSelectedItem().getNombreDocumento(), tvList,
+                    lblSubTotal.getText(), lblDescuento.getText(), lblImporteTotal.getText(), lblTotalPagar.getText());
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventas", "Debes agregar artículos a la venta", false);
         }
@@ -301,7 +330,7 @@ public class FxVentaController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(Session.pane);
+            content.getChildren().remove(Session.PANE);
         });
         stage.show();
 
@@ -320,7 +349,7 @@ public class FxVentaController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(Session.pane);
+            content.getChildren().remove(Session.PANE);
         });
         stage.show();
         controller.fillCustomersTable("");
@@ -341,7 +370,7 @@ public class FxVentaController implements Initializable {
                 stage.setResizable(false);
                 stage.sizeToScene();
                 stage.setOnHiding((WindowEvent WindowEvent) -> {
-                    content.getChildren().remove(Session.pane);
+                    content.getChildren().remove(Session.PANE);
                 });
                 stage.show();
                 controller.initComponents(tvList.getSelectionModel().getSelectedItem(), tvList.getSelectionModel().getSelectedIndex());
@@ -370,7 +399,7 @@ public class FxVentaController implements Initializable {
                 stage.setResizable(false);
                 stage.sizeToScene();
                 stage.setOnHiding((WindowEvent WindowEvent) -> {
-                    content.getChildren().remove(Session.pane);
+                    content.getChildren().remove(Session.PANE);
                 });
                 stage.show();
                 controller.initComponents(
@@ -403,7 +432,7 @@ public class FxVentaController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding((WindowEvent WindowEvent) -> {
-                content.getChildren().remove(Session.pane);
+                content.getChildren().remove(Session.PANE);
             });
             stage.show();
 
@@ -427,7 +456,7 @@ public class FxVentaController implements Initializable {
                         articuloTB.setClave(tvList.getItems().get(i).getClave());
                         articuloTB.setNombreMarca(tvList.getItems().get(i).getNombreMarca());
                         articuloTB.setCantidad(tvList.getItems().get(i).getCantidad() + 1);
-//
+
                         double precio = tvList.getItems().get(i).getPrecioVentaReal();
                         double discount = tvList.getItems().get(i).getDescuento();
                         double porcentajeDecimal = discount / 100.00;
@@ -526,10 +555,7 @@ public class FxVentaController implements Initializable {
     }
 
     public void resetVenta() {
-        String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
-        lblSerie.setText(array[0]);
-        lblNumeracion.setText(array[1]);
-        this.tvList.getItems().clear();
+        tvList.getItems().clear();
         lblMoneda.setText(monedaSimbolo);
         lblSubTotalMoneda.setText(monedaSimbolo);
         lblDescuentoMoneda.setText(monedaSimbolo);
@@ -543,6 +569,28 @@ public class FxVentaController implements Initializable {
         lblTotalPagar.setText("0.0000");
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
 
+        cbComprobante.getItems().clear();
+        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
+            cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado(), e.getNombreDocumento()));
+        });
+        if (!cbComprobante.getItems().isEmpty()) {
+            for (int i = 0; i < cbComprobante.getItems().size(); i++) {
+                if (cbComprobante.getItems().get(i).isPredeterminado() == true) {
+                    cbComprobante.getSelectionModel().select(i);
+                    Session.DEFAULT_COMPROBANTE = i;
+                    break;
+                }
+            }
+            String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
+            lblSerie.setText(array[0]);
+            lblNumeracion.setText(array[1]);
+        }
+        cbComprobante.getSelectionModel().select(Session.DEFAULT_COMPROBANTE);
+
+        cbMoneda.getItems().clear();
+        MonedaADO.GetMonedasCombBox().forEach(e -> {
+            cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getSimbolo(), e.getPredeterminado()));
+        });
         if (!cbMoneda.getItems().isEmpty()) {
             for (int i = 0; i < cbMoneda.getItems().size(); i++) {
                 if (cbMoneda.getItems().get(i).getPredeterminado() == true) {
@@ -551,15 +599,112 @@ public class FxVentaController implements Initializable {
                 }
             }
         }
-        cbComprobante.getSelectionModel().select(Session.DEFAULT_COMPROBANTE);
+
+        arrayArticulosImpuesto.clear();
+        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
+            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+        });
+
         txtSearch.requestFocus();
 
         calculateTotales();
     }
 
-    public void imprimirVenta(VentaTB ventaTB, String efec, String vuel, String ticket) {
-        if (Session.STATE_IMPRESORA && Session.NAME_IMPRESORA != null && Session.CORTA_PAPEL != null) {
-            
+    public void imprimirVenta(String documento, TableView<ArticuloTB> tvList, String subTotal, String descuento, String importeTotal, String total, String efec, String vuel, String ticket) {
+        if (Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA != null && Session.CORTAPAPEL_IMPRESORA != null) {
+            loadTicket();
+            ArrayList<HBox> object = new ArrayList<>();
+            int rows = 0;
+            int lines = 0;
+            for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+                object.add((HBox) hbEncabezado.getChildren().get(i));
+                HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+                rows++;
+                for (int j = 0; j < box.getChildren().size(); j++) {
+                    TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
+                    if (fieldTicket.getVariable().equalsIgnoreCase("repeempresa")) {
+                        fieldTicket.setText(Session.REPRESENTANTE_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("telempresa")) {
+                        fieldTicket.setText(Session.TELEFONO_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("celempresa")) {
+                        fieldTicket.setText(Session.CELULAR_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("pagwempresa")) {
+                        fieldTicket.setText(Session.PAGINAWEB_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("emailempresa")) {
+                        fieldTicket.setText(Session.EMAIL_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("direcempresa")) {
+                        fieldTicket.setText(Session.DIRECCION_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("rucempresa")) {
+                        fieldTicket.setText(Session.RUC_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("razoempresa")) {
+                        fieldTicket.setText(Session.RAZONSOCIAL_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("nomcomempresa")) {
+                        fieldTicket.setText(Session.NOMBRECOMERCIAL_EMPRESA);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("fchactual")) {
+                        fieldTicket.setText(Tools.getDate("dd/MM/yyyy"));
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("horactual")) {
+                        fieldTicket.setText(Tools.getHour("hh:mm:ss aa"));
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("docventa")) {
+                        fieldTicket.setText(documento);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("numventa")) {
+                        fieldTicket.setText(ticket);
+                    }
+                    lines += fieldTicket.getLines();
+                }
+            }
+
+            for (int m = 0; m < tvList.getItems().size(); m++) {
+                for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                    HBox hBox = new HBox();
+                    hBox.setId("dc_" + m + "" + i);
+                    HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                    rows++;
+                    for (int j = 0; j < box.getChildren().size(); j++) {
+                        TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
+                        if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
+                            fieldTicket.setText(tvList.getItems().get(m).getClave());
+                        } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
+                            fieldTicket.setText(tvList.getItems().get(m).getNombreMarca());
+                        } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
+                            fieldTicket.setText(Tools.roundingValue(tvList.getItems().get(m).getCantidad(), 2));
+                        } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
+                            fieldTicket.setText(Tools.roundingValue(tvList.getItems().get(m).getPrecioVentaReal(), 2));
+                        } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
+                            fieldTicket.setText(Tools.roundingValue(tvList.getItems().get(m).getDescuento(), 0) + "%");
+                        } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
+                            fieldTicket.setText(Tools.roundingValue(tvList.getItems().get(m).getTotalImporte(), 2));
+                        }
+                        hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(),
+                                fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable()));
+                        lines += fieldTicket.getLines();
+                    }
+                    object.add(hBox);
+                }
+            }
+
+            for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                object.add((HBox) hbPie.getChildren().get(i));
+                HBox box = ((HBox) hbPie.getChildren().get(i));
+                rows++;
+                for (int j = 0; j < box.getChildren().size(); j++) {
+                    TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
+                    if (fieldTicket.getVariable().equalsIgnoreCase("imptotal")) {
+                        fieldTicket.setText(importeTotal);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("subtotal")) {
+                        fieldTicket.setText(subTotal);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("dscttotal")) {
+                        fieldTicket.setText(descuento);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("totalpagar")) {
+                        fieldTicket.setText(total);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("efectivo")) {
+                        fieldTicket.setText(efec);
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("vuelto")) {
+                        fieldTicket.setText(vuel);
+                    }
+                    lines += fieldTicket.getLines();
+                }
+            }
+            billPrintable.modelTicket(window.getScene().getWindow(), sheetWidth, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.");
 //            PrinterJob pj = PrinterJob.getPrinterJob();
 //            
 //            Book book = new Book();
@@ -580,7 +725,121 @@ public class FxVentaController implements Initializable {
 
     }
 
-    
+    private void loadTicket() {
+//        File file = new File("./archivos/ticketventa.json");
+        JSONObject jSONObject = Tools.obtenerObjetoJSON(Session.RUTA_TICKET_VENTA);
+        hbEncabezado.getChildren().clear();
+        hbDetalleCabecera.getChildren().clear();
+        hbPie.getChildren().clear();
+        if (jSONObject.get("cabecera") != null) {
+            JSONObject cabeceraObjects = Tools.obtenerObjetoJSON(jSONObject.get("cabecera").toString());
+            for (int i = 0; i < cabeceraObjects.size(); i++) {
+                HBox box = generateElement(hbEncabezado, "cb");
+                JSONObject objectObtener = Tools.obtenerObjetoJSON(cabeceraObjects.get("cb_" + (i + 1)).toString());
+                if (objectObtener.get("text") != null) {
+                    JSONObject object = Tools.obtenerObjetoJSON(objectObtener.get("text").toString());
+                    TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                    box.getChildren().add(field);
+                } else if (objectObtener.get("list") != null) {
+                    JSONArray array = Tools.obtenerArrayJSON(objectObtener.get("list").toString());
+                    Iterator it = array.iterator();
+                    while (it.hasNext()) {
+                        JSONObject object = Tools.obtenerObjetoJSON(it.next().toString());
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        box.getChildren().add(field);
+                    }
+                }
+            }
+        }
+        if (jSONObject.get("detalle") != null) {
+            JSONObject detalleObjects = Tools.obtenerObjetoJSON(jSONObject.get("detalle").toString());
+            for (int i = 0; i < detalleObjects.size(); i++) {
+                HBox box = generateElement(hbDetalleCabecera, "dr");
+                JSONObject objectObtener = Tools.obtenerObjetoJSON(detalleObjects.get("dr_" + (i + 1)).toString());
+                if (objectObtener.get("text") != null) {
+                    JSONObject object = Tools.obtenerObjetoJSON(objectObtener.get("text").toString());
+                    TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                    box.getChildren().add(field);
+                } else if (objectObtener.get("list") != null) {
+                    JSONArray array = Tools.obtenerArrayJSON(objectObtener.get("list").toString());
+                    Iterator it = array.iterator();
+                    while (it.hasNext()) {
+                        JSONObject object = Tools.obtenerObjetoJSON(it.next().toString());
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        box.getChildren().add(field);
+                    }
+                }
+            }
+        }
+
+        if (jSONObject.get("pie") != null) {
+            JSONObject pieObjects = Tools.obtenerObjetoJSON(jSONObject.get("pie").toString());
+            for (int i = 0; i < pieObjects.size(); i++) {
+                HBox box = generateElement(hbPie, "cp");
+                JSONObject objectObtener = Tools.obtenerObjetoJSON(pieObjects.get("cp_" + (i + 1)).toString());
+                if (objectObtener.get("text") != null) {
+                    JSONObject object = Tools.obtenerObjetoJSON(objectObtener.get("text").toString());
+                    TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                    box.getChildren().add(field);
+                } else if (objectObtener.get("list") != null) {
+                    JSONArray array = Tools.obtenerArrayJSON(objectObtener.get("list").toString());
+                    Iterator it = array.iterator();
+                    while (it.hasNext()) {
+                        JSONObject object = Tools.obtenerObjetoJSON(it.next().toString());
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        box.getChildren().add(field);
+                    }
+                }
+            }
+        }
+    }
+
+    private HBox generateElement(VBox contenedor, String id) {
+        if (contenedor.getChildren().isEmpty()) {
+            return addElement(contenedor, id + "1");
+        } else {
+            HBox hBox = (HBox) contenedor.getChildren().get(contenedor.getChildren().size() - 1);
+            String idGenerate = hBox.getId();
+            String codigo = idGenerate.substring(2);
+            int valor = Integer.parseInt(codigo) + 1;
+            String newCodigo = id + valor;
+            return addElement(contenedor, newCodigo);
+        }
+    }
+
+    private HBox addElement(VBox contenedor, String id) {
+        HBox hBox = new HBox();
+        hBox.setId(id);
+        hBox.setPrefHeight(30);
+        contenedor.getChildren().add(hBox);
+        return hBox;
+    }
+
+    public TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, int lines, int widthColumn, Pos align, boolean editable, String variable) {
+        TextFieldTicket field = new TextFieldTicket(titulo, id);
+        field.setMultilineas(multilinea);
+        field.setLines(lines);
+        field.setColumnWidth(widthColumn);
+        field.setVariable(variable);
+        field.setEditable(editable);
+        field.setPreferredSize((double) widthColumn * pointWidth, 30);
+        field.setAlignment(align);
+        return field;
+    }
+
+    private Pos getAlignment(String align) {
+        switch (align) {
+            case "CENTER":
+                return Pos.CENTER;
+            case "CENTER_LEFT":
+                return Pos.CENTER_LEFT;
+            case "CENTER_RIGHT":
+                return Pos.CENTER_RIGHT;
+            default:
+                return Pos.CENTER_LEFT;
+        }
+    }
+
     private void removeArticulo() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Esta seguro de quitar el artículo?", true);
@@ -746,7 +1005,6 @@ public class FxVentaController implements Initializable {
                     articuloTB.setImpuestoValor(getTaxValue(e.getImpuestoArticulo()));
                     articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (e.getPrecioVenta() * (articuloTB.getImpuestoValor() / 100.00)));
 
-                    
                     tvList.getItems().set(index, articuloTB);
                     tvList.getSelectionModel().select(index);
                     calculateTotales();
@@ -976,6 +1234,18 @@ public class FxVentaController implements Initializable {
         hBox.setStyle("-fx-spacing: 0.8333333333333334em;");
 
         vbImpuestos.getChildren().add(hBox);
+    }
+
+    @FXML
+    private void onKeyPressedReiniciar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            resetVenta();
+        }
+    }
+
+    @FXML
+    private void onActionReiniciar(ActionEvent event) {
+        resetVenta();
     }
 
     public TextField getTxtSearch() {

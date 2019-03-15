@@ -10,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -26,14 +25,17 @@ public class FxTicketMultilineaController implements Initializable {
     private FxTicketController ticketController;
 
     private HBox hBox;
+    
+    private int sheetWidth;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void setLoadComponent(HBox hBox) {
+    public void setLoadComponent(HBox hBox,int sheetWidth) {
         this.hBox = hBox;
+        this.sheetWidth = sheetWidth;
     }
 
     private void addTextMultilinea() {
@@ -43,9 +45,9 @@ public class FxTicketMultilineaController implements Initializable {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) hBox.getChildren().get(i));
                 widthContent += fieldTicket.getColumnWidth();
             }
-            if (widthContent <= 40) {
-                int widthNew = 40 - widthContent;
-                TextField field = ticketController.addElementTextField("iu", textArea.getText(), true, 1, widthNew, Pos.CENTER_LEFT, true);
+            if (widthContent <= sheetWidth) {
+                int widthNew = sheetWidth - widthContent;
+                TextFieldTicket field = ticketController.addElementTextField("iu", textArea.getText(), true, 1, widthNew, Pos.CENTER_LEFT, true,"");
                 hBox.getChildren().add(field);
                 Tools.Dispose(window);
             }

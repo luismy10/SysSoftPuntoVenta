@@ -134,7 +134,7 @@
                                        <children>
                                           <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyReleased="#onKeyReleasedList" prefHeight="300.0" prefWidth="812.0" VBox.vgrow="ALWAYS">
                                              <columns>
-                                                <TableColumn fx:id="tcArticulo" prefWidth="350.0" style="-fx-alignment: CENTER-LEFT;" text="Descripcion" />
+                                                <TableColumn fx:id="tcArticulo" prefWidth="350.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
                                                 <TableColumn fx:id="tcCantidad" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Cantidad" />
                                                 <TableColumn fx:id="tcPrecio" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Precio Venta" />
                                                 <TableColumn fx:id="tcDescuento" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Descuento" />
@@ -166,6 +166,15 @@
                                                       <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../close.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                                <Button mnemonicParsing="false" onAction="#onActionReiniciar" onKeyPressed="#onKeyPressedReiniciar" styleClass="buttonLight" text="Reiniciar(F10)">
+                                                   <graphic>
+                                                      <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../reload.png" />
                                                          </image>
                                                       </ImageView>
                                                    </graphic>

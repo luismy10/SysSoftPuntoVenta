@@ -7,14 +7,9 @@ import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -104,13 +99,13 @@ public class FxCompraDetalleController implements Initializable {
     private AnchorPane windowinit;
 
     private AnchorPane vbContent;
-    
+
     private String idProveedor;
 
     private String idCompra;
 
     private String estadoCompra;
-    
+
     private double total;
 
     private String simboloMoneda;
@@ -128,6 +123,16 @@ public class FxCompraDetalleController implements Initializable {
         simboloMoneda = "M";
 
     }
+    
+    private void InitializationTransparentBackground() {
+        Session.PANE.setStyle("-fx-background-color: black");
+        Session.PANE.setTranslateX(0);
+        Session.PANE.setTranslateY(0);
+        Session.PANE.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.PANE.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.PANE.setOpacity(0.7f);
+        windowinit.getChildren().add(Session.PANE);
+    }
 
     private Label addElementGridPane(String id, String nombre, Pos pos) {
         Label label = new Label(nombre);
@@ -144,44 +149,18 @@ public class FxCompraDetalleController implements Initializable {
     }
 
     private void fillArticlesTable(String value) {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-
-        Task<List<ArticuloTB>> task = new Task<List<ArticuloTB>>() {
-            @Override
-            public ObservableList<ArticuloTB> call() {
-                return CompraADO.ListDetalleCompra(value);
-            }
-        };
-        task.setOnSucceeded((WorkerStateEvent e) -> {
-            arrList = (ObservableList<ArticuloTB>) task.getValue();
-            for (int i = 0; i < arrList.size(); i++) {
-                gpList.add(addElementGridPane("l1" + (i + 1), arrList.get(i).getId().get() + "", Pos.CENTER), 0, (i + 1));
-                gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getClave() + "\n" + arrList.get(i).getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
-                gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
-                gpList.add(addElementGridPane("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
-                gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
-                gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getImpuestoValor(), 2) + "%", Pos.CENTER_RIGHT), 5, (i + 1));
-                gpList.add(addElementGridPane("l7" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
-                gpList.add(addElementGridPane("l8" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getTotalImporte(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
-            }
-            lblLoad.setVisible(false);
-            calcularTotales();
-        });
-        task.setOnFailed((WorkerStateEvent event) -> {
-            lblLoad.setVisible(false);
-        });
-
-        task.setOnScheduled((WorkerStateEvent event) -> {
-            lblLoad.setVisible(true);
-        });
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
+        arrList = CompraADO.ListDetalleCompra(value);
+        for (int i = 0; i < arrList.size(); i++) {
+            gpList.add(addElementGridPane("l1" + (i + 1), arrList.get(i).getId().get() + "", Pos.CENTER), 0, (i + 1));
+            gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getClave() + "\n" + arrList.get(i).getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
+            gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
+            gpList.add(addElementGridPane("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
+            gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
+            gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getImpuestoValor(), 2) + "%", Pos.CENTER_RIGHT), 5, (i + 1));
+            gpList.add(addElementGridPane("l7" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
+            gpList.add(addElementGridPane("l8" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getTotalImporte(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
         }
+        calcularTotales();
     }
 
     public void setLoadDetalle(String idCompra, String estadoCompra, double total) {
@@ -209,9 +188,9 @@ public class FxCompraDetalleController implements Initializable {
                     ? "No tiene un domicilio registrado"
                     : proveedorTB.getDireccion());
             lblContacto.setText("Tel: " + proveedorTB.getTelefono() + " Cel: " + proveedorTB.getCelular());
-            
+
             idProveedor = proveedorTB.getIdProveedor().get();
-     
+
         }
 
         fillArticlesTable(idCompra);
@@ -283,17 +262,17 @@ public class FxCompraDetalleController implements Initializable {
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
             Map map = new HashMap();
             map.put("IDCOMPRA", idCompra);
-            map.put("EMPRESA", Session.EMPRESA);
+            map.put("EMPRESA", Session.RAZONSOCIAL_EMPRESA);
             map.put("LOGO", imgInputStream);
-            map.put("EMAIL", "EMAIL" + Session.EMAIL);
-            map.put("TELEFONOCELULAR", "TEL:" + Session.TELEFONO + " CEL:" + Session.CELULAR);
-            map.put("DIRECCION", Session.DIRECCION);
+            map.put("EMAIL", "EMAIL" + Session.EMAIL_EMPRESA);
+            map.put("TELEFONOCELULAR", "TEL:" + Session.TELEFONO_EMPRESA + " CEL:" + Session.CELULAR_EMPRESA);
+            map.put("DIRECCION", Session.DIRECCION_EMPRESA);
 
             map.put("FECHACOMPRA", lblFechaCompra.getText());
             map.put("PROVEEDOR", lblProveedor.getText());
             map.put("PRODIRECCION", lblDomicilio.getText());
             map.put("PROTELEFONOCELULAR", lblContacto.getText());
-            map.put("PROEMAIL", Session.EMAIL);
+            map.put("PROEMAIL", Session.EMAIL_EMPRESA);
             map.put("TOTAL", lblTotal.getText());
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, DBUtil.getConnection());
@@ -328,19 +307,13 @@ public class FxCompraDetalleController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) throws IOException {
-        vbContent.getChildren().remove(window);
-        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_COMPRASREALIZADAS));
-        VBox node = fXMLPrincipal.load();
-        FxComprasRealizadasController controller = fXMLPrincipal.getController();
-        controller.setContent(windowinit, vbContent);
+        vbContent.getChildren().remove(window);       
         vbContent.getChildren().clear();
-        AnchorPane.setLeftAnchor(node, 0d);
-        AnchorPane.setTopAnchor(node, 0d);
-        AnchorPane.setRightAnchor(node, 0d);
-        AnchorPane.setBottomAnchor(node, 0d);
-        vbContent.getChildren().add(node);
-
-        controller.fillPurchasesTable((short) 1, "", Tools.getDate(), Tools.getDate(), "");
+        AnchorPane.setLeftAnchor(comprascontroller.getWindow(), 0d);
+        AnchorPane.setTopAnchor(comprascontroller.getWindow(), 0d);
+        AnchorPane.setRightAnchor(comprascontroller.getWindow(), 0d);
+        AnchorPane.setBottomAnchor(comprascontroller.getWindow(), 0d);
+        vbContent.getChildren().add(comprascontroller.getWindow());
     }
 
     private void openWindowHistorialPagos() throws IOException {
@@ -352,26 +325,19 @@ public class FxCompraDetalleController implements Initializable {
         FxHistorialPagosController controller = fXMLLoader.getController();
         controller.setInitHistorialPagosController(this, idProveedor , idCompra, total, simboloMoneda);
 
+
         Stage stage = FxWindow.StageLoaderModal(parent, "Historial de Pagos", window.getScene().getWindow());
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            windowinit.getChildren().remove(Session.pane);
+            windowinit.getChildren().remove(Session.PANE);
         });
         stage.show();
         controller.initListHistorialPagos();
 
     }
 
-    private void InitializationTransparentBackground() {
-        Session.pane.setStyle("-fx-background-color: black");
-        Session.pane.setTranslateX(0);
-        Session.pane.setTranslateY(0);
-        Session.pane.setPrefWidth(Session.WIDTH_WINDOW);
-        Session.pane.setPrefHeight(Session.HEIGHT_WINDOW);
-        Session.pane.setOpacity(0.7f);
-        windowinit.getChildren().add(Session.pane);
-    }
+    
 
     @FXML
     private void onActionHistorialPagos(ActionEvent event) throws IOException {
