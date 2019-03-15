@@ -195,15 +195,20 @@ public class VentaADO {
         }
     }
 
-    public static ObservableList<VentaTB> ListVentas(String value) {
-        String selectStmt = "{call Sp_Listar_Ventas(?)}";
+    public static ObservableList<VentaTB> ListVentas(short opcion,String value,String fechaInicial,String fechaFinal,int comprobante,int estado) {
+        String selectStmt = "{call Sp_Listar_Ventas(?,?,?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<VentaTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, value);
+            preparedStatement.setShort(1, opcion);
+            preparedStatement.setString(2, value);
+            preparedStatement.setString(3, fechaInicial);
+            preparedStatement.setString(4, fechaFinal);
+            preparedStatement.setInt(5, comprobante);
+            preparedStatement.setInt(6, estado);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 VentaTB ventaTB = new VentaTB();
@@ -237,53 +242,7 @@ public class VentaADO {
         }
         return empList;
     }
-
-    public static ObservableList<VentaTB> ListVentasByDate(String fechaInicial, String fechaFinal, int comprobante, int estado) {
-        String selectStmt = "{call Sp_Listar_Ventas_By_Date(?,?,?,?)}";
-        PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
-        ObservableList<VentaTB> empList = FXCollections.observableArrayList();
-        try {
-            DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, fechaInicial);
-            preparedStatement.setString(2, fechaFinal);
-            preparedStatement.setInt(3, comprobante);
-            preparedStatement.setInt(4, estado);
-            rsEmps = preparedStatement.executeQuery();
-            while (rsEmps.next()) {
-                VentaTB ventaTB = new VentaTB();
-                ventaTB.setId(rsEmps.getInt("Filas"));
-                ventaTB.setIdVenta(rsEmps.getString("IdVenta"));
-                ventaTB.setFechaRegistro(rsEmps.getTimestamp("FechaVenta").toLocalDateTime());
-                ventaTB.setCliente(rsEmps.getString("Cliente"));
-                ventaTB.setComprobanteName(rsEmps.getString("Comprobante"));
-                ventaTB.setSerie(rsEmps.getString("Serie"));
-                ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
-                ventaTB.setEstadoName(rsEmps.getString("Estado"));
-                ventaTB.setMonedaName(rsEmps.getString("Abreviado"));
-                ventaTB.setTotal(rsEmps.getDouble("Total"));
-                ventaTB.setObservaciones(rsEmps.getString("Observaciones"));
-                empList.add(ventaTB);
-            }
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (rsEmps != null) {
-                    rsEmps.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException e) {
-            }
-        }
-        return empList;
-    }
-
+    
     public static ObservableList<ArticuloTB> ListVentasDetalle(String value) {
         String selectStmt = "{call Sp_Listar_Ventas_Detalle_By_Id(?)}";
         PreparedStatement preparedStatement = null;

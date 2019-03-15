@@ -39,7 +39,6 @@ public class FxRolesController implements Initializable {
         RolADO.RolList().forEach(e -> {
             lvRol.getItems().add(new RolTB(e.getIdRol(), e.getNombre()));
         });
-
     }
 
     private void InitializationTransparentBackground() {

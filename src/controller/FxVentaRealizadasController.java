@@ -106,13 +106,13 @@ public class FxVentaRealizadasController implements Initializable {
 
     public void loadInit() {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+            fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                     cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
         }
     }
 
-    private void fillVentasTable(String value) {
+    private void fillVentasTable(short opcion, String value, String fechaInicial, String fechaFinal, int comprobante, int estado) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -121,37 +121,7 @@ public class FxVentaRealizadasController implements Initializable {
         Task<ObservableList<VentaTB>> task = new Task<ObservableList<VentaTB>>() {
             @Override
             public ObservableList<VentaTB> call() {
-                return VentaADO.ListVentas(value);
-            }
-        };
-
-        task.setOnSucceeded((WorkerStateEvent e) -> {
-            tvList.setItems(task.getValue());
-            lblLoad.setVisible(false);
-        });
-        task.setOnFailed((WorkerStateEvent event) -> {
-            lblLoad.setVisible(false);
-        });
-
-        task.setOnScheduled((WorkerStateEvent event) -> {
-            lblLoad.setVisible(true);
-        });
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
-        }
-    }
-
-    private void fillVentasTableByDate(String fechaInicial, String fechaFinal, int comprobante, int estado) {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-        Task<ObservableList<VentaTB>> task = new Task<ObservableList<VentaTB>>() {
-            @Override
-            public ObservableList<VentaTB> call() {
-                return VentaADO.ListVentasByDate(fechaInicial, fechaFinal, comprobante, estado);
+                return VentaADO.ListVentas(opcion, value, fechaInicial, fechaFinal, comprobante, estado);
             }
         };
 
@@ -204,13 +174,13 @@ public class FxVentaRealizadasController implements Initializable {
 
     @FXML
     private void onKeyRelasedSearch(KeyEvent event) {
-        fillVentasTable(txtSearch.getText().trim());
+        fillVentasTable((short) 1, txtSearch.getText().trim(), "", "", 0, 0);
     }
 
     @FXML
     private void onActionFechaInicial(ActionEvent event) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+            fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                     cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
         }
@@ -219,7 +189,7 @@ public class FxVentaRealizadasController implements Initializable {
     @FXML
     private void onActionFechaFinal(ActionEvent event) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+            fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                     cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
         }
@@ -258,7 +228,7 @@ public class FxVentaRealizadasController implements Initializable {
             Tools.actualDate(Tools.getDate(), dtFechaInicial);
             Tools.actualDate(Tools.getDate(), dtFechaFinal);
             if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-                fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+                fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                         cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                         cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
             }
@@ -271,7 +241,7 @@ public class FxVentaRealizadasController implements Initializable {
         Tools.actualDate(Tools.getDate(), dtFechaInicial);
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+            fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                     cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
         }
@@ -280,7 +250,7 @@ public class FxVentaRealizadasController implements Initializable {
     @FXML
     private void onActionComprobante(ActionEvent event) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+            fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                     cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
         }
@@ -289,7 +259,7 @@ public class FxVentaRealizadasController implements Initializable {
     @FXML
     private void onActionEstado(ActionEvent event) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+            fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                     cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
         }
@@ -297,8 +267,8 @@ public class FxVentaRealizadasController implements Initializable {
 
     public VBox getWindow() {
         return window;
-    }    
-    
+    }
+
     public void setContent(AnchorPane windowinit, AnchorPane vbContent) {
         this.windowinit = windowinit;
         this.vbContent = vbContent;
