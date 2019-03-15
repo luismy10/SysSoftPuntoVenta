@@ -297,7 +297,6 @@ public class CompraADO {
             while (rsEmps.next()) {
                 ArticuloTB articuloTB = new ArticuloTB();
                 articuloTB.setId(rsEmps.getRow());
-                articuloTB.setIdArticulo(rsEmps.getString("IdArticulo")); 
                 articuloTB.setClave(rsEmps.getString("Clave"));
                 articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));

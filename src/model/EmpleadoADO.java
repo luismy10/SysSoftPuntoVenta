@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.Callable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -44,7 +45,7 @@ public class EmpleadoADO {
             empleado.setInt(17, empleadoTB.getProvincia());
             empleado.setInt(18, empleadoTB.getDistrito());
             empleado.setString(19, empleadoTB.getUsuario());
-            empleado.setString(20, empleadoTB.getClave());            
+            empleado.setString(20, empleadoTB.getClave());
             empleado.addBatch();
 
             empleado.executeBatch();
@@ -224,44 +225,47 @@ public class EmpleadoADO {
         return empleadoTB;
     }
 
-    public static EmpleadoTB GetValidateUser(String user, String clave) {
-        String selectStmt = "SELECT IdEmpleado,Apellidos,Nombres,dbo.Fc_Obtener_Nombre_Detalle(Puesto,'0012') as Puesto,Estado,Rol FROM EmpleadoTB\n"
-                + "WHERE Usuario = ? and Clave = ? and Estado = 1";
-        PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
-        EmpleadoTB empleadoTB = null;
-        try {
-            DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, user);
-            preparedStatement.setString(2, clave);
-            rsEmps = preparedStatement.executeQuery();
-            if (rsEmps.next()) {
-                empleadoTB = new EmpleadoTB();
-                empleadoTB.setIdEmpleado(rsEmps.getString("IdEmpleado"));
-                empleadoTB.setApellidos(rsEmps.getString("Apellidos"));
-                empleadoTB.setNombres(rsEmps.getString("Nombres"));
-                empleadoTB.setPuestoName(rsEmps.getString("Puesto"));
-                empleadoTB.setEstado(rsEmps.getInt("Estado"));
-                empleadoTB.setRol(rsEmps.getInt("Rol"));
-            }
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
-
-        } finally {
+    public static Callable<EmpleadoTB> GetValidateUser(String user, String clave) {
+        return () -> {
+            String selectStmt = "SELECT IdEmpleado,Apellidos,Nombres,dbo.Fc_Obtener_Nombre_Detalle(Puesto,'0012') as Puesto,Estado,Rol FROM EmpleadoTB\n"
+                    + "WHERE Usuario = ? and Clave = ? and Estado = 1";
+            PreparedStatement preparedStatement = null;
+            ResultSet rsEmps = null;
+            EmpleadoTB empleadoTB = null;
             try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
+                DBUtil.dbConnect();
+                preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+                preparedStatement.setString(1, user);
+                preparedStatement.setString(2, clave);
+                rsEmps = preparedStatement.executeQuery();
+                if (rsEmps.next()) {
+                    empleadoTB = new EmpleadoTB();
+                    empleadoTB.setIdEmpleado(rsEmps.getString("IdEmpleado"));
+                    empleadoTB.setApellidos(rsEmps.getString("Apellidos"));
+                    empleadoTB.setNombres(rsEmps.getString("Nombres"));
+                    empleadoTB.setPuestoName(rsEmps.getString("Puesto"));
+                    empleadoTB.setEstado(rsEmps.getInt("Estado"));
+                    empleadoTB.setRol(rsEmps.getInt("Rol"));
                 }
-                if (rsEmps != null) {
-                    rsEmps.close();
+            } catch (SQLException e) {
+                System.out.println("La operación de selección de SQL ha fallado: " + e);
+                
+            } finally {
+                try {
+                    if (preparedStatement != null) {
+                        preparedStatement.close();
+                    }
+                    if (rsEmps != null) {
+                        rsEmps.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    
                 }
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-
             }
-        }
-        return empleadoTB;
+            return empleadoTB;
+        };
+
     }
 
 }

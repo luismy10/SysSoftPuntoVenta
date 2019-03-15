@@ -101,6 +101,10 @@ public class FxVentaRealizadasController implements Initializable {
 
         Tools.actualDate(Tools.getDate(), dtFechaInicial);
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
+
+    }
+
+    public void loadInit() {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
@@ -250,13 +254,27 @@ public class FxVentaRealizadasController implements Initializable {
     @FXML
     private void onKeyPressedRecargar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            fillVentasTable("");
+            cbEstado.getSelectionModel().select(0);
+            Tools.actualDate(Tools.getDate(), dtFechaInicial);
+            Tools.actualDate(Tools.getDate(), dtFechaFinal);
+            if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
+                fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+                        cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
+                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+            }
         }
     }
 
     @FXML
     private void onActionRecargar(ActionEvent event) {
-        fillVentasTable("");
+        cbEstado.getSelectionModel().select(0);
+        Tools.actualDate(Tools.getDate(), dtFechaInicial);
+        Tools.actualDate(Tools.getDate(), dtFechaFinal);
+        if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
+            fillVentasTableByDate(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
+                    cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
+                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+        }
     }
 
     @FXML
@@ -277,6 +295,10 @@ public class FxVentaRealizadasController implements Initializable {
         }
     }
 
+    public VBox getWindow() {
+        return window;
+    }    
+    
     public void setContent(AnchorPane windowinit, AnchorPane vbContent) {
         this.windowinit = windowinit;
         this.vbContent = vbContent;

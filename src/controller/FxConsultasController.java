@@ -90,6 +90,7 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(nodeVentaRealizadas, 0d);
         AnchorPane.setBottomAnchor(nodeVentaRealizadas, 0d);
         vbContent.getChildren().add(nodeVentaRealizadas);
+        ventaRealizadasController.loadInit();
     }
 
     private void openWindowInvetario() throws IOException {

@@ -7,12 +7,7 @@ import java.util.ResourceBundle;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +26,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.ArticuloTB;
-import model.DBUtil;
 import model.EmpleadoTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
@@ -103,43 +97,19 @@ public class FxVentaDetalleController implements Initializable {
     }
 
     private void fillVentasDetalleTable(String value) {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-
-        Task<List<ArticuloTB>> task = new Task<List<ArticuloTB>>() {
-            @Override
-            public ObservableList<ArticuloTB> call() {
-                return VentaADO.ListVentasDetalle(value);
-            }
-        };
-        task.setOnSucceeded((WorkerStateEvent e) -> {
-            arrList = VentaADO.ListVentasDetalle(value);
-            for (int i = 0; i < arrList.size(); i++) {
-                gpList.add(addElementGridPane("l1" + (i + 1), arrList.get(i).getId() + "", Pos.CENTER), 0, (i + 1));
-                gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getClave() + "\n" + arrList.get(i).getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
-                gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
-                gpList.add(addElementGridPane("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
-                gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getPrecioVenta(), 2), Pos.CENTER_RIGHT), 4, (i + 1));
-                gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 5, (i + 1));
-                gpList.add(addElementGridPane("l7" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getTotalImporte(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
-            }
-            lblLoad.setVisible(false);
-            calcularTotales();
-        });
-        task.setOnFailed((WorkerStateEvent event) -> {
-            lblLoad.setVisible(false);
-        });
-
-        task.setOnScheduled((WorkerStateEvent event) -> {
-            lblLoad.setVisible(true);
-        });
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
+        arrList = VentaADO.ListVentasDetalle(value);                
+        for (int i = 0; i < arrList.size(); i++) {
+            gpList.add(addElementGridPane("l1" + (i + 1), arrList.get(i).getId().get() + "", Pos.CENTER), 0, (i + 1));
+            gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getClave() + "\n" + arrList.get(i).getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
+            gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
+            gpList.add(addElementGridPane("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
+            gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
+            gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getImpuestoValor(), 2) + "%", Pos.CENTER_RIGHT), 5, (i + 1));
+            gpList.add(addElementGridPane("l7" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
+            gpList.add(addElementGridPane("l8" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getTotalImporte(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
         }
+        calcularTotales();
+
     }
 
     public void setInitComponents(LocalDateTime fechaRegistro, String cliente, String comprobanteName, String serie, String numeracion, String observaciones, String idVenta) {
@@ -153,7 +123,7 @@ public class FxVentaDetalleController implements Initializable {
         VentaTB ventaTB = VentaADO.GetVenta(idVenta);
         if (ventaTB != null) {
             lblEstado.setText(ventaTB.getEstadoName());
-            lblTotal.setText(ventaTB.getMonedaName() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
+            simboloMoneda = ventaTB.getMonedaName();
         }
         EmpleadoTB empleadoTB = VentaADO.GetEmpleadoVenta(idVenta);
         if (empleadoTB != null) {
@@ -278,17 +248,13 @@ public class FxVentaDetalleController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) throws IOException {
-        vbContent.getChildren().remove(window);
-        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_VENTAREALIZADAS));
-        VBox node = fXMLPrincipal.load();
-        FxVentaRealizadasController controller = fXMLPrincipal.getController();
-        controller.setContent(windowinit, vbContent);
+        vbContent.getChildren().remove(window);      
         vbContent.getChildren().clear();
-        AnchorPane.setLeftAnchor(node, 0d);
-        AnchorPane.setTopAnchor(node, 0d);
-        AnchorPane.setRightAnchor(node, 0d);
-        AnchorPane.setBottomAnchor(node, 0d);
-        vbContent.getChildren().add(node);
+        AnchorPane.setLeftAnchor(ventaRealizadasController.getWindow(), 0d);
+        AnchorPane.setTopAnchor(ventaRealizadasController.getWindow(), 0d);
+        AnchorPane.setRightAnchor(ventaRealizadasController.getWindow(), 0d);
+        AnchorPane.setBottomAnchor(ventaRealizadasController.getWindow(), 0d);
+        vbContent.getChildren().add(ventaRealizadasController.getWindow());
 
     }
 

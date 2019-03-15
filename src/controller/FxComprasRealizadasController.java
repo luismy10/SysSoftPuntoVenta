@@ -324,6 +324,10 @@ public class FxComprasRealizadasController implements Initializable {
         }
     }
 
+    public VBox getWindow() {
+        return window;
+    }
+    
     public void setContent(AnchorPane windowinit, AnchorPane vbContent) {
         this.windowinit = windowinit;
         this.vbContent = vbContent;

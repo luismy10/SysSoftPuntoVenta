@@ -290,6 +290,7 @@ public class VentaADO {
         ResultSet rsEmps = null;
         ObservableList<ArticuloTB> empList = FXCollections.observableArrayList();
         try {
+            DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, value);
             rsEmps = preparedStatement.executeQuery();
@@ -297,6 +298,7 @@ public class VentaADO {
 
                 ArticuloTB articuloTB = new ArticuloTB();
                 articuloTB.setId(rsEmps.getRow());
+                articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
                 articuloTB.setClave(rsEmps.getString("Clave"));
                 articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 articuloTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
@@ -316,7 +318,7 @@ public class VentaADO {
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
+            System.out.println("ListVentasDetalle:La operación de selección de SQL ha fallado: " + e);
         } finally {
             try {
                 if (preparedStatement != null) {
@@ -409,7 +411,7 @@ public class VentaADO {
         VentaTB ventaTB = null;
         try {
             DBUtil.dbConnect();
-            statementVendedor = DBUtil.getConnection().prepareStatement("select  dbo.Fc_Obtener_Nombre_Detalle(v.Estado,'0009') Estado,m.Simbolo,v.Total\n"
+            statementVendedor = DBUtil.getConnection().prepareStatement("select  dbo.Fc_Obtener_Nombre_Detalle(v.Estado,'0009') Estado,m.Simbolo\n"
                     + "from VentaTB as v inner join MonedaTB as m on v.Moneda = m.IdMoneda\n"
                     + "where v.IdVenta = ?");
             statementVendedor.setString(1, value);
