@@ -17,6 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+import model.CajaADO;
 import model.DBUtil;
 import model.EmpleadoADO;
 import model.EmpleadoTB;
@@ -32,9 +34,11 @@ public class FxLoginController implements Initializable {
     @FXML
     private Label lblError;
 
+    private AnchorPane content;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
     }
 
     @FXML
@@ -77,10 +81,21 @@ public class FxLoginController implements Initializable {
                     Session.USER_ID = empleadoTB.getIdEmpleado();
                     Session.USER_NAME = (empleadoTB.getApellidos().substring(0, 1).toUpperCase() + empleadoTB.getApellidos().substring(1).toLowerCase())
                             + " " + empleadoTB.getNombres().substring(0, 1).toUpperCase() + empleadoTB.getNombres().substring(1).toLowerCase();
+                    Session.USER_NAME_PUESTO = empleadoTB.getPuestoName();
                     controller.initUserSession((empleadoTB.getPuestoName().substring(0, 1).toUpperCase() + empleadoTB.getPuestoName().substring(1).toLowerCase()));
 
                     Session.WIDTH_WINDOW = scene.getWidth();
                     Session.HEIGHT_WINDOW = scene.getHeight();
+
+                    if (!Session.USER_NAME_PUESTO.equalsIgnoreCase("administrador")) {
+                        if (!estadoCaja().equalsIgnoreCase("activo")) {
+                            //System.out.println(estadoCaja());
+                            this.openWindowCaja(stage);
+                        } else {
+                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Iniciar Sesión", "Ya existe una caja aperturada para el usuario actual", false);
+                        }
+                    }
+
                 } else {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Iniciar Sesión", "Datos incorrectos", false);
                 }
@@ -94,6 +109,23 @@ public class FxLoginController implements Initializable {
         txtUsuario.requestFocus();
     }
 
-   
+    private void openWindowCaja(Window window) throws IOException {
 
+        URL url = getClass().getResource(Tools.FX_FILE_APERTURACAJA);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxAperturaCajaController controller = fXMLLoader.getController();
+        controller.setInitCajaController(this);
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Caja", window);
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.show();
+        controller.initComponents();
+    }
+
+    private String estadoCaja() {
+        return CajaADO.consultarEstadoCaja("activo".toUpperCase(), Session.USER_ID);
+    }
 }

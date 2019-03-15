@@ -350,7 +350,7 @@ public class FxCompraDetalleController implements Initializable {
         Parent parent = fXMLLoader.load(url.openStream());
 
         FxHistorialPagosController controller = fXMLLoader.getController();
-        controller.setInitHistorialPagosController(this, idProveedor , idCompra, total);
+        controller.setInitHistorialPagosController(this, idProveedor , idCompra, total, simboloMoneda);
 
         Stage stage = FxWindow.StageLoaderModal(parent, "Historial de Pagos", window.getScene().getWindow());
         stage.setResizable(false);

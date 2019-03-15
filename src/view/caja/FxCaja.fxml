@@ -1,115 +1,342 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxCajaController">
+<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxCajaController">
    <children>
-      <HBox style="-fx-background-color: #1a2226; -fx-padding: 0.8333333333333334em;">
+      <HBox>
          <children>
-            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+            <VBox HBox.hgrow="ALWAYS">
                <children>
-                  <ImageView fitHeight="66.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../logo.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Aperturar Caja">
-                     <font>
-                        <Font name="Roboto" size="18.0" />
-                     </font>
-                  </Text>
-               </children>
-            </HBox>
-         </children>
-      </HBox>
-      <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #cccccc; -fx-padding: 1.6666666666666667em;">
-         <children>
-            <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
-               <children>
-                  <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;" styleClass="paddinContainer">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Usuario:" textFill="#23283a">
-                           <font>
-                              <Font name="Roboto" size="14.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtUser" prefHeight="30.0" />
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../caja_registradora.png" />
+                           </image>
+                        </ImageView>
+                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Corte" />
+                     </children>
+                  </HBox>
+                  <VBox minHeight="-Infinity" minWidth="-Infinity">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
+                           <children>
+                              <Button fx:id="btnCorte" alignment="CENTER" mnemonicParsing="false" onAction="#onActionCorte" styleClass="buttonLight" text="Cortar caja">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../tijera.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="btnImprimir" mnemonicParsing="false" onAction="#onActionImprimir" styleClass="buttonLight" text="Imprimir">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../print.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
-                  <Separator orientation="VERTICAL" />
-                  <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                  <HBox spacing="5.0" style="-fx-border-width: 2px  0 0 0; -fx-border-color: #3c8dbc;" styleClass="labelRoboto16">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Contraseña:" textFill="#23283a">
-                           <font>
-                              <Font name="Roboto" size="14.0" />
-                           </font>
+                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="labelRoboto14" text="Corte para" textFill="#1a2226">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
                         </Label>
-                        <TextField fx:id="txtPassword" prefHeight="30.0" />
+                        <Label fx:id="lblCargo" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRoboto14" text=" Trabajador" textFill="BLUE" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="labelRoboto14" text=" hoy" textFill="#1a2226" />
+                        <Label fx:id="lblFecha" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRoboto14" text=" fecha" textFill="RED" />
                      </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
-               <children>
-                  <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <HBox style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc;" VBox.vgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Monto:" textFill="#23283a">
-                           <font>
-                              <Font name="Roboto" size="14.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtMonto" />
+                        <VBox style="-fx-spacing: 0.5833333333333334em;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="labelRoboto18" text="Ventas Totales" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="15.0" />
+                                 </VBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../cambio-divisas.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <Label styleClass="labelRoboto18" text="Dinero en Caja" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="15.0" />
+                                 </VBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../vieja_caja_registradora_.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="Fondo de Caja" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="Ventas en Efectivo" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="Abonos en Efectivo" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="Entradas" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="Salidas" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="Devoluciones" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto14" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="30.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto18" text="Entrada de Efectivo" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="15.0" />
+                                 </VBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../ingresos.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="-" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto18" text="Venta por Departamento" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="15.0" />
+                                 </VBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../sale_home.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="-" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto18" text="Pagos de Credito" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="15.0" />
+                                 </VBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../card_credit.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="-" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets right="20.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="TOP_RIGHT" style="-fx-spacing: 0.5833333333333334em;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label fx:id="lblVentasTotales" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto18" textFill="#1a2226" />
+                              <Label fx:id="lblFondoCaja" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label fx:id="lblVentasEfectivo" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label fx:id="lblAhorrosEfectivo" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label fx:id="lblEntradas" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label fx:id="lblSalidas" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label fx:id="lblDevoluciones" styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" VBox.vgrow="ALWAYS" />
+                              <Label style="-fx-border-width: 2px 0 0 0; -fx-border-color: #f00;" styleClass="labelRoboto16" text="M 0000.00" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto18" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" text="-" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto18" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" text="-" textFill="#1a2226" />
+                           </children>
+                           <padding>
+                              <Insets right="20.0" />
+                           </padding>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" />
+                        <VBox style="-fx-spacing: 0.5833333333333334em;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="labelRoboto18" text="Ganancia" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="15.0" />
+                                 </VBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../estadistica.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <Label styleClass="labelRoboto18" text="Ventas" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="15.0" />
+                                 </VBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../cesta.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="En Efectivo" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="Con Tarjeta de Credito" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="A Credito" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="Con Vales de Despensa" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="Devoluciones de Venta" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto14" textFill="#1a2226">
+                                 <padding>
+                                    <Insets left="30.0" />
+                                 </padding>
+                              </Label>
+                              <Label styleClass="labelRoboto14" textFill="#1a2226">
+                                 <padding>
+                                    <Insets left="30.0" />
+                                 </padding>
+                              </Label>
+                              <Label styleClass="labelRoboto18" text="Ingreso de Contado" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="15.0" />
+                                 </VBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../billetes.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="-" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="labelRoboto18" text="Salida de Efectivo" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="15.0" />
+                                 </VBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../egresos.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <Label styleClass="labelRoboto14" text="-" textFill="#1a2226">
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets right="20.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="TOP_RIGHT" style="-fx-spacing: 0.5833333333333334em;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto18" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" text="M 0000.00" textFill="#1a2226" />
+                              <Label style="-fx-border-width: 2px 0 0 0; -fx-border-color: #f00;" styleClass="labelRoboto16" text="M 0000.00" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto18" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" text="-" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto18" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" text="-" textFill="#1a2226" />
+                           </children>
+                           <padding>
+                              <Insets right="20.0" />
+                           </padding>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" />
                      </children>
-                  </VBox>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
+                     </padding>
+                  </HBox>
                </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" styleClass="paddinContainer105">
-               <children>
-                  <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="labelRoboto14" text="Fecha:" textFill="#23283a">
-                           <font>
-                              <Font name="Roboto" size="14.0" />
-                           </font>
-                        </Label>
-                        <DatePicker fx:id="dtpFecha" prefHeight="35.0" prefWidth="204.0" VBox.vgrow="ALWAYS" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-      <HBox alignment="CENTER" style="-fx-border-width: 1 0 0 0; -fx-border-color: #CCCCCC; -fx-background-color: white; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
-         <children>
-            <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#onActionRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightDefault" text="Registrar">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../save.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#onActionCancel" styleClass="buttonLight" text="Cancelar">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../close.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+            </VBox>
          </children>
       </HBox>
    </children>

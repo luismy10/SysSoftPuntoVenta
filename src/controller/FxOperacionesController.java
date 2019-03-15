@@ -140,6 +140,20 @@ public class FxOperacionesController implements Initializable {
         content.getChildren().add(node);
 
     }
+    
+    private void openWindowBoxCut() throws IOException {
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_CAJA));
+        VBox node = fXMLPrincipal.load();
+        FxCajaController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        content.getChildren().add(node);
+
+    }
 
     @FXML
     private void onKeyPressedCustomers(KeyEvent event) throws IOException {
@@ -226,9 +240,19 @@ public class FxOperacionesController implements Initializable {
         openWindowInventario();
     }
 
+    @FXML
+    private void onActionCorteCaja(ActionEvent event) throws IOException {
+        openWindowBoxCut();
+    }
+    
+    @FXML
+    private void onKeyPressedCorteCaja(KeyEvent event) throws IOException {
+        openWindowBoxCut();
+    }
+
     public void setContent(AnchorPane windowinit, AnchorPane content) {
         this.windowinit = windowinit;
         this.content = content;
     }
-
+    
 }

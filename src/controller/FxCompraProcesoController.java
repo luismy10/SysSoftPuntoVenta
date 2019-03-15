@@ -5,9 +5,6 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -32,8 +30,6 @@ import javafx.stage.Stage;
 import model.ArticuloTB;
 import model.CompraADO;
 import model.CompraTB;
-import model.DetalleADO;
-import model.DetalleTB;
 import model.LoteTB;
 import model.PagoProveedoresTB;
 import model.PlazosADO;
@@ -45,6 +41,8 @@ public class FxCompraProcesoController implements Initializable {
     private AnchorPane window;
     @FXML
     private Text lblTotal;
+    @FXML
+    private Label lblCuotaReferencial;
     @FXML
     private TextField txtEfectivo;
     @FXML
@@ -79,8 +77,17 @@ public class FxCompraProcesoController implements Initializable {
     private TableView<ArticuloTB> tvList;
 
     private ObservableList<LoteTB> loteTBs;
-    
+
     private int diasPlazo;
+
+    private PagoProveedoresTB pagoProveedoresTB;
+
+    private double deuda_pendiente;
+
+    private double cuota_promedio;
+
+    private String simboloMoneda;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -92,69 +99,72 @@ public class FxCompraProcesoController implements Initializable {
         System.out.println(vbPagoCredito.isDisable());
         System.out.println(vbOtroPago.isDisable());
         Tools.actualDate(Tools.getDate(), dpFecha);
-        setInitializePlazos();   
+        setInitializePlazos();
+        pagoProveedoresTB = new PagoProveedoresTB();
+        deuda_pendiente = 0;
+        cuota_promedio = 0;
+        
     }
-    
-    public void setInitializePlazos(){
+
+    public void setInitializePlazos() {
         cbPlazos.getItems().clear();
         PlazosADO.GetTipoPlazoCombBox().forEach(e -> {
             this.cbPlazos.getItems().add(new PlazosTB(e.getIdPlazos(), e.getNombre(), e.getDias(), e.getEstado(), e.getPredeterminado()));
         });
         cbPlazos.getSelectionModel().select(0);
         diasPlazo = cbPlazos.getSelectionModel().getSelectedItem().getDias();
-        
+
     }
 
-    public void setLoadProcess(CompraTB compraTB, TableView<ArticuloTB> tvList, ObservableList<LoteTB> loteTBs, String total, String proveedor) {
+    public void setLoadProcess(CompraTB compraTB, TableView<ArticuloTB> tvList, ObservableList<LoteTB> loteTBs, String total, String proveedor, String simboloMoneda) {
         this.compraTB = compraTB;
         this.tvList = tvList;
         this.loteTBs = loteTBs;
-        lblTotal.setText(total);
+        lblTotal.setText(simboloMoneda+" "+total);
         txtProveedor.setText(proveedor);
+        this.simboloMoneda = simboloMoneda;
+        txtEfectivo.setText(total);
+        
+        this.lblCuotaReferencial.setText(this.simboloMoneda+" "+"0000.00");
+        
     }
 
     private void executeCrud(String estadoCompra, String tipoCompra) {
-        
-        double deuda_pendiente = 0;
-        double valor_cuota = 0;
-        
-        PagoProveedoresTB pagoProveedoresTB = new PagoProveedoresTB(); 
-        pagoProveedoresTB.setMontoTotal(compraTB.getTotal().get());
-        pagoProveedoresTB.setMontoActual(Double.parseDouble(txtMonto.getText()));
-        pagoProveedoresTB.setCuotaTotal(Integer.parseInt(txtCuotas.getText()));
-        pagoProveedoresTB.setCuotaActual(Integer.parseInt(txtMonto.getText())> 0 ? 1:0);
-        
-        deuda_pendiente = compraTB.getTotal().get() - Double.parseDouble(txtMonto.getText());
-        valor_cuota = deuda_pendiente / Integer.parseInt(txtCuotas.getText());
-        
-        pagoProveedoresTB.setPlazos(cbPlazos.getSelectionModel().getSelectedItem().getNombre());
-        pagoProveedoresTB.setValorCuota(valor_cuota);
-        
-        pagoProveedoresTB.setFechaInicial(Timestamp.valueOf(Tools.getDatePicker(dpFecha) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
-        pagoProveedoresTB.setFechaActual(Timestamp.valueOf(Tools.getDatePicker(dpFecha) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
-        
-        LocalDate fecha_final = LocalDate.parse(Tools.getDatePicker(dpFecha)).plusDays(diasPlazo * Integer.parseInt(txtCuotas.getText()));
-        
-        pagoProveedoresTB.setFechaFinal(Timestamp.valueOf(fecha_final + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
-        pagoProveedoresTB.setObservacion("ninguno".toUpperCase());
-        pagoProveedoresTB.setEstado("activo".toUpperCase());
-        pagoProveedoresTB.setIdProveedor(compraTB.getProveedor());
-        
-        compraTB.setEstadoCompra(estadoCompra);
-        compraTB.setTipoCompra(tipoCompra);
-        
-        String result = CompraADO.CrudCompra(compraTB, tvList, loteTBs, pagoProveedoresTB);
-        if (result.equalsIgnoreCase("register")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Compra", "Se registró correctamente la compra.", false);
-            Tools.Dispose(window);
-            compraController.clearComponents();
+
+        if (Integer.parseInt(this.txtCuotas.getText()) > 0) {
+            
+            pagoProveedoresTB.setPlazos(cbPlazos.getSelectionModel().getSelectedItem().getNombre());
+            pagoProveedoresTB.setFechaInicial(Timestamp.valueOf(Tools.getDatePicker(dpFecha) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
+            pagoProveedoresTB.setFechaActual(Timestamp.valueOf(Tools.getDatePicker(dpFecha) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
+
+            LocalDate fecha_final = LocalDate.parse(Tools.getDatePicker(dpFecha)).plusDays(diasPlazo * Integer.parseInt(txtCuotas.getText()));
+
+            pagoProveedoresTB.setFechaFinal(Timestamp.valueOf(fecha_final + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
+            pagoProveedoresTB.setObservacion("ninguno".toUpperCase());
+            pagoProveedoresTB.setEstado("activo".toUpperCase());
+            pagoProveedoresTB.setIdProveedor(compraTB.getProveedor());
+
+            compraTB.setEstadoCompra(estadoCompra);
+            compraTB.setTipoCompra(tipoCompra);
+
+            String result = CompraADO.CrudCompra(compraTB, tvList, loteTBs, pagoProveedoresTB);
+            if (result.equalsIgnoreCase("register")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Compra", "Se registró correctamente la compra.", false);
+                Tools.Dispose(window);
+                compraController.clearComponents();
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Compra", result, false);
+            }
+            
         } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Compra", result, false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "El número de cuotas debe ser mayor a cero.", false);
+            txtCuotas.requestFocus();
         }
+
     }
 
     private void onEventProcess() {
-        
+
         if (rbContado.isSelected()) {
             if (!Tools.isNumeric(txtEfectivo.getText())) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo efectivo.", false);
@@ -164,10 +174,10 @@ public class FxCompraProcesoController implements Initializable {
             }
         } else if (rbCredito.isSelected()) {
             if (!Tools.isNumeric(txtMonto.getText())) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo crédito.", false);
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo monto inicial.", false);
                 txtMonto.requestFocus();
             } else if (!Tools.isNumeric(txtCuotas.getText())) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo días de crédito.", false);
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo número de cuotas.", false);
                 txtCuotas.requestFocus();
             } else if (dpFecha.getValue() == null) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo fecha de vencimiento.", false);
@@ -185,7 +195,7 @@ public class FxCompraProcesoController implements Initializable {
         }
 
     }
-    
+
     private void openWindowAddPlazo() throws IOException {
         URL url = getClass().getResource(Tools.FX_FILE_PLAZOS);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -262,16 +272,16 @@ public class FxCompraProcesoController implements Initializable {
 
     @FXML
     private void OnActionPlazos(ActionEvent event) {
-        diasPlazo = cbPlazos.getSelectionModel().getSelectedItem().getDias();
+        initObjetPagoProveedores();
     }
 
     @FXML
     private void onKeyTypedMonto(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
             event.consume();
         }
-        if (c == '.' && txtMonto.getText().contains(".") || c == '-' && txtMonto.getText().contains("-")) {
+        if (c == '.' && txtMonto.getText().contains(".")) {
             event.consume();
         }
     }
@@ -286,7 +296,43 @@ public class FxCompraProcesoController implements Initializable {
 
     @FXML
     private void OnMouseClickedPlazos(MouseEvent event) throws IOException {
-        this.openWindowAddPlazo();
+        openWindowAddPlazo();
+    }
+
+    @FXML
+    private void onKeyReleasedMonto(KeyEvent event) {
+        initObjetPagoProveedores();
+    }
+
+    @FXML
+    private void onKeyReleasedCuotas(KeyEvent event) {
+        initObjetPagoProveedores();
+    }
+
+    private void initObjetPagoProveedores() {
+
+        if (Tools.isNumeric(txtMonto.getText()) && Tools.isNumeric(txtCuotas.getText())) {
+
+            if (Double.parseDouble(txtMonto.getText()) >= 0 && Integer.parseInt(txtCuotas.getText()) >= 1) {
+
+                diasPlazo = cbPlazos.getSelectionModel().getSelectedItem().getDias();
+
+                pagoProveedoresTB.setMontoTotal(compraTB.getTotal().get());
+                pagoProveedoresTB.setMontoActual(Double.parseDouble(txtMonto.getText()));
+
+                pagoProveedoresTB.setCuotaTotal(Integer.parseInt(txtCuotas.getText()));
+                pagoProveedoresTB.setCuotaActual(Integer.parseInt(txtMonto.getText()) > 0 ? 1 : 0);
+
+                deuda_pendiente = compraTB.getTotal().get() - Double.parseDouble(txtMonto.getText());
+                cuota_promedio = deuda_pendiente / Integer.parseInt(txtCuotas.getText());
+
+                pagoProveedoresTB.setValorCuota(Double.parseDouble(txtCuotas.getText()));
+
+                this.lblCuotaReferencial.setText(simboloMoneda + " " + Tools.roundingValue(cuota_promedio, 2));
+            }
+
+        }
+
     }
 
 }

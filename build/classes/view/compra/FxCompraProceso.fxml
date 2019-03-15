@@ -44,7 +44,7 @@
                         <HBox fx:id="hbPagoContado" alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                            <children>
                               <Label styleClass="labelOpenSansRegular14" text="Efectivo:" />
-                              <TextField fx:id="txtEfectivo" onKeyTyped="#onKeyTypedEfectivo" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="txtEfectivo" disable="true" onKeyTyped="#onKeyTypedEfectivo" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                      </children>
@@ -81,12 +81,13 @@
                                       <rowConstraints>
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
                                           <Label styleClass="labelOpenSansRegular14" text="Monto Inicial" />
-                                          <TextField fx:id="txtMonto" onKeyTyped="#onKeyTypedMonto" prefWidth="180.0" promptText="0.0" GridPane.rowIndex="1" />
-                                          <TextField fx:id="txtCuotas" onKeyTyped="#onKeyTypedCuotas" prefWidth="180.0" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Label styleClass="labelOpenSansRegular14" text="Numero de Cuotas" GridPane.columnIndex="1" />
+                                          <TextField fx:id="txtMonto" onKeyReleased="#onKeyReleasedMonto" onKeyTyped="#onKeyTypedMonto" prefWidth="180.0" GridPane.rowIndex="1" />
+                                          <TextField fx:id="txtCuotas" onKeyReleased="#onKeyReleasedCuotas" onKeyTyped="#onKeyTypedCuotas" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Número de Cuotas" GridPane.columnIndex="1" />
                                           <Label styleClass="labelOpenSansRegular14" text="Fecha de Registro" GridPane.columnIndex="3" />
                                           <DatePicker fx:id="dpFecha" disable="true" prefWidth="180.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                           <Label contentDisplay="RIGHT" onMouseClicked="#OnMouseClickedPlazos" styleClass="labelOpenSansRegular14" text="Plazos" GridPane.columnIndex="2">
@@ -101,6 +102,8 @@
                                                 <Cursor fx:constant="HAND" />
                                              </cursor></Label>
                                           <ComboBox fx:id="cbPlazos" maxWidth="1.7976931348623157E308" onAction="#OnActionPlazos" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Cuota Referencial:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                          <Label fx:id="lblCuotaReferencial" styleClass="labelOpenSansRegular14" text="M 00.00" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                                        </children>
                                     </GridPane>
                                  </children>

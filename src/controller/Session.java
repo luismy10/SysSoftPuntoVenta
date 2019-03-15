@@ -6,6 +6,7 @@ public class Session {
 
     public static String USER_ID;
     public static String USER_NAME;
+    public static String USER_NAME_PUESTO;
     public static double WIDTH_WINDOW;
     public static double HEIGHT_WINDOW;
     public static String EMPRESA;
@@ -37,5 +38,7 @@ public class Session {
     public static int DEFAULT_COMPROBANTE;
 //    public static int DEFAULT_MONEDA;
     public static int DEFAULT_IMPUESTO;
+    
+    
     
 }

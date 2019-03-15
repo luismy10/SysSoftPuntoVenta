@@ -257,7 +257,7 @@ public class FxInicioController implements Initializable {
         primaryStage.setMaximized(true);
         primaryStage.show();
         primaryStage.requestFocus();
-
+       
     }
-
+    
 }

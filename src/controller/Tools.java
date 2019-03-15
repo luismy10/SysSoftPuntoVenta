@@ -95,16 +95,16 @@ public class Tools {
     static final String FX_FILE_COMPRASPROCESO = "/view/compra/FxCompraProceso.fxml";
     static final String FX_FILE_PLAZOS = "/view/compra/FxPlazos.fxml";
     static final String FX_FILE_TICKET = "/view/tipodocumento/FxTicket.fxml";
-<<<<<<< HEAD
     static final String FX_FILE_HISTORIAL_PAGOS = "/view/compra/FxHistorialPagos.fxml";
     static final String FX_FILE_AMORTIZAR_PAGOS = "/view/compra/FxAmortizarPagos.fxml";
+    
+    static final String FX_FILE_CAJA = "/view/caja/FxCaja.fxml";
+    static final String FX_FILE_APERTURACAJA = "/view/caja/FxAperturaCaja.fxml";
 
-
-=======
     static final String FX_FILE_TICKETBUSQUEDA = "/view/tipodocumento/FxTicketBusqueda.fxml";
     static final String FX_FILE_TICKETMULTILINEA = "/view/tipodocumento/FxTicketMultilinea.fxml";
     
->>>>>>> 54ec4ae761ae64b04dee37b47c99a6c6e4d17f32
+
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);
@@ -164,6 +164,41 @@ public class Tools {
 
         ButtonType buttonTypeTwo = new ButtonType("Aceptar y no Imprimir", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeOne = new ButtonType("Aceptar e Imprimir", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypeTwo, buttonTypeOne);
+        Button buttonTwo = (Button) alert.getDialogPane().lookupButton(buttonTypeTwo);
+        buttonTwo.setDefaultButton(false);
+        Button buttonOne = (Button) alert.getDialogPane().lookupButton(buttonTypeOne);
+        buttonTwo.setOnKeyPressed((KeyEvent event) -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                alert.setResult(buttonTypeTwo);
+            }
+        });
+        buttonOne.setOnKeyPressed((KeyEvent event) -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                alert.setResult(buttonTypeOne);
+            }
+        });
+
+        Optional<ButtonType> optional = alert.showAndWait();
+        return (short) (optional.get() == buttonTypeTwo ? 0 : 1);
+
+    }
+    
+    public static short AlertMessage(Window window, AlertType type, String title, String value, String buton1, String buton2) {
+        final URL url = Tools.class.getClass().getResource("/view/alert.css"); 
+        Alert alert = new Alert(type);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("/view/icon.png"));
+        alert.setTitle(title);
+        alert.initModality(Modality.WINDOW_MODAL);
+        alert.initOwner(window);
+        alert.setHeaderText(null);
+        alert.setContentText(value);
+        alert.getDialogPane().getStylesheets().add(url.toExternalForm());
+
+        ButtonType buttonTypeTwo = new ButtonType(buton1, ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonTypeOne = new ButtonType(buton2, ButtonBar.ButtonData.CANCEL_CLOSE);
 
         alert.getButtonTypes().setAll(buttonTypeTwo, buttonTypeOne);
         Button buttonTwo = (Button) alert.getDialogPane().lookupButton(buttonTypeTwo);
