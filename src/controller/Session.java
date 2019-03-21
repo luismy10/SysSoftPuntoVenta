@@ -9,6 +9,7 @@ public class Session {
     */
     public static String USER_ID;
     public static String USER_NAME;
+    public static String USER_NAME_PUESTO;
     public static double WIDTH_WINDOW;
     public static double HEIGHT_WINDOW;
     /*
@@ -38,9 +39,14 @@ public class Session {
     public static String PROVEEDORES_TOTAL;
     public static String TRABAJADORES_TOTAL;
     
+    /*
+    
+    */
     public static String MONEDA;
     
     public static int ROL;
+    
+    public static int CAJA_ID;
     
     public static boolean ESTADO_IMPRESORA;
     public static String NOMBRE_IMPRESORA;
@@ -48,11 +54,7 @@ public class Session {
     
     public static int DEFAULT_COMPROBANTE;
     public static int DEFAULT_IMPUESTO;
-    
-    /*
-    
-    */
+       
     public static String RUTA_TICKET_VENTA;
-    
     
 }

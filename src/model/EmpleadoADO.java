@@ -225,8 +225,10 @@ public class EmpleadoADO {
         return empleadoTB;
     }
 
+    
     public static Callable<EmpleadoTB> GetValidateUser(String user, String clave) {
         return () -> {
+            
             String selectStmt = "SELECT IdEmpleado,Apellidos,Nombres,dbo.Fc_Obtener_Nombre_Detalle(Puesto,'0012') as Puesto,Estado,Rol FROM EmpleadoTB\n"
                     + "WHERE Usuario = ? and Clave = ? and Estado = 1";
             PreparedStatement preparedStatement = null;

@@ -34,10 +34,10 @@ public class FxImpuestoProcesoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idImpuesto = 0;
-       
+
     }
 
-    public void setUpdateImpuesto(int idImpuesto,String nombre,String valor,String codigoAlterno) {
+    public void setUpdateImpuesto(int idImpuesto, String nombre, String valor, String codigoAlterno) {
         this.idImpuesto = idImpuesto;
         txtNombre.setText(nombre);
         txtValor.setText(valor);
@@ -70,7 +70,8 @@ public class FxImpuestoProcesoController implements Initializable {
             impuestoTB.setNombre(txtNombre.getText().trim());
             impuestoTB.setValor(Double.parseDouble(txtValor.getText()));
             impuestoTB.setPredeterminado(false);
-            impuestoTB.setCodigoAlterno(txtCodigoAlterno.getText().isEmpty() ? "" : txtCodigoAlterno.getText().trim());
+            impuestoTB.setCodigoAlterno(txtCodigoAlterno.getText().isEmpty() ? "0" : txtCodigoAlterno.getText().trim());
+            impuestoTB.setSistema(false);
             String result = ImpuestoADO.CrudImpuesto(impuestoTB);
             if (result.equalsIgnoreCase("duplicated")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Impuesto", "Hay un impuesto con el mismo nombre.", false);

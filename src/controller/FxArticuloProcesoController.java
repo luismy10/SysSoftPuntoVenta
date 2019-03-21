@@ -551,7 +551,7 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private void onKeyTypedClave(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z')) {
+        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
             event.consume();
         }
     }
@@ -559,7 +559,7 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private void onKeyTypedClaveAlterna(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z')) {
+        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
             event.consume();
         }
     }

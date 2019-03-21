@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -11,8 +10,10 @@ import java.util.Iterator;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
@@ -25,6 +26,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.ArticuloTB;
 import model.EmpleadoTB;
 import model.ImpuestoADO;
@@ -101,6 +104,10 @@ public class FxVentaDetalleController implements Initializable {
 
     private double pointWidth;
 
+    private String nombreTicketImpresion;
+
+    private double efectivo, vuelto;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         arrayArticulos = new ArrayList<>();
@@ -132,18 +139,30 @@ public class FxVentaDetalleController implements Initializable {
 
     }
 
-    public void setInitComponents(LocalDateTime fechaRegistro, String cliente, String comprobanteName, String serie, String numeracion, String observaciones, String idVenta) {
-        lblFechaVenta.setText(fechaRegistro.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
-        lblCliente.setText(cliente);
-        lblComprobante.setText(comprobanteName);
-        lblSerie.setText(serie + "-" + numeracion);
-        lblObservaciones.setText(observaciones);
-        this.idVenta = idVenta;
+    private void InitializationTransparentBackground() {
+        Session.PANE.setStyle("-fx-background-color: black");
+        Session.PANE.setTranslateX(0);
+        Session.PANE.setTranslateY(0);
+        Session.PANE.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.PANE.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.PANE.setOpacity(0.7f);
+        windowinit.getChildren().add(Session.PANE);
+    }
 
+    public void setInitComponents(String idVenta) {
+        this.idVenta = idVenta;
         VentaTB ventaTB = VentaADO.GetVenta(idVenta);
         if (ventaTB != null) {
+            lblFechaVenta.setText(ventaTB.getFechaVenta().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
+            lblCliente.setText(ventaTB.getCliente());
+            lblComprobante.setText(ventaTB.getComprobanteName());
+            nombreTicketImpresion = ventaTB.getComproabanteNameImpresion();
+            lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
+            lblObservaciones.setText(ventaTB.getObservaciones());
             lblEstado.setText(ventaTB.getEstadoName());
             simboloMoneda = ventaTB.getMonedaName();
+            efectivo = ventaTB.getEfectivo();
+            vuelto = ventaTB.getVuelto();
         }
         EmpleadoTB empleadoTB = VentaADO.GetEmpleadoVenta(idVenta);
         if (empleadoTB != null) {
@@ -214,7 +233,7 @@ public class FxVentaDetalleController implements Initializable {
                     } else if (fieldTicket.getVariable().equalsIgnoreCase("horactual")) {
                         fieldTicket.setText(Tools.getHour("hh:mm:ss aa"));
                     } else if (fieldTicket.getVariable().equalsIgnoreCase("docventa")) {
-                        fieldTicket.setText("");
+                        fieldTicket.setText(nombreTicketImpresion);
                     } else if (fieldTicket.getVariable().equalsIgnoreCase("numventa")) {
                         fieldTicket.setText(ticket);
                     }
@@ -266,9 +285,9 @@ public class FxVentaDetalleController implements Initializable {
                     } else if (fieldTicket.getVariable().equalsIgnoreCase("totalpagar")) {
                         fieldTicket.setText(lblTotal.getText());
                     } else if (fieldTicket.getVariable().equalsIgnoreCase("efectivo")) {
-                        fieldTicket.setText("");
+                        fieldTicket.setText(simboloMoneda + " " + Tools.roundingValue(efectivo, 2));
                     } else if (fieldTicket.getVariable().equalsIgnoreCase("vuelto")) {
-                        fieldTicket.setText("");
+                        fieldTicket.setText(simboloMoneda + " " + Tools.roundingValue(vuelto, 2));
                     }
                     lines += fieldTicket.getLines();
                 }
@@ -348,8 +367,8 @@ public class FxVentaDetalleController implements Initializable {
             }
         }
     }
-    
-     private HBox generateElement(VBox contenedor, String id) {
+
+    private HBox generateElement(VBox contenedor, String id) {
         if (contenedor.getChildren().isEmpty()) {
             return addElement(contenedor, id + "1");
         } else {
@@ -393,6 +412,31 @@ public class FxVentaDetalleController implements Initializable {
             default:
                 return Pos.CENTER_LEFT;
         }
+    }
+
+    private void openWindowAbonos() {
+        try {
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_VENTAABONO);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+
+            FxVentaAbonoController controller = fXMLLoader.getController();           
+            controller.setInitVentaAbonoController(this);
+                    
+            Stage stage = FxWindow.StageLoaderModal(parent, "Historial de abonos", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                windowinit.getChildren().remove(Session.PANE);
+            });
+            stage.show();
+           controller.loadInitData(idVenta,simboloMoneda);
+           
+        } catch (IOException ex) {
+
+        }
+
     }
 
     private void calcularTotales() {
@@ -486,6 +530,18 @@ public class FxVentaDetalleController implements Initializable {
         AnchorPane.setBottomAnchor(ventaRealizadasController.getWindow(), 0d);
         vbContent.getChildren().add(ventaRealizadasController.getWindow());
 
+    }
+
+    @FXML
+    private void onKeyPressedHistorialPagos(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowAbonos();
+        }
+    }
+
+    @FXML
+    private void onActionHistorialPagos(ActionEvent event) {
+        openWindowAbonos();
     }
 
     public void setInitVentasController(FxVentaRealizadasController ventaRealizadasController, AnchorPane windowinit, AnchorPane vbContent) {

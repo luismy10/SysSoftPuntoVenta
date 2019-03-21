@@ -18,7 +18,7 @@
    <children>
       <HBox VBox.vgrow="ALWAYS">
          <children>
-            <VBox HBox.hgrow="ALWAYS">
+            <VBox fx:id="hbContenedorVentas" disable="true" HBox.hgrow="ALWAYS">
                <children>
                   <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;" styleClass="paddinContainer">
                      <children>
@@ -30,58 +30,58 @@
                         <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Ventas" />
                      </children>
                   </HBox>
-                  <VBox minHeight="-Infinity" minWidth="-Infinity">
+                  <VBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 0.8333333333333334em 0.8333333333333334em 0 0.8333333333333334em;">
                      <children>
-                        <HBox styleClass="paddinContainer">
+                        <HBox alignment="CENTER_LEFT" style="-fx-background-color: #cccccc;" VBox.vgrow="ALWAYS">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#onActionRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightDefault" text="Cobrar(F1)">
+                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightDefault" text="Cobrar(F1)">
                                  <graphic>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../complete.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionArticulo" onKeyPressed="#onKeyPressedArticulo" styleClass="buttonLight" text="Artículo(F2)">
+                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionArticulo" onKeyPressed="#onKeyPressedArticulo" styleClass="buttonLight" text="Artículo(F2)">
                                  <graphic>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../articles.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionListaPrecios" onKeyPressed="#onKeyPressedListaPrecios" styleClass="buttonLight" text="Lista de Precios(F3)">
+                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionListaPrecios" onKeyPressed="#onKeyPressedListaPrecios" styleClass="buttonLight" text="Lista de Precios(F3)">
                                  <graphic>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../prices.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionPrecio" onKeyPressed="#onKeyPressedPrecio" styleClass="buttonLight" text="Cambiar Precio(F5)">
+                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionPrecio" onKeyPressed="#onKeyPressedPrecio" styleClass="buttonLight" text="Cambiar Precio(F5)">
                                  <graphic>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../moneda.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionDescuento" styleClass="buttonLight" text="Descuento(F6)">
+                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionDescuento" styleClass="buttonLight" text="Descuento(F6)">
                                  <graphic>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../percentages.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionPrecioSumar" onKeyPressed="#onKeyPressedPrecioSumar" styleClass="buttonLight" text="Sumar Precio(F7)">
+                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionPrecioSumar" onKeyPressed="#onKeyPressedPrecioSumar" styleClass="buttonLight" text="Sumar Precio(F7)">
                                  <graphic>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../money.png" />
                                        </image>
@@ -91,6 +91,9 @@
                            </children>
                         </HBox>
                      </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" top="10.0" />
+                     </padding>
                   </VBox>
                   <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                      <children>
@@ -141,9 +144,9 @@
                                                 <TableColumn fx:id="tcImporte" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />
                                              </columns>
                                           </TableView>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                          <HBox alignment="CENTER_LEFT" style="-fx-background-color: #cccccc;">
                                              <children>
-                                                <Button mnemonicParsing="false" onAction="#onActionRemover" onKeyPressed="#onKeyPressedRemover" styleClass="buttonLight" text="Quitar(Supr)">
+                                                <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionRemover" onKeyPressed="#onKeyPressedRemover" styleClass="buttonLight" text="Quitar(Supr)">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -152,7 +155,16 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Button>
-                                                <Button mnemonicParsing="false" onAction="#onActionImprimir" onKeyPressed="#onKeyPressedImprimir" styleClass="buttonLight" text="Impresora(F8)">
+                                                <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCashMovement" onKeyPressed="#onKeyPressedCashMovement" styleClass="buttonLight" text="Mov. de Caja">
+                                                   <graphic>
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../cash_movement.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                                <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionImprimir" onKeyPressed="#onKeyPressedImprimir" styleClass="buttonLight" text="Impresora(F8)">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -161,20 +173,11 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Button>
-                                                <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar(F9)">
+                                                <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar(F9)">
                                                    <graphic>
-                                                      <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../close.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                                <Button mnemonicParsing="false" onAction="#onActionReiniciar" onKeyPressed="#onKeyPressedReiniciar" styleClass="buttonLight" text="Reiniciar(F10)">
-                                                   <graphic>
-                                                      <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../reload.png" />
                                                          </image>
                                                       </ImageView>
                                                    </graphic>

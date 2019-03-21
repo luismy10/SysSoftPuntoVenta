@@ -39,9 +39,9 @@
                         </Label>
                      </children>
                   </HBox>
-                  <VBox minHeight="-Infinity" minWidth="-Infinity">
+                  <VBox prefHeight="60.0">
                      <children>
-                        <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                        <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                            <children>
                               <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar">
                                  <graphic>

@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
@@ -22,6 +23,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.CajaADO;
+import model.CajaTB;
 import model.EmpleadoADO;
 import model.EmpleadoTB;
 
@@ -35,6 +38,8 @@ public class FxLoginController implements Initializable {
     private PasswordField txtClave;
     @FXML
     private Label lblError;
+
+    private AnchorPane content;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -64,6 +69,10 @@ public class FxLoginController implements Initializable {
                     EmpleadoTB empleadoTB = batchCount.get();
                     if (empleadoTB != null) {
                         Session.ROL = empleadoTB.getRol();
+                        Session.USER_ID = empleadoTB.getIdEmpleado();
+                        Session.USER_NAME = (empleadoTB.getApellidos().substring(0, 1).toUpperCase() + empleadoTB.getApellidos().substring(1).toLowerCase())
+                                + " " + empleadoTB.getNombres().substring(0, 1).toUpperCase() + empleadoTB.getNombres().substring(1).toLowerCase();
+                        Session.USER_NAME_PUESTO = empleadoTB.getPuestoName();
                         Tools.Dispose(window);
                         URL url = getClass().getResource(Tools.FX_FILE_INICIO);
                         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -82,17 +91,33 @@ public class FxLoginController implements Initializable {
                         stage.requestFocus();
                         controller.initInicioController();
                         controller.initWindowSize();
-                        Session.USER_ID = empleadoTB.getIdEmpleado();
-                        Session.USER_NAME = (empleadoTB.getApellidos().substring(0, 1).toUpperCase() + empleadoTB.getApellidos().substring(1).toLowerCase())
-                                + " " + empleadoTB.getNombres().substring(0, 1).toUpperCase() + empleadoTB.getNombres().substring(1).toLowerCase();
+
                         controller.initUserSession((empleadoTB.getPuestoName().substring(0, 1).toUpperCase() + empleadoTB.getPuestoName().substring(1).toLowerCase()));
 
                         Session.WIDTH_WINDOW = scene.getWidth();
                         Session.HEIGHT_WINDOW = scene.getHeight();
+
+                        CajaTB cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
+                        if (cajaTB != null) {
+                            Session.CAJA_ID = cajaTB.getIdCaja();
+                        } else {
+                            CajaTB cajaInsert = new CajaTB();
+                            cajaInsert.setIdUsuario(Session.USER_ID);
+                            cajaInsert.setEstado(true);
+                            cajaInsert.setFechaRegistro(LocalDateTime.now());
+
+                            String result = CajaADO.AperturarCaja(cajaInsert);
+                            if (result.equalsIgnoreCase("registrado")) {
+                                CajaTB cajaSelect = CajaADO.ValidarCreacionCaja(Session.USER_ID);
+                                if (cajaSelect != null) {
+                                    Session.CAJA_ID = cajaSelect.getIdCaja();
+                                }
+                            }
+                        }
+
                     } else {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Iniciar Sesión", "Datos incorrectos", false);
                     }
-
                 }
             } catch (InterruptedException | ExecutionException e) {
                 lblError.setText("Error: No se pudo conectar al servidor revise su conexión.");

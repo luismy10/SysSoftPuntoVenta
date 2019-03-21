@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ListView;
 
 public class MenuADO {
 
@@ -91,7 +93,7 @@ public class MenuADO {
         }
         return empList;
     }
-    
+
     public static ObservableList<MenuTB> ListMenus() {
         String selectStmt = "select IdMenu,Nombre from MenuTB";
         PreparedStatement preparedStatement = null;
@@ -99,7 +101,7 @@ public class MenuADO {
         ObservableList<MenuTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);        
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 MenuTB menuTB = new MenuTB();
@@ -124,6 +126,45 @@ public class MenuADO {
             }
         }
         return empList;
+    }
+
+    public static String CrudPermisosMenu(int rol, ListView<CheckBox> menus) {
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statementPermisosMenu = null;
+            try {
+                DBUtil.getConnection().setAutoCommit(false);
+                statementPermisosMenu = DBUtil.getConnection().prepareStatement("UPDATE PermisoMenusTB SET Estado = ? WHERE IdRol = ? AND IdMenus = ?");
+                for (int i = 0; i < menus.getItems().size(); i++) {
+                    statementPermisosMenu.setBoolean(1, menus.getItems().get(i).isSelected());
+                    statementPermisosMenu.setInt(2, rol);
+                    statementPermisosMenu.setInt(3, Integer.parseInt(menus.getItems().get(i).getId()));
+                    statementPermisosMenu.addBatch();
+                }
+                statementPermisosMenu.executeBatch();
+                DBUtil.getConnection().commit();
+                return "updated";
+            } catch (SQLException ex) {
+                try {
+                    DBUtil.getConnection().rollback();
+                } catch (SQLException e) {
+                    return e.getLocalizedMessage();
+                }
+                return ex.getLocalizedMessage();
+            } finally {
+                try {
+                    if (statementPermisosMenu != null) {
+                        statementPermisosMenu.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    return ex.getLocalizedMessage();
+                }
+            }
+        } else {
+            return "No se pudo conectar al servidor, revise su conexión.";
+        }
+
     }
 
 }

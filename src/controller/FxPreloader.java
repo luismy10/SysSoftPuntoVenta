@@ -168,6 +168,7 @@ public class FxPreloader extends Preloader {
                     }
 
                     Session.MONEDA = MonedaADO.GetMonedaPredetermined();
+                   
 
                     ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");
                     if (clienteTB != null) {

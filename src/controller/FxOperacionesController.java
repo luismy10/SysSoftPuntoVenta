@@ -33,7 +33,7 @@ public class FxOperacionesController implements Initializable {
     private VBox nodeVenta;
 
     private FxVentaController controllerVenta;
-    
+
     private FXMLLoader fXMLArticulo;
 
     private VBox nodeArticulo;
@@ -46,7 +46,7 @@ public class FxOperacionesController implements Initializable {
             fXMLVenta = new FXMLLoader(getClass().getResource(Tools.FX_FILE_VENTA));
             nodeVenta = fXMLVenta.load();
             controllerVenta = fXMLVenta.getController();
-            
+
             fXMLArticulo = new FXMLLoader(getClass().getResource(Tools.FX_FILE_ARTICULO));
             nodeArticulo = fXMLArticulo.load();
             controllerArticulo = fXMLArticulo.getController();
@@ -84,7 +84,7 @@ public class FxOperacionesController implements Initializable {
 
     }
 
-    private void openWindowArticulos() throws IOException {       
+    private void openWindowArticulos() throws IOException {
         controllerArticulo.setContent(windowinit);
         content.getChildren().clear();
         AnchorPane.setLeftAnchor(nodeArticulo, 0d);
@@ -106,7 +106,7 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
-        content.getChildren().add(node);        
+        content.getChildren().add(node);
     }
 
     private void openWindowLote() throws IOException {
@@ -123,7 +123,7 @@ public class FxOperacionesController implements Initializable {
         controller.loadDataInitial();
     }
 
-    private void openWindowVenta() throws IOException {       
+    private void openWindowVenta() throws IOException {
         controllerVenta.setContent(windowinit);
         content.getChildren().clear();
         AnchorPane.setLeftAnchor(nodeVenta, 0d);
@@ -131,6 +131,7 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setRightAnchor(nodeVenta, 0d);
         AnchorPane.setBottomAnchor(nodeVenta, 0d);
         content.getChildren().add(nodeVenta);
+        controllerVenta.loadValidarCaja();
         controllerVenta.getTxtSearch().requestFocus();
     }
 
@@ -138,6 +139,20 @@ public class FxOperacionesController implements Initializable {
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_INVENTARIOINICIAL));
         VBox node = fXMLPrincipal.load();
         FxInventarioInicialController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        content.getChildren().add(node);
+
+    }
+
+    private void openWindowBoxCut() throws IOException {
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_CAJA));
+        VBox node = fXMLPrincipal.load();
+        FxCajaController controller = fXMLPrincipal.getController();
         controller.setContent(windowinit);
         content.getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
@@ -231,6 +246,28 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private void onActionInventario(ActionEvent event) throws IOException {
         openWindowInventario();
+    }
+
+    @FXML
+    private void onActionCorteCaja(ActionEvent event) throws IOException {
+        openWindowBoxCut();
+//        if (Session.USER_NAME_PUESTO.equalsIgnoreCase("administrador")) {
+//            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Caja", "El administrador no esta facultado para hacer el corte de caja.", false);
+//        } else {
+//            openWindowBoxCut();
+//        }
+    }
+
+    @FXML
+    private void onKeyPressedCorteCaja(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowBoxCut();
+        }
+//        if (Session.USER_NAME_PUESTO.equalsIgnoreCase("administrador")) {
+//            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Caja", "El administrador no esta facultado para hacer el corte de caja.", false);
+//        } else {
+//            openWindowBoxCut();
+//        }
     }
 
     public void setContent(AnchorPane windowinit, AnchorPane content) {

@@ -47,9 +47,9 @@ public class FxAmortizarPagosController implements Initializable {
 
     }
 
-    public void setInitTexField() {
-        txtValorCuota.setText( String.valueOf(pagoProveedoresTB.getValorCuota()));
-    }
+//    public void setInitTexField() {
+//        txtValorCuota.setText(Tools.roundingValue(pagoProveedoresTB.getValorCuota(), 2));
+//    }
 
     private void registerPagosProveedores() {
 
@@ -60,6 +60,7 @@ public class FxAmortizarPagosController implements Initializable {
             
             pagoProveedoresTB.setMontoActual( pagoProveedoresTB.getMontoActual() + Double.parseDouble(txtValorCuota.getText()));
             pagoProveedoresTB.setCuotaActual( (pagoProveedoresTB.getCuotaActual() < pagoProveedoresTB.getCuotaTotal()) ? pagoProveedoresTB.getCuotaActual()+1 : pagoProveedoresTB.getCuotaTotal() );
+            pagoProveedoresTB.setValorCuota(Double.parseDouble(txtValorCuota.getText()));
             pagoProveedoresTB.setFechaActual(Timestamp.valueOf(LocalDateTime.now()));
             pagoProveedoresTB.setObservacion(txtObservacion.getText().isEmpty() ? "ninguno".toUpperCase() : txtObservacion.getText());
             pagoProveedoresTB.setEstado("activo".toUpperCase());
@@ -68,7 +69,10 @@ public class FxAmortizarPagosController implements Initializable {
             if (result.equalsIgnoreCase("register")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Pago Proveedores", "Se registró correctamente el pago.", false);
                 Tools.Dispose(window);
-            } else {
+            } else if(result.equalsIgnoreCase("update")){
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Pago Proveedores", "Se registró correctamente el pago y se actualizo el estado de la compra.", false);
+                Tools.Dispose(window);
+            }else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Pago Proveedores", result, false);
             }
             

@@ -708,8 +708,10 @@ public class ArticuloADO {
                 statementVenta.setString(1, idArticulo);
 
                 if (statementCompra.executeQuery().next()) {
+                    DBUtil.getConnection().rollback();
                     result = "compra";
                 } else if (statementVenta.executeQuery().next()) {
+                    DBUtil.getConnection().rollback();
                     result = "venta";
                 } else {
                     statementArticulo = DBUtil.getConnection().prepareStatement("DELETE FROM ArticuloTB WHERE IdArticulo = ?");

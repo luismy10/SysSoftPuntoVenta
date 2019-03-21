@@ -1,75 +1,68 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import javafx.beans.property.ObjectProperty;
+import java.time.LocalDateTime;
 
-/**
- *
- * @author Ruberfc
- */
 public class CajaTB {
+
+    private int idCaja;
+    private LocalDateTime fechaApertura;
+    private LocalDateTime fechaCierre;
+    private boolean estado;
+    private String idUsuario;
+    private LocalDateTime fechaRegistro;
     
-    private int idCajaTrabajador ;
-    private double montoInicial;
-    private double montoFinal;
-    private String estado;
-    private Timestamp fecha;
+    public CajaTB() {
         
-    public CajaTB(){}
-
-    public CajaTB(int idCajaTrabajador, double montoInicial, double montoFinal, String estado, Timestamp fecha) {
-        this.idCajaTrabajador = idCajaTrabajador;
-        this.montoInicial = montoInicial;
-        this.montoFinal = montoFinal;
-        this.estado = estado;
-        this.fecha = fecha;
     }
 
-    public int getIdCajaTrabajador() {
-        return idCajaTrabajador;
+    public int getIdCaja() {
+        return idCaja;
     }
 
-    public void setIdCajaTrabajador(int idCajaTrabajador) {
-        this.idCajaTrabajador = idCajaTrabajador;
+    public void setIdCaja(int idCaja) {
+        this.idCaja = idCaja;
     }
 
-    public double getMontoInicial() {
-        return montoInicial;
+    public LocalDateTime getFechaApertura() {
+        return fechaApertura;
     }
 
-    public void setMontoInicial(double montoInicial) {
-        this.montoInicial = montoInicial;
+    public void setFechaApertura(LocalDateTime fechaApertura) {
+        this.fechaApertura = fechaApertura;
     }
 
-    public double getMontoFinal() {
-        return montoFinal;
-    }
-
-    public void setMontoFinal(double montoFinal) {
-        this.montoFinal = montoFinal;
-    }
-
-    public String getEstado() {
+    public boolean isEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
 
-    public Timestamp getFecha() {
-        return fecha;
+    public LocalDateTime getFechaCierre() {
+        return fechaCierre;
     }
 
-    public void setFecha(Timestamp fecha) {
-        this.fecha = fecha;
+    public void setFechaCierre(LocalDateTime fechaCierre) {
+        this.fechaCierre = fechaCierre;
     }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public LocalDateTime getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+    
     
     
 }

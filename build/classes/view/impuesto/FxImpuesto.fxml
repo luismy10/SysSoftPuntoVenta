@@ -58,6 +58,15 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionDelete" onKeyPressed="#onKeyPressedDelete" styleClass="buttonLight" text="Eliminar">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../remove.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                               <Button mnemonicParsing="false" onAction="#onActionPredetermined" onKeyPressed="#onKeyPressedPredetermined" styleClass="buttonLight" text="Predeterminado">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">

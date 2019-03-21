@@ -362,7 +362,7 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     }
 
-    void setContent(AnchorPane content) {
+    public void setContent(AnchorPane content) {
         this.content = content;
     }
 

@@ -79,7 +79,7 @@ public class FxVentaRealizadasController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-        tcFechaVenta.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaRegistro().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))));
+        tcFechaVenta.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaVenta().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))));
         tcCliente.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCliente()));
         tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName()));
         tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getComprobanteName() + "\n" + cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));
@@ -149,7 +149,7 @@ public class FxVentaRealizadasController implements Initializable {
             //Controlller here
             FxVentaDetalleController controller = fXMLLoader.getController();
             controller.setInitVentasController(this, windowinit, vbContent);
-            controller.setInitComponents(tvList.getSelectionModel().getSelectedItem().getFechaRegistro(), tvList.getSelectionModel().getSelectedItem().getCliente(), tvList.getSelectionModel().getSelectedItem().getComprobanteName(), tvList.getSelectionModel().getSelectedItem().getSerie(), tvList.getSelectionModel().getSelectedItem().getNumeracion(), tvList.getSelectionModel().getSelectedItem().getObservaciones(), tvList.getSelectionModel().getSelectedItem().getIdVenta());
+            controller.setInitComponents(tvList.getSelectionModel().getSelectedItem().getIdVenta());
             //
             vbContent.getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);

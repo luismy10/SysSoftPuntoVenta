@@ -77,6 +77,15 @@
                               </ImageView>
                            </graphic>
                         </Button>
+                        <Button mnemonicParsing="false" onAction="#onActionHistorialPagos" onKeyPressed="#onKeyPressedHistorialPagos" styleClass="buttonLight" text="Abonos">
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../historial-de-pagos.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                   </HBox>
                </children>

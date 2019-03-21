@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controller;
 
 import java.io.IOException;
@@ -28,11 +24,7 @@ import javafx.stage.WindowEvent;
 import model.PagoProveedoresADO;
 import model.PagoProveedoresTB;
 
-/**
- * FXML Controller class
- *
- * @author Ruberfc
- */
+
 public class FxHistorialPagosController implements Initializable {
 
     @FXML
@@ -69,6 +61,12 @@ public class FxHistorialPagosController implements Initializable {
     private String idCompra;
 
     private double total;
+    
+    private String simboloMoneda;
+    
+    private Double deuda_pendiente;
+    
+    private double cuota_promedio;
 
     private List<PagoProveedoresTB> listPagoProveederes;
     
@@ -78,13 +76,15 @@ public class FxHistorialPagosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaActual().toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE)));
         tcCuotas.setCellValueFactory(cellData -> Bindings.concat(String.valueOf(cellData.getValue().getCuotaActual())));
-        tcValor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getValorCuota()));
-        tcMonto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMontoActual()));
+        tcValor.setCellValueFactory(cellData -> Bindings.concat(simboloMoneda+" "+Tools.roundingValue(cellData.getValue().getValorCuota(), 2)));
+        tcMonto.setCellValueFactory(cellData -> Bindings.concat(simboloMoneda+" "+Tools.roundingValue(cellData.getValue().getMontoActual(), 2)));
         
         pagoProveedoresTB = new PagoProveedoresTB();
     }
 
     public void initListHistorialPagos() {
+        
+        double pagado = 0;
 
         tvList.setItems(PagoProveedoresADO.ListHistorialPagoCompras(idCompra));
 
@@ -101,6 +101,7 @@ public class FxHistorialPagosController implements Initializable {
                 this.lblFechaFinal.setText(tvList.getItems().get(i).getFechaFinal().toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE));
                 
                 pagoProveedoresTB.setCuotaTotal(tvList.getItems().get(i).getCuotaTotal());
+                pagoProveedoresTB.setValorCuota(tvList.getItems().get(i).getValorCuota());
                 pagoProveedoresTB.setFechaInicial(tvList.getItems().get(i).getFechaInicial());
                 pagoProveedoresTB.setFechaFinal(tvList.getItems().get(i).getFechaFinal());
 
@@ -108,19 +109,20 @@ public class FxHistorialPagosController implements Initializable {
 
             if (tvList.getItems().size() == i + 1) {
                 
-                this.lblPagado.setText(tvList.getItems().get(i).getMontoActual() + "");
-                this.lblCuotaActual.setText(tvList.getItems().get(i).getCuotaActual() + "");   
+                this.lblPagado.setText(simboloMoneda+" "+Tools.roundingValue(tvList.getItems().get(i).getMontoActual(), 2));
+                this.lblCuotaActual.setText(tvList.getItems().get(i).getCuotaActual() + "");
                 
                 pagoProveedoresTB.setMontoActual(tvList.getItems().get(i).getMontoActual());
                 pagoProveedoresTB.setCuotaActual(tvList.getItems().get(i).getCuotaActual());
-                pagoProveedoresTB.setValorCuota(tvList.getItems().get(i).getValorCuota());
                 pagoProveedoresTB.setPlazos(tvList.getItems().get(i).getPlazos());
+                
+                pagado = tvList.getItems().get(i).getMontoActual();
             }
 
         }
 
-        lblPendiente.setText(String.valueOf(total - Double.parseDouble(lblPagado.getText())));
-        lblTotal.setText(String.valueOf(total));
+        lblPendiente.setText(simboloMoneda+" "+Tools.roundingValue(total - pagado, 2));
+        lblTotal.setText(simboloMoneda+" "+Tools.roundingValue(total, 2));
         
         pagoProveedoresTB.setMontoTotal(total);
 
@@ -146,11 +148,11 @@ public class FxHistorialPagosController implements Initializable {
         stage.setResizable(false);
         stage.sizeToScene();
         stage.setOnHiding((WindowEvent WindowEvent) -> {
-            
+            initListHistorialPagos();
         });
         stage.show();
 
-        controller.setInitTexField();
+//        controller.setInitTexField();
 
     }
 
@@ -180,11 +182,12 @@ public class FxHistorialPagosController implements Initializable {
         }
     }
 
-    public void setInitHistorialPagosController(FxCompraDetalleController compraDetalleController, String idProveedor, String idCompra, double total) {
+    public void setInitHistorialPagosController(FxCompraDetalleController compraDetalleController, String idProveedor, String idCompra, double total, String simboloMoneda) {
         this.compraDetalleController = compraDetalleController;
         this.idProveedor = idProveedor;
         this.idCompra = idCompra;
         this.total = total;
+        this.simboloMoneda = simboloMoneda;
     }
 
 }

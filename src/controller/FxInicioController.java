@@ -42,7 +42,7 @@ public class FxInicioController implements Initializable {
     @FXML
     private Text lblPuesto;
     @FXML
-    private HBox btnInicio;
+    private HBox btnPrincipal;
     @FXML
     private HBox btnOperaciones;
     @FXML
@@ -74,54 +74,33 @@ public class FxInicioController implements Initializable {
         imState.setImage(Session.CONNECTION_SESSION == true ? new Image("/view/connected.png")
                 : new Image("/view/disconnected.png"));
         try {
-            ObservableList<MenuTB> menuTBs = MenuADO.GetMenus(Session.ROL);
-            ObservableList<SubMenusTB> subMenuTBs = MenuADO.GetSubMenus(Session.ROL,0);
-            if (menuTBs.get(0).getIdMenu() != 0) {
-                btnInicio.setVisible(menuTBs.get(0).isEstado());
-                btnInicio.setOnMouseClicked(this::onMouseClickedInicio);
-                btnInicio.getStyleClass().add("buttonContainerActivate");
-                
-            }
-            if (menuTBs.get(1).getIdMenu() != 0) {
-                btnOperaciones.setVisible(menuTBs.get(1).isEstado());
-                btnOperaciones.setOnMouseClicked(this::onMouseClickedOperaciones);
-            }
-            if (menuTBs.get(2).getIdMenu() != 0) {
-                btnConsultas.setVisible(menuTBs.get(2).isEstado());
-                btnConsultas.setOnMouseClicked(this::onMouseClickedConsultas);
-            }
-            if (menuTBs.get(3).getIdMenu() != 0) {
-                btnReportes.setVisible(menuTBs.get(3).isEstado());
-                btnReportes.setOnMouseClicked(this::onMouseClickedReportes);
-            }
-            if (menuTBs.get(4).getIdMenu() != 0) {
-                btnGraficos.setVisible(menuTBs.get(4).isEstado());
-                btnGraficos.setOnMouseClicked(this::onMouseClickedGraficos);
-            }
-            if (menuTBs.get(5).getIdMenu() != 0) {
-                btnConfiguracion.setVisible(menuTBs.get(5).isEstado());
-                btnConfiguracion.setOnMouseClicked(this::onMouseClickedConfiguracion);
-            }
             FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_PRINCIPAL));
             principal = fXMLPrincipal.load();
+            btnPrincipal.setVisible(false);
 
             FXMLLoader fXMLOperaciones = new FXMLLoader(getClass().getResource(Tools.FX_FILE_OPERACIONES));
             operaciones = fXMLOperaciones.load();
+            btnOperaciones.setVisible(false);
             FxOperacionesController controllerOperaciones = fXMLOperaciones.getController();
             controllerOperaciones.setContent(window, vbContent);
 
             FXMLLoader fXMLConsultas = new FXMLLoader(getClass().getResource(Tools.FX_FILE_CONSULTAS));
             consultas = fXMLConsultas.load();
+            btnConsultas.setVisible(false);
             FxConsultasController controllerConsultas = fXMLConsultas.getController();
             controllerConsultas.setContent(window, vbContent);
 
             FXMLLoader fXMLReportes = new FXMLLoader(getClass().getResource(Tools.FX_FILE_REPORTES));
             reportes = fXMLReportes.load();
+            btnReportes.setVisible(false);
             FxReportesController controllerReportes = fXMLReportes.getController();
             controllerReportes.setContent(window, vbContent);
 
+            btnGraficos.setVisible(false);
+
             FXMLLoader fXMLConfiguracion = new FXMLLoader(getClass().getResource(Tools.FX_FILE_CONFIGURACION));
             configuracion = fXMLConfiguracion.load();
+            btnConfiguracion.setVisible(false);
             FxConfiguracionController configuracionController = fXMLConfiguracion.getController();
             configuracionController.setContent(window, vbContent);
 
@@ -131,8 +110,41 @@ public class FxInicioController implements Initializable {
     }
 
     public void initInicioController() {
+        ObservableList<MenuTB> menuTBs = MenuADO.GetMenus(Session.ROL);
+        ObservableList<SubMenusTB> subMenuTBs = MenuADO.GetSubMenus(Session.ROL, 0);
+        if (menuTBs.get(0).getIdMenu() != 0) {
+            btnPrincipal.setVisible(menuTBs.get(0).isEstado());
+            btnPrincipal.setOnMouseClicked(this::onMouseClickedInicio);
+        }
+        if (menuTBs.get(1).getIdMenu() != 0) {
+            btnOperaciones.setVisible(menuTBs.get(1).isEstado());
+            btnOperaciones.setOnMouseClicked(this::onMouseClickedOperaciones);
+        }
+        if (menuTBs.get(2).getIdMenu() != 0) {
+            btnConsultas.setVisible(menuTBs.get(2).isEstado());
+            btnConsultas.setOnMouseClicked(this::onMouseClickedConsultas);
+        }
+        if (menuTBs.get(3).getIdMenu() != 0) {
+            btnReportes.setVisible(menuTBs.get(3).isEstado());
+            btnReportes.setOnMouseClicked(this::onMouseClickedReportes);
+        }
+        if (menuTBs.get(4).getIdMenu() != 0) {
+            btnGraficos.setVisible(menuTBs.get(4).isEstado());
+            btnGraficos.setOnMouseClicked(this::onMouseClickedGraficos);
+        }
+        if (menuTBs.get(5).getIdMenu() != 0) {
+            btnConfiguracion.setVisible(menuTBs.get(5).isEstado());
+            btnConfiguracion.setOnMouseClicked(this::onMouseClickedConfiguracion);
+        }
         width_siderbar = vbSiderBar.getPrefWidth();
-        setNode(principal);
+        if (Session.ROL == 1) {
+            btnPrincipal.getStyleClass().add("buttonContainerActivate");
+            setNode(principal);
+        } else if (Session.ROL == 2) {
+            btnOperaciones.getStyleClass().add("buttonContainerActivate");
+            setNode(operaciones);
+        }
+
     }
 
     public void initWindowSize() {
@@ -181,14 +193,14 @@ public class FxInicioController implements Initializable {
         btnReportes.getStyleClass().remove("buttonContainerActivate");
         btnGraficos.getStyleClass().remove("buttonContainerActivate");
         btnConfiguracion.getStyleClass().remove("buttonContainerActivate");
-        btnInicio.getStyleClass().remove("buttonContainerActivate");
-        btnInicio.getStyleClass().add("buttonContainerActivate");
+        btnPrincipal.getStyleClass().remove("buttonContainerActivate");
+        btnPrincipal.getStyleClass().add("buttonContainerActivate");
 
     }
 
     private void onMouseClickedOperaciones(MouseEvent event) {
         setNode(operaciones);
-        btnInicio.getStyleClass().remove("buttonContainerActivate");
+        btnPrincipal.getStyleClass().remove("buttonContainerActivate");
         btnConsultas.getStyleClass().remove("buttonContainerActivate");
         btnReportes.getStyleClass().remove("buttonContainerActivate");
         btnGraficos.getStyleClass().remove("buttonContainerActivate");
@@ -199,7 +211,7 @@ public class FxInicioController implements Initializable {
 
     private void onMouseClickedConsultas(MouseEvent event) {
         setNode(consultas);
-        btnInicio.getStyleClass().remove("buttonContainerActivate");
+        btnPrincipal.getStyleClass().remove("buttonContainerActivate");
         btnOperaciones.getStyleClass().remove("buttonContainerActivate");
         btnReportes.getStyleClass().remove("buttonContainerActivate");
         btnGraficos.getStyleClass().remove("buttonContainerActivate");
@@ -210,7 +222,7 @@ public class FxInicioController implements Initializable {
 
     private void onMouseClickedReportes(MouseEvent event) {
         setNode(reportes);
-        btnInicio.getStyleClass().remove("buttonContainerActivate");
+        btnPrincipal.getStyleClass().remove("buttonContainerActivate");
         btnOperaciones.getStyleClass().remove("buttonContainerActivate");
         btnConsultas.getStyleClass().remove("buttonContainerActivate");
         btnGraficos.getStyleClass().remove("buttonContainerActivate");
@@ -220,7 +232,7 @@ public class FxInicioController implements Initializable {
     }
 
     private void onMouseClickedGraficos(MouseEvent event) {
-        btnInicio.getStyleClass().remove("buttonContainerActivate");
+        btnPrincipal.getStyleClass().remove("buttonContainerActivate");
         btnOperaciones.getStyleClass().remove("buttonContainerActivate");
         btnConsultas.getStyleClass().remove("buttonContainerActivate");
         btnReportes.getStyleClass().remove("buttonContainerActivate");
@@ -231,7 +243,7 @@ public class FxInicioController implements Initializable {
 
     private void onMouseClickedConfiguracion(MouseEvent event) {
         setNode(configuracion);
-        btnInicio.getStyleClass().remove("buttonContainerActivate");
+        btnPrincipal.getStyleClass().remove("buttonContainerActivate");
         btnOperaciones.getStyleClass().remove("buttonContainerActivate");
         btnConsultas.getStyleClass().remove("buttonContainerActivate");
         btnReportes.getStyleClass().remove("buttonContainerActivate");

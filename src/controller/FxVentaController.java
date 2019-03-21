@@ -2,7 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ResourceBundle;
@@ -30,6 +30,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.ArticuloADO;
 import model.ArticuloTB;
+import model.CajaADO;
+import model.CajaTB;
 import model.ComprobanteADO;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
@@ -91,6 +93,8 @@ public class FxVentaController implements Initializable {
     private Text lblTotalPagarMoneda;
     @FXML
     private VBox vbImpuestos;
+    @FXML
+    private VBox hbContenedorVentas;
 
     private AnchorPane content;
 
@@ -118,6 +122,8 @@ public class FxVentaController implements Initializable {
 
     private double pointWidth;
 
+    private boolean aperturaCaja;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         hbEncabezado = new VBox();
@@ -125,6 +131,7 @@ public class FxVentaController implements Initializable {
         hbPie = new VBox();
         pointWidth = 7.825;
         sheetWidth = 40;
+        aperturaCaja = false;
         window.setOnKeyReleased((KeyEvent event) -> {
             try {
                 if (null != event.getCode()) {
@@ -243,6 +250,16 @@ public class FxVentaController implements Initializable {
                 Tools.roundingValue(cellData.getValue().getTotalImporte(), 2)));
     }
 
+    public void loadValidarCaja() {
+        CajaTB cajaTB = CajaADO.ValidarAperturaCaja(Session.CAJA_ID);
+        if (cajaTB != null) {
+            aperturaCaja = true;
+            hbContenedorVentas.setDisable(false);
+        } else {
+            openWindowFondoInicial();
+        }
+    }
+
     private void InitializationTransparentBackground() {
         Session.PANE.setStyle("-fx-background-color: black");
         Session.PANE.setTranslateX(0);
@@ -304,7 +321,7 @@ public class FxVentaController implements Initializable {
             ventaTB.setMonedaName(monedaSimbolo);
             ventaTB.setSerie(lblSerie.getText());
             ventaTB.setNumeracion(lblNumeracion.getText());
-            ventaTB.setFechaVenta(Timestamp.valueOf(Tools.getDate() + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
+            ventaTB.setFechaVenta(LocalDateTime.now());
             ventaTB.setSubTotal(Double.parseDouble(lblSubTotal.getText()));
             ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
             ventaTB.setTotal(Double.parseDouble(lblImporteTotal.getText()));
@@ -438,6 +455,57 @@ public class FxVentaController implements Initializable {
 
         } else {
             tvList.requestFocus();
+        }
+
+    }
+
+    private void openWindowFondoInicial() {
+        try {
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_VENTAFONDOINICIAL);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxVentaFondoInicialController controller = fXMLLoader.getController();
+            controller.setInitVentaController(this);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Fondo incial", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.PANE);
+                if (!aperturaCaja) {
+                    hbContenedorVentas.setDisable(true);
+                } else {
+                    hbContenedorVentas.setDisable(false);
+                }
+            });
+            stage.show();
+        } catch (IOException ex) {
+
+        }
+
+    }
+
+    private void openWindowCashMovement() {
+        try {
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_VENTAMOVIMIENTO);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxVentaMovimientoController controller = fXMLLoader.getController();
+            controller.setInitVentaController(this);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Movimiento de caja", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.PANE);
+            });
+            stage.show();
+        } catch (IOException ex) {
+
         }
 
     }
@@ -898,24 +966,19 @@ public class FxVentaController implements Initializable {
 
     @FXML
     private void onActionCancelar(ActionEvent event) {
-        if (!tvList.getItems().isEmpty()) {
-            short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Está seguro de borrar la venta?", true);
-            if (value == 1) {
-                resetVenta();
-            }
+        short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Está seguro de borrar la venta?", true);
+        if (value == 1) {
+            resetVenta();
         }
     }
 
     @FXML
     private void onKeyPressedCancelar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (!tvList.getItems().isEmpty()) {
-                short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Está seguro de borrar la venta?", true);
-                if (value == 1) {
-                    resetVenta();
-                }
+            short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Está seguro de borrar la venta?", true);
+            if (value == 1) {
+                resetVenta();
             }
-
         }
     }
 
@@ -1169,6 +1232,18 @@ public class FxVentaController implements Initializable {
         }
     }
 
+    @FXML
+    private void onKeyPressedCashMovement(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowCashMovement();
+        }
+    }
+
+    @FXML
+    private void onActionCashMovement(ActionEvent event) {
+        openWindowCashMovement();
+    }
+
 //    public PageFormat getPageFormat(PrinterJob pj) {
 //        PageFormat pf = pj.defaultPage();
 //        Paper paper = pf.getPaper();
@@ -1236,16 +1311,8 @@ public class FxVentaController implements Initializable {
         vbImpuestos.getChildren().add(hBox);
     }
 
-    @FXML
-    private void onKeyPressedReiniciar(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            resetVenta();
-        }
-    }
-
-    @FXML
-    private void onActionReiniciar(ActionEvent event) {
-        resetVenta();
+    public void setAperturaCaja(boolean aperturaCaja) {
+        this.aperturaCaja = aperturaCaja;
     }
 
     public TextField getTxtSearch() {
