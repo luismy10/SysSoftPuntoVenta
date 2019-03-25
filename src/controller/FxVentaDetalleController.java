@@ -434,9 +434,8 @@ public class FxVentaDetalleController implements Initializable {
            controller.loadInitData(idVenta,simboloMoneda);
            
         } catch (IOException ex) {
-
+            System.out.println(ex.getLocalizedMessage());
         }
-
     }
 
     private void calcularTotales() {

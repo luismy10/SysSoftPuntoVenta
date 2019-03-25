@@ -15,8 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.FxVentaAbonoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentaAbonoController">
    <children>
       <VBox>
          <children>
@@ -83,10 +82,10 @@
                            <children>
                               <TableView fx:id="tvList" prefHeight="260.0" prefWidth="721.0">
                                  <columns>
-                                    <TableColumn fx:id="tcFecha" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha" />
+                                    <TableColumn fx:id="tcFecha" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de abono" />
                                     <TableColumn fx:id="tcCuotas" prefWidth="143.0" style="-fx-alignment: CENTER;" text="N° Cuota" />
                                     <TableColumn fx:id="tcMonto" prefWidth="156.0" style="-fx-alignment: CENTER-RIGHT;" text="Monto" />
-                                    <TableColumn fx:id="tcReferencia" prefWidth="203.0" style="-fx-alignment: CENTER;" text="Referencia" />
+                                    <TableColumn fx:id="tcReferencia" prefWidth="203.0" style="-fx-alignment: CENTER-LEFT;" text="Referencia" />
                                  </columns>
                               </TableView>
                            </children>
@@ -98,7 +97,7 @@
             <Separator prefWidth="200.0" />
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onActionAmortizar" onKeyPressed="#onKeyPressedAmortizar" styleClass="buttonLight" text="Abono">
+                  <Button mnemonicParsing="false" onAction="#onActionAbono" onKeyPressed="#onKeyPressedAbono" styleClass="buttonLight" text="Abono">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>

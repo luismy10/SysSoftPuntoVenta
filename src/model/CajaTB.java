@@ -8,8 +8,12 @@ public class CajaTB {
     private LocalDateTime fechaApertura;
     private LocalDateTime fechaCierre;
     private boolean estado;
+    private double contado;
+    private double calculado;
+    private double diferencia;
     private String idUsuario;
     private LocalDateTime fechaRegistro;
+    private EmpleadoTB empleadoTB;
     
     public CajaTB() {
         
@@ -31,6 +35,14 @@ public class CajaTB {
         this.fechaApertura = fechaApertura;
     }
 
+    public LocalDateTime getFechaCierre() {
+        return fechaCierre;
+    }
+
+    public void setFechaCierre(LocalDateTime fechaCierre) {
+        this.fechaCierre = fechaCierre;
+    }
+
     public boolean isEstado() {
         return estado;
     }
@@ -39,12 +51,28 @@ public class CajaTB {
         this.estado = estado;
     }
 
-    public LocalDateTime getFechaCierre() {
-        return fechaCierre;
+    public double getContado() {
+        return contado;
     }
 
-    public void setFechaCierre(LocalDateTime fechaCierre) {
-        this.fechaCierre = fechaCierre;
+    public void setContado(double contado) {
+        this.contado = contado;
+    }
+
+    public double getCalculado() {
+        return calculado;
+    }
+
+    public void setCalculado(double calculado) {
+        this.calculado = calculado;
+    }
+
+    public double getDiferencia() {
+        return diferencia;
+    }
+
+    public void setDiferencia(double diferencia) {
+        this.diferencia = diferencia;
     }
 
     public String getIdUsuario() {
@@ -62,7 +90,13 @@ public class CajaTB {
     public void setFechaRegistro(LocalDateTime fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
-    
-    
+
+    public EmpleadoTB getEmpleadoTB() {
+        return empleadoTB;
+    }
+
+    public void setEmpleadoTB(EmpleadoTB empleadoTB) {
+        this.empleadoTB = empleadoTB;
+    } 
     
 }

@@ -17,6 +17,7 @@ public class CuentasClienteADO {
                 try (ResultSet result = statementCuentas.executeQuery()) {
                     if (result.next()) {
                         cuentasClienteTB = new CuentasClienteTB();
+                        cuentasClienteTB.setIdCuentasCliente(result.getInt("IdCuentaClientes"));
                         cuentasClienteTB.setIdCliente(result.getString("IdCliente"));
                         cuentasClienteTB.setPlazosName(result.getString("Nombre"));                        
                         cuentasClienteTB.setFechaVencimiento(result.getTimestamp("FechaVencimiento").toLocalDateTime());

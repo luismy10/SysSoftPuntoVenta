@@ -104,6 +104,9 @@ public class FxLoginController implements Initializable {
                             CajaTB cajaInsert = new CajaTB();
                             cajaInsert.setIdUsuario(Session.USER_ID);
                             cajaInsert.setEstado(true);
+                            cajaInsert.setContado(0);
+                            cajaInsert.setCalculado(0);
+                            cajaInsert.setDiferencia(0);
                             cajaInsert.setFechaRegistro(LocalDateTime.now());
 
                             String result = CajaADO.AperturarCaja(cajaInsert);

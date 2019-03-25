@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class CajaADO {
 
@@ -14,11 +16,14 @@ public class CajaADO {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
 
-            String quey = "INSERT INTO CajaTB(Estado,IdUsuario,FechaRegistro)VALUES(?,?,?)";
+            String quey = "INSERT INTO CajaTB(Estado,IdUsuario,Contado,Calculado,Diferencia,FechaRegistro)VALUES(?,?,?,?,?,?)";
             statementCaja = DBUtil.getConnection().prepareStatement(quey);
             statementCaja.setBoolean(1, cajaTB.isEstado());
             statementCaja.setString(2, cajaTB.getIdUsuario());
-            statementCaja.setTimestamp(3, Timestamp.valueOf(cajaTB.getFechaRegistro()));
+            statementCaja.setDouble(3, cajaTB.getContado());
+            statementCaja.setDouble(4, cajaTB.getCalculado());
+            statementCaja.setDouble(5, cajaTB.getDiferencia());
+            statementCaja.setTimestamp(6, Timestamp.valueOf(cajaTB.getFechaRegistro()));
             statementCaja.addBatch();
 
             statementCaja.executeBatch();
@@ -100,6 +105,43 @@ public class CajaADO {
             }
         }
         return cajaTB;
+    }
+
+    public static ObservableList<CajaTB> ListarCajasAperturadas(String fechaInicial, String fechaFinal) {
+        PreparedStatement statementLista = null;
+        ObservableList<CajaTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            statementLista = DBUtil.getConnection().prepareStatement("{call Sp_ListarCajasAperturadas(?,?)}");
+            statementLista.setString(1, fechaInicial);
+            statementLista.setString(2, fechaFinal);
+            try (ResultSet result = statementLista.executeQuery()) {
+                while (result.next()) {
+                    CajaTB cajaTB = new CajaTB();
+                    cajaTB.setIdCaja(result.getInt("IdCaja"));
+                    cajaTB.setFechaApertura(result.getTimestamp("FechaApertura").toLocalDateTime());
+//                    cajaTB.setFechaCierre(result.getTimestamp("FechaCierre").toLocalDateTime());
+                    cajaTB.setEstado(result.getBoolean("Estado"));
+                    cajaTB.setContado(result.getDouble("Contado"));
+                    cajaTB.setCalculado(result.getDouble("Calculado"));
+                    cajaTB.setDiferencia(result.getDouble("Diferencia"));
+                    cajaTB.setEmpleadoTB(new EmpleadoTB(result.getString("Apellidos"), result.getString("Nombres")));
+                    empList.add(cajaTB);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        } finally {
+            try {
+                if (statementLista != null) {
+                    statementLista.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
     }
 
 }

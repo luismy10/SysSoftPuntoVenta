@@ -53,10 +53,15 @@ public class FxCajaConsultasController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding((WindowEvent WindowEvent) -> {
-                windowinit.getChildren().remove(Session.PANE);
+                  windowinit.getChildren().remove(Session.PANE);
             });
             stage.show();
+           
+
+          
         } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+            System.out.println(ex);
 
         }
     }

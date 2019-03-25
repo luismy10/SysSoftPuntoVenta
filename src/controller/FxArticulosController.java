@@ -354,7 +354,7 @@ public class FxArticulosController implements Initializable {
                 && event.getCode() != KeyCode.PAUSE
                 && event.getCode() != KeyCode.ENTER) {
             if (!status) {
-                fillArticlesTable(txtSearch.getText().trim());
+                fillArticlesTable(txtSearch.getText().trim());               
             }
         }
     }

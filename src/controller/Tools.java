@@ -109,6 +109,7 @@ public class Tools {
     static final String FX_FILE_CAJACONSULTAS = "/view/caja/FxCajaConsultas.fxml";
     static final String FX_FILE_CAJAAPERTURA = "/view/caja/FxAperturaCaja.fxml";
     static final String FX_FILE_CAJABUSQUEDA = "/view/caja/FxCajaBusqueda.fxml";
+    static final String FX_FILE_CAJAPROCESADOS = "/view/caja/FxCajaProcesasdos.fxml";
     static final String FX_FILE_CAJADETALLEMOVIMIENTO = "/view/caja/FxCajaDetalleMovimiento.fxml";
 
     static final String FX_FILE_TICKETBUSQUEDA = "/view/tipodocumento/FxTicketBusqueda.fxml";
@@ -119,6 +120,7 @@ public class Tools {
     static final String FX_FILE_TIPODOCUMENTOPROCESO = "/view/tipodocumento/FxTipoDocumentoProceso.fxml";
 
     static final String FX_FILE_VENTAABONO = "/view/venta/FxVentaAbono.fxml";
+    static final String FX_FILE_VENTAABONOPROCESO = "/view/venta/FxVentaAbonoProceso.fxml";
     static final String FX_FILE_VENTAFONDOINICIAL = "/view/venta/FxVentaFondoInicial.fxml";
     static final String FX_FILE_VENTAMOVIMIENTO = "/view/venta/FxVentaMovimiento.fxml";
 
