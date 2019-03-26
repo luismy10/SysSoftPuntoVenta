@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="3">
         <file>
             <url>src/controller/FxMonedaProcesoController.java</url>
             <bookmark id="1">
@@ -9,12 +9,11 @@
                 <key/>
             </bookmark>
         </file>
-<<<<<<< HEAD
         <file>
             <url>src/controller/FxCompraDetalleController.java</url>
             <bookmark id="3">
                 <name/>
-                <line>384</line>
+                <line>356</line>
                 <key/>
             </bookmark>
         </file>
@@ -28,26 +27,6 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxCompraProcesoController.java</file>
-            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxCajaController.java</file>
-            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxHistorialPagosController.java</file>
-            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxLoginController.java</file>
-            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxOperacionesController.java</file>
-            <file>file:/D:/Projecto%20Sistema%20Ventas/src/model/CajaADO.java</file>
-            <file>file:/D:/Projecto%20Sistema%20Ventas/src/model/CompraADO.java</file>
-=======
-    </editor-bookmarks>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/model/TipoDocumentoADO.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxTicketController.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaDetalleController.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxTipoDocumentoController.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaController.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxTicketVariableController.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaProcesoController.java</file>
->>>>>>> 910e43a0b911d632b4862077ca6b85d03956128d
-        </group>
+        <group/>
     </open-files>
 </project-private>
