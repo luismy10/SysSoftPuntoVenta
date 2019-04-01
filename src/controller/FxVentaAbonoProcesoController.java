@@ -31,6 +31,7 @@ public class FxVentaAbonoProcesoController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
 
     }
+    
 
     public void setInitLoadVentaAbono(int idCuentasCliente) {
         this.idCuentasCliente = idCuentasCliente;
