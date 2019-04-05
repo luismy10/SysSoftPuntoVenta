@@ -50,17 +50,11 @@ public class FxCompraProcesoController implements Initializable {
     @FXML
     private VBox vbPagoCredito;
     @FXML
-    private VBox vbOtroPago;
-    @FXML
     private RadioButton rbContado;
     @FXML
     private RadioButton rbCredito;
     @FXML
-    private RadioButton rbOtroPago;
-    @FXML
     private TextField txtProveedor;
-    @FXML
-    private TextField txtDescripcion;
     @FXML
     private ComboBox<PlazosTB> cbPlazos;
     @FXML
@@ -69,6 +63,8 @@ public class FxCompraProcesoController implements Initializable {
     private TextField txtMonto;
     @FXML
     private TextField txtCuotas;
+    @FXML
+    private TextField txtObservacion;
 
     private FxCompraController compraController;
 
@@ -93,16 +89,11 @@ public class FxCompraProcesoController implements Initializable {
         ToggleGroup group = new ToggleGroup();
         rbContado.setToggleGroup(group);
         rbCredito.setToggleGroup(group);
-        rbOtroPago.setToggleGroup(group);
-        System.out.println(hbPagoContado.isDisable());
-        System.out.println(vbPagoCredito.isDisable());
-        System.out.println(vbOtroPago.isDisable());
         Tools.actualDate(Tools.getDate(), dpFecha);
         setInitializePlazos();
         pagoProveedoresTB = new PagoProveedoresTB();
         deuda_pendiente = 0;
         cuota_promedio = 0;
-
     }
 
     public void setInitializePlazos() {
@@ -112,10 +103,9 @@ public class FxCompraProcesoController implements Initializable {
         });
         cbPlazos.getSelectionModel().select(0);
         diasPlazo = cbPlazos.getSelectionModel().getSelectedItem().getDias();
-
     }
 
-    public void setLoadProcess(CompraTB compraTB, TableView<ArticuloTB> tvList, ObservableList<LoteTB> loteTBs, String total, String proveedor, String simboloMoneda) {
+    void setLoadProcess(CompraTB compraTB, TableView<ArticuloTB> tvList, ObservableList<LoteTB> loteTBs, String total, String proveedor, String simboloMoneda) {
         this.compraTB = compraTB;
         this.tvList = tvList;
         this.loteTBs = loteTBs;
@@ -123,15 +113,13 @@ public class FxCompraProcesoController implements Initializable {
         txtProveedor.setText(proveedor);
         this.simboloMoneda = simboloMoneda;
         txtEfectivo.setText(total);
-
         this.lblCuotaReferencial.setText(this.simboloMoneda + " " + "0000.00");
 
     }
 
-    private void executeCrud(String estadoCompra, String tipoCompra) {
-
-        compraTB.setEstadoCompra(estadoCompra);
-        compraTB.setTipoCompra(tipoCompra);
+    private void executeCrud(int tipoCompra,int estadoCompra) {
+        compraTB.setTipo(tipoCompra);
+        compraTB.setEstado(estadoCompra);
 
         if (rbCredito.isSelected()) {
             if (Integer.parseInt(this.txtCuotas.getText()) > 0) {
@@ -143,7 +131,7 @@ public class FxCompraProcesoController implements Initializable {
                 LocalDate fecha_final = LocalDate.parse(Tools.getDatePicker(dpFecha)).plusDays(diasPlazo * Integer.parseInt(txtCuotas.getText()));
 
                 pagoProveedoresTB.setFechaFinal(Timestamp.valueOf(fecha_final + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
-                pagoProveedoresTB.setObservacion("ninguno".toUpperCase());
+                pagoProveedoresTB.setObservacion(this.txtObservacion.getText().equals("") ? "NINGUNA" : this.txtObservacion.getText());
                 pagoProveedoresTB.setEstado("activo".toUpperCase());
                 pagoProveedoresTB.setIdProveedor(compraTB.getProveedor());
 
@@ -160,7 +148,7 @@ public class FxCompraProcesoController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "El número de cuotas debe ser mayor a cero.", false);
                 txtCuotas.requestFocus();
             }
-            
+
         } else {
             String result = CompraADO.CrudCompra(compraTB, tvList, loteTBs, pagoProveedoresTB);
             if (result.equalsIgnoreCase("register")) {
@@ -171,17 +159,16 @@ public class FxCompraProcesoController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Compra", result, false);
             }
         }
-        
+
     }
 
     private void onEventProcess() {
-
         if (rbContado.isSelected()) {
             if (!Tools.isNumeric(txtEfectivo.getText())) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo efectivo.", false);
                 txtEfectivo.requestFocus();
             } else {
-                executeCrud("PAGADO", "CONTADO");
+                executeCrud(1, 1);
             }
         } else if (rbCredito.isSelected()) {
             if (!Tools.isNumeric(txtMonto.getText())) {
@@ -194,14 +181,7 @@ public class FxCompraProcesoController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo fecha de vencimiento.", false);
                 dpFecha.requestFocus();
             } else {
-                executeCrud("PENDIENTE", "CREDITO");
-            }
-        } else if (rbOtroPago.isSelected()) {
-            if (txtDescripcion.getText().isEmpty()) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo descripción.", false);
-                txtDescripcion.requestFocus();
-            } else {
-                executeCrud("PENDIENTE", "CREDITO");
+                executeCrud(2, 2);
             }
         }
 
@@ -259,31 +239,19 @@ public class FxCompraProcesoController implements Initializable {
     @FXML
     private void onActionRbContado(ActionEvent event) {
         vbPagoCredito.setDisable(true);
-        vbOtroPago.setDisable(true);
         hbPagoContado.setDisable(false);
     }
 
     @FXML
     private void onActionRbCredito(ActionEvent event) {
         hbPagoContado.setDisable(true);
-        vbOtroPago.setDisable(true);
         vbPagoCredito.setDisable(false);
-    }
-
-    @FXML
-    private void onActionRbOtroPago(ActionEvent event) {
-        hbPagoContado.setDisable(true);
-        vbPagoCredito.setDisable(true);
-        vbOtroPago.setDisable(false);
-    }
-
-    public void setInitCompraController(FxCompraController compraController) {
-        this.compraController = compraController;
+        this.txtMonto.requestFocus();
     }
 
     @FXML
     private void OnActionPlazos(ActionEvent event) {
-        initObjetPagoProveedores();
+        onEventPagoProveedores();
     }
 
     @FXML
@@ -312,20 +280,17 @@ public class FxCompraProcesoController implements Initializable {
 
     @FXML
     private void onKeyReleasedMonto(KeyEvent event) {
-        initObjetPagoProveedores();
+        onEventPagoProveedores();
     }
 
     @FXML
     private void onKeyReleasedCuotas(KeyEvent event) {
-        initObjetPagoProveedores();
+        onEventPagoProveedores();
     }
 
-    private void initObjetPagoProveedores() {
-
+    private void onEventPagoProveedores() {
         if (Tools.isNumeric(txtMonto.getText()) && Tools.isNumeric(txtCuotas.getText())) {
-
             if (Double.parseDouble(txtMonto.getText()) >= 0 && Integer.parseInt(txtCuotas.getText()) >= 1) {
-
                 diasPlazo = cbPlazos.getSelectionModel().getSelectedItem().getDias();
 
                 pagoProveedoresTB.setMontoTotal(compraTB.getTotal().get());
@@ -341,9 +306,11 @@ public class FxCompraProcesoController implements Initializable {
 
                 this.lblCuotaReferencial.setText(simboloMoneda + " " + Tools.roundingValue(cuota_promedio, 2));
             }
-
         }
+    }
 
+    public void setInitCompraController(FxCompraController compraController) {
+        this.compraController = compraController;
     }
 
 }

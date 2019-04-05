@@ -189,23 +189,37 @@ public class MonedaADO {
         String result = null;
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
-            PreparedStatement statementValidated = null;
+            PreparedStatement statementValidate = null;
             PreparedStatement statementRemove = null;
             try {
                 DBUtil.getConnection().setAutoCommit(false);
-                statementValidated = DBUtil.getConnection().prepareStatement("SELECT * FROM MonedaTB WHERE IdMoneda = ? AND Predeterminado = ?");
-                statementValidated.setInt(1, idMoneda);
-                statementValidated.setBoolean(2, true);
-                if (statementValidated.executeQuery().next()) {
+                statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM MonedaTB WHERE IdMoneda = ? AND Predeterminado = ?");
+                statementValidate.setInt(1, idMoneda);
+                statementValidate.setBoolean(2, true);
+                if (statementValidate.executeQuery().next()) {
                     DBUtil.getConnection().rollback();
-                    result = "error";
+                    result = "predetermined";
                 } else {
-                    statementRemove = DBUtil.getConnection().prepareStatement("DELETE FROM MonedaTB WHERE IdMoneda = ?");
-                    statementRemove.setInt(1, idMoneda);
-                    statementRemove.addBatch();
-                    statementRemove.executeBatch();
-                    DBUtil.getConnection().commit();
-                    result = "removed";
+                    statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM VentaTB WHERE Moneda = ?");
+                    statementValidate.setInt(1, idMoneda);
+                    if (statementValidate.executeQuery().next()) {
+                        DBUtil.getConnection().rollback();
+                        result = "venta";
+                    } else {
+                        statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM CompraTB WHERE TipoMoneda ?");
+                        statementValidate.setInt(1, idMoneda);
+                        if (statementValidate.executeQuery().next()) {
+                            DBUtil.getConnection().rollback();
+                            result = "compra";
+                        } else {
+                            statementRemove = DBUtil.getConnection().prepareStatement("DELETE FROM MonedaTB WHERE IdMoneda = ?");
+                            statementRemove.setInt(1, idMoneda);
+                            statementRemove.addBatch();
+                            statementRemove.executeBatch();
+                            DBUtil.getConnection().commit();
+                            result = "removed";
+                        }
+                    }
                 }
             } catch (SQLException ex) {
                 try {
@@ -216,8 +230,8 @@ public class MonedaADO {
                 }
             } finally {
                 try {
-                    if (statementValidated != null) {
-                        statementValidated.close();
+                    if (statementValidate != null) {
+                        statementValidate.close();
                     }
                     if (statementRemove != null) {
                         statementRemove.close();
@@ -264,7 +278,7 @@ public class MonedaADO {
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             PreparedStatement statement = null;
-            ResultSet resultSet = null;            
+            ResultSet resultSet = null;
             try {
                 statement = DBUtil.getConnection().prepareStatement("SELECT IdMoneda,Nombre,Simbolo,Predeterminado FROM MonedaTB");
                 resultSet = statement.executeQuery();
@@ -272,8 +286,8 @@ public class MonedaADO {
                     MonedaTB monedaTB = new MonedaTB();
                     monedaTB.setIdMoneda(resultSet.getInt("IdMoneda"));
                     monedaTB.setNombre(resultSet.getString("Nombre"));
-                    monedaTB.setSimbolo(resultSet.getString("Simbolo")); 
-                    monedaTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));                    
+                    monedaTB.setSimbolo(resultSet.getString("Simbolo"));
+                    monedaTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
                     list.add(monedaTB);
                 }
             } catch (SQLException ex) {

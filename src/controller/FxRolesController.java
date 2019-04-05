@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
@@ -39,7 +40,6 @@ public class FxRolesController implements Initializable {
         RolADO.RolList().forEach(e -> {
             lvRol.getItems().add(new RolTB(e.getIdRol(), e.getNombre()));
         });
-
     }
 
     private void InitializationTransparentBackground() {
@@ -67,12 +67,50 @@ public class FxRolesController implements Initializable {
             content.getChildren().remove(Session.PANE);
         });
         stage.show();
-      
+
+    }
+
+    private void eventGuardar() {
+        if (lvRol.getSelectionModel().getSelectedIndex() >= 0) {
+            String result = MenuADO.CrudPermisosMenu(lvRol.getSelectionModel().getSelectedItem().getIdRol(), lvMenus);
+            if (result.equalsIgnoreCase("updated")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Roles", "Se guardo correctamento los cambios", false);
+                if (lvRol.getSelectionModel().getSelectedIndex() >= 0) {
+                    lvMenus.getItems().clear();
+                    MenuADO.GetMenus(lvRol.getSelectionModel().getSelectedItem().getIdRol()).forEach(e -> {
+                        CheckBox checkBox = new CheckBox();
+                        checkBox.setId("" + e.getIdMenu());
+                        checkBox.setText(e.getNombre());
+                        checkBox.setSelected(e.isEstado());
+                        lvMenus.getItems().add(checkBox);
+                        lbSubmenus.getItems().clear();
+                    });
+                }
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Roles", result, false);
+            }
+        }
+    }
+
+    private void eventReload() {
+        lvRol.getItems().clear();
+        RolADO.RolList().forEach(e -> {
+            lvRol.getItems().add(new RolTB(e.getIdRol(), e.getNombre()));
+        });
+        lvMenus.getItems().clear();
+        lbSubmenus.getItems().clear();
+    }
+
+    @FXML
+    private void onKeyPressedReload(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            eventReload();
+        }
     }
 
     @FXML
     private void onActionReload(ActionEvent event) {
-
+        eventReload();
     }
 
     @FXML
@@ -109,13 +147,13 @@ public class FxRolesController implements Initializable {
     @FXML
     private void onKeyPressedGuardar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            eventGuardar();
         }
     }
 
     @FXML
     private void onActionGuardar(ActionEvent event) {
-
+        eventGuardar();
     }
 
     @FXML

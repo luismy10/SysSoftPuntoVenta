@@ -39,9 +39,14 @@ public class Session {
     public static String PROVEEDORES_TOTAL;
     public static String TRABAJADORES_TOTAL;
     
+    /*
+    
+    */
     public static String MONEDA;
     
     public static int ROL;
+    
+    public static int CAJA_ID;
     
     public static boolean ESTADO_IMPRESORA;
     public static String NOMBRE_IMPRESORA;

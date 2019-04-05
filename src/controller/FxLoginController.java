@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
@@ -22,8 +23,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import model.CajaADO;
+import model.CajaTB;
 import model.EmpleadoADO;
 import model.EmpleadoTB;
 
@@ -68,6 +69,10 @@ public class FxLoginController implements Initializable {
                     EmpleadoTB empleadoTB = batchCount.get();
                     if (empleadoTB != null) {
                         Session.ROL = empleadoTB.getRol();
+                        Session.USER_ID = empleadoTB.getIdEmpleado();
+                        Session.USER_NAME = (empleadoTB.getApellidos().substring(0, 1).toUpperCase() + empleadoTB.getApellidos().substring(1).toLowerCase())
+                                + " " + empleadoTB.getNombres().substring(0, 1).toUpperCase() + empleadoTB.getNombres().substring(1).toLowerCase();
+                        Session.USER_NAME_PUESTO = empleadoTB.getPuestoName();
                         Tools.Dispose(window);
                         URL url = getClass().getResource(Tools.FX_FILE_INICIO);
                         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
@@ -86,24 +91,33 @@ public class FxLoginController implements Initializable {
                         stage.requestFocus();
                         controller.initInicioController();
                         controller.initWindowSize();
-                        Session.USER_ID = empleadoTB.getIdEmpleado();
-                        Session.USER_NAME = (empleadoTB.getApellidos().substring(0, 1).toUpperCase() + empleadoTB.getApellidos().substring(1).toLowerCase())
-                                + " " + empleadoTB.getNombres().substring(0, 1).toUpperCase() + empleadoTB.getNombres().substring(1).toLowerCase();
-                        Session.USER_NAME_PUESTO = empleadoTB.getPuestoName();
 
                         controller.initUserSession((empleadoTB.getPuestoName().substring(0, 1).toUpperCase() + empleadoTB.getPuestoName().substring(1).toLowerCase()));
 
                         Session.WIDTH_WINDOW = scene.getWidth();
                         Session.HEIGHT_WINDOW = scene.getHeight();
 
-                        if (!Session.USER_NAME_PUESTO.equalsIgnoreCase("administrador")) {
-                            if (!estadoCaja().equalsIgnoreCase("activo")) {
-                                //System.out.println(estadoCaja());
-                                this.openWindowCaja(stage);
-                            } else {
-                                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Iniciar Sesión", "Ya existe una caja aperturada para el usuario actual", false);
+                        CajaTB cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
+                        if (cajaTB != null) {
+                            Session.CAJA_ID = cajaTB.getIdCaja();
+                        } else {
+                            CajaTB cajaInsert = new CajaTB();
+                            cajaInsert.setIdUsuario(Session.USER_ID);
+                            cajaInsert.setEstado(true);
+                            cajaInsert.setContado(0);
+                            cajaInsert.setCalculado(0);
+                            cajaInsert.setDiferencia(0);
+                            cajaInsert.setFechaRegistro(LocalDateTime.now());
+
+                            String result = CajaADO.AperturarCaja(cajaInsert);
+                            if (result.equalsIgnoreCase("registrado")) {
+                                CajaTB cajaSelect = CajaADO.ValidarCreacionCaja(Session.USER_ID);
+                                if (cajaSelect != null) {
+                                    Session.CAJA_ID = cajaSelect.getIdCaja();
+                                }
                             }
                         }
+
                     } else {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Iniciar Sesión", "Datos incorrectos", false);
                     }
@@ -119,26 +133,6 @@ public class FxLoginController implements Initializable {
 
     public void initComponents() {
         txtUsuario.requestFocus();
-    }
-
-    private void openWindowCaja(Window window) throws IOException {
-
-        URL url = getClass().getResource(Tools.FX_FILE_APERTURACAJA);
-        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
-        Parent parent = fXMLLoader.load(url.openStream());
-        //Controlller here
-        FxAperturaCajaController controller = fXMLLoader.getController();
-        controller.setInitCajaController(this);
-        //
-        Stage stage = FxWindow.StageLoaderModal(parent, "Caja", window);
-        stage.setResizable(false);
-        stage.sizeToScene();
-        stage.show();
-        controller.initComponents();
-    }
-
-    private String estadoCaja() {
-        return CajaADO.consultarEstadoCaja("activo".toUpperCase(), Session.USER_ID);
     }
 
 }

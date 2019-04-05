@@ -1,10 +1,12 @@
 package model;
 
+import controller.Session;
 import controller.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
@@ -13,7 +15,7 @@ import javafx.scene.control.TableView;
 
 public class VentaADO {
 
-    public static String CrudVenta(VentaTB ventaTB, TableView<ArticuloTB> tvList, String tipo_comprobante) {
+    public static String CrudVenta(VentaTB ventaTB, TableView<ArticuloTB> tvList, String tipo_comprobante, CuentasClienteTB cuentasClienteTB) {
 
         CallableStatement serie_numeracion = null;
         PreparedStatement venta = null;
@@ -21,6 +23,8 @@ public class VentaADO {
         CallableStatement codigo_venta = null;
         PreparedStatement detalle_venta = null;
         PreparedStatement articulo_update = null;
+        PreparedStatement cuentas_cliente = null;
+        PreparedStatement movimiento_caja = null;
 //        PreparedStatement preparedHistorialArticulo = null;
 
         try {
@@ -52,10 +56,17 @@ public class VentaADO {
                     + "           ,[SubTotal]\n"
                     + "           ,[Descuento]\n"
                     + "           ,[Total]"
+                    + "           ,[Tipo]"
                     + "           ,[Estado]"
-                    + "           ,[Observaciones])\n"
+                    + "           ,[Observaciones]"
+                    + "           ,[Efectivo]"
+                    + "           ,[Vuelto])\n"
                     + "     VALUES\n"
-                    + "           (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+            movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,IdUsuario,FechaMovimiento,Comentario,Movimiento,Entrada,Salidas,Saldo)VALUES(?,?,?,?,?,?,?,?)");
+
+            cuentas_cliente = DBUtil.getConnection().prepareStatement("INSERT INTO CuentasClienteTB(IdVenta,IdCliente,Plazos,FechaVencimiento,MontoInicial)VALUES(?,?,?,?,?)");
 
             if (tipo_comprobante.equalsIgnoreCase("boleta")) {
                 comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(serie_b,Numeracion,FechaRegistro)VALUES(?,?,?)");
@@ -91,24 +102,46 @@ public class VentaADO {
             venta.setInt(5, ventaTB.getMoneda());
             venta.setString(6, id_comprabante[0]);
             venta.setString(7, id_comprabante[1]);
-            venta.setTimestamp(8, ventaTB.getFechaVenta());
+            venta.setTimestamp(8, Timestamp.valueOf(ventaTB.getFechaVenta()));
             venta.setDouble(9, ventaTB.getSubTotal());
             venta.setDouble(10, ventaTB.getDescuento());
             venta.setDouble(11, ventaTB.getTotal());
-            venta.setInt(12, ventaTB.getEstado());
-            venta.setString(13, ventaTB.getObservaciones());
+            venta.setInt(12, ventaTB.getTipo());
+            venta.setInt(13, ventaTB.getEstado());
+            venta.setString(14, ventaTB.getObservaciones());
+            venta.setDouble(15, ventaTB.getEfectivo());
+            venta.setDouble(16, ventaTB.getVuelto());
             venta.addBatch();
+
+            movimiento_caja.setInt(1, Session.CAJA_ID);
+            movimiento_caja.setString(2, ventaTB.getVendedor());
+            movimiento_caja.setTimestamp(3, Timestamp.valueOf(ventaTB.getFechaVenta()));
+            movimiento_caja.setString(4, ventaTB.getEstado() == 2 ? "Venta al crédito" : "Venta al contado");
+            movimiento_caja.setString(5, ventaTB.getEstado() == 2 ? "VENCRE" : "VEN");          
+            movimiento_caja.setDouble(6, ventaTB.getTotal());
+            movimiento_caja.setDouble(7, 0);
+            movimiento_caja.setDouble(8, ventaTB.getTotal() - 0);
+            movimiento_caja.addBatch();
+
+            if (ventaTB.getEstado() == 2) {
+                cuentas_cliente.setString(1, id_venta);
+                cuentas_cliente.setString(2, ventaTB.getCliente());
+                cuentas_cliente.setInt(3, cuentasClienteTB.getPlazos());
+                cuentas_cliente.setTimestamp(4, Timestamp.valueOf(cuentasClienteTB.getFechaVencimiento()));
+                cuentas_cliente.setDouble(5, ventaTB.getTotal());
+                cuentas_cliente.addBatch();
+            }
 
             comprobante.setString(1, id_comprabante[0]);
             comprobante.setString(2, id_comprabante[1]);
-            comprobante.setTimestamp(3, ventaTB.getFechaVenta());
+            comprobante.setTimestamp(3, Timestamp.valueOf(ventaTB.getFechaVenta()));
             comprobante.addBatch();
 
             for (int i = 0; i < tvList.getItems().size(); i++) {
                 detalle_venta.setString(1, id_venta);
                 detalle_venta.setString(2, tvList.getItems().get(i).getIdArticulo());
                 detalle_venta.setDouble(3, tvList.getItems().get(i).getCantidad());
-                detalle_venta.setDouble(4, tvList.getItems().get(i).getPrecioVenta());
+                detalle_venta.setDouble(4, tvList.getItems().get(i).getPrecioVentaReal());
                 detalle_venta.setDouble(5, tvList.getItems().get(i).getDescuento());
                 detalle_venta.setDouble(6, tvList.getItems().get(i).getImpuestoArticulo());
                 detalle_venta.setString(7, tvList.getItems().get(i).getImpuestoArticuloName());
@@ -150,9 +183,11 @@ public class VentaADO {
             }
 
             venta.executeBatch();
+            cuentas_cliente.executeBatch();
             comprobante.executeBatch();
             detalle_venta.executeBatch();
             articulo_update.executeBatch();
+            movimiento_caja.executeBatch();
 //            preparedHistorialArticulo.executeBatch();
             DBUtil.getConnection().commit();
             return "register/" + id_comprabante[0] + "-" + id_comprabante[1];
@@ -186,6 +221,13 @@ public class VentaADO {
                 if (codigo_venta != null) {
                     codigo_venta.close();
                 }
+
+                if (cuentas_cliente != null) {
+                    cuentas_cliente.close();
+                }
+                if (movimiento_caja != null) {
+                    movimiento_caja.close();
+                }
 //                if (preparedHistorialArticulo != null) {
 //                    preparedHistorialArticulo.close();
 //                }
@@ -195,73 +237,33 @@ public class VentaADO {
         }
     }
 
-    public static ObservableList<VentaTB> ListVentas(String value) {
-        String selectStmt = "{call Sp_Listar_Ventas(?)}";
+    public static ObservableList<VentaTB> ListVentas(short opcion, String value, String fechaInicial, String fechaFinal, int comprobante, int estado) {
+        String selectStmt = "{call Sp_Listar_Ventas(?,?,?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<VentaTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, value);
+            preparedStatement.setShort(1, opcion);
+            preparedStatement.setString(2, value);
+            preparedStatement.setString(3, fechaInicial);
+            preparedStatement.setString(4, fechaFinal);
+            preparedStatement.setInt(5, comprobante);
+            preparedStatement.setInt(6, estado);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setId(rsEmps.getInt("Filas"));
                 ventaTB.setIdVenta(rsEmps.getString("IdVenta"));
-                ventaTB.setFechaRegistro(rsEmps.getTimestamp("FechaVenta").toLocalDateTime());
+                ventaTB.setFechaVenta(rsEmps.getTimestamp("FechaVenta").toLocalDateTime());
                 ventaTB.setCliente(rsEmps.getString("Cliente"));
                 ventaTB.setComprobanteName(rsEmps.getString("Comprobante"));
                 ventaTB.setSerie(rsEmps.getString("Serie"));
                 ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
+                ventaTB.setTipoName(rsEmps.getString("Tipo"));
                 ventaTB.setEstadoName(rsEmps.getString("Estado"));
-                ventaTB.setMonedaName(rsEmps.getString("Abreviado"));
-                ventaTB.setTotal(rsEmps.getDouble("Total"));
-                ventaTB.setObservaciones(rsEmps.getString("Observaciones"));
-                empList.add(ventaTB);
-            }
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (rsEmps != null) {
-                    rsEmps.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException e) {
-            }
-        }
-        return empList;
-    }
-
-    public static ObservableList<VentaTB> ListVentasByDate(String fechaInicial, String fechaFinal, int comprobante, int estado) {
-        String selectStmt = "{call Sp_Listar_Ventas_By_Date(?,?,?,?)}";
-        PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
-        ObservableList<VentaTB> empList = FXCollections.observableArrayList();
-        try {
-            DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, fechaInicial);
-            preparedStatement.setString(2, fechaFinal);
-            preparedStatement.setInt(3, comprobante);
-            preparedStatement.setInt(4, estado);
-            rsEmps = preparedStatement.executeQuery();
-            while (rsEmps.next()) {
-                VentaTB ventaTB = new VentaTB();
-                ventaTB.setId(rsEmps.getInt("Filas"));
-                ventaTB.setIdVenta(rsEmps.getString("IdVenta"));
-                ventaTB.setFechaRegistro(rsEmps.getTimestamp("FechaVenta").toLocalDateTime());
-                ventaTB.setCliente(rsEmps.getString("Cliente"));
-                ventaTB.setComprobanteName(rsEmps.getString("Comprobante"));
-                ventaTB.setSerie(rsEmps.getString("Serie"));
-                ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
-                ventaTB.setEstadoName(rsEmps.getString("Estado"));
-                ventaTB.setMonedaName(rsEmps.getString("Abreviado"));
+                ventaTB.setMonedaName(rsEmps.getString("Simbolo"));
                 ventaTB.setTotal(rsEmps.getDouble("Total"));
                 ventaTB.setObservaciones(rsEmps.getString("Observaciones"));
                 empList.add(ventaTB);
@@ -411,16 +413,24 @@ public class VentaADO {
         VentaTB ventaTB = null;
         try {
             DBUtil.dbConnect();
-            statementVendedor = DBUtil.getConnection().prepareStatement("select  dbo.Fc_Obtener_Nombre_Detalle(v.Estado,'0009') Estado,m.Simbolo\n"
-                    + "from VentaTB as v inner join MonedaTB as m on v.Moneda = m.IdMoneda\n"
-                    + "where v.IdVenta = ?");
+            statementVendedor = DBUtil.getConnection().prepareStatement("{call Sp_Obtener_Venta_ById(?)}");
             statementVendedor.setString(1, value);
             try (ResultSet resultSet = statementVendedor.executeQuery()) {
                 if (resultSet.next()) {
                     ventaTB = new VentaTB();
+                    ventaTB.setFechaVenta(resultSet.getTimestamp("FechaVenta").toLocalDateTime());
+                    ventaTB.setCliente(resultSet.getString("Apellidos") + " " + resultSet.getString("Nombres"));
+                    ventaTB.setComprobanteName(resultSet.getString("Comprobante"));
+                    ventaTB.setComproabanteNameImpresion(resultSet.getString("NombreImpresion"));
+                    ventaTB.setSerie(resultSet.getString("Serie"));
+                    ventaTB.setNumeracion(resultSet.getString("Numeracion"));
+                    ventaTB.setObservaciones(resultSet.getString("Observaciones"));
+                    ventaTB.setTipoName(resultSet.getString("Tipo"));
                     ventaTB.setEstadoName(resultSet.getString("Estado"));
                     ventaTB.setMonedaName(resultSet.getString("Simbolo"));
-                    ventaTB.setTotal(resultSet.getDouble("Total"));
+                    ventaTB.setEfectivo(resultSet.getDouble("Efectivo"));
+                    ventaTB.setVuelto(resultSet.getDouble("Vuelto"));
+
                 }
                 statementVendedor.close();
             }

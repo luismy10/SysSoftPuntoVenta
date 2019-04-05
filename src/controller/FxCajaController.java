@@ -1,155 +1,141 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
-import java.io.IOException;
 import java.net.URL;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.CajaADO;
 import model.CajaTB;
-import model.MonedaADO;
-import model.MonedaTB;
-import model.VentaTB;
+import model.MovimientoCajaADO;
+import model.MovimientoCajaTB;
 
-/**
- * FXML Controller class
- *
- * @author Ruberfc
- */
 public class FxCajaController implements Initializable {
 
     @FXML
     private VBox window;
     @FXML
-    private Button btnCorte;
-    @FXML
-    private Button btnImprimir;
-    @FXML
     private Label lblCargo;
     @FXML
     private Label lblFecha;
     @FXML
-    private Label lblVentasTotales;
-    @FXML
     private Label lblFondoCaja;
     @FXML
-    private Label lblIngresos;
-    @FXML
-    private Label lblEgresos;
-    @FXML
     private Label lblDevoluciones;
+    @FXML
+    private Label lblEfectivo;
+    @FXML
+    private Label lblVentasEfectivo;
+    @FXML
+    private Label lblVentasCredito;
+    @FXML
+    private Label lblAbonosEfectivo;
     @FXML
     private Label lblEntradas;
     @FXML
     private Label lblSalidas;
     @FXML
     private Label lblTotalDineroCaja;
+    @FXML
+    private Button btnTerminarTurno;
 
     private AnchorPane content;
 
-    private String simbolo_Moneda;
-    
+    private double salidas;
+
     private double totalDineroCaja;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.lblCargo.setText(Session.USER_NAME);
-        this.lblFecha.setText(Tools.getDate().toString());
-        this.listarMontos();
+
     }
 
-    public void setContent(AnchorPane content) {
-        this.content = content;
-    }
-
-    public void listarMontos() {
-
-        List<MonedaTB> list_Moneda = MonedaADO.GetMonedasCombBox();
-
-        for (int i = 0; i < list_Moneda.size(); i++) {
-            if (list_Moneda.get(i).getPredeterminado() == true) {
-                simbolo_Moneda = list_Moneda.get(i).getSimbolo();
-                break;
+    private void corteCaja() {
+        CajaTB cajaTB = CajaADO.ValidarAperturaCaja(Session.CAJA_ID);
+        if (cajaTB != null) {
+            lblCargo.setText(Session.USER_NAME);
+            lblFecha.setText(Tools.getDate("dd-MM-yyyy"));
+            MovimientoCajaTB fondoCaja = MovimientoCajaADO.FondoCaja(cajaTB.getIdCaja());
+            if (fondoCaja != null) {
+                lblFondoCaja.setText(Tools.roundingValue(fondoCaja.getSaldo(), 2));
+                totalDineroCaja = fondoCaja.getSaldo();
             }
+            MovimientoCajaTB ventasEfectivo = MovimientoCajaADO.VentasEfectivo(cajaTB.getIdCaja());
+            if (ventasEfectivo != null) {
+                lblEfectivo.setText(Tools.roundingValue(ventasEfectivo.getSaldo(), 2));
+                lblVentasEfectivo.setText(Tools.roundingValue(ventasEfectivo.getSaldo(), 2));
+                totalDineroCaja = totalDineroCaja + ventasEfectivo.getSaldo();
+            }
+            MovimientoCajaTB ventasCredito = MovimientoCajaADO.VentasCredito(cajaTB.getIdCaja());
+            if (ventasCredito != null) {
+                lblVentasCredito.setText(Tools.roundingValue(ventasCredito.getSaldo(), 2));
+            }
+            MovimientoCajaTB egresosEfectivoCompra = MovimientoCajaADO.EgresosEfectivoCompra(cajaTB.getIdCaja());
+            if (egresosEfectivoCompra != null) {
+                salidas += egresosEfectivoCompra.getSaldo();
+                lblSalidas.setText("-" + Tools.roundingValue(salidas, 2));
+                totalDineroCaja = totalDineroCaja - egresosEfectivoCompra.getSaldo();
+            }
+            MovimientoCajaTB egresosEfectivo = MovimientoCajaADO.EgresosEfectivo(cajaTB.getIdCaja());
+            if (egresosEfectivo != null) {
+                salidas += egresosEfectivo.getSaldo();
+                lblSalidas.setText("-" + Tools.roundingValue(salidas, 2));
+                totalDineroCaja = totalDineroCaja - egresosEfectivo.getSaldo();
+            }
+
+            lblTotalDineroCaja.setText(Session.MONEDA + " " + Tools.roundingValue(Math.abs(totalDineroCaja), 2));
+            btnTerminarTurno.setDisable(false);
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Corte de caja", "No está aperturado la caja.", false);
+            btnTerminarTurno.setDisable(true);
         }
-
-        CajaTB cajaTB = CajaADO.consultarMontosCaja(Session.USER_ID, "activo".toUpperCase());
-        VentaTB ventaTB = CajaADO.consultarMontosVenta(Session.USER_ID, "activo".toUpperCase());
-        
-        this.lblVentasTotales.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(ventaTB.getTotal(), 2)));
-
-        this.lblFondoCaja.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getMontoInicial(), 2)));
-        this.lblIngresos.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getIngresos(), 2)));
-        this.lblEgresos.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getEgresos(), 2)));
-        this.lblDevoluciones.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getDevoluciones(), 2)));
-        this.lblEntradas.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getEntradas(), 2)));
-        this.lblSalidas.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(cajaTB.getSalidas(), 2)));
-        
-        totalDineroCaja = (cajaTB.getMontoInicial()+cajaTB.getIngresos()+cajaTB.getEntradas())-(cajaTB.getEgresos()+cajaTB.getDevoluciones()+cajaTB.getSalidas());
-        
-        this.lblTotalDineroCaja.setText(String.valueOf(simbolo_Moneda + " " + Tools.roundingValue(totalDineroCaja, 2)));
     }
 
     @FXML
-    private void onActionCorte(ActionEvent event) throws IOException {
+    private void onActionCorte(ActionEvent event) {
+        corteCaja();
+    }
 
-        short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Caja", "Esta seguro(a) de hacer el corte de caja. ", "Aceptar", "Cancelar");
-        if (value == 0) {
-
-            CajaTB cajaTB = new CajaTB();
-
-            cajaTB.setMontoFinal(totalDineroCaja);
-            cajaTB.setFechaCierre(Timestamp.valueOf(LocalDateTime.now()));
-            cajaTB.setEstado("ACTIVO".toUpperCase());
-            cajaTB.setIdEmpleado(Session.USER_ID);
-
-            String result = CajaADO.crudCorteCaja(cajaTB);
-
-            if (result.equalsIgnoreCase("update")) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Caja", "Se realizó correctamente el corte de caja.", false);
-                Tools.Dispose(content);
-                URL urllogin = getClass().getResource(Tools.FX_FILE_LOGIN);
-                FXMLLoader fXMLLoaderLogin = FxWindow.LoaderWindow(urllogin);
-                Parent parent = fXMLLoaderLogin.load(urllogin.openStream());
-                Scene scene = new Scene(parent);
-                Stage primaryStage = new Stage();
-                primaryStage.getIcons().add(new Image(Tools.FX_LOGO));
-                primaryStage.setScene(scene);
-                primaryStage.initStyle(StageStyle.DECORATED);
-                primaryStage.setTitle("Sys Soft");
-                primaryStage.centerOnScreen();
-                primaryStage.setMaximized(true);
-                primaryStage.show();
-                primaryStage.requestFocus();
-            } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Caja", result, false);
-            }
+    @FXML
+    private void onKeyPressedCorte(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            corteCaja();
         }
+    }
 
+    @FXML
+    private void onKeyPressedImprimir(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
     }
 
     @FXML
     private void onActionImprimir(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void onKeyPressedTerminarTurno(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActionTerminarTurno(ActionEvent event) {
+
+    }
+
+    public void setContent(AnchorPane content) {
+        this.content = content;
     }
 
 }

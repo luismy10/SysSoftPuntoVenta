@@ -344,7 +344,7 @@ public class FxCompraDetalleController implements Initializable {
         if (estadoCompra.equals("PENDIENTE".toUpperCase())) {
             openWindowHistorialPagos();
         } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Compra", "La compra no se hiso al credito", false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Compra", "La compra se hiso al contado", false);
         }
     }
 

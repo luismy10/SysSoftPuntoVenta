@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class VentaTB {
@@ -16,16 +15,20 @@ public class VentaTB {
     private int moneda;
     private String monedaName;
     private String comprobanteName;
+    private String comproabanteNameImpresion;
     private String serie;
     private String numeracion;
-    private Timestamp fechaVenta;
-    private LocalDateTime fechaRegistro;
+    private LocalDateTime fechaVenta;
     private double subTotal;
     private double descuento;
     private double total;
+    private int tipo;
+    private String tipoName;
     private int estado;
     private String estadoName;
     private String observaciones;
+    private double efectivo;
+    private double vuelto;
     private ArticuloTB articuloTB;
     
     /*
@@ -48,8 +51,6 @@ public class VentaTB {
         this.id = id;
     }
     
-    
-
     public String getIdVenta() {
         return idVenta;
     }
@@ -106,6 +107,14 @@ public class VentaTB {
         this.comprobanteName = comprobanteName;
     }
 
+    public String getComproabanteNameImpresion() {
+        return comproabanteNameImpresion;
+    }
+
+    public void setComproabanteNameImpresion(String comproabanteNameImpresion) {
+        this.comproabanteNameImpresion = comproabanteNameImpresion;
+    }
+
     public String getSerie() {
         return serie;
     }
@@ -122,20 +131,12 @@ public class VentaTB {
         this.numeracion = numeracion;
     }
 
-    public Timestamp getFechaVenta() {
+    public LocalDateTime getFechaVenta() {
         return fechaVenta;
     }
 
-    public void setFechaVenta(Timestamp fechaVenta) {
+    public void setFechaVenta(LocalDateTime fechaVenta) {
         this.fechaVenta = fechaVenta;
-    }
-
-    public LocalDateTime getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(LocalDateTime fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
     }
 
     public double getSubTotal() {
@@ -152,6 +153,22 @@ public class VentaTB {
 
     public void setDescuento(double descuento) {
         this.descuento = descuento;
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getTipoName() {
+        return tipoName;
+    }
+
+    public void setTipoName(String tipoName) {
+        this.tipoName = tipoName;
     }
 
     public double getTotal() {
@@ -192,6 +209,22 @@ public class VentaTB {
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
+    }
+
+    public double getEfectivo() {
+        return efectivo;
+    }
+
+    public void setEfectivo(double efectivo) {
+        this.efectivo = efectivo;
+    }
+
+    public double getVuelto() {
+        return vuelto;
+    }
+
+    public void setVuelto(double vuelto) {
+        this.vuelto = vuelto;
     }
 
     public String getDocumentoReporte() {

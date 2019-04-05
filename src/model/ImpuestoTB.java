@@ -1,16 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package model;
 
 import javafx.scene.image.ImageView;
 
-/**
- *
- * @author Ruberfc
- */
+
 public class ImpuestoTB {
     
     private int idImpuesto;
@@ -18,6 +11,7 @@ public class ImpuestoTB {
     private double valor;
     private boolean predeterminado;
     private String codigoAlterno;
+    private boolean sistema;
     private ImageView imagePredeterminado;
     
     public ImpuestoTB(){
@@ -100,6 +94,16 @@ public class ImpuestoTB {
     public void setImagePredeterminado(ImageView imagePredeterminado) {
         this.imagePredeterminado = imagePredeterminado;
     }
+
+    public boolean isSistema() {
+        return sistema;
+    }
+
+    public void setSistema(boolean sistema) {
+        this.sistema = sistema;
+    }
+    
+    
 
     @Override
     public String toString() {

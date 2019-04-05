@@ -76,7 +76,9 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private TableColumn<CompraTB, String> tcProveedor;
     @FXML
-    private TableColumn<CompraTB, String> tcEstadoCompra;
+    private TableColumn<CompraTB, String> tcTipo;
+    @FXML
+    private TableColumn<CompraTB, String> tcEstado;
     @FXML
     private TableColumn<CompraTB, String> tcTotal;
     @FXML
@@ -96,7 +98,8 @@ public class FxComprasRealizadasController implements Initializable {
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getProveedorTB().getNumeroDocumento().get() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial().get()
         ));
-        tcEstadoCompra.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoCompra() + ""));
+        tcTipo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoName()));
+        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName()));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal().get(), 2)));
 
         Tools.actualDate(Tools.getDate(), dtFechaInicial);
@@ -150,7 +153,7 @@ public class FxComprasRealizadasController implements Initializable {
             ScrollPane node = fXMLPrincipal.load();
             FxCompraDetalleController controller = fXMLPrincipal.getController();
             controller.setInitComptrasController(this, windowinit, vbContent);
-            controller.setLoadDetalle(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getEstadoCompra(), tvList.getSelectionModel().getSelectedItem().getTotal().get());
+            controller.setLoadDetalle(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getEstadoName(), tvList.getSelectionModel().getSelectedItem().getTotal().get());
             vbContent.getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
@@ -327,7 +330,7 @@ public class FxComprasRealizadasController implements Initializable {
     public VBox getWindow() {
         return window;
     }
-    
+
     public void setContent(AnchorPane windowinit, AnchorPane vbContent) {
         this.windowinit = windowinit;
         this.vbContent = vbContent;

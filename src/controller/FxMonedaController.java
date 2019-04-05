@@ -97,7 +97,6 @@ public class FxMonedaController implements Initializable {
         }
     }
 
-    
     private void InitializationTransparentBackground() {
         Session.PANE.setStyle("-fx-background-color: black");
         Session.PANE.setTranslateX(0);
@@ -177,9 +176,12 @@ public class FxMonedaController implements Initializable {
     private void onEventRemover() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             String result = MonedaADO.RemoveElement(tvList.getSelectionModel().getSelectedItem().getIdMoneda());
-            if (result.equalsIgnoreCase("error")) {
+            if (result.equalsIgnoreCase("predetermined")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "No se puedo eliminar ya que está predeterminado la moneda.", false);
-                fillTableMonedas();
+            } else if (result.equalsIgnoreCase("venta")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "No se puedo eliminar ya que está ligado a una venta", false);
+            } else if (result.equalsIgnoreCase("compra")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Moneda", "No se puedo eliminar ya que está ligado a un compra.", false);
             } else if (result.equalsIgnoreCase("removed")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Moneda", "Se eliminó correctamente la moneda.", false);
                 fillTableMonedas();

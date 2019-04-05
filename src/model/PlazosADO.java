@@ -65,7 +65,7 @@ public class PlazosADO {
             PreparedStatement statement = null;
             ResultSet resultSet = null;            
             try {
-                statement = DBUtil.getConnection().prepareStatement("select IdPlazos, Nombre, Dias, Estado, Predeterminado from PlazosTB");
+                statement = DBUtil.getConnection().prepareStatement("select IdPlazos, Nombre, Dias, Estado, Predeterminado from PlazosTB order by Nombre asc");
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
                     

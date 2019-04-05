@@ -1,4 +1,3 @@
-
 package model;
 
 import java.sql.PreparedStatement;
@@ -11,10 +10,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+public class ImpuestoADO {
 
-public class ImpuestoADO {   
-    
-    public static String CrudImpuesto(ImpuestoTB impuestoTB){
+    public static String CrudImpuesto(ImpuestoTB impuestoTB) {
         String result = null;
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
@@ -33,7 +31,7 @@ public class ImpuestoADO {
                         result = "duplicated";
                     } else {
                         statementImpuesto = DBUtil.getConnection().prepareStatement("UPDATE ImpuestoTB SET Nombre=?,Valor=?,CodigoAlterno=? WHERE IdImpuesto = ?");
-                        statementImpuesto.setString(1,impuestoTB.getNombre());
+                        statementImpuesto.setString(1, impuestoTB.getNombre());
                         statementImpuesto.setDouble(2, impuestoTB.getValor());
                         statementImpuesto.setString(3, impuestoTB.getCodigoAlterno());
                         statementImpuesto.setInt(4, impuestoTB.getIdImpuesto());
@@ -49,11 +47,12 @@ public class ImpuestoADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicated";
                     } else {
-                        statementImpuesto = DBUtil.getConnection().prepareStatement("insert into ImpuestoTB(Nombre,Valor,Predeterminado,CodigoAlterno) values(?,?,?,?)");
-                        statementImpuesto.setString(1,impuestoTB.getNombre());
+                        statementImpuesto = DBUtil.getConnection().prepareStatement("INSERT INTO ImpuestoTB(Nombre,Valor,Predeterminado,CodigoAlterno,Sistema) values(?,?,?,?,?)");
+                        statementImpuesto.setString(1, impuestoTB.getNombre());
                         statementImpuesto.setDouble(2, impuestoTB.getValor());
                         statementImpuesto.setBoolean(3, impuestoTB.getPredeterminado());
                         statementImpuesto.setString(4, impuestoTB.getCodigoAlterno());
+                        statementImpuesto.setBoolean(5, impuestoTB.isSistema());
                         statementImpuesto.addBatch();
                         statementImpuesto.executeBatch();
                         DBUtil.getConnection().commit();
@@ -83,26 +82,28 @@ public class ImpuestoADO {
         }
         return result;
     }
-    
-    public static ObservableList<ImpuestoTB> ListImpuestos(){
+
+    public static ObservableList<ImpuestoTB> ListImpuestos() {
         ObservableList<ImpuestoTB> observableList = FXCollections.observableArrayList();
-        DBUtil.dbConnect();        
-        if(DBUtil.getConnection() != null){
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
             PreparedStatement statementList = null;
             try {
                 statementList = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Impuestos()}");
-                ResultSet resultSet = statementList.executeQuery();
-                while (resultSet.next()) {
-                    ImpuestoTB impuestoTB = new ImpuestoTB();
-                    impuestoTB.setIdImpuesto(resultSet.getInt("IdImpuesto"));
-                    impuestoTB.setNombre(resultSet.getString("Nombre"));
-                    impuestoTB.setValor(resultSet.getDouble("Valor"));
-                    impuestoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
-                    impuestoTB.setCodigoAlterno(resultSet.getString("CodigoAlterno"));
-                    impuestoTB.setImagePredeterminado(resultSet.getBoolean("Predeterminado")
-                            ? new ImageView(new Image("/view/checked.png", 22, 22, false, false))
-                            : new ImageView(new Image("/view/unchecked.png", 22, 22, false, false)));
-                    observableList.add(impuestoTB);
+                try (ResultSet resultSet = statementList.executeQuery()) {
+                    while (resultSet.next()) {
+                        ImpuestoTB impuestoTB = new ImpuestoTB();
+                        impuestoTB.setIdImpuesto(resultSet.getInt("IdImpuesto"));
+                        impuestoTB.setNombre(resultSet.getString("Nombre"));
+                        impuestoTB.setValor(resultSet.getDouble("Valor"));
+                        impuestoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
+                        impuestoTB.setCodigoAlterno(resultSet.getString("CodigoAlterno"));
+                        impuestoTB.setImagePredeterminado(resultSet.getBoolean("Predeterminado")
+                                ? new ImageView(new Image("/view/checked.png", 22, 22, false, false))
+                                : new ImageView(new Image("/view/unchecked.png", 22, 22, false, false)));
+                        impuestoTB.setSistema(resultSet.getBoolean("Sistema"));
+                        observableList.add(impuestoTB);
+                    }
                 }
             } catch (SQLException ex) {
                 System.out.println("Error en ImpuestoADO:" + ex.getLocalizedMessage());
@@ -117,16 +118,16 @@ public class ImpuestoADO {
                 }
             }
         }
-        
+
         return observableList;
     }
-    
+
     public static List<ImpuestoTB> GetTipoImpuestoCombBox() {
         List<ImpuestoTB> list = new ArrayList<>();
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             PreparedStatement statement = null;
-            ResultSet resultSet = null;            
+            ResultSet resultSet = null;
             try {
                 statement = DBUtil.getConnection().prepareStatement("SELECT IdImpuesto,Nombre,Valor,Predeterminado FROM ImpuestoTB");
                 resultSet = statement.executeQuery();
@@ -156,7 +157,7 @@ public class ImpuestoADO {
         }
         return list;
     }
-    
+
     public static String ChangeDefaultStateImpuesto(boolean state, int id) {
         String result = null;
         DBUtil.dbConnect();
@@ -217,6 +218,61 @@ public class ImpuestoADO {
             }
         } else {
             result = "No se puedo establecer conexión con el servidor, revice y vuelva a intentarlo.";
+        }
+        return result;
+    }
+
+    public static String DeleteImpuestoById(int idImpuesto) {
+        String result = "";
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statementValidation = null;
+            PreparedStatement statementImpuesto = null;
+            try {
+                DBUtil.getConnection().setAutoCommit(false);
+                statementValidation = DBUtil.getConnection().prepareStatement("SELECT * FROM ArticuloTB WHERE Impuesto = ?");
+                statementValidation.setInt(1, idImpuesto);
+                if (statementValidation.executeQuery().next()) {
+                    DBUtil.getConnection().rollback();
+                    result = "articulo";
+                } else {
+                    statementValidation = DBUtil.getConnection().prepareStatement("SELECT * FROM ImpuestoTB WHERE IdImpuesto = ? AND Sistema = ?");
+                    statementValidation.setInt(1, idImpuesto);
+                    statementValidation.setBoolean(2, true);
+                    if (statementValidation.executeQuery().next()) {
+                        DBUtil.getConnection().rollback();
+                        result = "sistema";
+                    } else {
+                        statementImpuesto = DBUtil.getConnection().prepareStatement("DELETE FROM ImpuestoTB WHERE IdImpuesto = ?");
+                        statementImpuesto.setInt(1, idImpuesto);
+                        statementImpuesto.addBatch();
+                        statementImpuesto.executeBatch();
+                        DBUtil.getConnection().commit();
+                        result = "deleted";
+                    }
+                }
+            } catch (SQLException ex) {
+                try {
+                    result = ex.getLocalizedMessage();
+                    DBUtil.getConnection().rollback();
+                } catch (SQLException e) {
+                    result = e.getLocalizedMessage();
+                }
+            } finally {
+                try {
+                    if (statementValidation != null) {
+                        statementValidation.close();
+                    }
+                    if (statementImpuesto != null) {
+                        statementImpuesto.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    result = ex.getLocalizedMessage();
+                }
+            }
+        } else {
+            result = "No se puedo conectar el servidor, revise su conexión.";
         }
         return result;
     }

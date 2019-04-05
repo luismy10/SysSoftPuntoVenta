@@ -71,6 +71,12 @@
                                           <TextField fx:id="txtProveedor" disable="true" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
+                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Observación:" />
+                                          <TextField fx:id="txtObservacion" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
                                     <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.5em;" VBox.vgrow="ALWAYS">
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
@@ -106,34 +112,6 @@
                                           <Label fx:id="lblCuotaReferencial" styleClass="labelOpenSansRegular14" text="M 00.00" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                                        </children>
                                     </GridPane>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <Separator prefWidth="200.0" />
-            <HBox style="-fx-padding: 0.8333333333333334em;">
-               <children>
-                  <VBox HBox.hgrow="ALWAYS">
-                     <children>
-                        <VBox style="-fx-spacing: 0.8333333333333334em;">
-                           <children>
-                              <HBox style="-fx-background-color: #c9c9c9; -fx-padding: 0.4166666666666667em 0 0.4166666666666667em 0.4166666666666667em;">
-                                 <children>
-                                    <RadioButton fx:id="rbOtroPago" mnemonicParsing="false" onAction="#onActionRbOtroPago" styleClass="labelOpenSansRegular14" text="Otro medio de pago" />
-                                 </children>
-                              </HBox>
-                              <VBox fx:id="vbOtroPago" disable="true" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
-                                       <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Descripción:" />
-                                          <TextField fx:id="txtDescripcion" HBox.hgrow="ALWAYS" />
-                                       </children>
-                                    </HBox>
                                  </children>
                               </VBox>
                            </children>

@@ -1,5 +1,6 @@
 package model;
 
+import controller.Session;
 import java.sql.CallableStatement;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -19,9 +20,9 @@ public class CompraADO {
         PreparedStatement detalle_compra = null;
         PreparedStatement articulo_update = null;
         PreparedStatement pago_Proveedores = null;
+        PreparedStatement movimiento_caja = null;
 //        PreparedStatement preparedHistorialArticulo = null;
         PreparedStatement lote_compra = null;
-
 
         try {
             DBUtil.dbConnect();
@@ -34,6 +35,8 @@ public class CompraADO {
 
             compra = DBUtil.getConnection().prepareStatement("INSERT INTO CompraTB(IdCompra,Proveedor,Comprobante,Numeracion,TipoMoneda,FechaCompra,SubTotal,Descuento,Total,Observaciones,Notas,TipoCompra,EstadoCompra) "
                     + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+            movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,IdUsuario,FechaMovimiento,Comentario,Movimiento,Entrada,Salidas,Saldo)VALUES(?,?,?,?,?,?,?,?)");
 
             detalle_compra = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleCompraTB(IdCompra,IdArticulo,Cantidad,PrecioCompra,Descuento,PrecioVenta1,Margen1,Utilidad1,PrecioVenta2,Margen2,Utilidad2,PrecioVenta3,Margen3,Utilidad3,IdImpuesto,NombreImpuesto,ValorImpuesto,ImpuestoSumado,Importe)"
                     + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -60,9 +63,19 @@ public class CompraADO {
             compra.setDouble(9, compraTB.getTotal().get());
             compra.setString(10, compraTB.getObservaciones());
             compra.setString(11, compraTB.getNotas());
-            compra.setString(12, compraTB.getTipoCompra());
-            compra.setString(13, compraTB.getEstadoCompra());
+            compra.setInt(12, compraTB.getTipo());
+            compra.setInt(13, compraTB.getEstado());
             compra.addBatch();
+
+            movimiento_caja.setInt(1, Session.CAJA_ID);
+            movimiento_caja.setString(2, Session.USER_ID);
+            movimiento_caja.setTimestamp(3, compraTB.getFechaRegistro());
+            movimiento_caja.setString(4, compraTB.getTipo() == 2 ? "Compra al crédito" : "Compra al contado");
+            movimiento_caja.setString(5, compraTB.getTipo() == 2 ? "COMCRE" : "COM");
+            movimiento_caja.setDouble(6, 0);
+            movimiento_caja.setDouble(7, compraTB.getTotal().get());
+            movimiento_caja.setDouble(8, compraTB.getTotal().get() - 0);
+            movimiento_caja.addBatch();
 
             for (int i = 0; i < tableView.getItems().size(); i++) {
                 detalle_compra.setString(1, id_compra);
@@ -123,7 +136,7 @@ public class CompraADO {
 //                preparedHistorialArticulo.addBatch();
             }
 
-            if (compraTB.getTipoCompra().equals("CREDITO")) {
+            if (compraTB.getTipo() == 2) {
                 pago_Proveedores.setDouble(1, pagoProveedoresTB.getMontoTotal());
                 pago_Proveedores.setDouble(2, pagoProveedoresTB.getMontoActual());
                 pago_Proveedores.setInt(3, pagoProveedoresTB.getCuotaTotal());
@@ -151,6 +164,7 @@ public class CompraADO {
             }
 
             compra.executeBatch();
+            movimiento_caja.executeBatch();
             detalle_compra.executeBatch();
             articulo_update.executeBatch();
             pago_Proveedores.executeBatch();
@@ -178,6 +192,9 @@ public class CompraADO {
                 }
                 if (articulo_update != null) {
                     articulo_update.close();
+                }
+                if (movimiento_caja != null) {
+                    movimiento_caja.close();
                 }
 //              
 //                if (preparedHistorialArticulo != null) {
@@ -217,7 +234,8 @@ public class CompraADO {
                 compraTB.setFechaCompra(rsEmps.getDate("Fecha").toLocalDate());
                 compraTB.setNumeracion(rsEmps.getString("Numeracion"));
                 compraTB.setProveedorTB(new ProveedorTB(rsEmps.getString("NumeroDocumento"), rsEmps.getString("RazonSocial")));
-                compraTB.setEstadoCompra(rsEmps.getString("EstadoCompra"));
+                compraTB.setTipoName(rsEmps.getString("Tipo"));
+                compraTB.setEstadoName(rsEmps.getString("Estado"));
                 compraTB.setTipoMonedaName(rsEmps.getString("Simbolo"));
                 compraTB.setTotal(rsEmps.getDouble("Total"));
                 empList.add(compraTB);
@@ -368,7 +386,7 @@ public class CompraADO {
             ProveedorTB proveedorTB = null;
             if (resultSetProveedor.next()) {
                 proveedorTB = new ProveedorTB();
-                
+
                 proveedorTB.setIdProveedor(resultSetProveedor.getString("IdProveedor"));
                 proveedorTB.setNumeroDocumento(resultSetProveedor.getString("NumeroDocumento"));
                 proveedorTB.setRazonSocial(resultSetProveedor.getString("Proveedor"));

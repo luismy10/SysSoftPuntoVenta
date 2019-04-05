@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -132,6 +131,7 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setRightAnchor(nodeVenta, 0d);
         AnchorPane.setBottomAnchor(nodeVenta, 0d);
         content.getChildren().add(nodeVenta);
+        controllerVenta.loadValidarCaja();
         controllerVenta.getTxtSearch().requestFocus();
     }
 
@@ -250,20 +250,24 @@ public class FxOperacionesController implements Initializable {
 
     @FXML
     private void onActionCorteCaja(ActionEvent event) throws IOException {
-        if (Session.USER_NAME_PUESTO.equalsIgnoreCase("administrador")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Caja", "El administrador no esta facultado para hacer el corte de caja.", false);
-        } else {
-            openWindowBoxCut();
-        }
+        openWindowBoxCut();
+//        if (Session.USER_NAME_PUESTO.equalsIgnoreCase("administrador")) {
+//            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Caja", "El administrador no esta facultado para hacer el corte de caja.", false);
+//        } else {
+//            openWindowBoxCut();
+//        }
     }
 
     @FXML
     private void onKeyPressedCorteCaja(KeyEvent event) throws IOException {
-        if (Session.USER_NAME_PUESTO.equalsIgnoreCase("administrador")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Caja", "El administrador no esta facultado para hacer el corte de caja.", false);
-        } else {
+        if (event.getCode() == KeyCode.ENTER) {
             openWindowBoxCut();
         }
+//        if (Session.USER_NAME_PUESTO.equalsIgnoreCase("administrador")) {
+//            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Caja", "El administrador no esta facultado para hacer el corte de caja.", false);
+//        } else {
+//            openWindowBoxCut();
+//        }
     }
 
     public void setContent(AnchorPane windowinit, AnchorPane content) {

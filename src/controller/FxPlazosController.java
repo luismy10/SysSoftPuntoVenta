@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controller;
 
 import java.net.URL;
@@ -19,11 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import model.PlazosADO;
 import model.PlazosTB;
 
-/**
- * FXML Controller class
- *
- * @author Ruberfc
- */
+
 public class FxPlazosController implements Initializable {
 
     @FXML
@@ -41,19 +33,17 @@ public class FxPlazosController implements Initializable {
 
     private FxCompraProcesoController compraProcesoController;
 
-    /**
-     * Initializes the controller class.
-     */
+   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+    
     }
 
     private void onAddPlazo() {
         if (this.txtNombre.getText().isEmpty()) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Plazos", "Ingrese el nombre del plazo, por favor.", false);
             txtNombre.requestFocus();
-        } else if (this.txtDias.getText().isEmpty()) {
+        } else if (this.txtDias.getText().trim().isEmpty()) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Plazos", "Ingrese los dias de intervalo del plazo, por favor.", false);
             txtDias.requestFocus();
         } else {

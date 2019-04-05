@@ -150,7 +150,6 @@ public class FxImpuestoController implements Initializable {
     }
 
     private void onEventProdeteminado() {
-        
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             String result = ImpuestoADO.ChangeDefaultStateImpuesto(true, tvList.getSelectionModel().getSelectedItem().getIdImpuesto());
             if (result.equalsIgnoreCase("updated")) {
@@ -160,6 +159,27 @@ public class FxImpuestoController implements Initializable {
                 this.fillTableImpuesto();
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Impuesto", "Error: " + result, false);
+            }
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Impuesto", "Seleccione un elemento de la lista.", false);
+        }
+    }
+
+    private void onEventDelete() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Impuesto", "¿Está seguro de eliminar el impuesto?", true);
+            if (confirmation == 1) {
+                String result = ImpuestoADO.DeleteImpuestoById(tvList.getSelectionModel().getSelectedItem().getIdImpuesto());
+                if (result.equalsIgnoreCase("deleted")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Impuesto", "Se eliminó el impuesto correctamente.", false);
+                    fillTabletTax();
+                } else if (result.equalsIgnoreCase("sistema")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Impuesto", "No se puede eliminar el impuesto, ya que es del sistema.", false);
+                } else if (result.equalsIgnoreCase("articulo")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Impuesto", "No se puede eliminar el impuesto, está ligado a un artículo.", false);
+                } else {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Impuesto", result, false);
+                }
             }
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Impuesto", "Seleccione un elemento de la lista.", false);
@@ -247,6 +267,18 @@ public class FxImpuestoController implements Initializable {
     @FXML
     private void onActionPredetermined(ActionEvent event) {
         this.onEventProdeteminado();
+    }
+
+    @FXML
+    private void onKeyPressedDelete(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventDelete();
+        }
+    }
+
+    @FXML
+    private void onActionDelete(ActionEvent event) {
+        onEventDelete();
     }
 
     public void setContent(AnchorPane content) {

@@ -27,8 +27,10 @@ public class CompraTB {
     private String observaciones;
     private String notas;
     
-    private String TipoCompra;
-    private String EstadoCompra;
+    private int tipo;
+    private String tipoName;
+    private int estado;
+    private String estadoName;
     
     private ProveedorTB proveedorTB;
     private ArticuloTB articuloTB;
@@ -225,19 +227,36 @@ public class CompraTB {
         this.totalReporte = totalReporte;
     }
 
-    public String getTipoCompra() {
-        return TipoCompra;
+    public int getTipo() {
+        return tipo;
     }
 
-    public void setTipoCompra(String TipoCompra) {
-        this.TipoCompra = TipoCompra;
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
     }
 
-    public String getEstadoCompra() {
-        return EstadoCompra;
+    public String getTipoName() {
+        return tipoName;
     }
 
-    public void setEstadoCompra(String EstadoCompra) {
-        this.EstadoCompra = EstadoCompra;
+    public void setTipoName(String tipoName) {
+        this.tipoName = tipoName;
     }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public String getEstadoName() {
+        return estadoName;
+    }
+
+    public void setEstadoName(String estadoName) {
+        this.estadoName = estadoName;
+    }
+    
 }

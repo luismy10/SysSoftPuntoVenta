@@ -105,16 +105,24 @@ public class Tools {
     static final String FX_FILE_HISTORIAL_PAGOS = "/view/compra/FxHistorialPagos.fxml";
     static final String FX_FILE_AMORTIZAR_PAGOS = "/view/compra/FxAmortizarPagos.fxml";
 
-    
     static final String FX_FILE_CAJA = "/view/caja/FxCaja.fxml";
-    static final String FX_FILE_APERTURACAJA = "/view/caja/FxAperturaCaja.fxml";
+    static final String FX_FILE_CAJACONSULTAS = "/view/caja/FxCajaConsultas.fxml";
+    static final String FX_FILE_CAJAAPERTURA = "/view/caja/FxAperturaCaja.fxml";
+    static final String FX_FILE_CAJABUSQUEDA = "/view/caja/FxCajaBusqueda.fxml";
+    static final String FX_FILE_CAJAPROCESADOS = "/view/caja/FxCajaProcesasdos.fxml";
+    static final String FX_FILE_CAJADETALLEMOVIMIENTO = "/view/caja/FxCajaDetalleMovimiento.fxml";
 
     static final String FX_FILE_TICKETBUSQUEDA = "/view/tipodocumento/FxTicketBusqueda.fxml";
     static final String FX_FILE_TICKETMULTILINEA = "/view/tipodocumento/FxTicketMultilinea.fxml";
-    
+
     static final String FX_FILE_TICKETVARIABLE = "/view/tipodocumento/FxTicketVariable.fxml";
     static final String FX_FILE_TICKETPROCESO = "/view/tipodocumento/FxTicketProceso.fxml";
     static final String FX_FILE_TIPODOCUMENTOPROCESO = "/view/tipodocumento/FxTipoDocumentoProceso.fxml";
+
+    static final String FX_FILE_VENTAABONO = "/view/venta/FxVentaAbono.fxml";
+    static final String FX_FILE_VENTAABONOPROCESO = "/view/venta/FxVentaAbonoProceso.fxml";
+    static final String FX_FILE_VENTAFONDOINICIAL = "/view/venta/FxVentaFondoInicial.fxml";
+    static final String FX_FILE_VENTAMOVIMIENTO = "/view/venta/FxVentaMovimiento.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
@@ -197,9 +205,9 @@ public class Tools {
         return (short) (optional.get() == buttonTypeTwo ? 0 : 1);
 
     }
-    
+
     public static short AlertMessage(Window window, AlertType type, String title, String value, String buton1, String buton2) {
-        final URL url = Tools.class.getClass().getResource("/view/alert.css"); 
+        final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("/view/icon.png"));
