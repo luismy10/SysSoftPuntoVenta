@@ -39,6 +39,7 @@ public class FxVentaAbonoProcesoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
+    
 
     public void setInitLoadVentaAbono(String idVenta, int idCuentasCliente, double total, double pagado) {
         this.idVenta = idVenta;
