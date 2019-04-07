@@ -134,7 +134,7 @@ public class FxVentaDetalleController implements Initializable {
             gpList.add(addElementGridPane("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
             gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
             gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getImpuestoValor(), 2) + "%", Pos.CENTER_RIGHT), 5, (i + 1));
-            gpList.add(addElementGridPane("l7" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getPrecioVenta(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
+            gpList.add(addElementGridPane("l7" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getPrecioVentaGeneral(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
             gpList.add(addElementGridPane("l8" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getTotalImporte(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
         }
         calcularTotales();
@@ -259,7 +259,7 @@ public class FxVentaDetalleController implements Initializable {
                         } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
                             fieldTicket.setText(Tools.roundingValue(arrList.get(m).getCantidad(), 2));
                         } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
-                            fieldTicket.setText(Tools.roundingValue(arrList.get(m).getPrecioVentaReal(), 2));
+                            fieldTicket.setText(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneralReal(), 2));
                         } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
                             fieldTicket.setText(Tools.roundingValue(arrList.get(m).getDescuento(), 0) + "%");
                         } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {

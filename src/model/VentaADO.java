@@ -141,7 +141,7 @@ public class VentaADO {
                 detalle_venta.setString(1, id_venta);
                 detalle_venta.setString(2, tvList.getItems().get(i).getIdArticulo());
                 detalle_venta.setDouble(3, tvList.getItems().get(i).getCantidad());
-                detalle_venta.setDouble(4, tvList.getItems().get(i).getPrecioVentaReal());
+                detalle_venta.setDouble(4, tvList.getItems().get(i).getPrecioVentaGeneralReal());
                 detalle_venta.setDouble(5, tvList.getItems().get(i).getDescuento());
                 detalle_venta.setDouble(6, tvList.getItems().get(i).getImpuestoArticulo());
                 detalle_venta.setString(7, tvList.getItems().get(i).getImpuestoArticuloName());
@@ -306,9 +306,9 @@ public class VentaADO {
                 articuloTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
                 articuloTB.setImpuestoArticulo(rsEmps.getInt("IdImpuesto"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                articuloTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVenta"));
                 articuloTB.setDescuento(rsEmps.getDouble("Descuento"));
-                articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+                articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaGeneral());
                 double porcentajeDecimal = articuloTB.getDescuento() / 100.00;
                 double porcentajeRestante = articuloTB.getPrecioCompra() * porcentajeDecimal;
                 articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());

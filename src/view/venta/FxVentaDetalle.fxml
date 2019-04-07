@@ -183,7 +183,7 @@
                                        <children>
                                           <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 1em; -fx-padding: 0.5em 0  0.5em 0;">
                                              <children>
-                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="SubTotal:" />
+                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Valor Venta:" />
                                                 <Text fx:id="lblSubTotal" fill="#004db9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
                                              </children>
                                           </HBox>
@@ -195,14 +195,14 @@
                                           </HBox>
                                           <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 1em; -fx-padding: 0.5em 0  0.5em 0;">
                                              <children>
-                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="SubTotal:" />
+                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Sub Total:" />
                                                 <Text fx:id="lblSubTotalNuevo" fill="#004db9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
                                              </children>
                                           </HBox>
                                           <VBox fx:id="hbAgregarImpuesto" />
                                           <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 1em; -fx-padding: 0.5em 0  0.5em 0;">
                                              <children>
-                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Total:" />
+                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Importe Total:" />
                                                 <Text fx:id="lblTotal" fill="#004db9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
                                              </children>
                                           </HBox>

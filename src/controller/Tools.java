@@ -281,16 +281,14 @@ public class Tools {
         return decimal.toPlainString();
     }
 
-    public static double calculateTax(double porcentaje, double valor) {
-        double igv = (porcentaje / 100.00);
-        double impu = valor * igv;
-        return impu;
+    public static double calculateTax(double porcentaje, double valor) {        
+        double igv = (double) (porcentaje / 100.00);
+        return (double) (valor * igv);
     }
 
-    public static String calculateAumento(double porcentaje, double costo) {
+    public static double calculateAumento(double porcentaje, double costo) {
         double totalimporte = costo + (costo * (porcentaje / 100.00));
-        double redondeandoimporte = Double.parseDouble(Tools.roundingValue(totalimporte, 1));
-        return Tools.roundingValue(redondeandoimporte, 2);
+        return Double.parseDouble(Tools.roundingValue(totalimporte, 1));        
     }
 
     public static double calculateValueNeto(double porcentaje, double valuecalculate) {

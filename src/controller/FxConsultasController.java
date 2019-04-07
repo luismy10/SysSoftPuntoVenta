@@ -53,7 +53,7 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setBottomAnchor(node, 0d);
         vbContent.getChildren().add(node);
 
-        controller.fillPurchasesTable((short) 1, "", Tools.getDate(), Tools.getDate(), "");
+        controller.fillPurchasesTable((short) 1, "", Tools.getDate(), Tools.getDate(), 0);
     }
 
     private void openWindowDirectory() throws IOException {
@@ -96,7 +96,7 @@ public class FxConsultasController implements Initializable {
 
     private void openWindowInvetario() throws IOException {
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_INVENTARIOGENERAL));
-        VBox node = fXMLPrincipal.load();
+        ScrollPane node = fXMLPrincipal.load();
         FxInventarioGeneralController controller = fXMLPrincipal.getController();
         controller.setContent(windowinit);
         vbContent.getChildren().clear();

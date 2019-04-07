@@ -114,7 +114,7 @@ public class FxComprasRealizadasController implements Initializable {
 
     }
 
-    public void fillPurchasesTable(short opcion, String value, String fechaInicial, String fechaFinal, String estadoCompra) {
+    public void fillPurchasesTable(short opcion, String value, String fechaInicial, String fechaFinal, int estadoCompra) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -219,7 +219,7 @@ public class FxComprasRealizadasController implements Initializable {
 
     @FXML
     private void onActionReload(ActionEvent event) {
-        fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+        fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), 0);
         this.txtSearch.setText("");
         cbEstadoCompra.getSelectionModel().select(0);
     }
@@ -227,7 +227,7 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private void onKeyPressedReload(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), 0);
             cbEstadoCompra.getSelectionModel().select(0);
             this.txtSearch.setText("");
         }
@@ -291,7 +291,7 @@ public class FxComprasRealizadasController implements Initializable {
                 && event.getCode() != KeyCode.PAUSE
                 && event.getCode() != KeyCode.ENTER) {
             if (!validationSearch) {
-                fillPurchasesTable((short) 0, txtSearch.getText().trim(), "", "", "");
+                fillPurchasesTable((short) 0, txtSearch.getText().trim(), "", "", 0);
                 cbEstadoCompra.getSelectionModel().select(0);
             }
         }
@@ -300,7 +300,7 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private void onActionFechaInicial(ActionEvent actionEvent) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), 0);
             cbEstadoCompra.getSelectionModel().select(0);
             this.txtSearch.setText("");
         }
@@ -309,7 +309,7 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private void onActionFechaFinal(ActionEvent actionEvent) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), 0);
             cbEstadoCompra.getSelectionModel().select(0);
             this.txtSearch.setText("");
         }
@@ -318,10 +318,10 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private void OnActionEstadoCompra(ActionEvent event) {
         if (cbEstadoCompra.getSelectionModel().getSelectedIndex() != 0) {
-            fillPurchasesTable((short) 2, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), cbEstadoCompra.getSelectionModel().getSelectedItem().getNombre().get());
+            fillPurchasesTable((short) 2, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), cbEstadoCompra.getSelectionModel().getSelectedItem().getIdDetalle().get());
             this.txtSearch.setText("");
         } else {
-            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), 0);
             cbEstadoCompra.getSelectionModel().select(0);
             this.txtSearch.setText("");
         }

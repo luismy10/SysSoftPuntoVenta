@@ -229,22 +229,28 @@ public class FxArticulosController implements Initializable {
     }
 
     private void onViewArticuloUpdateStock() throws IOException {
-        InitializationTransparentBackground();
-        URL url = getClass().getResource(Tools.FX_FILE_ACTUALIZAR_STOCK);
-        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
-        Parent parent = fXMLLoader.load(url.openStream());
-        //Controlller here
-        FxArticuloActualizarStockController controller = fXMLLoader.getController();
-        controller.setInitArticuloUpdateStock(this);
-        //
-        Stage stage = FxWindow.StageLoaderModal(parent, "Actualizar Stock", window.getScene().getWindow());
-        stage.setResizable(false);
-        stage.sizeToScene();
-        stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(Session.PANE);
-        });
-        stage.show();
-        controller.initComponents();
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_ACTUALIZAR_STOCK);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxArticuloActualizarStockController controller = fXMLLoader.getController();
+            controller.setInitArticuloController(this);
+            controller.loadArticuloStock(tvList.getSelectionModel().getSelectedItem().getIdArticulo(), tvList.getSelectionModel().getSelectedItem().getNombreMarca());
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Ajuste de inventario", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.PANE);
+            });
+            stage.show();
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "Debe seleccionar un artículo para realizar el ajuste de inventario", false);
+            tvList.requestFocus();
+        }
+
     }
 
     public void changeViewArticuloDetalle() {
@@ -354,7 +360,7 @@ public class FxArticulosController implements Initializable {
                 && event.getCode() != KeyCode.PAUSE
                 && event.getCode() != KeyCode.ENTER) {
             if (!status) {
-                fillArticlesTable(txtSearch.getText().trim());               
+                fillArticlesTable(txtSearch.getText().trim());
             }
         }
     }
@@ -378,7 +384,7 @@ public class FxArticulosController implements Initializable {
                     ? "/view/no-image.png"
                     : new File(articuloTB.getImagenTB()).toURI().toString()));
             seleccionadoController.getLblName().setText(articuloTB.getNombreMarca());
-            seleccionadoController.getLblPrice().setText(Session.MONEDA + " " + Tools.roundingValue(articuloTB.getPrecioVenta(), 2));
+            seleccionadoController.getLblPrice().setText(Session.MONEDA + " " + Tools.roundingValue(articuloTB.getPrecioVentaGeneral(), 2));
             seleccionadoController.getLblQuantity().setText(Tools.roundingValue(articuloTB.getCantidad(), 2));
 
 //            if (detalleController != null) {
@@ -425,15 +431,15 @@ public class FxArticulosController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedCantidad(KeyEvent event) {
+    private void onKeyPressedCantidad(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-
+            onViewArticuloUpdateStock();
         }
     }
 
     @FXML
     private void onActionCantidad(ActionEvent event) throws IOException {
-//        onViewArticuloUpdateStock();
+        onViewArticuloUpdateStock();
     }
 
     @FXML

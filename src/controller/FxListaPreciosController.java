@@ -52,27 +52,27 @@ public class FxListaPreciosController implements Initializable {
         ArticuloTB artPrices = ArticuloADO.GetItemPriceList(articuloTB.getIdArticulo());
         if (artPrices != null) {
             ObservableList<ArticuloTB> arrayList = FXCollections.observableArrayList();
-            if (artPrices.getPrecioVenta() >= 0) {
-                ArticuloTB a1 = new ArticuloTB();
-                a1.setId(1);
-                a1.setNombreGenerico("Precio 1");
-                a1.setPrecioCompra(artPrices.getPrecioVenta());
-                arrayList.add(a1);
-            }
-            if (artPrices.getPrecioVenta2() >= 0) {
-                ArticuloTB a1 = new ArticuloTB();
-                a1.setId(2);
-                a1.setNombreGenerico("Precio 2");
-                a1.setPrecioCompra(artPrices.getPrecioVenta2());
-                arrayList.add(a1);
-            }
-            if (artPrices.getPrecioVenta3() >= 0) {
-                ArticuloTB a1 = new ArticuloTB();
-                a1.setId(3);
-                a1.setNombreGenerico("Precio 3");
-                a1.setPrecioCompra(artPrices.getPrecioVenta3());
-                arrayList.add(a1);
-            }
+//            if (artPrices.getPrecioVenta() >= 0) {
+//                ArticuloTB a1 = new ArticuloTB();
+//                a1.setId(1);
+//                a1.setNombreGenerico("Precio 1");
+//                a1.setPrecioCompra(artPrices.getPrecioVenta());
+//                arrayList.add(a1);
+//            }
+//            if (artPrices.getPrecioVenta2() >= 0) {
+//                ArticuloTB a1 = new ArticuloTB();
+//                a1.setId(2);
+//                a1.setNombreGenerico("Precio 2");
+//                a1.setPrecioCompra(artPrices.getPrecioVenta2());
+//                arrayList.add(a1);
+//            }
+//            if (artPrices.getPrecioVenta3() >= 0) {
+//                ArticuloTB a1 = new ArticuloTB();
+//                a1.setId(3);
+//                a1.setNombreGenerico("Precio 3");
+//                a1.setPrecioCompra(artPrices.getPrecioVenta3());
+//                arrayList.add(a1);
+//            }
             tvList.setItems(arrayList);
             if(!tvList.getItems().isEmpty()){
                 tvList.requestFocus();
@@ -84,16 +84,16 @@ public class FxListaPreciosController implements Initializable {
     }
 
     private void onSelectPrice() {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioCompra());
-            articuloTB.setTotalImporte(
-                    (articuloTB.getCantidad() * articuloTB.getPrecioVenta())
-                    - articuloTB.getDescuento()
-            );
-            ventaController.getTvList().getItems().set(index, articuloTB);
-            ventaController.calculateTotales();
-            Tools.Dispose(window);
-        }
+//        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+//            articuloTB.setPrecioVenta(tvList.getSelectionModel().getSelectedItem().getPrecioCompra());
+//            articuloTB.setTotalImporte(
+//                    (articuloTB.getCantidad() * articuloTB.getPrecioVenta())
+//                    - articuloTB.getDescuento()
+//            );
+//            ventaController.getTvList().getItems().set(index, articuloTB);
+//            ventaController.calculateTotales();
+//            Tools.Dispose(window);
+//        }
     }
 
     @FXML
