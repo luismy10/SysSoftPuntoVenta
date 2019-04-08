@@ -312,6 +312,7 @@ public class FxCompraController implements Initializable {
                     articuloTB.setImpuestoArticulo(e.getImpuestoArticulo());
                     articuloTB.setLote(e.isLote());
                     articuloTB.setUnidadVenta(e.getUnidadVenta());
+                    articuloTB.setDescripcion(e.getDescripcion());
                     controller.setLoadEdit(articuloTB, tvList.getSelectionModel().getSelectedIndex(), loteTBs);
                 } catch (IOException ex) {
                     System.out.println(ex.getLocalizedMessage());
@@ -429,7 +430,7 @@ public class FxCompraController implements Initializable {
     private void onKeyTypedNumeracion(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && (c != '-')
-                && (c != '/') && (c != '+') && (c != '*') && (c != '(') && (c != ')') && (c != '|') && (c != '°')) {
+                && (c != '/') && (c != '+') && (c != '*') && (c != '(') && (c != ')') && (c != '|')) {
             event.consume();
         }
     }
@@ -451,6 +452,7 @@ public class FxCompraController implements Initializable {
         hbAgregarImpuesto.getChildren().clear();
         boolean addElement = false;
         double sumaElement = 0;
+        double totalImpuestos = 0;
         for (int k = 0; k < arrayArticulosImpuesto.size(); k++) {
             for (int i = 0; i < tvList.getItems().size(); i++) {
                 if (arrayArticulosImpuesto.get(k).getIdImpuesto() == tvList.getItems().get(i).getImpuestoArticulo()) {
@@ -461,13 +463,15 @@ public class FxCompraController implements Initializable {
             if (addElement) {
                 addElementImpuesto(arrayArticulosImpuesto.get(k).getIdImpuesto() + "", arrayArticulosImpuesto.get(k).getNombre(), monedaSimbolo, Tools.roundingValue(sumaElement, 2));
                 addElement = false;
+                totalImpuestos+=sumaElement;
                 sumaElement = 0;
             }
+            
         }
-
         tvList.getItems().forEach(e -> totalImporte += e.getTotalImporte());
-        lblTotal.setText(Tools.roundingValue(totalImporte, 2));
+        lblTotal.setText(Tools.roundingValue((totalImporte+totalImpuestos), 2));
         totalImporte = 0;
+        totalImpuestos=0;
     }
 
     private void addElementImpuesto(String id, String titulo, String moneda, String total) {

@@ -47,6 +47,8 @@ public class FxArticuloCompraController implements Initializable {
     private TextField txtUtilidad;
     @FXML
     private TextField txtPrecioVentaAgregado;
+    @FXML
+    private TextField txtObservacion;
 
     private FxCompraController compraController;
 
@@ -61,8 +63,6 @@ public class FxArticuloCompraController implements Initializable {
     private boolean loteedit;
 
     private int indexcompra;
-
-    private int unidadventa;
 
     private ObservableList<LoteTB> loteTBs;
 
@@ -116,13 +116,11 @@ public class FxArticuloCompraController implements Initializable {
         idArticulo = value[0];
         lblClave.setText(value[1]);
         lblDescripcion.setText(value[2]);
-        unidadventa = Integer.parseInt(value[3]);
-        txtCosto.setText("" + Double.parseDouble(value[4]));
-
-        txtPrecio.setText("" + Double.parseDouble(value[6]));
-        txtUtilidad.setText("0.00");
-
-        int impuesto = Integer.parseInt(value[17]);
+        txtCosto.setText("" + value[3]);
+        txtPrecio.setText("" + value[4]);
+        txtMargen.setText("" + value[5]);
+        txtUtilidad.setText("" + value[6]);
+        int impuesto = Integer.parseInt(value[7]);
         if (impuesto != 0) {
             for (int i = 0; i < cbImpuesto.getItems().size(); i++) {
                 if (cbImpuesto.getItems().get(i).getIdImpuesto() == impuesto) {
@@ -133,6 +131,7 @@ public class FxArticuloCompraController implements Initializable {
         } else {
             cbImpuesto.getSelectionModel().select(0);
         }
+
         validarlote = lote;
         this.lote = lote;
     }
@@ -142,7 +141,6 @@ public class FxArticuloCompraController implements Initializable {
         lblClave.setText(articuloTB.getClave());
         lblDescripcion.setText(articuloTB.getNombreMarca());
         txtCantidad.setText("" + articuloTB.getCantidad());
-        unidadventa = articuloTB.getUnidadVenta();
         txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompraReal(), 2));
         txtDescuento.setText(Tools.roundingValue(articuloTB.getDescuento(), 2));
 
@@ -168,6 +166,7 @@ public class FxArticuloCompraController implements Initializable {
         loteedit = true;
         this.loteTBs = loteTBs;
         cantidadinicial = articuloTB.getCantidad();
+        txtDescuento.setText(articuloTB.getDescripcion());
     }
 
     private void addArticulo(double costo) throws IOException {
@@ -176,7 +175,6 @@ public class FxArticuloCompraController implements Initializable {
         articuloTB.setClave(lblClave.getText());
         articuloTB.setNombreMarca(lblDescripcion.getText());
         articuloTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
-        articuloTB.setUnidadVenta(unidadventa);
 
         articuloTB.setDescuento(!Tools.isNumeric(txtDescuento.getText()) ? 0
                 : Double.parseDouble(txtDescuento.getText()));
@@ -202,6 +200,7 @@ public class FxArticuloCompraController implements Initializable {
         articuloTB.setPrecioUtilidadGeneral(Double.parseDouble(txtUtilidad.getText()));
 
         articuloTB.setLote(lote);
+        articuloTB.setDescripcion(txtDescuento.getText().isEmpty() ? "" : txtDescuento.getText());
 
         if (!validateStock(compraController.getTvList(), articuloTB) && !editarArticulo) {
             if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {

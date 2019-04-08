@@ -93,7 +93,10 @@ public class FxComprasRealizadasController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-        tcFechaCompra.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCompra().get().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))));
+        tcFechaCompra.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getFechaCompra().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))+"\n"+
+                cellData.getValue().getFechaCompra().format(DateTimeFormatter.ISO_LOCAL_TIME)
+        ));
         tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeracion()));
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getProveedorTB().getNumeroDocumento().get() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial().get()
@@ -173,7 +176,7 @@ public class FxComprasRealizadasController implements Initializable {
             for (int i = 0; i < tvList.getItems().size(); i++) {
                 list.add(new CompraTB(
                         tvList.getItems().get(i).getId(),
-                        tvList.getItems().get(i).getFechaCompra().get().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
+                        tvList.getItems().get(i).getFechaCompra().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
                         tvList.getItems().get(i).getNumeracion(),
                         tvList.getItems().get(i).getProveedorTB().getNumeroDocumento().get() + "\n" + tvList.getItems().get(i).getProveedorTB().getRazonSocial().get(),
                         tvList.getItems().get(i).getTipoMonedaName() + " " + Tools.roundingValue(tvList.getItems().get(i).getTotal().get(), 2)

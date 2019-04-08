@@ -156,11 +156,11 @@ public class FxCompraDetalleController implements Initializable {
             for (int i = 0; i < arrList.size(); i++) {
                 gpList.add(addElementGridPane("l1" + (i + 1), arrList.get(i).getId().get() + "", Pos.CENTER), 0, (i + 1));
                 gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getClave() + "\n" + arrList.get(i).getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
-                gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
-                gpList.add(addElementGridPane("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
-                gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
-                gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getImpuestoValor(), 2) + "%", Pos.CENTER_RIGHT), 5, (i + 1));
-                gpList.add(addElementGridPane("l7" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
+                gpList.add(addElementGridPane("l3" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
+                gpList.add(addElementGridPane("l4" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 3, (i + 1));
+                gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getImpuestoValor(), 2) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
+                gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 5, (i + 1));
+                gpList.add(addElementGridPane("l7" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_RIGHT), 6, (i + 1));
                 gpList.add(addElementGridPane("l8" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getTotalImporte(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
             }
             calcularTotales();
@@ -177,7 +177,7 @@ public class FxCompraDetalleController implements Initializable {
         ProveedorTB proveedorTB = (ProveedorTB) objects.get(1);
 
         if (compraTB != null) {
-            lblFechaCompra.setText(compraTB.getFechaCompra().get().format(DateTimeFormatter.ofPattern("EEEE d 'de' MMMM 'de' yyyy")));
+            lblFechaCompra.setText(compraTB.getFechaCompra().format(DateTimeFormatter.ofPattern("EEEE d 'de' MMMM 'de' yyyy")));
             lblComprobante.setText(compraTB.getComprobanteName());
             lblNumeracion.setText(compraTB.getNumeracion());
             lblObservacion.setText(compraTB.getObservaciones().equalsIgnoreCase("") ? "No tiene ninguna observación" : compraTB.getObservaciones());
@@ -221,6 +221,7 @@ public class FxCompraDetalleController implements Initializable {
             hbAgregarImpuesto.getChildren().clear();
             boolean addElement = false;
             double sumaElement = 0;
+            double totalImpuestos = 0;
             for (int k = 0; k < arrayArticulos.size(); k++) {
                 for (int i = 0; i < arrList.size(); i++) {
                     if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoArticulo()) {
@@ -230,14 +231,16 @@ public class FxCompraDetalleController implements Initializable {
                 }
                 if (addElement) {
                     addElementImpuesto(arrayArticulos.get(k).getIdImpuesto() + "", arrayArticulos.get(k).getNombre(), simboloMoneda + " " + Tools.roundingValue(sumaElement, 2));
+                    totalImpuestos+=sumaElement;
                     addElement = false;
                     sumaElement = 0;
                 }
             }
 
             arrList.forEach(e -> totalImporte += e.getTotalImporte());
-            lblTotal.setText(simboloMoneda + " " + Tools.roundingValue(totalImporte, 2));
+            lblTotal.setText(simboloMoneda + " " + Tools.roundingValue((totalImporte+totalImpuestos), 2));
             totalImporte = 0;
+            totalImpuestos=0;
         }
 
     }

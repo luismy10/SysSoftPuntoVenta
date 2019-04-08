@@ -132,7 +132,6 @@ public class FxArticuloListaController implements Initializable {
                     tvList.getSelectionModel().getSelectedItem().getIdArticulo(),
                     tvList.getSelectionModel().getSelectedItem().getClave(),
                     tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
-                    "" + tvList.getSelectionModel().getSelectedItem().getUnidadVenta(),
                     "" + tvList.getSelectionModel().getSelectedItem().getPrecioCompra(),
                     "" + tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral(),
                     "" + tvList.getSelectionModel().getSelectedItem().getPrecioMargenGeneral(),

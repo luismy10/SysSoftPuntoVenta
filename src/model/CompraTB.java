@@ -1,10 +1,8 @@
 package model;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import javafx.beans.property.ObjectProperty;
+import java.time.LocalDateTime;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
 
 public class CompraTB {
 
@@ -19,7 +17,7 @@ public class CompraTB {
     private String numeracion;
     private int tipoMoneda;
     private String tipoMonedaName;
-    private ObjectProperty<LocalDate> fechaCompra;
+    private LocalDateTime fechaCompra;
     private Timestamp fechaRegistro;
     private double subTotal;
     private double descuento;
@@ -127,16 +125,12 @@ public class CompraTB {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public ObjectProperty<LocalDate> getFechaCompra() {
+    public LocalDateTime getFechaCompra() {
         return fechaCompra;
     }
 
-    public void setFechaCompra(LocalDate fechaCompra) {
-        this.fechaCompra = new SimpleObjectProperty<>(fechaCompra);
-    }
-
-    public ObjectProperty<LocalDate> fechaCompraProperty() {
-        return fechaCompra;
+    public void setFechaCompra(LocalDateTime fechaCompra) {
+        this.fechaCompra = fechaCompra;
     }
 
     public double getSubTotal() {

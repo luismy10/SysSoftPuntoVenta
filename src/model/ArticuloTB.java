@@ -27,7 +27,8 @@ public class ArticuloTB {
     private String presentacionName;
 
     private int estado;
-
+    private SimpleStringProperty estadoName;
+    
     private double stockMinimo;
     private double stockMaximo;
     private double cantidad;
@@ -45,7 +46,6 @@ public class ArticuloTB {
     private boolean lote;
     private boolean inventario;
     private ImageView imageLote;
-    private SimpleStringProperty estadoName;
     private double descuento;
     private double descuentoSumado;
     private double subImporte;
@@ -60,7 +60,9 @@ public class ArticuloTB {
     private String impuestoArticuloName;
     private double impuestoValor;
     private double impuestoSumado;
-
+    
+    private String descripcion;
+    
     public ArticuloTB() {
 
     }
@@ -427,4 +429,14 @@ public class ArticuloTB {
     public void setDescuentoSumado(double descuentoSumado) {
         this.descuentoSumado = descuentoSumado;
     }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    
+    
 }

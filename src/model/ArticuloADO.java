@@ -511,10 +511,10 @@ public class ArticuloADO {
                 articuloTB.setClave(rsEmps.getString("Clave"));
                 articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
-                articuloTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
                 articuloTB.setEstadoName(rsEmps.getString("Estado"));
+                articuloTB.setTotalImporte(rsEmps.getDouble("Total"));
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {

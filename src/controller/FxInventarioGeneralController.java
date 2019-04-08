@@ -60,8 +60,8 @@ public class FxInventarioGeneralController implements Initializable {
                     gpList.add(addElementGridPane("l4" + (i + 1), listInventario.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
                     gpList.add(addElementGridPane("l5" + (i + 1), listInventario.get(i).getEstadoName().get(), Pos.CENTER_RIGHT), 4, (i + 1));
                     gpList.add(addElementGridPane("l6" + (i + 1), Session.MONEDA + Tools.roundingValue(listInventario.get(i).getPrecioCompra(), 2), Pos.CENTER_RIGHT), 5, (i + 1));
-                    gpList.add(addElementGridPane("l7" + (i + 1), Session.MONEDA + Tools.roundingValue((listInventario.get(i).getCantidad() * listInventario.get(i).getPrecioCompra()), 2), Pos.CENTER_RIGHT), 6, (i + 1));
-                    total += listInventario.get(i).getCantidad() * listInventario.get(i).getPrecioCompra();
+                    gpList.add(addElementGridPane("l7" + (i + 1), Session.MONEDA + Tools.roundingValue(listInventario.get(i).getTotalImporte(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
+                    total += listInventario.get(i).getTotalImporte();
                 }
                 lblValoTotal.setText(Session.MONEDA + Tools.roundingValue(total, 2));
             }
