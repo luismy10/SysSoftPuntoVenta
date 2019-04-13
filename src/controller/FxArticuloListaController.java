@@ -176,7 +176,8 @@ public class FxArticuloListaController implements Initializable {
             articuloTB.setImpuestoArticuloName(ventaController.getTaxName(tvList.getSelectionModel().getSelectedItem().getImpuestoArticulo()));
             articuloTB.setImpuestoValor(ventaController.getTaxValue(tvList.getSelectionModel().getSelectedItem().getImpuestoArticulo()));
             articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVentaGeneral()* (articuloTB.getImpuestoValor() / 100.00)));
-
+            
+            articuloTB.setSubImporteDescuento(articuloTB.getSubImporte()-articuloTB.getDescuentoSumado()); 
             Tools.Dispose(window);
             ventaController.getAddArticulo(articuloTB);
         }

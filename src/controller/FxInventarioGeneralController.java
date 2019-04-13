@@ -34,6 +34,7 @@ public class FxInventarioGeneralController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
     }
+    
 
     public void fillInventarioTable() {
         ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {

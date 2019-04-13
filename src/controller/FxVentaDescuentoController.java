@@ -56,7 +56,9 @@ public class FxVentaDescuentoController implements Initializable {
                 articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaGeneral());
 
                 articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVentaGeneral() * (ventaController.getTaxValue(articuloTB.getImpuestoArticulo()) / 100.00)));
-
+                
+                articuloTB.setSubImporteDescuento(articuloTB.getSubImporte()-articuloTB.getDescuentoSumado()); 
+                
                 ventaController.getTvList().getItems().set(index, articuloTB);
                 ventaController.calculateTotales();
                 Tools.Dispose(window);
@@ -85,7 +87,8 @@ public class FxVentaDescuentoController implements Initializable {
             articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaGeneral());
 
             articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVentaGeneral() * (ventaController.getTaxValue(articuloTB.getImpuestoArticulo()) / 100.00)));
-
+            
+             articuloTB.setSubImporteDescuento(articuloTB.getSubImporte()-articuloTB.getDescuentoSumado()); 
             ventaController.getTvList().getItems().set(index, articuloTB);
             ventaController.calculateTotales();
             Tools.Dispose(window);

@@ -200,7 +200,7 @@ public class FxArticuloCompraController implements Initializable {
         articuloTB.setPrecioUtilidadGeneral(Double.parseDouble(txtUtilidad.getText()));
 
         articuloTB.setLote(lote);
-        articuloTB.setDescripcion(txtDescuento.getText().isEmpty() ? "" : txtDescuento.getText());
+        articuloTB.setDescripcion(txtObservacion.getText().isEmpty() ? "" : txtObservacion.getText());
 
         if (!validateStock(compraController.getTvList(), articuloTB) && !editarArticulo) {
             if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {

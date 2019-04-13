@@ -95,7 +95,7 @@ public class FxComprasRealizadasController implements Initializable {
         tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         tcFechaCompra.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getFechaCompra().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))+"\n"+
-                cellData.getValue().getFechaCompra().format(DateTimeFormatter.ISO_LOCAL_TIME)
+                cellData.getValue().getFechaCompra().format(DateTimeFormatter.ofPattern("hh:mm:ss a"))
         ));
         tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeracion()));
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
@@ -156,7 +156,7 @@ public class FxComprasRealizadasController implements Initializable {
             ScrollPane node = fXMLPrincipal.load();
             FxCompraDetalleController controller = fXMLPrincipal.getController();
             controller.setInitComptrasController(this, windowinit, vbContent);
-            controller.setLoadDetalle(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getEstadoName(), tvList.getSelectionModel().getSelectedItem().getTotal().get());
+            controller.setLoadDetalle(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getTotal().get());
             vbContent.getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);

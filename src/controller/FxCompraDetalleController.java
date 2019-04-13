@@ -106,9 +106,9 @@ public class FxCompraDetalleController implements Initializable {
 
     private String idCompra;
 
-    private String estadoCompra;
-
     private double total;
+    
+    private String estadoCompra;
 
     private String simboloMoneda;
 
@@ -168,9 +168,8 @@ public class FxCompraDetalleController implements Initializable {
 
     }
 
-    public void setLoadDetalle(String idCompra, String estadoCompra, double total) {
+    public void setLoadDetalle(String idCompra, double total) {
         this.idCompra = idCompra;
-        this.estadoCompra = estadoCompra;
         this.total = total;
         ArrayList<Object> objects = CompraADO.ListCompletaDetalleCompra(idCompra);
         CompraTB compraTB = (CompraTB) objects.get(0);
@@ -185,7 +184,7 @@ public class FxCompraDetalleController implements Initializable {
             lblEstado.setText(compraTB.getTipoName() + " - " + compraTB.getEstadoName());
             lblTotalCompra.setText(compraTB.getTipoMonedaName() + " " + Tools.roundingValue(compraTB.getTotal().get(), 2));
             simboloMoneda = compraTB.getTipoMonedaName();
-
+            estadoCompra=compraTB.getEstadoName();
         }
 
         if (proveedorTB != null) {
@@ -211,7 +210,7 @@ public class FxCompraDetalleController implements Initializable {
             subImporte = 0;
 
             arrList.forEach(e -> descuento += e.getDescuentoSumado());
-            lblDescuento.setText(simboloMoneda + " " + Tools.roundingValue(descuento, 2));
+            lblDescuento.setText(simboloMoneda + " -" + Tools.roundingValue(descuento, 2));
             descuento = 0;
 
             arrList.forEach(e -> subTotalImporte += e.getSubImporteDescuento());
@@ -240,9 +239,7 @@ public class FxCompraDetalleController implements Initializable {
             arrList.forEach(e -> totalImporte += e.getTotalImporte());
             lblTotal.setText(simboloMoneda + " " + Tools.roundingValue((totalImporte+totalImpuestos), 2));
             totalImporte = 0;
-            totalImpuestos=0;
         }
-
     }
 
     private void addElementImpuesto(String id, String titulo, String total) {
@@ -351,7 +348,7 @@ public class FxCompraDetalleController implements Initializable {
         if (estadoCompra.equals("PENDIENTE".toUpperCase())) {
             openWindowHistorialPagos();
         } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Compra", "La compra se hiso al contado", false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Compra", "La compra no tiene abonos que realizar.", false);
         }
     }
 

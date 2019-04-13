@@ -9,7 +9,7 @@ public class DBUtil {
     private static Connection connection = null;
     private static final String DIRECTION = "localhost";
     private static final String PORT = "1433";
-    private static final String DBNAME = "PuntoVentaSysSoftDB";
+    private static final String DBNAME = "PuntoVentaSysSoftDBDesarrollo";
     private static final String USER = "sa";
     private static final String PASSWORD = "123456";//Qz0966lb
     private static final String URL = "jdbc:sqlserver://" + DIRECTION + ":" + PORT + ";databaseName=" + DBNAME + "";
