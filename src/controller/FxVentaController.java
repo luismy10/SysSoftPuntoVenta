@@ -197,20 +197,12 @@ public class FxVentaController implements Initializable {
         monedaSimbolo = "M";
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
         initTable();
-        tcArticulo.setMaxWidth(1f * Integer.MAX_VALUE*40);
-        tcCantidad.setMaxWidth(1f * Integer.MAX_VALUE*12);
-        tcPrecio.setMaxWidth(1f * Integer.MAX_VALUE*12);
-        tcDescuento.setMaxWidth(1f * Integer.MAX_VALUE*12);
-        tcImpuesto.setMaxWidth(1f * Integer.MAX_VALUE*12);
-        tcImporte.setMaxWidth(1f * Integer.MAX_VALUE*12);
-        /*
-         tcArticulo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
-        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
-        tcPrecio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
-        tcDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
-        tcImpuesto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
-        tcImporte.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
-        */
+        tcArticulo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
+        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcPrecio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcImpuesto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcImporte.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         loadWindow();
     }
 

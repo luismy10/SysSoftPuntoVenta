@@ -162,6 +162,13 @@ public class FxCompraController implements Initializable {
 
         initTable();
 
+        tcArticulo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
+        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcCosto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcImpuesto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcImporte.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+
     }
 
     private void initTable() {
@@ -232,7 +239,7 @@ public class FxCompraController implements Initializable {
 //            Controlller here
             FxCompraProcesoController controller = fXMLLoader.getController();
             controller.setInitCompraController(this);
-            controller.setLoadProcess(compraTB,tvList,loteTBs,lblTotal.getText(),txtProveedor.getText(),monedaSimbolo);
+            controller.setLoadProcess(compraTB, tvList, loteTBs, lblTotal.getText(), txtProveedor.getText(), monedaSimbolo);
 
             Stage stage = FxWindow.StageLoaderModal(parent, "Pago de la compra", window.getScene().getWindow());
             stage.setResizable(false);
@@ -463,15 +470,15 @@ public class FxCompraController implements Initializable {
             if (addElement) {
                 addElementImpuesto(arrayArticulosImpuesto.get(k).getIdImpuesto() + "", arrayArticulosImpuesto.get(k).getNombre(), monedaSimbolo, Tools.roundingValue(sumaElement, 2));
                 addElement = false;
-                totalImpuestos+=sumaElement;
+                totalImpuestos += sumaElement;
                 sumaElement = 0;
             }
-            
+
         }
         tvList.getItems().forEach(e -> totalImporte += e.getTotalImporte());
-        lblTotal.setText(Tools.roundingValue((totalImporte+totalImpuestos), 2));
+        lblTotal.setText(Tools.roundingValue((totalImporte + totalImpuestos), 2));
         totalImporte = 0;
-        totalImpuestos=0;
+        totalImpuestos = 0;
     }
 
     private void addElementImpuesto(String id, String titulo, String moneda, String total) {

@@ -12,6 +12,8 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -89,9 +91,12 @@ public class FxArticuloReportesController implements Initializable {
         stateRequest = true;
         cbUnidadVenta.getItems().addAll("Todos", "Por Unidad/Pza", "A Granel(Peso)");
         cbUnidadVenta.getSelectionModel().select(0);
+        
+        cbCategoria.getItems().add(new DetalleTB(new SimpleIntegerProperty(0), new SimpleStringProperty("Todos")));
         DetalleADO.GetDetailId("0006").forEach(e -> {
             cbCategoria.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
+        cbCategoria.getSelectionModel().select(0);
     }
 
     public void fillArticlesTable(int unidadVenta, int categoria) {
