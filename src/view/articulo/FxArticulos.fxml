@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticulosController">
+<VBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticulosController">
    <children>
       <HBox VBox.vgrow="ALWAYS">
          <children>
@@ -43,7 +43,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar">
+                              <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar(F1)">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -52,7 +52,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar">
+                              <Button mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar(F2)">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -61,25 +61,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionRemove" onKeyPressed="#onKeyPressedRemove" styleClass="buttonLight" text="Eliminar">
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../remove.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionReload" onKeyPressed="#onKeyPressedReload" styleClass="buttonLight" text="Recargar">
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../reload.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionCantidad" onKeyPressed="#onKeyPressedCantidad" styleClass="buttonLight" text="Cantidad">
+                              <Button mnemonicParsing="false" onAction="#onActionCantidad" onKeyPressed="#onKeyPressedCantidad" styleClass="buttonLight" text="Cantidad(F3)">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -88,11 +70,29 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionClone" onKeyPressed="#onKeyPressedClone" styleClass="buttonLight" text="Clonar">
+                              <Button mnemonicParsing="false" onAction="#onActionClone" onKeyPressed="#onKeyPressedClone" styleClass="buttonLight" text="Clonar(F4)">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../clone.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionReload" onKeyPressed="#onKeyPressedReload" styleClass="buttonLight" text="Recargar(F5)">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../reload.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionRemove" onKeyPressed="#onKeyPressedRemove" styleClass="buttonLight" text="Eliminar(SUPR)">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../remove.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -107,9 +107,19 @@
                            <children>
                               <HBox spacing="10.0">
                                  <children>
+                                    <VBox spacing="10.0">
+                                       <children>
+                                          <Label styleClass="labelRoboto14" text="Buscar po clave o clave alterna(F7)" textFill="#1a2226">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="txtSearchCode" onAction="#onActionSearch" onKeyReleased="#onKeyReleasedSearchCode" prefHeight="30.0" promptText="Buscar...." />
+                                       </children>
+                                    </VBox>
                                     <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Código del artículo o descripción ejemplo (456798123, detergente ahora más)" textFill="#1a2226">
+                                          <Label styleClass="labelRoboto14" text="Buscar por la Descripción(F8)" textFill="#1a2226">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -119,12 +129,12 @@
                                     </VBox>
                                     <VBox spacing="10.0">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Categoría" textFill="#1a2226">
+                                          <Label styleClass="labelRoboto14" text="Categoría(F9)" textFill="#1a2226">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox fx:id="cbCategoria" onAction="#onActionCategoria" prefHeight="30.0" prefWidth="210.0" />
+                                          <ComboBox fx:id="cbCategoria" onAction="#onActionCategoria" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -132,10 +142,10 @@
                               <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyPressed="#onKeyPressedList" onKeyReleased="#onKeyRelasedList" onMouseClicked="#onMouseClickedList" prefHeight="327.0" VBox.vgrow="ALWAYS">
                                  <columns>
                                     <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                                    <TableColumn fx:id="tcDocument" prefWidth="280.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
+                                    <TableColumn fx:id="tcDocument" prefWidth="290.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
                                     <TableColumn fx:id="tcMarca" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Marca" />
-                                    <TableColumn fx:id="tcUnidadVenta" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Medida" />
-                                    <TableColumn fx:id="tcCategoria" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Categoría" />
+                                    <TableColumn fx:id="tcUnidadVenta" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Medida" />
+                                    <TableColumn fx:id="tcCategoria" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Categoría" />
                                     <TableColumn fx:id="tcEstado" prefWidth="90.0" style="-fx-alignment: CENTER;" text="Estado" />
                                  </columns>
                               </TableView>

@@ -182,7 +182,7 @@
                         <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="298.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                              <TableColumn fx:id="tcFechaVenta" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de venta" />
+                              <TableColumn fx:id="tcFechaVenta" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de venta" />
                               <TableColumn fx:id="tcCliente" prefWidth="190.0" style="-fx-alignment: CENTER-LEFT;" text="Cliente" />
                               <TableColumn fx:id="tcSerie" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Serie/Numeración" />
                               <TableColumn fx:id="tcTipo" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de Venta" />

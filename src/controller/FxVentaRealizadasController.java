@@ -79,7 +79,10 @@ public class FxVentaRealizadasController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-        tcFechaVenta.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaVenta().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))));
+        tcFechaVenta.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getFechaVenta().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))+"\n"+
+                cellData.getValue().getFechaVenta().format(DateTimeFormatter.ofPattern("hh:mm:ss a"))
+        ));
         tcCliente.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCliente()));
         tcTipo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoName()));
         tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName()));

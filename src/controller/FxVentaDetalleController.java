@@ -64,11 +64,11 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private GridPane gpList;
     @FXML
-    private Text lblSubTotal;
+    private Text lblValorVenta;
     @FXML
     private Text lblDescuento;
     @FXML
-    private Text lblSubTotalNuevo;
+    private Text lblSubTotal;
     @FXML
     private VBox hbAgregarImpuesto;
 
@@ -259,7 +259,7 @@ public class FxVentaDetalleController implements Initializable {
                         } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
                             fieldTicket.setText(Tools.roundingValue(arrList.get(m).getCantidad(), 2));
                         } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
-                            fieldTicket.setText(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneralReal(), 2));
+                            fieldTicket.setText(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral(), 2));
                         } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
                             fieldTicket.setText(Tools.roundingValue(arrList.get(m).getDescuento(), 0) + "%");
                         } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
@@ -279,12 +279,12 @@ public class FxVentaDetalleController implements Initializable {
                 rows++;
                 for (int j = 0; j < box.getChildren().size(); j++) {
                     TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
-                    if (fieldTicket.getVariable().equalsIgnoreCase("imptotal")) {
-                        fieldTicket.setText(lblSubTotalNuevo.getText());
-                    } else if (fieldTicket.getVariable().equalsIgnoreCase("subtotal")) {
-                        fieldTicket.setText(lblSubTotal.getText());
+                    if (fieldTicket.getVariable().equalsIgnoreCase("subtotal")) {
+                        fieldTicket.setText(lblValorVenta.getText());
                     } else if (fieldTicket.getVariable().equalsIgnoreCase("dscttotal")) {
                         fieldTicket.setText(lblDescuento.getText());
+                    } else if (fieldTicket.getVariable().equalsIgnoreCase("imptotal")) {
+                        fieldTicket.setText(lblSubTotal.getText());
                     } else if (fieldTicket.getVariable().equalsIgnoreCase("totalpagar")) {
                         fieldTicket.setText(lblTotal.getText());
                     } else if (fieldTicket.getVariable().equalsIgnoreCase("efectivo")) {
@@ -424,9 +424,9 @@ public class FxVentaDetalleController implements Initializable {
             FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
 
-            FxVentaAbonoController controller = fXMLLoader.getController();           
+            FxVentaAbonoController controller = fXMLLoader.getController();
             controller.setInitVentaAbonoController(this);
-                    
+
             Stage stage = FxWindow.StageLoaderModal(parent, "Historial de abonos", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
@@ -434,8 +434,8 @@ public class FxVentaDetalleController implements Initializable {
                 windowinit.getChildren().remove(Session.PANE);
             });
             stage.show();
-           controller.loadInitData(idVenta,simboloMoneda);
-           
+            controller.loadInitData(idVenta, simboloMoneda);
+
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }
@@ -444,20 +444,21 @@ public class FxVentaDetalleController implements Initializable {
     private void calcularTotales() {
         if (arrList != null) {
             arrList.forEach(e -> subImporte += e.getSubImporte());
-            lblSubTotal.setText(simboloMoneda + " " + Tools.roundingValue(subImporte, 2));
+            lblValorVenta.setText(simboloMoneda + " " + Tools.roundingValue(subImporte, 2));
             subImporte = 0;
 
             arrList.forEach(e -> descuento += e.getDescuentoSumado());
-            lblDescuento.setText(simboloMoneda + " " + Tools.roundingValue(descuento, 2));
+            lblDescuento.setText(simboloMoneda + " -" + Tools.roundingValue(descuento, 2));
             descuento = 0;
 
             arrList.forEach(e -> subTotalImporte += e.getSubImporteDescuento());
-            lblSubTotalNuevo.setText(simboloMoneda + " " + Tools.roundingValue(subTotalImporte, 2));
+            lblSubTotal.setText(simboloMoneda + " " + Tools.roundingValue(subTotalImporte, 2));
             subTotalImporte = 0;
 
             hbAgregarImpuesto.getChildren().clear();
             boolean addElement = false;
             double sumaElement = 0;
+            double totalImpuestos = 0;
             for (int k = 0; k < arrayArticulos.size(); k++) {
                 for (int i = 0; i < arrList.size(); i++) {
                     if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoArticulo()) {
@@ -467,13 +468,14 @@ public class FxVentaDetalleController implements Initializable {
                 }
                 if (addElement) {
                     addElementImpuesto(arrayArticulos.get(k).getIdImpuesto() + "", arrayArticulos.get(k).getNombre(), simboloMoneda + " " + Tools.roundingValue(sumaElement, 2));
+                    totalImpuestos += sumaElement;
                     addElement = false;
                     sumaElement = 0;
                 }
             }
 
             arrList.forEach(e -> totalImporte += e.getTotalImporte());
-            lblTotal.setText(simboloMoneda + " " + Tools.roundingValue(totalImporte, 2));
+            lblTotal.setText(simboloMoneda + " " + Tools.roundingValue(totalImporte + totalImpuestos, 2));
             totalImporte = 0;
         }
 

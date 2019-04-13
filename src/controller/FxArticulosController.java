@@ -71,9 +71,71 @@ public class FxArticulosController implements Initializable {
     private FxArticuloSeleccionadoController seleccionadoController;
 
     private FxArticuloDetalleController detalleController;
+    @FXML
+    private TextField txtSearchCode;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        window.setOnKeyReleased((KeyEvent event) -> {
+            try {
+                if (null != event.getCode()) {
+                    switch (event.getCode()) {
+
+                        case F1:
+                            onViewArticuloAdd();
+                            event.consume();
+                            break;
+                        case F2:
+                            onViewArticuloEdit();
+                            event.consume();
+                            break;
+                        case F3:
+                            onViewArticuloUpdateStock();
+                            event.consume();
+                            break;
+                        case F4:
+                            onViewArticuloClone();
+                            event.consume();
+                            break;
+                        case F5:
+                            if (!status) {
+                                fillArticlesTable((short) 1, "", 0);
+                                if (!tvList.getItems().isEmpty()) {
+                                    tvList.getSelectionModel().select(0);
+                                }
+                            }
+                            event.consume();
+                            break;
+                        case F6:
+
+                            event.consume();
+                            break;
+                        case F7:
+                            txtSearchCode.requestFocus();
+                            txtSearchCode.selectAll();
+                            event.consume();
+                            break;
+                        case F8:
+                            txtSearch.requestFocus();
+                            txtSearch.selectAll();
+                            event.consume();
+                            break;
+                        case F9:
+                            cbCategoria.requestFocus();
+                            break;
+                        case DELETE:
+                            removedArticulo();
+                            break;
+                        default:
+
+                            break;
+                    }
+                }
+            } catch (IOException ex) {
+                System.out.println(ex.getLocalizedMessage());
+            }
+        });
+
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocument.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()
@@ -109,7 +171,7 @@ public class FxArticulosController implements Initializable {
         }
     }
 
-    public void fillArticlesTable(String value) {
+    public void fillArticlesTable(short option, String value, int categoria) {
         ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -119,7 +181,7 @@ public class FxArticulosController implements Initializable {
         Task<ObservableList<ArticuloTB>> task = new Task<ObservableList<ArticuloTB>>() {
             @Override
             public ObservableList<ArticuloTB> call() {
-                return ArticuloADO.ListArticulos(value);
+                return ArticuloADO.ListArticulos(option, value, categoria);
             }
         };
 
@@ -268,6 +330,30 @@ public class FxArticulosController implements Initializable {
         }
     }
 
+    private void removedArticulo() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Artículo", "Está seguro de eliminar el artículo", true);
+            if (value == 1) {
+                String result = ArticuloADO.RemoveArticulo(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
+                if (result.equalsIgnoreCase("compra")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "El artículo esta ligado a una compra, no se puede eliminar hasta que la compra sea borrada", false);
+                } else if (result.equalsIgnoreCase("venta")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "El artículo esta ligado a una venta, no se puede eliminar hasta que la venta sea borrada", false);
+                } else if (result.equalsIgnoreCase("removed")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Artículo", "Se elimino correctamente", false);
+                    if (!status) {
+                        fillArticlesTable((short) 1, txtSearch.getText().trim(), 0);
+                    }
+                } else {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Artículo", result, false);
+
+                }
+            }
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "Seleccione un item para eliminarlo", false);
+        }
+    }
+
     @FXML
     private void onActionAdd(ActionEvent event) throws IOException {
         onViewArticuloAdd();
@@ -295,7 +381,7 @@ public class FxArticulosController implements Initializable {
     @FXML
     private void onActionReload(ActionEvent event) {
         if (!status) {
-            fillArticlesTable("");
+            fillArticlesTable((short) 1, "", 0);
             if (!tvList.getItems().isEmpty()) {
                 tvList.getSelectionModel().select(0);
             }
@@ -306,7 +392,7 @@ public class FxArticulosController implements Initializable {
     private void onKeyPressedReload(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             if (!status) {
-                fillArticlesTable("");
+                fillArticlesTable((short) 1, "", 0);
                 if (!tvList.getItems().isEmpty()) {
                     tvList.getSelectionModel().select(0);
                 }
@@ -360,7 +446,50 @@ public class FxArticulosController implements Initializable {
                 && event.getCode() != KeyCode.PAUSE
                 && event.getCode() != KeyCode.ENTER) {
             if (!status) {
-                fillArticlesTable(txtSearch.getText().trim());
+                fillArticlesTable((short) 1, txtSearch.getText().trim(), 0);
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedSearchCode(KeyEvent event) {
+        if (event.getCode() != KeyCode.ESCAPE
+                && event.getCode() != KeyCode.F1
+                && event.getCode() != KeyCode.F2
+                && event.getCode() != KeyCode.F3
+                && event.getCode() != KeyCode.F4
+                && event.getCode() != KeyCode.F5
+                && event.getCode() != KeyCode.F6
+                && event.getCode() != KeyCode.F7
+                && event.getCode() != KeyCode.F8
+                && event.getCode() != KeyCode.F9
+                && event.getCode() != KeyCode.F10
+                && event.getCode() != KeyCode.F11
+                && event.getCode() != KeyCode.F12
+                && event.getCode() != KeyCode.ALT
+                && event.getCode() != KeyCode.CONTROL
+                && event.getCode() != KeyCode.UP
+                && event.getCode() != KeyCode.DOWN
+                && event.getCode() != KeyCode.RIGHT
+                && event.getCode() != KeyCode.LEFT
+                && event.getCode() != KeyCode.TAB
+                && event.getCode() != KeyCode.CAPS
+                && event.getCode() != KeyCode.SHIFT
+                && event.getCode() != KeyCode.HOME
+                && event.getCode() != KeyCode.WINDOWS
+                && event.getCode() != KeyCode.ALT_GRAPH
+                && event.getCode() != KeyCode.CONTEXT_MENU
+                && event.getCode() != KeyCode.END
+                && event.getCode() != KeyCode.INSERT
+                && event.getCode() != KeyCode.PAGE_UP
+                && event.getCode() != KeyCode.PAGE_DOWN
+                && event.getCode() != KeyCode.NUM_LOCK
+                && event.getCode() != KeyCode.PRINTSCREEN
+                && event.getCode() != KeyCode.SCROLL_LOCK
+                && event.getCode() != KeyCode.PAUSE
+                && event.getCode() != KeyCode.ENTER) {
+            if (!status) {
+                fillArticlesTable((short) 2, txtSearchCode.getText().trim(), 0);
             }
         }
     }
@@ -444,89 +573,19 @@ public class FxArticulosController implements Initializable {
 
     @FXML
     private void onKeyPressedRemove(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Artículo", "Está seguro de eliminar el artículo", true);
-                if (value == 1) {
-                    String result = ArticuloADO.RemoveArticulo(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
-                    if (result.equalsIgnoreCase("compra")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "El artículo esta ligado a una compra, no se puede eliminar hasta que la compra sea borrada", false);
-                    } else if (result.equalsIgnoreCase("venta")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "El artículo esta ligado a una venta, no se puede eliminar hasta que la venta sea borrada", false);
-                    } else if (result.equalsIgnoreCase("removed")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Artículo", "Se elimino correctamente", false);
-                        if (!status) {
-                            fillArticlesTable(txtSearch.getText().trim());
-                        }
-                    } else {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Artículo", result, false);
-
-                    }
-                }
-            } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "Seleccione un item para eliminarlo", false);
-            }
-
-        }
+        removedArticulo();
     }
 
     @FXML
     private void onActionRemove(ActionEvent event) {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Artículo", "Está seguro de eliminar el artículo", true);
-            if (value == 1) {
-                String result = ArticuloADO.RemoveArticulo(tvList.getSelectionModel().getSelectedItem().getIdArticulo());
-                if (result.equalsIgnoreCase("compra")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "El artículo esta ligado a una compra, no se puede eliminar hasta que la compra sea borrada", false);
-                } else if (result.equalsIgnoreCase("venta")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "El artículo esta ligado a una venta, no se puede eliminar hasta que la venta sea borrada", false);
-                } else if (result.equalsIgnoreCase("removed")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Artículo", "Se elimino correctamente", false);
-                    if (!status) {
-                        fillArticlesTable(txtSearch.getText().trim());
-                    }
-                } else {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Artículo", result, false);
-
-                }
-            }
-        } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "Seleccione un item para eliminarlo", false);
-        }
+        removedArticulo();
     }
 
     @FXML
     private void onActionCategoria(ActionEvent event) {
         if (cbCategoria.getSelectionModel().getSelectedIndex() >= 1) {
-
-            ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
-                Thread t = new Thread(runnable);
-                t.setDaemon(true);
-                return t;
-            });
-
-            Task<ObservableList<ArticuloTB>> task = new Task<ObservableList<ArticuloTB>>() {
-                @Override
-                public ObservableList<ArticuloTB> call() {
-                    return ArticuloADO.ListArticulosCategoria(cbCategoria.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                }
-            };
-
-            task.setOnSucceeded((WorkerStateEvent e) -> {
-                tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
-                lblLoad.setVisible(false);
-            });
-            task.setOnFailed((WorkerStateEvent e) -> {
-                lblLoad.setVisible(false);
-            });
-
-            task.setOnScheduled((WorkerStateEvent e) -> {
-                lblLoad.setVisible(true);
-            });
-            exec.execute(task);
-
-            if (!exec.isShutdown()) {
-                exec.shutdown();
+            if (!status) {
+                fillArticlesTable((short) 0, "", cbCategoria.getSelectionModel().getSelectedItem().getIdDetalle().get());
             }
         }
     }

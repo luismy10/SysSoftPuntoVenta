@@ -92,7 +92,7 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setRightAnchor(nodeArticulo, 0d);
         AnchorPane.setBottomAnchor(nodeArticulo, 0d);
         content.getChildren().add(nodeArticulo);
-        controllerArticulo.fillArticlesTable("");
+        controllerArticulo.fillArticlesTable((short)1,"",0);
 
     }
 

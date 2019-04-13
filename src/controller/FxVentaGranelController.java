@@ -59,10 +59,12 @@ public class FxVentaGranelController implements Initializable {
 
                 articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaGeneralReal());
                 articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaGeneral());
-          
+
                 articuloTB.setImpuestoArticuloName(ventaController.getTaxName(articuloTB.getImpuestoArticulo()));
                 articuloTB.setImpuestoValor(ventaController.getTaxValue(articuloTB.getImpuestoArticulo()));
                 articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVentaGeneral() * (articuloTB.getImpuestoValor() / 100.00)));
+
+                articuloTB.setSubImporteDescuento(articuloTB.getSubImporte() - articuloTB.getDescuentoSumado());
 
                 ventaController.getTvList().getItems().set(index, articuloTB);
                 ventaController.calculateTotales();
@@ -82,10 +84,12 @@ public class FxVentaGranelController implements Initializable {
 
                 articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaGeneralReal());
                 articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaGeneral());
-                
+
                 articuloTB.setImpuestoArticuloName(ventaController.getTaxName(articuloTB.getImpuestoArticulo()));
                 articuloTB.setImpuestoValor(ventaController.getTaxValue(articuloTB.getImpuestoArticulo()));
                 articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVentaGeneral() * (articuloTB.getImpuestoValor() / 100.00)));
+
+                articuloTB.setSubImporteDescuento(articuloTB.getSubImporte() - articuloTB.getDescuentoSumado());
 
                 ventaController.getTvList().getItems().set(index, articuloTB);
                 ventaController.calculateTotales();
@@ -114,7 +118,6 @@ public class FxVentaGranelController implements Initializable {
             Tools.Dispose(window);
             ventaController.getTxtSearch().requestFocus();
             ventaController.getTxtSearch().clear();
-
         }
     }
 

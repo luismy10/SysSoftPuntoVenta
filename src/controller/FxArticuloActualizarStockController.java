@@ -52,7 +52,7 @@ public class FxArticuloActualizarStockController implements Initializable {
                     Tools.Dispose(window);
                     articulosController.getTxtSearch().requestFocus();
                     articulosController.getTxtSearch().selectAll();
-                    articulosController.fillArticlesTable(articulosController.getTxtSearch().getText());
+                    articulosController.fillArticlesTable((short)1,articulosController.getTxtSearch().getText(),0);
                 } else if (result.equalsIgnoreCase("inventario")) {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "El artículo no tiene la opción de inventario", false);
                 } else {

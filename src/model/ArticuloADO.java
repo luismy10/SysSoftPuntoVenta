@@ -253,15 +253,17 @@ public class ArticuloADO {
         }
     }
 
-    public static ObservableList<ArticuloTB> ListArticulos(String value) {
-        String selectStmt = "{call Sp_Listar_Articulo(?)}";
+    public static ObservableList<ArticuloTB> ListArticulos(short option,String value,int categoria) {
+        String selectStmt = "{call Sp_Listar_Articulo(?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<ArticuloTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, value);
+            preparedStatement.setShort(1, option);
+            preparedStatement.setString(2, value);
+            preparedStatement.setInt(3, categoria);
             rsEmps = preparedStatement.executeQuery();
 
             while (rsEmps.next()) {
@@ -273,51 +275,6 @@ public class ArticuloADO {
                 articuloTB.setMarcaName(rsEmps.getString("Marca"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
-                articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
-                articuloTB.setCategoriaName(rsEmps.getString("Categoria"));
-                articuloTB.setEstadoName(rsEmps.getString("Estado"));
-                articuloTB.setImagenTB(rsEmps.getString("Imagen"));
-                empList.add(articuloTB);
-            }
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
-
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (rsEmps != null) {
-                    rsEmps.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-
-            }
-        }
-        return empList;
-    }
-
-    public static ObservableList<ArticuloTB> ListArticulosCategoria(int value) {
-        String selectStmt = "{call Sp_Listar_Articulo_Categoria(?)}";
-        PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
-        ObservableList<ArticuloTB> empList = FXCollections.observableArrayList();
-        try {
-            DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setInt(1, value);
-            rsEmps = preparedStatement.executeQuery();
-
-            while (rsEmps.next()) {
-                ArticuloTB articuloTB = new ArticuloTB();
-                articuloTB.setId(rsEmps.getRow());
-                articuloTB.setIdArticulo(rsEmps.getString("IdArticulo"));
-                articuloTB.setClave(rsEmps.getString("Clave"));
-                articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                articuloTB.setMarcaName(rsEmps.getString("Marca"));
-                articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                articuloTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVenta1"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 articuloTB.setCategoriaName(rsEmps.getString("Categoria"));
                 articuloTB.setEstadoName(rsEmps.getString("Estado"));
@@ -511,10 +468,10 @@ public class ArticuloADO {
                 articuloTB.setClave(rsEmps.getString("Clave"));
                 articuloTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
-                articuloTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
                 articuloTB.setEstadoName(rsEmps.getString("Estado"));
+                articuloTB.setTotalImporte(rsEmps.getDouble("Total"));
                 empList.add(articuloTB);
             }
         } catch (SQLException e) {
@@ -554,7 +511,7 @@ public class ArticuloADO {
                 articuloTB.setMarcaName(rsEmps.getString("Marca"));
                 articuloTB.setPresentacionName(rsEmps.getString("Presentacion"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                articuloTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVenta1"));
+                articuloTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 articuloTB.setLote(rsEmps.getBoolean("Lote"));
                 articuloTB.setInventario(rsEmps.getBoolean("Inventario"));

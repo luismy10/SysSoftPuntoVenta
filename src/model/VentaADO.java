@@ -310,7 +310,7 @@ public class VentaADO {
                 articuloTB.setDescuento(rsEmps.getDouble("Descuento"));
                 articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaGeneral());
                 double porcentajeDecimal = articuloTB.getDescuento() / 100.00;
-                double porcentajeRestante = articuloTB.getPrecioCompra() * porcentajeDecimal;
+                double porcentajeRestante = articuloTB.getPrecioVentaGeneral() * porcentajeDecimal;
                 articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
                 articuloTB.setImpuestoValor(rsEmps.getDouble("ValorImpuesto"));
                 articuloTB.setImpuestoSumado(rsEmps.getDouble("ImpuestoSumado"));
