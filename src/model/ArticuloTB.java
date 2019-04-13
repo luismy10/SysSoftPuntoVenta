@@ -33,25 +33,14 @@ public class ArticuloTB {
     private double cantidad;
     private double precioCompra;
     private double precioCompraReal;
-
-    private int precioVentaId;
-    private String precioVentaNombre;
-    private double precioVenta;
-    private double precioVentaReal;
-    private short margen;
-    private double utilidad;
-
-    private int precioVentaId2;
-    private String precioVentaNombre2;
-    private double precioVenta2;
-    private short margen2;
-    private double utilidad2;
-
-    private int precioVentaId3;
-    private String precioVentaNombre3;
-    private double precioVenta3;
-    private short margen3;
-    private double utilidad3;
+    
+    private double precioVentaGeneralReal;
+    
+    private double precioVentaGeneral;
+    private short precioMargenGeneral;
+    private double precioUtilidadGeneral;
+    
+    private PreciosTB preciosTB;
 
     private boolean lote;
     private boolean inventario;
@@ -271,92 +260,52 @@ public class ArticuloTB {
         this.precioCompra = precioCompra;
     }
 
+    public PreciosTB getPreciosTB() {
+        return preciosTB;
+    }
+
+    public void setPreciosTB(PreciosTB preciosTB) {
+        this.preciosTB = preciosTB;
+    }
+
+    public double getPrecioVentaGeneral() {
+        return precioVentaGeneral;
+    }
+
+    public void setPrecioVentaGeneral(double precioVentaGeneral) {
+        this.precioVentaGeneral = precioVentaGeneral;
+    }
+
+    public short getPrecioMargenGeneral() {
+        return precioMargenGeneral;
+    }
+
+    public void setPrecioMargenGeneral(short precioMargenGeneral) {
+        this.precioMargenGeneral = precioMargenGeneral;
+    }
+
+    public double getPrecioUtilidadGeneral() {
+        return precioUtilidadGeneral;
+    }
+
+    public void setPrecioUtilidadGeneral(double precioUtilidadGeneral) {
+        this.precioUtilidadGeneral = precioUtilidadGeneral;
+    }
+
+    public double getPrecioVentaGeneralReal() {
+        return precioVentaGeneralReal;
+    }
+
+    public void setPrecioVentaGeneralReal(double precioVentaGeneralReal) {
+        this.precioVentaGeneralReal = precioVentaGeneralReal;
+    }
+    
     public double getPrecioCompraReal() {
         return precioCompraReal;
     }
 
     public void setPrecioCompraReal(double precioCompraReal) {
         this.precioCompraReal = precioCompraReal;
-    }
-
-    public double getPrecioVenta() {
-        return precioVenta;
-    }
-
-    public void setPrecioVenta(double precioVenta) {
-        this.precioVenta = precioVenta;
-    }
-
-    public double getPrecioVentaReal() {
-        return precioVentaReal;
-    }
-
-    public void setPrecioVentaReal(double precioVentaReal) {
-        this.precioVentaReal = precioVentaReal;
-    }
-
-    public short getMargen() {
-        return margen;
-    }
-
-    public void setMargen(short margen) {
-        this.margen = margen;
-    }
-
-    public double getUtilidad() {
-        return utilidad;
-    }
-
-    public void setUtilidad(double utilidad) {
-        this.utilidad = utilidad;
-    }
-
-    public double getPrecioVenta2() {
-        return precioVenta2;
-    }
-
-    public void setPrecioVenta2(double precioVenta2) {
-        this.precioVenta2 = precioVenta2;
-    }
-
-    public short getMargen2() {
-        return margen2;
-    }
-
-    public void setMargen2(short margen2) {
-        this.margen2 = margen2;
-    }
-
-    public double getUtilidad2() {
-        return utilidad2;
-    }
-
-    public void setUtilidad2(double utilidad2) {
-        this.utilidad2 = utilidad2;
-    }
-
-    public double getPrecioVenta3() {
-        return precioVenta3;
-    }
-
-    public void setPrecioVenta3(double precioVenta3) {
-        this.precioVenta3 = precioVenta3;
-    }
-
-    public short getMargen3() {
-        return margen3;
-    }
-
-    public void setMargen3(short margen3) {
-        this.margen3 = margen3;
-    }
-
-    public double getUtilidad3() {
-        return utilidad3;
-    }
-
-    public void setUtilidad3(double utilidad3) {
-        this.utilidad3 = utilidad3;
     }
 
     public double getCantidad() {
@@ -478,53 +427,4 @@ public class ArticuloTB {
     public void setDescuentoSumado(double descuentoSumado) {
         this.descuentoSumado = descuentoSumado;
     }
-
-    public int getPrecioVentaId() {
-        return precioVentaId;
-    }
-
-    public void setPrecioVentaId(int precioVentaId) {
-        this.precioVentaId = precioVentaId;
-    }
-
-    public String getPrecioVentaNombre() {
-        return precioVentaNombre;
-    }
-
-    public void setPrecioVentaNombre(String precioVentaNombre) {
-        this.precioVentaNombre = precioVentaNombre;
-    }
-
-    public int getPrecioVentaId2() {
-        return precioVentaId2;
-    }
-
-    public void setPrecioVentaId2(int precioVentaId2) {
-        this.precioVentaId2 = precioVentaId2;
-    }
-
-    public String getPrecioVentaNombre2() {
-        return precioVentaNombre2;
-    }
-
-    public void setPrecioVentaNombre2(String precioVentaNombre2) {
-        this.precioVentaNombre2 = precioVentaNombre2;
-    }
-
-    public int getPrecioVentaId3() {
-        return precioVentaId3;
-    }
-
-    public void setPrecioVentaId3(int precioVentaId3) {
-        this.precioVentaId3 = precioVentaId3;
-    }
-
-    public String getPrecioVentaNombre3() {
-        return precioVentaNombre3;
-    }
-
-    public void setPrecioVentaNombre3(String precioVentaNombre3) {
-        this.precioVentaNombre3 = precioVentaNombre3;
-    }
-
 }

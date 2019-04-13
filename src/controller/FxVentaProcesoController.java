@@ -118,6 +118,7 @@ public class FxVentaProcesoController implements Initializable {
                 dtVencimiento.requestFocus();
             } else {
                 ventaTB.setObservaciones(txtObservacion.getText().trim());
+                ventaTB.setTipo(2);
                 ventaTB.setEstado(2);
                 ventaTB.setEfectivo(0);
                 ventaTB.setVuelto(0);
@@ -144,6 +145,7 @@ public class FxVentaProcesoController implements Initializable {
         } else {
             if (Tools.isNumeric(txtEfectivo.getText().trim())) {
                 ventaTB.setObservaciones(txtObservacion.getText().trim());
+                ventaTB.setTipo(1);
                 ventaTB.setEstado(1);
                 ventaTB.setEfectivo(Double.parseDouble(txtEfectivo.getText()));
                 ventaTB.setVuelto(vuelto);

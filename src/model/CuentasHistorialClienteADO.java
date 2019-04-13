@@ -9,14 +9,16 @@ import javafx.collections.ObservableList;
 
 public class CuentasHistorialClienteADO {
 
-    public static String Crud_CuentasHistorialCliente(CuentasHistorialClienteTB cuentasHistorialClienteTB, MovimientoCajaTB movimientoCajaTB) {
+    public static String Crud_CuentasHistorialCliente(CuentasHistorialClienteTB cuentasHistorialClienteTB, MovimientoCajaTB movimientoCajaTB, boolean completed,String idVenta) {
         String result = "";
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             PreparedStatement statementCuentas = null;
             PreparedStatement statementMovimiento = null;
+            PreparedStatement statementVenta = null;
             try {
                 DBUtil.getConnection().setAutoCommit(false);
+
                 statementCuentas = DBUtil.getConnection().prepareStatement("INSERT INTO CuentasHistorialClienteTB(IdCuentaClientes,Abono,FechaAbono,Referencia)VALUES(?,?,?,?)");
                 statementCuentas.setInt(1, cuentasHistorialClienteTB.getIdCuentaClientes());
                 statementCuentas.setDouble(2, cuentasHistorialClienteTB.getAbono());
@@ -35,15 +37,23 @@ public class CuentasHistorialClienteADO {
                 statementMovimiento.setDouble(8, movimientoCajaTB.getSaldo());
                 statementMovimiento.addBatch();
 
+                statementVenta = DBUtil.getConnection().prepareStatement("UPDATE VentaTB SET Estado = ? WHERE IdVenta = ?");
+                if (completed) {
+                    statementVenta.setInt(1, 1);
+                    statementVenta.setString(2, idVenta);
+                    statementVenta.addBatch();
+                }
+
                 statementCuentas.executeBatch();
                 statementMovimiento.executeBatch();
+                statementVenta.executeBatch();
                 DBUtil.getConnection().commit();
                 result = "register";
             } catch (SQLException ex) {
                 try {
                     DBUtil.getConnection().rollback();
                 } catch (SQLException e) {
-                    result = e.getLocalizedMessage();
+
                 }
                 result = ex.getLocalizedMessage();
             } finally {
@@ -53,6 +63,9 @@ public class CuentasHistorialClienteADO {
                     }
                     if (statementMovimiento != null) {
                         statementMovimiento.close();
+                    }
+                    if (statementVenta != null) {
+                        statementVenta.close();
                     }
                     DBUtil.dbDisconnect();
                 } catch (SQLException ex) {
@@ -76,6 +89,7 @@ public class CuentasHistorialClienteADO {
             try (ResultSet result = statementList.executeQuery()) {
                 while (result.next()) {
                     CuentasHistorialClienteTB historialClienteTB = new CuentasHistorialClienteTB();
+                    historialClienteTB.setIdCuentasHistorialCliente(result.getInt("IdCuentasHistorialCliente"));
                     historialClienteTB.setFechaAbono(result.getTimestamp("FechaAbono").toLocalDateTime());
                     historialClienteTB.setAbono(result.getDouble("Abono"));
                     historialClienteTB.setReferencia(result.getString("Referencia"));
@@ -83,7 +97,7 @@ public class CuentasHistorialClienteADO {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("Cuentas Historial cliente:"+ex.getLocalizedMessage());
+            System.out.println("Cuentas Historial cliente:" + ex.getLocalizedMessage());
         } finally {
             try {
                 if (statementList != null) {
@@ -95,6 +109,60 @@ public class CuentasHistorialClienteADO {
             }
         }
         return empList;
+    }
+
+    public static String Delete_CuentasHistorialCliente(int idCuentasHistorialClientes, MovimientoCajaTB movimientoCajaTB) {
+        String result = "";
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statementDelete = null;
+            PreparedStatement statementMovimiento = null;
+            try {
+                DBUtil.getConnection().setAutoCommit(false);
+                statementDelete = DBUtil.getConnection().prepareStatement("DELETE FROM CuentasHistorialClienteTB WHERE IdCuentasHistorialCliente = ?");
+                statementDelete.setInt(1, idCuentasHistorialClientes);
+                statementDelete.addBatch();
+
+                statementMovimiento = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,IdUsuario,FechaMovimiento,Comentario,Movimiento,Entrada,Salidas,Saldo)VALUES(?,?,?,?,?,?,?,?)");
+                statementMovimiento.setInt(1, movimientoCajaTB.getIdCaja());
+                statementMovimiento.setString(2, movimientoCajaTB.getIdUsuario());
+                statementMovimiento.setTimestamp(3, Timestamp.valueOf(movimientoCajaTB.getFechaMovimiento()));
+                statementMovimiento.setString(4, movimientoCajaTB.getComentario());
+                statementMovimiento.setString(5, movimientoCajaTB.getMovimiento());
+                statementMovimiento.setDouble(6, movimientoCajaTB.getEntrada());
+                statementMovimiento.setDouble(7, movimientoCajaTB.getSalidas());
+                statementMovimiento.setDouble(8, movimientoCajaTB.getSaldo());
+                statementMovimiento.addBatch();
+
+                statementDelete.executeBatch();
+                statementMovimiento.executeBatch();
+                DBUtil.getConnection().commit();
+                result = "deleted";
+            } catch (SQLException ex) {
+                try {
+                    DBUtil.getConnection().rollback();
+                } catch (SQLException e) {
+
+                }
+                result = ex.getLocalizedMessage();
+            } finally {
+                try {
+                    if (statementDelete != null) {
+                        statementDelete.close();
+                    }
+                    if (statementMovimiento != null) {
+                        statementMovimiento.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    result = ex.getLocalizedMessage();
+                }
+            }
+        } else {
+            result = "No se puedo conectar al servidor, revise su conexión.";
+
+        }
+        return result;
     }
 
 }

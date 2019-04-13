@@ -183,10 +183,10 @@
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                               <TableColumn fx:id="tcFechaVenta" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de venta" />
-                              <TableColumn fx:id="tcCliente" prefWidth="184.0" style="-fx-alignment: CENTER-LEFT;" text="Cliente" />
-                              <TableColumn fx:id="tcSerie" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Serie/Numeración" />
+                              <TableColumn fx:id="tcCliente" prefWidth="190.0" style="-fx-alignment: CENTER-LEFT;" text="Cliente" />
+                              <TableColumn fx:id="tcSerie" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Serie/Numeración" />
+                              <TableColumn fx:id="tcTipo" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de Venta" />
                               <TableColumn fx:id="tcEstado" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Estado" />
-                              <TableColumn fx:id="tcMoneda" prefWidth="70.0" style="-fx-alignment: CENTER;" text="Moneda" />
                               <TableColumn fx:id="tcTotal" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Total/Saldo" />
                               <TableColumn fx:id="tcObservacion" prefWidth="167.0" style="-fx-alignment: CENTER-LEFT;" text="Observación" />
                            </columns>

@@ -63,6 +63,8 @@ public class FxCompraProcesoController implements Initializable {
     private TextField txtMonto;
     @FXML
     private TextField txtCuotas;
+    @FXML
+    private TextField txtObservacion;
 
     private FxCompraController compraController;
 
@@ -92,7 +94,6 @@ public class FxCompraProcesoController implements Initializable {
         pagoProveedoresTB = new PagoProveedoresTB();
         deuda_pendiente = 0;
         cuota_promedio = 0;
-
     }
 
     public void setInitializePlazos() {
@@ -102,10 +103,9 @@ public class FxCompraProcesoController implements Initializable {
         });
         cbPlazos.getSelectionModel().select(0);
         diasPlazo = cbPlazos.getSelectionModel().getSelectedItem().getDias();
-
     }
 
-     void setLoadProcess(CompraTB compraTB, TableView<ArticuloTB> tvList, ObservableList<LoteTB> loteTBs, String total, String proveedor, String simboloMoneda) {
+    void setLoadProcess(CompraTB compraTB, TableView<ArticuloTB> tvList, ObservableList<LoteTB> loteTBs, String total, String proveedor, String simboloMoneda) {
         this.compraTB = compraTB;
         this.tvList = tvList;
         this.loteTBs = loteTBs;
@@ -113,14 +113,13 @@ public class FxCompraProcesoController implements Initializable {
         txtProveedor.setText(proveedor);
         this.simboloMoneda = simboloMoneda;
         txtEfectivo.setText(total);
-
         this.lblCuotaReferencial.setText(this.simboloMoneda + " " + "0000.00");
 
     }
 
-    private void executeCrud(String estadoCompra, String tipoCompra) {
-        compraTB.setEstadoCompra(estadoCompra);
-        compraTB.setTipoCompra(tipoCompra);
+    private void executeCrud(int tipoCompra,int estadoCompra) {
+        compraTB.setTipo(tipoCompra);
+        compraTB.setEstado(estadoCompra);
 
         if (rbCredito.isSelected()) {
             if (Integer.parseInt(this.txtCuotas.getText()) > 0) {
@@ -132,7 +131,7 @@ public class FxCompraProcesoController implements Initializable {
                 LocalDate fecha_final = LocalDate.parse(Tools.getDatePicker(dpFecha)).plusDays(diasPlazo * Integer.parseInt(txtCuotas.getText()));
 
                 pagoProveedoresTB.setFechaFinal(Timestamp.valueOf(fecha_final + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
-                pagoProveedoresTB.setObservacion("ninguno".toUpperCase());
+                pagoProveedoresTB.setObservacion(this.txtObservacion.getText().equals("") ? "NINGUNA" : this.txtObservacion.getText());
                 pagoProveedoresTB.setEstado("activo".toUpperCase());
                 pagoProveedoresTB.setIdProveedor(compraTB.getProveedor());
 
@@ -169,7 +168,7 @@ public class FxCompraProcesoController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo efectivo.", false);
                 txtEfectivo.requestFocus();
             } else {
-                executeCrud("PAGADO", "CONTADO");
+                executeCrud(1, 1);
             }
         } else if (rbCredito.isSelected()) {
             if (!Tools.isNumeric(txtMonto.getText())) {
@@ -182,7 +181,7 @@ public class FxCompraProcesoController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo fecha de vencimiento.", false);
                 dpFecha.requestFocus();
             } else {
-                executeCrud("PENDIENTE", "CREDITO");
+                executeCrud(2, 2);
             }
         }
 
@@ -247,6 +246,7 @@ public class FxCompraProcesoController implements Initializable {
     private void onActionRbCredito(ActionEvent event) {
         hbPagoContado.setDisable(true);
         vbPagoCredito.setDisable(false);
+        this.txtMonto.requestFocus();
     }
 
     @FXML

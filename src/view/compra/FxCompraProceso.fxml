@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxCompraProcesoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxCompraProcesoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -69,6 +69,12 @@
                                        <children>
                                           <Label styleClass="labelOpenSansRegular14" text="Proveedor:" />
                                           <TextField fx:id="txtProveedor" disable="true" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Observación:" />
+                                          <TextField fx:id="txtObservacion" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                     <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.5em;" VBox.vgrow="ALWAYS">

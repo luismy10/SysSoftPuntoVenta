@@ -11,6 +11,7 @@ public class CuentasHistorialClienteTB {
     private String referencia;
 
     public CuentasHistorialClienteTB() {
+       
     }
 
     public int getIdCuentasHistorialCliente() {

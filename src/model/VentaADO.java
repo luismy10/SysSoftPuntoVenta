@@ -56,12 +56,13 @@ public class VentaADO {
                     + "           ,[SubTotal]\n"
                     + "           ,[Descuento]\n"
                     + "           ,[Total]"
+                    + "           ,[Tipo]"
                     + "           ,[Estado]"
                     + "           ,[Observaciones]"
                     + "           ,[Efectivo]"
                     + "           ,[Vuelto])\n"
                     + "     VALUES\n"
-                    + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,IdUsuario,FechaMovimiento,Comentario,Movimiento,Entrada,Salidas,Saldo)VALUES(?,?,?,?,?,?,?,?)");
 
@@ -105,10 +106,11 @@ public class VentaADO {
             venta.setDouble(9, ventaTB.getSubTotal());
             venta.setDouble(10, ventaTB.getDescuento());
             venta.setDouble(11, ventaTB.getTotal());
-            venta.setInt(12, ventaTB.getEstado());
-            venta.setString(13, ventaTB.getObservaciones());
-            venta.setDouble(14, ventaTB.getEfectivo());
-            venta.setDouble(15, ventaTB.getVuelto());
+            venta.setInt(12, ventaTB.getTipo());
+            venta.setInt(13, ventaTB.getEstado());
+            venta.setString(14, ventaTB.getObservaciones());
+            venta.setDouble(15, ventaTB.getEfectivo());
+            venta.setDouble(16, ventaTB.getVuelto());
             venta.addBatch();
 
             movimiento_caja.setInt(1, Session.CAJA_ID);
@@ -139,7 +141,7 @@ public class VentaADO {
                 detalle_venta.setString(1, id_venta);
                 detalle_venta.setString(2, tvList.getItems().get(i).getIdArticulo());
                 detalle_venta.setDouble(3, tvList.getItems().get(i).getCantidad());
-                detalle_venta.setDouble(4, tvList.getItems().get(i).getPrecioVentaReal());
+                detalle_venta.setDouble(4, tvList.getItems().get(i).getPrecioVentaGeneralReal());
                 detalle_venta.setDouble(5, tvList.getItems().get(i).getDescuento());
                 detalle_venta.setDouble(6, tvList.getItems().get(i).getImpuestoArticulo());
                 detalle_venta.setString(7, tvList.getItems().get(i).getImpuestoArticuloName());
@@ -259,8 +261,9 @@ public class VentaADO {
                 ventaTB.setComprobanteName(rsEmps.getString("Comprobante"));
                 ventaTB.setSerie(rsEmps.getString("Serie"));
                 ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
+                ventaTB.setTipoName(rsEmps.getString("Tipo"));
                 ventaTB.setEstadoName(rsEmps.getString("Estado"));
-                ventaTB.setMonedaName(rsEmps.getString("Abreviado"));
+                ventaTB.setMonedaName(rsEmps.getString("Simbolo"));
                 ventaTB.setTotal(rsEmps.getDouble("Total"));
                 ventaTB.setObservaciones(rsEmps.getString("Observaciones"));
                 empList.add(ventaTB);
@@ -303,9 +306,9 @@ public class VentaADO {
                 articuloTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
                 articuloTB.setImpuestoArticulo(rsEmps.getInt("IdImpuesto"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                articuloTB.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                articuloTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVenta"));
                 articuloTB.setDescuento(rsEmps.getDouble("Descuento"));
-                articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+                articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaGeneral());
                 double porcentajeDecimal = articuloTB.getDescuento() / 100.00;
                 double porcentajeRestante = articuloTB.getPrecioCompra() * porcentajeDecimal;
                 articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
@@ -422,6 +425,7 @@ public class VentaADO {
                     ventaTB.setSerie(resultSet.getString("Serie"));
                     ventaTB.setNumeracion(resultSet.getString("Numeracion"));
                     ventaTB.setObservaciones(resultSet.getString("Observaciones"));
+                    ventaTB.setTipoName(resultSet.getString("Tipo"));
                     ventaTB.setEstadoName(resultSet.getString("Estado"));
                     ventaTB.setMonedaName(resultSet.getString("Simbolo"));
                     ventaTB.setEfectivo(resultSet.getDouble("Efectivo"));

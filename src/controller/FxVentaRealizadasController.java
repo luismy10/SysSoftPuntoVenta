@@ -56,11 +56,11 @@ public class FxVentaRealizadasController implements Initializable {
     @FXML
     private TableColumn<VentaTB, String> tcCliente;
     @FXML
+    private TableColumn<VentaTB, String> tcTipo;
+    @FXML
     private TableColumn<VentaTB, String> tcEstado;
     @FXML
     private TableColumn<VentaTB, String> tcSerie;
-    @FXML
-    private TableColumn<VentaTB, String> tcMoneda;
     @FXML
     private TableColumn<VentaTB, String> tcTotal;
     @FXML
@@ -81,10 +81,10 @@ public class FxVentaRealizadasController implements Initializable {
         tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         tcFechaVenta.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaVenta().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))));
         tcCliente.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCliente()));
+        tcTipo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoName()));
         tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName()));
         tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getComprobanteName() + "\n" + cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));
-        tcMoneda.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName()));
-        tcTotal.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getTotal(), 2)));
+        tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
         tcObservacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getObservaciones()));
 
         cbEstado.getItems().add(new DetalleTB(new SimpleIntegerProperty(0), new SimpleStringProperty("TODOS")));

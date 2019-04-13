@@ -60,6 +60,8 @@ public class FxCompraDetalleController implements Initializable {
     @FXML
     private Label lblDomicilio;
     @FXML
+    private Label lblEstado;
+    @FXML
     private Label lblContacto;
     @FXML
     private Label lblComprobante;
@@ -123,7 +125,7 @@ public class FxCompraDetalleController implements Initializable {
         simboloMoneda = "M";
 
     }
-    
+
     private void InitializationTransparentBackground() {
         Session.PANE.setStyle("-fx-background-color: black");
         Session.PANE.setTranslateX(0);
@@ -150,17 +152,20 @@ public class FxCompraDetalleController implements Initializable {
 
     private void fillArticlesTable(String value) {
         arrList = CompraADO.ListDetalleCompra(value);
-        for (int i = 0; i < arrList.size(); i++) {
-            gpList.add(addElementGridPane("l1" + (i + 1), arrList.get(i).getId().get() + "", Pos.CENTER), 0, (i + 1));
-            gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getClave() + "\n" + arrList.get(i).getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
-            gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
-            gpList.add(addElementGridPane("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
-            gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
-            gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getImpuestoValor(), 2) + "%", Pos.CENTER_RIGHT), 5, (i + 1));
-            gpList.add(addElementGridPane("l7" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
-            gpList.add(addElementGridPane("l8" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getTotalImporte(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
+        if (arrList != null) {
+            for (int i = 0; i < arrList.size(); i++) {
+                gpList.add(addElementGridPane("l1" + (i + 1), arrList.get(i).getId().get() + "", Pos.CENTER), 0, (i + 1));
+                gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getClave() + "\n" + arrList.get(i).getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
+                gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
+                gpList.add(addElementGridPane("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
+                gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
+                gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getImpuestoValor(), 2) + "%", Pos.CENTER_RIGHT), 5, (i + 1));
+                gpList.add(addElementGridPane("l7" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
+                gpList.add(addElementGridPane("l8" + (i + 1), simboloMoneda + "" + Tools.roundingValue(arrList.get(i).getTotalImporte(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
+            }
+            calcularTotales();
         }
-        calcularTotales();
+
     }
 
     public void setLoadDetalle(String idCompra, String estadoCompra, double total) {
@@ -177,8 +182,10 @@ public class FxCompraDetalleController implements Initializable {
             lblNumeracion.setText(compraTB.getNumeracion());
             lblObservacion.setText(compraTB.getObservaciones().equalsIgnoreCase("") ? "No tiene ninguna observación" : compraTB.getObservaciones());
             lblNotas.setText(compraTB.getNotas().equalsIgnoreCase("") ? "No tiene ninguna nota" : compraTB.getNotas());
+            lblEstado.setText(compraTB.getTipoName() + " - " + compraTB.getEstadoName());
             lblTotalCompra.setText(compraTB.getTipoMonedaName() + " " + Tools.roundingValue(compraTB.getTotal().get(), 2));
             simboloMoneda = compraTB.getTipoMonedaName();
+
         }
 
         if (proveedorTB != null) {
@@ -307,7 +314,7 @@ public class FxCompraDetalleController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) throws IOException {
-        vbContent.getChildren().remove(window);       
+        vbContent.getChildren().remove(window);
         vbContent.getChildren().clear();
         AnchorPane.setLeftAnchor(comprascontroller.getWindow(), 0d);
         AnchorPane.setTopAnchor(comprascontroller.getWindow(), 0d);
@@ -323,8 +330,7 @@ public class FxCompraDetalleController implements Initializable {
         Parent parent = fXMLLoader.load(url.openStream());
 
         FxHistorialPagosController controller = fXMLLoader.getController();
-        controller.setInitHistorialPagosController(this, idProveedor , idCompra, total, simboloMoneda);
-
+        controller.setInitHistorialPagosController(this, idProveedor, idCompra, total, simboloMoneda);
 
         Stage stage = FxWindow.StageLoaderModal(parent, "Historial de Pagos", window.getScene().getWindow());
         stage.setResizable(false);
@@ -337,14 +343,12 @@ public class FxCompraDetalleController implements Initializable {
 
     }
 
-    
-
     @FXML
     private void onActionHistorialPagos(ActionEvent event) throws IOException {
         if (estadoCompra.equals("PENDIENTE".toUpperCase())) {
             openWindowHistorialPagos();
         } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Compra", "La compra no se hiso al credito", false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Compra", "La compra se hiso al contado", false);
         }
     }
 

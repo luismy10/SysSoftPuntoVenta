@@ -47,22 +47,22 @@ public class FxVentaGranelController implements Initializable {
     private void executeEventAceptar() {
         if (Tools.isNumeric(txtImporte.getText())) {
             if (opcion) {
-                double precio = Double.parseDouble(txtImporte.getText()) + articuloTB.getPrecioVenta();
+                double precio = Double.parseDouble(txtImporte.getText()) + articuloTB.getPrecioVentaGeneral();
                 double descuento = articuloTB.getDescuento();
                 double porcentajeDecimal = descuento / 100.00;
                 double porcentajeRestante = precio * porcentajeDecimal;
 
                 articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
 
-                articuloTB.setPrecioVentaReal(precio);
-                articuloTB.setPrecioVenta(precio - porcentajeRestante);
+                articuloTB.setPrecioVentaGeneralReal(precio);
+                articuloTB.setPrecioVentaGeneral(precio - porcentajeRestante);
 
-                articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaReal());
-                articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+                articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaGeneralReal());
+                articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaGeneral());
           
                 articuloTB.setImpuestoArticuloName(ventaController.getTaxName(articuloTB.getImpuestoArticulo()));
                 articuloTB.setImpuestoValor(ventaController.getTaxValue(articuloTB.getImpuestoArticulo()));
-                articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVenta() * (articuloTB.getImpuestoValor() / 100.00)));
+                articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVentaGeneral() * (articuloTB.getImpuestoValor() / 100.00)));
 
                 ventaController.getTvList().getItems().set(index, articuloTB);
                 ventaController.calculateTotales();
@@ -77,15 +77,15 @@ public class FxVentaGranelController implements Initializable {
 
                 articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
 
-                articuloTB.setPrecioVentaReal(precio);
-                articuloTB.setPrecioVenta(precio - porcentajeRestante);
+                articuloTB.setPrecioVentaGeneralReal(precio);
+                articuloTB.setPrecioVentaGeneral(precio - porcentajeRestante);
 
-                articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaReal());
-                articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVenta());
+                articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaGeneralReal());
+                articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioVentaGeneral());
                 
                 articuloTB.setImpuestoArticuloName(ventaController.getTaxName(articuloTB.getImpuestoArticulo()));
                 articuloTB.setImpuestoValor(ventaController.getTaxValue(articuloTB.getImpuestoArticulo()));
-                articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVenta() * (articuloTB.getImpuestoValor() / 100.00)));
+                articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioVentaGeneral() * (articuloTB.getImpuestoValor() / 100.00)));
 
                 ventaController.getTvList().getItems().set(index, articuloTB);
                 ventaController.calculateTotales();

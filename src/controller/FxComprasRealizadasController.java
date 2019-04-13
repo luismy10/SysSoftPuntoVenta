@@ -76,7 +76,9 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private TableColumn<CompraTB, String> tcProveedor;
     @FXML
-    private TableColumn<CompraTB, String> tcEstadoCompra;
+    private TableColumn<CompraTB, String> tcTipo;
+    @FXML
+    private TableColumn<CompraTB, String> tcEstado;
     @FXML
     private TableColumn<CompraTB, String> tcTotal;
     @FXML
@@ -96,7 +98,8 @@ public class FxComprasRealizadasController implements Initializable {
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getProveedorTB().getNumeroDocumento().get() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial().get()
         ));
-        tcEstadoCompra.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoCompra() + ""));
+        tcTipo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoName()));
+        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName()));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal().get(), 2)));
 
         Tools.actualDate(Tools.getDate(), dtFechaInicial);
@@ -111,7 +114,7 @@ public class FxComprasRealizadasController implements Initializable {
 
     }
 
-    public void fillPurchasesTable(short opcion, String value, String fechaInicial, String fechaFinal, String estadoCompra) {
+    public void fillPurchasesTable(short opcion, String value, String fechaInicial, String fechaFinal, int estadoCompra) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -150,7 +153,7 @@ public class FxComprasRealizadasController implements Initializable {
             ScrollPane node = fXMLPrincipal.load();
             FxCompraDetalleController controller = fXMLPrincipal.getController();
             controller.setInitComptrasController(this, windowinit, vbContent);
-            controller.setLoadDetalle(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getEstadoCompra(), tvList.getSelectionModel().getSelectedItem().getTotal().get());
+            controller.setLoadDetalle(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getEstadoName(), tvList.getSelectionModel().getSelectedItem().getTotal().get());
             vbContent.getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
@@ -216,7 +219,7 @@ public class FxComprasRealizadasController implements Initializable {
 
     @FXML
     private void onActionReload(ActionEvent event) {
-        fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+        fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), 0);
         this.txtSearch.setText("");
         cbEstadoCompra.getSelectionModel().select(0);
     }
@@ -224,7 +227,7 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private void onKeyPressedReload(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), 0);
             cbEstadoCompra.getSelectionModel().select(0);
             this.txtSearch.setText("");
         }
@@ -288,7 +291,7 @@ public class FxComprasRealizadasController implements Initializable {
                 && event.getCode() != KeyCode.PAUSE
                 && event.getCode() != KeyCode.ENTER) {
             if (!validationSearch) {
-                fillPurchasesTable((short) 0, txtSearch.getText().trim(), "", "", "");
+                fillPurchasesTable((short) 0, txtSearch.getText().trim(), "", "", 0);
                 cbEstadoCompra.getSelectionModel().select(0);
             }
         }
@@ -297,7 +300,7 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private void onActionFechaInicial(ActionEvent actionEvent) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), 0);
             cbEstadoCompra.getSelectionModel().select(0);
             this.txtSearch.setText("");
         }
@@ -306,7 +309,7 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private void onActionFechaFinal(ActionEvent actionEvent) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), 0);
             cbEstadoCompra.getSelectionModel().select(0);
             this.txtSearch.setText("");
         }
@@ -315,10 +318,10 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private void OnActionEstadoCompra(ActionEvent event) {
         if (cbEstadoCompra.getSelectionModel().getSelectedIndex() != 0) {
-            fillPurchasesTable((short) 2, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), cbEstadoCompra.getSelectionModel().getSelectedItem().getNombre().get());
+            fillPurchasesTable((short) 2, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), cbEstadoCompra.getSelectionModel().getSelectedItem().getIdDetalle().get());
             this.txtSearch.setText("");
         } else {
-            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), 0);
             cbEstadoCompra.getSelectionModel().select(0);
             this.txtSearch.setText("");
         }
@@ -327,7 +330,7 @@ public class FxComprasRealizadasController implements Initializable {
     public VBox getWindow() {
         return window;
     }
-    
+
     public void setContent(AnchorPane windowinit, AnchorPane vbContent) {
         this.windowinit = windowinit;
         this.vbContent = vbContent;
