@@ -123,6 +123,8 @@ public class Tools {
     static final String FX_FILE_VENTAABONOPROCESO = "/view/venta/FxVentaAbonoProceso.fxml";
     static final String FX_FILE_VENTAFONDOINICIAL = "/view/venta/FxVentaFondoInicial.fxml";
     static final String FX_FILE_VENTAMOVIMIENTO = "/view/venta/FxVentaMovimiento.fxml";
+    
+      static final String FX_FILE_REPORTEOPCION = "/view/articulo/FxReporteOpcion.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
@@ -313,6 +315,20 @@ public class Tools {
         boolean resultado;
         try {
             Double.parseDouble(cadena);
+            resultado = true;
+        } catch (NumberFormatException ex) {
+            resultado = false;
+        }
+        return resultado;
+    }
+    
+    public static boolean isNumericInteger(String cadena) {
+        if (cadena == null || cadena.isEmpty()) {
+            return false;
+        }
+        boolean resultado;
+        try {
+            Integer.parseInt(cadena);
             resultado = true;
         } catch (NumberFormatException ex) {
             resultado = false;

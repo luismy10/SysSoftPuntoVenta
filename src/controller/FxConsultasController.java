@@ -96,7 +96,7 @@ public class FxConsultasController implements Initializable {
 
     private void openWindowInvetario() throws IOException {
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_INVENTARIOGENERAL));
-        ScrollPane node = fXMLPrincipal.load();
+        VBox node = fXMLPrincipal.load();
         FxInventarioGeneralController controller = fXMLPrincipal.getController();
         controller.setContent(windowinit);
         vbContent.getChildren().clear();

@@ -83,7 +83,6 @@ public class FxVentaController implements Initializable {
     private Text lblNumeracion;
     @FXML
     private TextField txtCliente;
-
     @FXML
     private TextField txtSearch;
     @FXML
@@ -197,20 +196,12 @@ public class FxVentaController implements Initializable {
         monedaSimbolo = "M";
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
         initTable();
-        tcArticulo.setMaxWidth(1f * Integer.MAX_VALUE*40);
-        tcCantidad.setMaxWidth(1f * Integer.MAX_VALUE*12);
-        tcPrecio.setMaxWidth(1f * Integer.MAX_VALUE*12);
-        tcDescuento.setMaxWidth(1f * Integer.MAX_VALUE*12);
-        tcImpuesto.setMaxWidth(1f * Integer.MAX_VALUE*12);
-        tcImporte.setMaxWidth(1f * Integer.MAX_VALUE*12);
-        /*
-         tcArticulo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
-        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
-        tcPrecio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
-        tcDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
-        tcImpuesto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
-        tcImporte.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
-        */
+        tcArticulo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.38));
+        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcPrecio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcImpuesto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcImporte.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         loadWindow();
     }
 
@@ -567,6 +558,7 @@ public class FxVentaController implements Initializable {
 
                         articuloTB.setInventario(tvList.getItems().get(i).isInventario());
                         articuloTB.setUnidadVenta(tvList.getItems().get(i).getUnidadVenta());
+                        articuloTB.setValorInventario(tvList.getItems().get(i).isValorInventario());
 
                         articuloTB.setImpuestoArticulo(tvList.getItems().get(i).getImpuestoArticulo());
                         articuloTB.setImpuestoArticuloName(getTaxName(tvList.getItems().get(i).getImpuestoArticulo()));
@@ -1055,6 +1047,7 @@ public class FxVentaController implements Initializable {
                     if (articuloTB.getUnidadVenta() == 2) {
                         return;
                     }
+                    articuloTB.setValorInventario(e.isValorInventario());
 
                     articuloTB.setImpuestoArticulo(e.getImpuestoArticulo());
                     articuloTB.setImpuestoArticuloName(getTaxName(e.getImpuestoArticulo()));
@@ -1099,6 +1092,7 @@ public class FxVentaController implements Initializable {
 
                     articuloTB.setInventario(e.isInventario());
                     articuloTB.setUnidadVenta(e.getUnidadVenta());
+                    articuloTB.setValorInventario(e.isValorInventario());
 
                     articuloTB.setImpuestoArticulo(e.getImpuestoArticulo());
                     articuloTB.setImpuestoArticuloName(getTaxName(e.getImpuestoArticulo()));
@@ -1195,6 +1189,7 @@ public class FxVentaController implements Initializable {
 
                 articuloTB.setInventario(a.isInventario());
                 articuloTB.setUnidadVenta(a.getUnidadVenta());
+                articuloTB.setValorInventario(a.isValorInventario());
 
                 articuloTB.setImpuestoArticulo(a.getImpuestoArticulo());
                 articuloTB.setImpuestoArticuloName(getTaxName(articuloTB.getImpuestoArticulo()));

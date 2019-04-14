@@ -91,6 +91,10 @@ public class FxArticuloProcesoController implements Initializable {
     private TextField txtPrecioVentaAgregado;
     @FXML
     private VBox vbInventario;
+    @FXML
+    private RadioButton rbValorUnidad;
+    @FXML
+    private RadioButton rbValorCosto;
 
     private String idArticulo;
 
@@ -115,9 +119,13 @@ public class FxArticuloProcesoController implements Initializable {
         idPresentacion = 0;
         idCategoria = 0;
         idMarca = 0;
-        ToggleGroup group = new ToggleGroup();
-        rbUnidad.setToggleGroup(group);
-        rbGranel.setToggleGroup(group);
+        ToggleGroup groupVende = new ToggleGroup();
+        ToggleGroup groupValor = new ToggleGroup();
+        rbUnidad.setToggleGroup(groupVende);
+        rbGranel.setToggleGroup(groupVende);
+        rbValorUnidad.setToggleGroup(groupValor);
+        rbValorCosto.setToggleGroup(groupValor);
+
         txtMargen.setText("30");
         cbImpuesto.getItems().clear();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
@@ -167,6 +175,14 @@ public class FxArticuloProcesoController implements Initializable {
             } else {
                 rbGranel.setSelected(true);
             }
+            
+             if (articuloTB.isValorInventario()) {
+                rbValorUnidad.setSelected(true);
+            } else {
+                rbValorCosto.setSelected(true);
+                txtCosto.setDisable(true);
+                txtMargen.setDisable(true);
+            }
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
             if (articuloTB.getEstado() != 0) {
@@ -180,7 +196,7 @@ public class FxArticuloProcesoController implements Initializable {
 
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
-            txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
+            txtCosto.setText(Tools.roundingValue(articuloTB.getCostoCompra(), 2));
             //agregar la lista de precio
             txtPrecio.setText(Tools.roundingValue(articuloTB.getPrecioVentaGeneral(), 2));
             txtMargen.setText(articuloTB.getPrecioMargenGeneral() + "");
@@ -220,6 +236,20 @@ public class FxArticuloProcesoController implements Initializable {
                 idPresentacion = articuloTB.getPresentacion();
                 txtPresentacion.setText(articuloTB.getPresentacionName());
             }
+            
+            if (articuloTB.getUnidadVenta() == 1) {
+                rbUnidad.setSelected(true);
+            } else {
+                rbGranel.setSelected(true);
+            }
+            
+            if (articuloTB.isValorInventario()) {
+                rbValorUnidad.setSelected(true);
+            } else {
+                rbValorCosto.setSelected(true);
+                txtCosto.setDisable(true);
+                txtMargen.setDisable(true);
+            }
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
             if (articuloTB.getEstado() != 0) {
@@ -230,7 +260,7 @@ public class FxArticuloProcesoController implements Initializable {
                     }
                 }
             }
-            
+
             if (articuloTB.getImpuestoArticulo() != 0) {
                 for (int i = 0; i < cbImpuesto.getItems().size(); i++) {
                     if (cbImpuesto.getItems().get(i).getIdImpuesto() == articuloTB.getImpuestoArticulo()) {
@@ -246,7 +276,7 @@ public class FxArticuloProcesoController implements Initializable {
 
             txtStockMinimo.setText(Tools.roundingValue(articuloTB.getStockMinimo(), 2));
             txtStockMaximo.setText(Tools.roundingValue(articuloTB.getStockMaximo(), 2));
-            txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompra(), 2));
+            txtCosto.setText(Tools.roundingValue(articuloTB.getCostoCompra(), 2));
             //agregar la lista de precio
             txtPrecio.setText(Tools.roundingValue(articuloTB.getPrecioVentaGeneral(), 2));
             txtMargen.setText(articuloTB.getPrecioMargenGeneral() + "");
@@ -257,8 +287,6 @@ public class FxArticuloProcesoController implements Initializable {
             } else {
                 lnPrincipal.setImage(new Image(new File("" + articuloTB.getImagenTB()).toURI().toString()));
             }
-
-            
 
         }
     }
@@ -280,19 +308,19 @@ public class FxArticuloProcesoController implements Initializable {
             } else if (cbImpuesto.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el nombre del impuesto, por favor.", false);
                 cbImpuesto.requestFocus();
-            } else if (!Tools.isNumeric(txtCosto.getText())) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el precio de compra, por favor.", false);
-                txtCosto.requestFocus();
-            } else if (Double.parseDouble(txtCosto.getText()) <= 0) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "El precio de compra no puede ser menor o igual a 0, por favor", false);
-                txtCosto.requestFocus();
             } else if (!Tools.isNumeric(txtPrecio.getText())) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el primer precio de venta, por favor.", false);
                 txtPrecio.requestFocus();
             } else if (Double.parseDouble(txtPrecio.getText()) <= 0) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "El precio de venta no puede ser menos o igual a 0, por favor.", false);
                 txtPrecio.requestFocus();
-            } else if (!Tools.isNumeric(txtMargen.getText())) {
+            } else if (!Tools.isNumeric(txtCosto.getText())) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el costo del artículo, por favor.", false);
+                txtCosto.requestFocus();
+            } else if (Double.parseDouble(txtCosto.getText()) <= 0) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "El costo del artículo no puede ser menor o igual a 0, por favor", false);
+                txtCosto.requestFocus();
+            } else if (!Tools.isNumericInteger(txtMargen.getText())) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el primer margen, por favor.", false);
                 txtMargen.requestFocus();
             } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
@@ -323,9 +351,6 @@ public class FxArticuloProcesoController implements Initializable {
             } else if (cbImpuesto.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el nombre del impuesto, por favor.", false);
                 cbImpuesto.requestFocus();
-            } else if (!Tools.isNumeric(txtCosto.getText())) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el precio de compra, por favor.", false);
-                txtCosto.requestFocus();
             } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Selecciona el estado del artículo, por favor.", false);
                 cbEstado.requestFocus();
@@ -375,15 +400,14 @@ public class FxArticuloProcesoController implements Initializable {
                     ? Double.parseDouble(txtStockMaximo.getText().trim())
                     : 0);
 
-            articuloTB.setPrecioCompra(Tools.isNumeric(txtCosto.getText())
+            //agregar lista de precios
+            articuloTB.setCostoCompra(Tools.isNumeric(txtCosto.getText())
                     ? Double.parseDouble(txtCosto.getText())
                     : 0);
-
-            //agregar lista de precios
             articuloTB.setPrecioVentaGeneral(Tools.isNumeric(txtPrecio.getText())
                     ? Double.parseDouble(txtPrecio.getText())
                     : 0);
-            articuloTB.setPrecioMargenGeneral(Tools.isNumeric(txtMargen.getText())
+            articuloTB.setPrecioMargenGeneral(Tools.isNumericInteger(txtMargen.getText())
                     ? Short.valueOf(txtMargen.getText())
                     : 0);
             articuloTB.setPrecioUtilidadGeneral(Tools.isNumeric(txtUtilidad.getText())
@@ -396,6 +420,7 @@ public class FxArticuloProcesoController implements Initializable {
             articuloTB.setUnidadVenta(rbUnidad.isSelected() ? 1 : 2);
             articuloTB.setLote(cbLote.isSelected());
             articuloTB.setInventario(cbInventario.isSelected());
+            articuloTB.setValorInventario(rbValorUnidad.isSelected());
             articuloTB.setImpuestoArticulo(cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto() : 0);
 
             String result = ArticuloADO.CrudArticulo(articuloTB);
@@ -408,7 +433,7 @@ public class FxArticuloProcesoController implements Initializable {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Actualizado correctamente el artículo.", false);
                     Tools.Dispose(window);
                     articulosController.getTxtSearch().requestFocus();
-                    articulosController.fillArticlesTable((short)1,articulosController.getTxtSearch().getText(),0);
+                    articulosController.fillArticlesTable((short) 1, articulosController.getTxtSearch().getText(), 0);
                     break;
                 case "duplicate":
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puede haber 2 artículos con la misma clave.", false);
@@ -801,6 +826,27 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private void onActionInventario(ActionEvent event) {
         vbInventario.setDisable(!cbInventario.isSelected());
+    }
+
+    @FXML
+    private void onActionValorUnidad(ActionEvent event) {
+         txtCosto.setText("");
+        txtCosto.setDisable(false);
+        txtMargen.setText("");
+        txtMargen.setDisable(false);
+        txtUtilidad.setText("");
+        txtPrecioVentaAgregado.setText("");
+
+    }
+
+    @FXML
+    private void onActionValorCosto(ActionEvent event) {
+        txtCosto.setText("1.00");
+        txtCosto.setDisable(true);
+        txtMargen.setText("1.00");
+        txtMargen.setDisable(true);
+        txtUtilidad.setText("1.00");
+        txtPrecioVentaAgregado.setText("1.00");
     }
 
     public void setIdPresentacion(int idPresentacion) {

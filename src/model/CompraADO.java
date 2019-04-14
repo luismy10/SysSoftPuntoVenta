@@ -118,7 +118,7 @@ public class CompraADO {
                 detalle_compra.setString(1, id_compra);
                 detalle_compra.setString(2, tableView.getItems().get(i).getIdArticulo());
                 detalle_compra.setDouble(3, tableView.getItems().get(i).getCantidad());
-                detalle_compra.setDouble(4, tableView.getItems().get(i).getPrecioCompraReal());
+                detalle_compra.setDouble(4, tableView.getItems().get(i).getCostoCompraReal());
                 detalle_compra.setDouble(5, tableView.getItems().get(i).getDescuento());
 
                 detalle_compra.setDouble(6, tableView.getItems().get(i).getPrecioVentaGeneral());
@@ -134,7 +134,7 @@ public class CompraADO {
                 detalle_compra.addBatch();
 
                 articulo_update.setDouble(1, tableView.getItems().get(i).getCantidad());
-                articulo_update.setDouble(2, tableView.getItems().get(i).getPrecioCompraReal());
+                articulo_update.setDouble(2, tableView.getItems().get(i).getCostoCompraReal());
                 articulo_update.setDouble(3, tableView.getItems().get(i).getPrecioVentaGeneral());
                 articulo_update.setInt(4, tableView.getItems().get(i).getPrecioMargenGeneral());
                 articulo_update.setDouble(5, tableView.getItems().get(i).getPrecioUtilidadGeneral());
@@ -297,12 +297,12 @@ public class CompraADO {
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 articuloTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
-                articuloTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
+                articuloTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
                 articuloTB.setDescuento(rsEmps.getDouble("Descuento"));
                 articuloTB.setImpuestoArticulo(rsEmps.getInt("IdImpuesto"));
-                articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioCompra());
+                articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getCostoCompra());
                 double porcentajeDecimal = articuloTB.getDescuento() / 100.00;
-                double porcentajeRestante = articuloTB.getPrecioCompra() * porcentajeDecimal;
+                double porcentajeRestante = articuloTB.getCostoCompra() * porcentajeDecimal;
                 articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
                 articuloTB.setImpuestoValor(rsEmps.getDouble("ValorImpuesto"));
                 articuloTB.setImpuestoSumado(rsEmps.getDouble("ImpuestoSumado"));

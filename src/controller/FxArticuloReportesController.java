@@ -12,6 +12,8 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -89,9 +91,12 @@ public class FxArticuloReportesController implements Initializable {
         stateRequest = true;
         cbUnidadVenta.getItems().addAll("Todos", "Por Unidad/Pza", "A Granel(Peso)");
         cbUnidadVenta.getSelectionModel().select(0);
+
+        cbCategoria.getItems().add(new DetalleTB(new SimpleIntegerProperty(0), new SimpleStringProperty("Todos")));
         DetalleADO.GetDetailId("0006").forEach(e -> {
             cbCategoria.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
+        cbCategoria.getSelectionModel().select(0);
     }
 
     public void fillArticlesTable(int unidadVenta, int categoria) {
@@ -131,38 +136,48 @@ public class FxArticuloReportesController implements Initializable {
 
     }
 
-    private void openWindowReporte(boolean validar) {
-        if (txtTitulo.getText().isEmpty()) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte artículos", "Ingrese el título del documento", false);
-            txtTitulo.requestFocus();
-        } else {
-            try {
-                ArrayList<ArticuloTB> list = new ArrayList();
-                for (int i = 0; i < tvList.getItems().size(); i++) {
-                    list.add(validar
-                            ? new ArticuloTB(tvList.getItems().get(i).getClave(), tvList.getItems().get(i).getNombreMarca())
-                            : new ArticuloTB(tvList.getItems().get(i).getClaveAlterna(), tvList.getItems().get(i).getNombreMarca(), true));
-                }
+    public void openWindowReporte(boolean validar, short option) {
 
-                Map map = new HashMap();
-                map.put("TITLE", txtTitulo.getText());
-
-                JasperPrint jasperPrint = JasperFillManager.fillReport(FxArticuloReportesController.class.getResourceAsStream(validar ? "/report/GenerarCodBar.jasper" : "/report/GenerarClaveAlt.jasper"), map, new JRBeanCollectionDataSource(list));
-
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-                JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
-                jasperViewer.setIconImage(new ImageIcon(getClass().getResource(Tools.FX_LOGO)).getImage());
-                jasperViewer.setTitle("Lista de atículos");
-                jasperViewer.setSize(840, 650);
-                jasperViewer.setLocationRelativeTo(null);
-                jasperViewer.setVisible(true);
-
-            } catch (HeadlessException | JRException ex) {
-                System.out.println("Error al generar el reporte : " + ex);
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-                Logger.getLogger(FxCompraDetalleController.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            ArrayList<ArticuloTB> list = new ArrayList();
+            for (int i = 0; i < tvList.getItems().size(); i++) {
+                list.add(validar
+                        ? new ArticuloTB(tvList.getItems().get(i).getClave(), tvList.getItems().get(i).getNombreMarca())
+                        : new ArticuloTB(tvList.getItems().get(i).getClaveAlterna(), tvList.getItems().get(i).getNombreMarca(), true));
             }
+
+            Map map = new HashMap();
+            map.put("TITLE", txtTitulo.getText());
+
+            String file = "GenerarCodBar.jasper";
+            switch (option) {
+                case 1:
+                    file = "GenerarCodBar.jasper";
+                    break;
+                case 2:
+                    file = "GenerarCodBarCuadriculax2.jasper";
+                    break;
+                case 3:
+                    file = "GenerarCodBarCuadriculax3.jasper";
+                    break;
+                default:
+                    break;
+            }
+            JasperPrint jasperPrint = JasperFillManager.fillReport(FxArticuloReportesController.class.getResourceAsStream(validar ? "/report/" + file : "/report/GenerarClaveAlt.jasper"), map, new JRBeanCollectionDataSource(list));
+
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+            JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+            jasperViewer.setIconImage(new ImageIcon(getClass().getResource(Tools.FX_LOGO)).getImage());
+            jasperViewer.setTitle("Lista de atículos");
+            jasperViewer.setSize(840, 650);
+            jasperViewer.setLocationRelativeTo(null);
+            jasperViewer.setVisible(true);
+
+        } catch (HeadlessException | JRException ex) {
+            System.out.println("Error al generar el reporte : " + ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(FxCompraDetalleController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -194,6 +209,25 @@ public class FxArticuloReportesController implements Initializable {
         });
         stage.show();
         controller.fillProvidersTable("");
+    }
+
+    private void openWindowFormatoReporte() throws IOException {
+        InitializationTransparentBackground();
+        URL url = getClass().getResource(Tools.FX_FILE_REPORTEOPCION);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxReporteOpcionController controller = fXMLLoader.getController();
+        controller.setInitReporteArticuloController(this);
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Seleccione el formato del reporte", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.setOnHiding((WindowEvent WindowEvent) -> {
+            content.getChildren().remove(Session.PANE);
+        });
+        stage.show();
+
     }
 
     @FXML
@@ -276,7 +310,7 @@ public class FxArticuloReportesController implements Initializable {
     private void onKeyPressedVizualizarAlterna(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (!tvList.getItems().isEmpty()) {
-                openWindowReporte(false);
+                openWindowReporte(false, (short) 0);
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte", "La lista está vacía", false);
             }
@@ -286,33 +320,34 @@ public class FxArticuloReportesController implements Initializable {
     @FXML
     private void onActionVizualizarAlterna(ActionEvent event) {
         if (!tvList.getItems().isEmpty()) {
-            openWindowReporte(false);
+            openWindowReporte(false, (short) 0);
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte", "La lista está vacía", false);
         }
     }
 
     @FXML
-    private void onKeyPressedVisualizar(KeyEvent event) {
+    private void onKeyPressedVisualizar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             if (cbUnidadVenta.getSelectionModel().getSelectedIndex() >= 0) {
-                if (!tvList.getItems().isEmpty()) {
-                    openWindowReporte(true);
+                if (txtTitulo.getText().isEmpty()) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte artículos", "Ingrese el título del documento", false);
+                    txtTitulo.requestFocus();
                 } else {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte", "La lista está vacía", false);
+                    openWindowFormatoReporte();
                 }
-
             }
         }
     }
 
     @FXML
-    private void onActionVisualizar(ActionEvent event) {
+    private void onActionVisualizar(ActionEvent event) throws IOException {
         if (cbUnidadVenta.getSelectionModel().getSelectedIndex() >= 0) {
-            if (!tvList.getItems().isEmpty()) {
-                openWindowReporte(true);
+            if (txtTitulo.getText().isEmpty()) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte artículos", "Ingrese el título del documento", false);
+                txtTitulo.requestFocus();
             } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte", "La lista está vacía", false);
+                openWindowFormatoReporte();
             }
         }
     }
