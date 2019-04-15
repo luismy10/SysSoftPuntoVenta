@@ -43,7 +43,7 @@ public class FxListaPreciosController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         tcNumero.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcNombre.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreGenerico()));
-        tcValor.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioCompra(), 2)));
+        tcValor.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
     }
 
     public void loadDataView(ArticuloTB item,int idx) {

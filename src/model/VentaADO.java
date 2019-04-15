@@ -150,7 +150,7 @@ public class VentaADO {
                 detalle_venta.setDouble(10, tvList.getItems().get(i).getTotalImporte());
                 detalle_venta.addBatch();
 
-                if (tvList.getItems().get(i).isInventario()) {
+                if (tvList.getItems().get(i).isValorInventario()) {
                     articulo_update.setDouble(1, tvList.getItems().get(i).getCantidad());
                     articulo_update.setString(2, tvList.getItems().get(i).getIdArticulo());
                     articulo_update.addBatch();
@@ -167,6 +167,9 @@ public class VentaADO {
 //
 //                    preparedHistorialArticulo.addBatch();
                 } else {
+                    articulo_update.setDouble(1, tvList.getItems().get(i).getTotalImporte());
+                    articulo_update.setString(2, tvList.getItems().get(i).getIdArticulo());
+                    articulo_update.addBatch();
 //                    preparedHistorialArticulo.setString(1, tvList.getItems().get(i).getIdArticulo());
 //                    preparedHistorialArticulo.setString(2, "Venta");
 //                    preparedHistorialArticulo.setDouble(3, 0);

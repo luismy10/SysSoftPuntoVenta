@@ -81,7 +81,7 @@ public class FxImportarInventarioController implements Initializable {
                 cellData.getValue().isLote() ? "SI" : "NO"
         ));
         tcCaducidad.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaRegistro().get().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))));
-        tcCompra.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrecioCompra()).asObject());
+        tcCompra.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getCostoCompra()).asObject());
         tcPrecio.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrecioVentaGeneral()).asObject());
         tcExistencias.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getCantidad()).asObject());
         count = 0;
@@ -161,7 +161,7 @@ public class FxImportarInventarioController implements Initializable {
                                                 articuloTB.setNombreMarca(cell3.getStringCellValue());
                                                 articuloTB.setLote(cell4.getStringCellValue().equalsIgnoreCase("SI"));
                                                 articuloTB.setFechaRegistro(new java.sql.Date(cell5.getDateCellValue().getTime()).toLocalDate());
-                                                articuloTB.setPrecioCompra(cell6.getNumericCellValue());
+                                                articuloTB.setCostoCompra(cell6.getNumericCellValue());
                                                 articuloTB.setPrecioVentaGeneral(cell7.getNumericCellValue());
                                                 articuloTB.setCantidad(cell8.getNumericCellValue());
                                                 listImportada.add(articuloTB);

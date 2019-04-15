@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentaReporteController">
+<VBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentaReporteController">
    <children>
       <VBox>
          <children>
@@ -149,10 +149,10 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <ComboBox fx:id="cbDocumentos" disable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" />
+                                                      <ComboBox fx:id="cbDocumentos" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" GridPane.columnIndex="2" />
                                                       <HBox style="-fx-spacing: 0.5em;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                                          <children>
-                                                            <TextField fx:id="txtClientes" disable="true" prefHeight="37.0" prefWidth="280.0" />
+                                                            <TextField fx:id="txtClientes" disable="true" prefHeight="30.0" prefWidth="280.0" />
                                                             <Button fx:id="btnClientes" disable="true" mnemonicParsing="false" onAction="#onActionClientes" onKeyPressed="#onKeyPressedClientes" styleClass="buttonBorder">
                                                                <graphic>
                                                                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -164,7 +164,7 @@
                                                             </Button>
                                                          </children>
                                                       </HBox>
-                                                      <TextField disable="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <TextField disable="true" prefHeight="30.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                                       <HBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.4166666666666667em 0  0.4166666666666667em 0;" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                                          <children>
                                                             <CheckBox disable="true" mnemonicParsing="false" text="Al Contado" />

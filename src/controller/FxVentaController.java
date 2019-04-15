@@ -83,7 +83,6 @@ public class FxVentaController implements Initializable {
     private Text lblNumeracion;
     @FXML
     private TextField txtCliente;
-
     @FXML
     private TextField txtSearch;
     @FXML
@@ -197,7 +196,7 @@ public class FxVentaController implements Initializable {
         monedaSimbolo = "M";
         setClienteVenta(Session.IDCLIENTE, Session.DATOSCLIENTE);
         initTable();
-        tcArticulo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.4));
+        tcArticulo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.38));
         tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcPrecio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
@@ -559,6 +558,7 @@ public class FxVentaController implements Initializable {
 
                         articuloTB.setInventario(tvList.getItems().get(i).isInventario());
                         articuloTB.setUnidadVenta(tvList.getItems().get(i).getUnidadVenta());
+                        articuloTB.setValorInventario(tvList.getItems().get(i).isValorInventario());
 
                         articuloTB.setImpuestoArticulo(tvList.getItems().get(i).getImpuestoArticulo());
                         articuloTB.setImpuestoArticuloName(getTaxName(tvList.getItems().get(i).getImpuestoArticulo()));
@@ -1047,6 +1047,7 @@ public class FxVentaController implements Initializable {
                     if (articuloTB.getUnidadVenta() == 2) {
                         return;
                     }
+                    articuloTB.setValorInventario(e.isValorInventario());
 
                     articuloTB.setImpuestoArticulo(e.getImpuestoArticulo());
                     articuloTB.setImpuestoArticuloName(getTaxName(e.getImpuestoArticulo()));
@@ -1091,6 +1092,7 @@ public class FxVentaController implements Initializable {
 
                     articuloTB.setInventario(e.isInventario());
                     articuloTB.setUnidadVenta(e.getUnidadVenta());
+                    articuloTB.setValorInventario(e.isValorInventario());
 
                     articuloTB.setImpuestoArticulo(e.getImpuestoArticulo());
                     articuloTB.setImpuestoArticuloName(getTaxName(e.getImpuestoArticulo()));
@@ -1187,6 +1189,7 @@ public class FxVentaController implements Initializable {
 
                 articuloTB.setInventario(a.isInventario());
                 articuloTB.setUnidadVenta(a.getUnidadVenta());
+                articuloTB.setValorInventario(a.isValorInventario());
 
                 articuloTB.setImpuestoArticulo(a.getImpuestoArticulo());
                 articuloTB.setImpuestoArticuloName(getTaxName(articuloTB.getImpuestoArticulo()));

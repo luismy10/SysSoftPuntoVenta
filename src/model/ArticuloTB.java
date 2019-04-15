@@ -32,19 +32,19 @@ public class ArticuloTB {
     private double stockMinimo;
     private double stockMaximo;
     private double cantidad;
-    private double precioCompra;
-    private double precioCompraReal;
-    
-    private double precioVentaGeneralReal;
-    
+    private double costoCompra;
+    private double costoCompraReal;    
+      
     private double precioVentaGeneral;
+    private double precioVentaGeneralReal;  
     private short precioMargenGeneral;
     private double precioUtilidadGeneral;
     
     private PreciosTB preciosTB;
 
-    private boolean lote;
+    private boolean lote;    
     private boolean inventario;
+    private boolean valorInventario;
     private ImageView imageLote;
     private double descuento;
     private double descuentoSumado;
@@ -254,12 +254,20 @@ public class ArticuloTB {
         this.stockMaximo = stockMaximo;
     }
 
-    public double getPrecioCompra() {
-        return precioCompra;
+    public double getCostoCompra() {
+        return costoCompra;
     }
 
-    public void setPrecioCompra(double precioCompra) {
-        this.precioCompra = precioCompra;
+    public void setCostoCompra(double costoCompra) {
+        this.costoCompra = costoCompra;
+    }
+    
+    public double getCostoCompraReal() {
+        return costoCompraReal;
+    }
+
+    public void setCostoCompraReal(double costoCompraReal) {
+        this.costoCompraReal = costoCompraReal;
     }
 
     public PreciosTB getPreciosTB() {
@@ -300,14 +308,6 @@ public class ArticuloTB {
 
     public void setPrecioVentaGeneralReal(double precioVentaGeneralReal) {
         this.precioVentaGeneralReal = precioVentaGeneralReal;
-    }
-    
-    public double getPrecioCompraReal() {
-        return precioCompraReal;
-    }
-
-    public void setPrecioCompraReal(double precioCompraReal) {
-        this.precioCompraReal = precioCompraReal;
     }
 
     public double getCantidad() {
@@ -372,6 +372,14 @@ public class ArticuloTB {
 
     public void setInventario(boolean inventario) {
         this.inventario = inventario;
+    }
+
+    public boolean isValorInventario() {
+        return valorInventario;
+    }
+
+    public void setValorInventario(boolean valorInventario) {
+        this.valorInventario = valorInventario;
     }
 
     public int getUnidadVenta() {

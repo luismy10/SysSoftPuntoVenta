@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticulosController">
+<VBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxArticulosController">
    <children>
       <HBox VBox.vgrow="ALWAYS">
          <children>
@@ -109,7 +109,7 @@
                                  <children>
                                     <VBox spacing="10.0">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Buscar po clave o clave alterna(F7)" textFill="#1a2226">
+                                          <Label styleClass="labelRoboto14" text="Buscar por clave o clave alterna(F7)" textFill="#1a2226">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>

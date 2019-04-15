@@ -178,7 +178,7 @@ public class FxCompraController implements Initializable {
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
         tcCosto.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getPrecioCompraReal(), 2)));
+                Tools.roundingValue(cellData.getValue().getCostoCompraReal(), 2)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getDescuento(), 0) + "%"
         ));
@@ -307,8 +307,8 @@ public class FxCompraController implements Initializable {
                     articuloTB.setClave(e.getClave());
                     articuloTB.setNombreMarca(e.getNombreMarca());
                     articuloTB.setCantidad(e.getCantidad());
-                    articuloTB.setPrecioCompra(e.getPrecioCompra());
-                    articuloTB.setPrecioCompraReal(e.getPrecioCompraReal());
+                    articuloTB.setCostoCompra(e.getCostoCompra());
+                    articuloTB.setCostoCompraReal(e.getCostoCompraReal());
 
                     articuloTB.setPrecioVentaGeneral(e.getPrecioVentaGeneral());
                     articuloTB.setPrecioMargenGeneral(e.getPrecioMargenGeneral());

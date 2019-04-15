@@ -3,8 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/Projecto%20Sistema%20Ventas/src/model/ArticuloADO.java</file>
             <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxArticuloReportesController.java</file>
+=======
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/model/DBUtil.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxArticulosController.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/model/ArticuloADO.java</file>
+>>>>>>> 31233eccabe2f46e840875298fe4d2f354b9f583
         </group>
     </open-files>
 </project-private>

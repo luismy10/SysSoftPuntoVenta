@@ -141,7 +141,7 @@ public class FxArticuloCompraController implements Initializable {
         lblClave.setText(articuloTB.getClave());
         lblDescripcion.setText(articuloTB.getNombreMarca());
         txtCantidad.setText("" + articuloTB.getCantidad());
-        txtCosto.setText(Tools.roundingValue(articuloTB.getPrecioCompraReal(), 2));
+        txtCosto.setText(Tools.roundingValue(articuloTB.getCostoCompraReal(), 2));
         txtDescuento.setText(Tools.roundingValue(articuloTB.getDescuento(), 2));
 
         txtPrecio.setText(Tools.roundingValue(articuloTB.getPrecioVentaGeneral(), 2));
@@ -184,16 +184,16 @@ public class FxArticuloCompraController implements Initializable {
 
         articuloTB.setDescuentoSumado(porcentajeRestante * articuloTB.getCantidad());
 
-        articuloTB.setPrecioCompra(costo - porcentajeRestante);
-        articuloTB.setPrecioCompraReal(costo);
+        articuloTB.setCostoCompra(costo - porcentajeRestante);
+        articuloTB.setCostoCompraReal(costo);
 
-        articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getPrecioCompraReal());
-        articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getPrecioCompra());
+        articuloTB.setSubImporte(articuloTB.getCantidad() * articuloTB.getCostoCompraReal());
+        articuloTB.setTotalImporte(articuloTB.getCantidad() * articuloTB.getCostoCompra());
 
         articuloTB.setImpuestoArticulo(cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto());
         articuloTB.setImpuestoArticuloName(cbImpuesto.getSelectionModel().getSelectedItem().getNombre());
         articuloTB.setImpuestoValor(cbImpuesto.getSelectionModel().getSelectedItem().getValor());
-        articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getPrecioCompra() * (articuloTB.getImpuestoValor() / 100.00)));
+        articuloTB.setImpuestoSumado(articuloTB.getCantidad() * (articuloTB.getCostoCompra() * (articuloTB.getImpuestoValor() / 100.00)));
 
         articuloTB.setPrecioVentaGeneral(Double.parseDouble(txtPrecio.getText()));
         articuloTB.setPrecioMargenGeneral(Short.parseShort(txtMargen.getText()));
