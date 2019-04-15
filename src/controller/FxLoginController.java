@@ -60,7 +60,7 @@ public class FxLoginController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Iniciar Sesión", "Ingrese su contraseña", false);
             txtClave.requestFocus();
         } else {
-            ExecutorService executor = Executors.newFixedThreadPool(1);
+            ExecutorService executor = Executors.newCachedThreadPool();
             ExecutorCompletionService<EmpleadoTB> completionService = new ExecutorCompletionService<>(executor);
             completionService.submit(EmpleadoADO.GetValidateUser(txtUsuario.getText().trim(), txtClave.getText().trim()));
             try {

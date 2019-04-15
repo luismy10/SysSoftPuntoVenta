@@ -320,8 +320,8 @@ public class FxArticuloProcesoController implements Initializable {
             } else if (Double.parseDouble(txtCosto.getText()) <= 0) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "El costo del artículo no puede ser menor o igual a 0, por favor", false);
                 txtCosto.requestFocus();
-            } else if (!Tools.isNumericInteger(txtMargen.getText())) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el primer margen, por favor.", false);
+            } else if (!Tools.isNumeric(txtMargen.getText())) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el margen, por favor.", false);
                 txtMargen.requestFocus();
             } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Selecciona el estado del artículo, por favor.", false);

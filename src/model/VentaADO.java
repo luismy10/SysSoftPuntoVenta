@@ -80,6 +80,7 @@ public class VentaADO {
                     + "(IdVenta\n"
                     + ",IdArticulo\n"
                     + ",Cantidad\n"
+                    + ",CostoVenta\n"
                     + ",PrecioVenta\n"
                     + ",Descuento\n"
                     + ",IdImpuesto\n"
@@ -88,7 +89,7 @@ public class VentaADO {
                     + ",ImpuestoSumado\n"
                     + ",Importe)\n"
                     + "VALUES\n"
-                    + "(?,?,?,?,?,?,?,?,?,?)");
+                    + "(?,?,?,?,?,?,?,?,?,?,?)");
 
             articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad - ? WHERE IdArticulo = ?");
 //
@@ -117,7 +118,7 @@ public class VentaADO {
             movimiento_caja.setString(2, ventaTB.getVendedor());
             movimiento_caja.setTimestamp(3, Timestamp.valueOf(ventaTB.getFechaVenta()));
             movimiento_caja.setString(4, ventaTB.getEstado() == 2 ? "Venta al crédito" : "Venta al contado");
-            movimiento_caja.setString(5, ventaTB.getEstado() == 2 ? "VENCRE" : "VEN");          
+            movimiento_caja.setString(5, ventaTB.getEstado() == 2 ? "VENCRE" : "VEN");
             movimiento_caja.setDouble(6, ventaTB.getTotal());
             movimiento_caja.setDouble(7, 0);
             movimiento_caja.setDouble(8, ventaTB.getTotal() - 0);
@@ -141,13 +142,14 @@ public class VentaADO {
                 detalle_venta.setString(1, id_venta);
                 detalle_venta.setString(2, tvList.getItems().get(i).getIdArticulo());
                 detalle_venta.setDouble(3, tvList.getItems().get(i).getCantidad());
-                detalle_venta.setDouble(4, tvList.getItems().get(i).getPrecioVentaGeneralReal());
-                detalle_venta.setDouble(5, tvList.getItems().get(i).getDescuento());
-                detalle_venta.setDouble(6, tvList.getItems().get(i).getImpuestoArticulo());
-                detalle_venta.setString(7, tvList.getItems().get(i).getImpuestoArticuloName());
-                detalle_venta.setDouble(8, tvList.getItems().get(i).getImpuestoValor());
-                detalle_venta.setDouble(9, tvList.getItems().get(i).getImpuestoSumado());
-                detalle_venta.setDouble(10, tvList.getItems().get(i).getTotalImporte());
+                detalle_venta.setDouble(4, tvList.getItems().get(i).getCostoCompra());
+                detalle_venta.setDouble(5, tvList.getItems().get(i).getPrecioVentaGeneralReal());
+                detalle_venta.setDouble(6, tvList.getItems().get(i).getDescuento());
+                detalle_venta.setDouble(7, tvList.getItems().get(i).getImpuestoArticulo());
+                detalle_venta.setString(8, tvList.getItems().get(i).getImpuestoArticuloName());
+                detalle_venta.setDouble(9, tvList.getItems().get(i).getImpuestoValor());
+                detalle_venta.setDouble(10, tvList.getItems().get(i).getImpuestoSumado());
+                detalle_venta.setDouble(11, tvList.getItems().get(i).getTotalImporte());
                 detalle_venta.addBatch();
 
                 if (tvList.getItems().get(i).isValorInventario()) {

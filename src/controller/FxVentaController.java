@@ -267,7 +267,6 @@ public class FxVentaController implements Initializable {
     }
 
     public void loadValidarCaja() {
-        System.out.println(Session.CAJA_ID);
         CajaTB cajaTB = CajaADO.ValidarAperturaCaja(Session.CAJA_ID);
         if (cajaTB != null) {
             aperturaCaja = true;
@@ -541,7 +540,8 @@ public class FxVentaController implements Initializable {
                         articuloTB.setClave(tvList.getItems().get(i).getClave());
                         articuloTB.setNombreMarca(tvList.getItems().get(i).getNombreMarca());
                         articuloTB.setCantidad(tvList.getItems().get(i).getCantidad() + 1);
-
+                        articuloTB.setCostoCompra(tvList.getItems().get(i).getCostoCompra());
+                        
                         double precio = tvList.getItems().get(i).getPrecioVentaGeneralReal();
                         double discount = tvList.getItems().get(i).getDescuento();
                         double porcentajeDecimal = discount / 100.00;
@@ -1027,7 +1027,8 @@ public class FxVentaController implements Initializable {
                     articuloTB.setClave(e.getClave());
                     articuloTB.setNombreMarca(e.getNombreMarca());
                     articuloTB.setCantidad(e.getCantidad() + 1);
-
+                    articuloTB.setCostoCompra(e.getCostoCompra());
+                    
                     double precio = e.getPrecioVentaGeneralReal();
                     double discount = e.getDescuento();
                     double porcentajeDecimal = discount / 100.00;
@@ -1072,6 +1073,7 @@ public class FxVentaController implements Initializable {
                     articuloTB.setClave(e.getClave());
                     articuloTB.setNombreMarca(e.getNombreMarca());
                     articuloTB.setCantidad(e.getCantidad() - 1);
+                    articuloTB.setCostoCompra(e.getCostoCompra());
                     if (articuloTB.getCantidad() < 1) {
                         return;
                     }
@@ -1181,6 +1183,8 @@ public class FxVentaController implements Initializable {
                 articuloTB.setDescuentoSumado(0);
 
                 articuloTB.setCantidad(1);
+                articuloTB.setCostoCompra(a.getCostoCompra());
+                
                 articuloTB.setPrecioVentaGeneral(a.getPrecioVentaGeneral());
                 articuloTB.setPrecioVentaGeneralReal(a.getPrecioVentaGeneral());
 

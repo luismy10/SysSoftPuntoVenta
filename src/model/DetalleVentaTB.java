@@ -7,6 +7,7 @@ public class DetalleVentaTB {
     private String idVenta;
     private String idArticulo;
     private double cantidad;
+    private double costoVenta;
     private double precioVenta;
     private double descuento;
     private double importe;
@@ -46,6 +47,14 @@ public class DetalleVentaTB {
 
     public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public double getCostoVenta() {
+        return costoVenta;
+    }
+
+    public void setCostoVenta(double costoVenta) {
+        this.costoVenta = costoVenta;
     }
 
     public double getPrecioVenta() {
