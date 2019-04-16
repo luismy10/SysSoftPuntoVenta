@@ -19,6 +19,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 /**
  * controller.FxVentasUtilidadesController
@@ -51,6 +53,20 @@ public class FxVentasUtilidadesController implements Initializable {
     private TableColumn<?, ?> tcImporte;
     
     private AnchorPane windowinit;
+    @FXML
+    private Text lblImporteC;
+    @FXML
+    private Text lblImporteCompra;
+    @FXML
+    private Text lblMonedaImporteV;
+    @FXML
+    private Text lblImporteVenta;
+    @FXML
+    private HBox hbAgregarImpuesto;
+    @FXML
+    private Text lblMonedaUtilidad;
+    @FXML
+    private Text lblUtilidad;
 
     /**
      * Initializes the controller class.
