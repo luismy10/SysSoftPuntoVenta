@@ -159,7 +159,8 @@ public class FxArticuloListaController implements Initializable {
             articuloTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave());
             articuloTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
             articuloTB.setCantidad(1);
-
+            articuloTB.setCostoCompra(tvList.getSelectionModel().getSelectedItem().getCostoCompra());
+            
             articuloTB.setDescuento(0);
             articuloTB.setDescuentoSumado(0);
 

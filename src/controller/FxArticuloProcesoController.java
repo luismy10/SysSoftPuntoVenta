@@ -180,8 +180,6 @@ public class FxArticuloProcesoController implements Initializable {
                 rbValorUnidad.setSelected(true);
             } else {
                 rbValorCosto.setSelected(true);
-                txtCosto.setDisable(true);
-                txtMargen.setDisable(true);
             }
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
@@ -247,8 +245,6 @@ public class FxArticuloProcesoController implements Initializable {
                 rbValorUnidad.setSelected(true);
             } else {
                 rbValorCosto.setSelected(true);
-                txtCosto.setDisable(true);
-                txtMargen.setDisable(true);
             }
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
@@ -320,8 +316,8 @@ public class FxArticuloProcesoController implements Initializable {
             } else if (Double.parseDouble(txtCosto.getText()) <= 0) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "El costo del artículo no puede ser menor o igual a 0, por favor", false);
                 txtCosto.requestFocus();
-            } else if (!Tools.isNumericInteger(txtMargen.getText())) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el primer margen, por favor.", false);
+            } else if (!Tools.isNumeric(txtMargen.getText())) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el margen, por favor.", false);
                 txtMargen.requestFocus();
             } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Selecciona el estado del artículo, por favor.", false);
@@ -826,27 +822,6 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private void onActionInventario(ActionEvent event) {
         vbInventario.setDisable(!cbInventario.isSelected());
-    }
-
-    @FXML
-    private void onActionValorUnidad(ActionEvent event) {
-         txtCosto.setText("");
-        txtCosto.setDisable(false);
-        txtMargen.setText("");
-        txtMargen.setDisable(false);
-        txtUtilidad.setText("");
-        txtPrecioVentaAgregado.setText("");
-
-    }
-
-    @FXML
-    private void onActionValorCosto(ActionEvent event) {
-        txtCosto.setText("1.00");
-        txtCosto.setDisable(true);
-        txtMargen.setText("1.00");
-        txtMargen.setDisable(true);
-        txtUtilidad.setText("1.00");
-        txtPrecioVentaAgregado.setText("1.00");
     }
 
     public void setIdPresentacion(int idPresentacion) {

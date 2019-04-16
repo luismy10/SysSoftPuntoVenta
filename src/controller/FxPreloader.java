@@ -89,7 +89,6 @@ public class FxPreloader extends Preloader {
                 System.out.println("BEFORE_INIT");
                 DBUtil.dbConnect();
                 if (DBUtil.getConnection() != null) {
-                    Session.CONNECTION_SESSION = true;
                     File archivo;
                     FileReader fr = null;
                     BufferedReader br = null;
@@ -168,7 +167,6 @@ public class FxPreloader extends Preloader {
                     }
 
                     Session.MONEDA = MonedaADO.GetMonedaPredetermined();
-                   
 
                     ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");
                     if (clienteTB != null) {
@@ -210,6 +208,7 @@ public class FxPreloader extends Preloader {
 
                         }
                     }
+                    Session.CONNECTION_SESSION = true;
                 }
 
                 System.out.println("BEFORE_INIT");

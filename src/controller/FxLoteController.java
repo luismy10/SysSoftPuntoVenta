@@ -35,7 +35,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javax.swing.ImageIcon;
@@ -73,9 +72,9 @@ public class FxLoteController implements Initializable {
     @FXML
     private ComboBox<String> cbEstado;
     @FXML
-    private Text lblCaducados;
+    private Label lblCaducados;
     @FXML
-    private Text lblPorCaducar;
+    private Label lblPorCaducar;
 
     private AnchorPane content;
 

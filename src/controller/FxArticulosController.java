@@ -514,7 +514,7 @@ public class FxArticulosController implements Initializable {
                     : new File(articuloTB.getImagenTB()).toURI().toString()));
             seleccionadoController.getLblName().setText(articuloTB.getNombreMarca());
             seleccionadoController.getLblPrice().setText(Session.MONEDA + " " + Tools.roundingValue(articuloTB.getPrecioVentaGeneral(), 2));
-            seleccionadoController.getLblQuantity().setText(Tools.roundingValue(articuloTB.getCantidad(), 2));
+            seleccionadoController.getLblQuantity().setText(Tools.roundingValue(articuloTB.getCantidad(), 2)+" "+articuloTB.getUnidadCompraName());
 
 //            if (detalleController != null) {
 //                detalleController.getTvList().setItems(LoteADO.ListByIdLote(tvList.getSelectionModel().getSelectedItem().getIdArticulo()));

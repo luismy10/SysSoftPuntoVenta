@@ -22,7 +22,8 @@ public class VentaADO {
         PreparedStatement comprobante = null;
         CallableStatement codigo_venta = null;
         PreparedStatement detalle_venta = null;
-        PreparedStatement articulo_update = null;
+        PreparedStatement articulo_update_unidad = null;
+        PreparedStatement articulo_update_granel = null;
         PreparedStatement cuentas_cliente = null;
         PreparedStatement movimiento_caja = null;
 //        PreparedStatement preparedHistorialArticulo = null;
@@ -80,6 +81,7 @@ public class VentaADO {
                     + "(IdVenta\n"
                     + ",IdArticulo\n"
                     + ",Cantidad\n"
+                    + ",CostoVenta\n"
                     + ",PrecioVenta\n"
                     + ",Descuento\n"
                     + ",IdImpuesto\n"
@@ -88,9 +90,10 @@ public class VentaADO {
                     + ",ImpuestoSumado\n"
                     + ",Importe)\n"
                     + "VALUES\n"
-                    + "(?,?,?,?,?,?,?,?,?,?)");
+                    + "(?,?,?,?,?,?,?,?,?,?,?)");
 
-            articulo_update = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad - ? WHERE IdArticulo = ?");
+            articulo_update_unidad = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad - ? WHERE IdArticulo = ?");
+            articulo_update_granel = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad - (? / PrecioVentaGeneral) WHERE IdArticulo = ?");
 //
 //            preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("INSERT INTO HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
 //                    + "VALUES(?,GETDATE(),?,?,?,?,?)");
@@ -117,7 +120,7 @@ public class VentaADO {
             movimiento_caja.setString(2, ventaTB.getVendedor());
             movimiento_caja.setTimestamp(3, Timestamp.valueOf(ventaTB.getFechaVenta()));
             movimiento_caja.setString(4, ventaTB.getEstado() == 2 ? "Venta al crédito" : "Venta al contado");
-            movimiento_caja.setString(5, ventaTB.getEstado() == 2 ? "VENCRE" : "VEN");          
+            movimiento_caja.setString(5, ventaTB.getEstado() == 2 ? "VENCRE" : "VEN");
             movimiento_caja.setDouble(6, ventaTB.getTotal());
             movimiento_caja.setDouble(7, 0);
             movimiento_caja.setDouble(8, ventaTB.getTotal() - 0);
@@ -141,19 +144,20 @@ public class VentaADO {
                 detalle_venta.setString(1, id_venta);
                 detalle_venta.setString(2, tvList.getItems().get(i).getIdArticulo());
                 detalle_venta.setDouble(3, tvList.getItems().get(i).getCantidad());
-                detalle_venta.setDouble(4, tvList.getItems().get(i).getPrecioVentaGeneralReal());
-                detalle_venta.setDouble(5, tvList.getItems().get(i).getDescuento());
-                detalle_venta.setDouble(6, tvList.getItems().get(i).getImpuestoArticulo());
-                detalle_venta.setString(7, tvList.getItems().get(i).getImpuestoArticuloName());
-                detalle_venta.setDouble(8, tvList.getItems().get(i).getImpuestoValor());
-                detalle_venta.setDouble(9, tvList.getItems().get(i).getImpuestoSumado());
-                detalle_venta.setDouble(10, tvList.getItems().get(i).getTotalImporte());
+                detalle_venta.setDouble(4, tvList.getItems().get(i).getCostoCompra());
+                detalle_venta.setDouble(5, tvList.getItems().get(i).getPrecioVentaGeneralReal());
+                detalle_venta.setDouble(6, tvList.getItems().get(i).getDescuento());
+                detalle_venta.setDouble(7, tvList.getItems().get(i).getImpuestoArticulo());
+                detalle_venta.setString(8, tvList.getItems().get(i).getImpuestoArticuloName());
+                detalle_venta.setDouble(9, tvList.getItems().get(i).getImpuestoValor());
+                detalle_venta.setDouble(10, tvList.getItems().get(i).getImpuestoSumado());
+                detalle_venta.setDouble(11, tvList.getItems().get(i).getTotalImporte());
                 detalle_venta.addBatch();
 
-                if (tvList.getItems().get(i).isValorInventario()) {
-                    articulo_update.setDouble(1, tvList.getItems().get(i).getCantidad());
-                    articulo_update.setString(2, tvList.getItems().get(i).getIdArticulo());
-                    articulo_update.addBatch();
+                if (tvList.getItems().get(i).isValorInventario() && tvList.getItems().get(i).isInventario()) {
+                    articulo_update_unidad.setDouble(1, tvList.getItems().get(i).getCantidad());
+                    articulo_update_unidad.setString(2, tvList.getItems().get(i).getIdArticulo());
+                    articulo_update_unidad.addBatch();
 
 //                    preparedHistorialArticulo.setString(1, tvList.getItems().get(i).getIdArticulo());
 //                    preparedHistorialArticulo.setString(2, "Venta");
@@ -166,10 +170,10 @@ public class VentaADO {
 //                    preparedHistorialArticulo.setString(6, Session.USER_ID);
 //
 //                    preparedHistorialArticulo.addBatch();
-                } else {
-                    articulo_update.setDouble(1, tvList.getItems().get(i).getTotalImporte());
-                    articulo_update.setString(2, tvList.getItems().get(i).getIdArticulo());
-                    articulo_update.addBatch();
+                } else if(!tvList.getItems().get(i).isValorInventario() && tvList.getItems().get(i).isInventario()){
+                    articulo_update_granel.setDouble(1, tvList.getItems().get(i).getTotalImporte());
+                    articulo_update_granel.setString(2, tvList.getItems().get(i).getIdArticulo());
+                    articulo_update_granel.addBatch();
 //                    preparedHistorialArticulo.setString(1, tvList.getItems().get(i).getIdArticulo());
 //                    preparedHistorialArticulo.setString(2, "Venta");
 //                    preparedHistorialArticulo.setDouble(3, 0);
@@ -189,7 +193,8 @@ public class VentaADO {
             cuentas_cliente.executeBatch();
             comprobante.executeBatch();
             detalle_venta.executeBatch();
-            articulo_update.executeBatch();
+            articulo_update_unidad.executeBatch();
+            articulo_update_granel.executeBatch();
             movimiento_caja.executeBatch();
 //            preparedHistorialArticulo.executeBatch();
             DBUtil.getConnection().commit();
@@ -217,10 +222,13 @@ public class VentaADO {
                     detalle_venta.close();
                 }
 
-                if (articulo_update != null) {
-                    articulo_update.close();
+                if (articulo_update_unidad != null) {
+                    articulo_update_unidad.close();
                 }
-
+                if (articulo_update_granel != null) {
+                    articulo_update_granel.close();
+                }
+                
                 if (codigo_venta != null) {
                     codigo_venta.close();
                 }
