@@ -124,7 +124,9 @@ public class Tools {
     static final String FX_FILE_VENTAFONDOINICIAL = "/view/venta/FxVentaFondoInicial.fxml";
     static final String FX_FILE_VENTAMOVIMIENTO = "/view/venta/FxVentaMovimiento.fxml";
     
-      static final String FX_FILE_REPORTEOPCION = "/view/articulo/FxReporteOpcion.fxml";
+    static final String FX_FILE_REPORTEOPCION = "/view/articulo/FxReporteOpcion.fxml";
+     
+    static final String FX_FILE_VENTAUTILIDAD = "/view/venta/FxVentasUtilidades.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");

@@ -304,8 +304,8 @@
                                                                   <Label styleClass="labelRoboto14" text="Valor de inventario" />
                                                                   <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
                                                                      <children>
-                                                                        <RadioButton fx:id="rbValorUnidad" mnemonicParsing="false" onAction="#onActionValorUnidad" selected="true" styleClass="labelRoboto14" text="Unidad(Cantidad)" />
-                                                                        <RadioButton fx:id="rbValorCosto" mnemonicParsing="false" onAction="#onActionValorCosto" styleClass="labelRoboto14" text="Costo(Moneda)" />
+                                                                        <RadioButton fx:id="rbValorUnidad" mnemonicParsing="false" selected="true" styleClass="labelRoboto14" text="Unidad(Cantidad)" />
+                                                                        <RadioButton fx:id="rbValorCosto" mnemonicParsing="false" styleClass="labelRoboto14" text="Peso(Kg,Lt,G,Etc)" />
                                                                      </children>
                                                                   </HBox>
                                                                </children>

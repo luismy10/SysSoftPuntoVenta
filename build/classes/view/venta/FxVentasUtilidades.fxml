@@ -16,9 +16,10 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentaRealizadasController">
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentasUtilidadesController">
    <children>
-      <HBox VBox.vgrow="ALWAYS">
+      <HBox>
          <children>
             <VBox HBox.hgrow="ALWAYS">
                <children>
@@ -26,10 +27,10 @@
                      <children>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../sales.png" />
+                              <Image url="@../estadistica.png" />
                            </image>
                         </ImageView>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Ventas realizadas" />
+                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Utilidad" />
                         <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textOverrun="CLIP" visible="false">
                            <font>
                               <Font name="Roboto" size="14.0" />
@@ -44,15 +45,6 @@
                      <children>
                         <HBox styleClass="paddinContainer">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#onActionMostrar" onKeyPressed="#onKeyPressedMostar" styleClass="buttonLight" text="Mostrar">
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../view.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
                               <Button mnemonicParsing="false" onAction="#onActionRecargar" onKeyPressed="#onKeyPressedRecargar" styleClass="buttonLight" text="Recargar">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -62,7 +54,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" styleClass="buttonLight" text="Reporte">
+                              <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -119,7 +111,7 @@
                                           </VBox>
                                           <VBox style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
-                                                <Label styleClass="labelRoboto14" text="Documento" textFill="#1a2226">
+                                                <Label styleClass="labelRoboto14" text="Categoria" textFill="#1a2226">
                                                    <font>
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
@@ -131,26 +123,10 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <ComboBox fx:id="cbComprobante" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="200.0" />
+                                                <ComboBox fx:id="cbCategoria" onAction="#onActionCategoria" prefHeight="30.0" prefWidth="200.0" />
                                              </children>
                                           </VBox>
-                                          <VBox style="-fx-spacing: 0.4166666666666667em;">
-                                             <children>
-                                                <Label styleClass="labelRoboto14" text="Estado" textFill="#1a2226">
-                                                   <font>
-                                                      <Font name="Calibri" size="15.0" />
-                                                   </font>
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../state.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Label>
-                                                <ComboBox fx:id="cbEstado" onAction="#onActionEstado" prefHeight="30.0" prefWidth="200.0" />
-                                             </children>
-                                          </VBox>
+                                          <VBox style="-fx-spacing: 0.4166666666666667em;" />
                                        </children>
                                     </HBox>
                                     <Separator prefWidth="200.0" />
@@ -158,7 +134,7 @@
                                        <children>
                                           <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label styleClass="labelRoboto14" text="Buscar por Cliente o Serie/Numeración" textFill="#1a2226">
+                                                <Label styleClass="labelRoboto14" text="Buscar por Producto o Serie/Numeración" textFill="#1a2226">
                                                    <font>
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
@@ -182,13 +158,11 @@
                         <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="298.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                              <TableColumn fx:id="tcFechaVenta" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de venta" />
-                              <TableColumn fx:id="tcCliente" prefWidth="190.0" style="-fx-alignment: CENTER-LEFT;" text="Cliente" />
-                              <TableColumn fx:id="tcSerie" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Serie/Numeración" />
-                              <TableColumn fx:id="tcTipo" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de Venta" />
-                              <TableColumn fx:id="tcEstado" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Estado" />
-                              <TableColumn fx:id="tcTotal" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Total/Saldo" />
-                              <TableColumn fx:id="tcObservacion" prefWidth="167.0" style="-fx-alignment: CENTER-LEFT;" text="Observación" />
+                              <TableColumn fx:id="tcDescripcion" prefWidth="269.0" style="-fx-alignment: CENTER-LEFT;" text="Descripcion" />
+                              <TableColumn fx:id="tcCantidad" prefWidth="101.0" style="-fx-alignment: CENTER-LEFT;" text="Cantidad" />
+                              <TableColumn fx:id="tcCosto" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Costo" />
+                              <TableColumn fx:id="tcPrecio" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Precio" />
+                              <TableColumn fx:id="tcImporte" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Importe" />
                            </columns>
                         </TableView>
                      </children>

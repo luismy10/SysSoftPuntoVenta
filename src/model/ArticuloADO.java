@@ -279,6 +279,7 @@ public class ArticuloADO {
                 articuloTB.setMarcaName(rsEmps.getString("Marca"));
                 articuloTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 articuloTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
+                articuloTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre")); 
                 articuloTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 articuloTB.setCategoriaName(rsEmps.getString("Categoria"));
                 articuloTB.setEstadoName(rsEmps.getString("Estado"));

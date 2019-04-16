@@ -180,8 +180,6 @@ public class FxArticuloProcesoController implements Initializable {
                 rbValorUnidad.setSelected(true);
             } else {
                 rbValorCosto.setSelected(true);
-                txtCosto.setDisable(true);
-                txtMargen.setDisable(true);
             }
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
@@ -247,8 +245,6 @@ public class FxArticuloProcesoController implements Initializable {
                 rbValorUnidad.setSelected(true);
             } else {
                 rbValorCosto.setSelected(true);
-                txtCosto.setDisable(true);
-                txtMargen.setDisable(true);
             }
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
@@ -826,27 +822,6 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private void onActionInventario(ActionEvent event) {
         vbInventario.setDisable(!cbInventario.isSelected());
-    }
-
-    @FXML
-    private void onActionValorUnidad(ActionEvent event) {
-         txtCosto.setText("");
-        txtCosto.setDisable(false);
-        txtMargen.setText("");
-        txtMargen.setDisable(false);
-        txtUtilidad.setText("");
-        txtPrecioVentaAgregado.setText("");
-
-    }
-
-    @FXML
-    private void onActionValorCosto(ActionEvent event) {
-        txtCosto.setText("1.00");
-        txtCosto.setDisable(true);
-        txtMargen.setText("1.00");
-        txtMargen.setDisable(true);
-        txtUtilidad.setText("1.00");
-        txtPrecioVentaAgregado.setText("1.00");
     }
 
     public void setIdPresentacion(int idPresentacion) {

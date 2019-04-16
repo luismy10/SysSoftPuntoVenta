@@ -120,6 +120,21 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setBottomAnchor(node, 0d);
         vbContent.getChildren().add(node);       
     }
+    
+    private void openWindowUtilidad() throws IOException {
+        
+        FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_VENTAUTILIDAD));
+        VBox node = fXMLPrincipal.load();
+        FxVentasUtilidadesController controller = fXMLPrincipal.getController();
+        controller.setContent(windowinit);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        vbContent.getChildren().add(node);  
+
+    }
 
     @FXML
     private void onKeyPressedCompras(KeyEvent event) throws IOException {
@@ -193,10 +208,24 @@ public class FxConsultasController implements Initializable {
     private void onActionCortesCaja(ActionEvent event) throws IOException {
         openWindowCortesCaja();
     }
+    
+    @FXML
+    private void onKeyPressedUtilidad(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowUtilidad();
+        }
+    }
+
+    @FXML
+    private void onActionUtilidad(ActionEvent event) throws IOException {
+        openWindowUtilidad();
+    }
 
     public void setContent(AnchorPane windowinit, AnchorPane vbContent) {
         this.windowinit = windowinit;
         this.vbContent = vbContent;
     }
+
+    
 
 }
