@@ -16,7 +16,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentasUtilidadesController">
    <children>
       <HBox>
@@ -167,6 +166,48 @@
                         </TableView>
                      </children>
                   </VBox>
+                  <HBox alignment="CENTER_RIGHT" style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc;" styleClass="paddinContainer">
+                     <children>
+                        <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 1.6666666666666667em;">
+                           <children>
+                              <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Importe Compra" textFill="#1a2226" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fx:id="lblImporteC" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
+                                          <Text fx:id="lblImporteCompra" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Importe Venta" textFill="#1a2226" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fx:id="lblMonedaImporteV" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
+                                          <Text fx:id="lblImporteVenta" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <HBox fx:id="hbAgregarImpuesto" style="-fx-spacing: 1.1666666666666667em;" />
+                              <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Utilidad" textFill="#1a2226" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Text fx:id="lblMonedaUtilidad" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
+                                          <Text fx:id="lblUtilidad" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER" style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em;">
                      <children>
                         <HBox alignment="CENTER" style="-fx-background-color: #cccccc; -fx-spacing: 0.8333333333333334em;">
