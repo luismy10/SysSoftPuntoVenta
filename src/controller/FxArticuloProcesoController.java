@@ -308,7 +308,7 @@ public class FxArticuloProcesoController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el primer precio de venta, por favor.", false);
                 txtPrecio.requestFocus();
             } else if (Double.parseDouble(txtPrecio.getText()) <= 0) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "El precio de venta no puede ser menos o igual a 0, por favor.", false);
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "El precio de venta no puede ser menor o igual a 0, por favor.", false);
                 txtPrecio.requestFocus();
             } else if (!Tools.isNumeric(txtCosto.getText())) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Ingrese el costo del artículo, por favor.", false);
@@ -773,6 +773,9 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private void onKeyRealesdPrecio(KeyEvent event) {
         if (Tools.isNumeric(txtPrecio.getText()) && Tools.isNumeric(txtCosto.getText())) {
+            if(Double.parseDouble(txtCosto.getText())<=0){
+                return;
+            }
             double costo = Double.parseDouble(txtCosto.getText());
             double precio = Double.parseDouble(txtPrecio.getText());
 
