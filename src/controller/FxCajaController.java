@@ -1,17 +1,25 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.CajaADO;
 import model.CajaTB;
 import model.MovimientoCajaADO;
@@ -52,14 +60,17 @@ public class FxCajaController implements Initializable {
 
     private double totalDineroCaja;
 
+    private int idActual;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        idActual = 0;
     }
 
     private void corteCaja() {
         CajaTB cajaTB = CajaADO.ValidarAperturaCaja(Session.CAJA_ID);
         if (cajaTB != null) {
+            idActual = cajaTB.getIdCaja();
             lblCargo.setText(Session.USER_NAME);
             lblFecha.setText(Tools.getDate("dd-MM-yyyy"));
             MovimientoCajaTB fondoCaja = MovimientoCajaADO.FondoCaja(cajaTB.getIdCaja());
@@ -89,12 +100,45 @@ public class FxCajaController implements Initializable {
                 lblSalidas.setText("-" + Tools.roundingValue(salidas, 2));
                 totalDineroCaja = totalDineroCaja - egresosEfectivo.getSaldo();
             }
+            MovimientoCajaTB devolucionesEfectivo = MovimientoCajaADO.DevolucionesEfectivo(cajaTB.getIdCaja());
+            if (devolucionesEfectivo != null) {
+                salidas += devolucionesEfectivo.getSaldo();
+                lblDevoluciones.setText("-" + Tools.roundingValue(salidas, 2));
+                totalDineroCaja = totalDineroCaja - devolucionesEfectivo.getSaldo();
+            }
+            
 
             lblTotalDineroCaja.setText(Session.MONEDA + " " + Tools.roundingValue(Math.abs(totalDineroCaja), 2));
             btnTerminarTurno.setDisable(false);
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Corte de caja", "No está aperturado la caja.", false);
             btnTerminarTurno.setDisable(true);
+        }
+    }
+
+    private void terminarTurno() throws IOException {
+        short option = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Corte de caja", "¿Está seguro de cerrar su turno?", true);
+        if (option == 1) {
+            String result = CajaADO.CerarAperturaCaja(idActual, LocalDateTime.now(), false);
+            if (result.equalsIgnoreCase("completed")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Corte de caja", "Se cerro correctamente la caja.", false);
+                Tools.Dispose(content);
+                URL urllogin = getClass().getResource(Tools.FX_FILE_LOGIN);
+                FXMLLoader fXMLLoaderLogin = FxWindow.LoaderWindow(urllogin);
+                Parent parent = fXMLLoaderLogin.load(urllogin.openStream());
+                Scene scene = new Scene(parent);
+                Stage primaryStage = new Stage();
+                primaryStage.getIcons().add(new Image(Tools.FX_LOGO));
+                primaryStage.setScene(scene);
+                primaryStage.initStyle(StageStyle.DECORATED);
+                primaryStage.setTitle("Sys Soft");
+                primaryStage.centerOnScreen();
+                primaryStage.setMaximized(true);
+                primaryStage.show();
+                primaryStage.requestFocus();
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Corte de caja", result, false);
+            }
         }
     }
 
@@ -123,15 +167,15 @@ public class FxCajaController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedTerminarTurno(KeyEvent event) {
+    private void onKeyPressedTerminarTurno(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-
+            terminarTurno();
         }
     }
 
     @FXML
-    private void onActionTerminarTurno(ActionEvent event) {
-
+    private void onActionTerminarTurno(ActionEvent event) throws IOException {
+        terminarTurno();
     }
 
     public void setContent(AnchorPane content) {

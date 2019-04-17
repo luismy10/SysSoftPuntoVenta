@@ -130,8 +130,8 @@ public class MovimientoCajaADO {
         }
         return movimientoCajaTB;
     }
-    
-      public static MovimientoCajaTB EgresosEfectivo(int idCaja) {
+
+    public static MovimientoCajaTB EgresosEfectivo(int idCaja) {
         MovimientoCajaTB movimientoCajaTB = null;
         PreparedStatement statementVentas = null;
         try {
@@ -162,12 +162,42 @@ public class MovimientoCajaADO {
         return movimientoCajaTB;
     }
 
-    
+    public static MovimientoCajaTB DevolucionesEfectivo(int idCaja) {
+        MovimientoCajaTB movimientoCajaTB = null;
+        PreparedStatement statementVentas = null;
+        try {
+            DBUtil.dbConnect();
+            statementVentas = DBUtil.getConnection().prepareStatement("SELECT * FROM MovimientoCajaTB WHERE IdCaja = ? AND Movimiento = ?");
+            statementVentas.setInt(1, idCaja);
+            statementVentas.setString(2, "VENCAN");
+            if (statementVentas.executeQuery().next()) {
+                movimientoCajaTB = new MovimientoCajaTB();
+                try (ResultSet result = statementVentas.executeQuery()) {
+                    while (result.next()) {
+                        movimientoCajaTB.setSaldo(movimientoCajaTB.getSaldo() + result.getDouble("Saldo"));
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+
+        } finally {
+            try {
+                if (statementVentas != null) {
+                    statementVentas.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return movimientoCajaTB;
+    }
+
     public static String AperturarCaja_Movimiento(CajaTB cajaTB, MovimientoCajaTB movimientoCajaTB) {
         String result = "";
         PreparedStatement statementCaja = null;
         PreparedStatement statementMovimiento = null;
-        final String queryCaja = "UPDATE CajaTB SET FechaApertura = ?  WHERE IdCaja = ?";
+        final String queryCaja = "UPDATE CajaTB SET FechaApertura = ?,FechaCierre = ?  WHERE IdCaja = ?";
         final String queryMovimiento = "INSERT INTO MovimientoCajaTB(IdCaja,IdUsuario,FechaMovimiento,Comentario,Movimiento,Entrada,Salidas,Saldo)VALUES(?,?,?,?,?,?,?,?)";
         try {
             DBUtil.dbConnect();
@@ -175,7 +205,8 @@ public class MovimientoCajaADO {
 
             statementCaja = DBUtil.getConnection().prepareStatement(queryCaja);
             statementCaja.setTimestamp(1, Timestamp.valueOf(cajaTB.getFechaApertura()));
-            statementCaja.setInt(2, cajaTB.getIdCaja());
+            statementCaja.setTimestamp(2, Timestamp.valueOf(cajaTB.getFechaApertura()));
+            statementCaja.setInt(3, cajaTB.getIdCaja());
             statementCaja.addBatch();
 
             statementMovimiento = DBUtil.getConnection().prepareStatement(queryMovimiento);
@@ -215,7 +246,7 @@ public class MovimientoCajaADO {
         }
         return result;
     }
-    
+
     public static String Registrar_Movimiento(MovimientoCajaTB movimientoCajaTB) {
         String result = "";
         PreparedStatement statementMovimiento = null;
@@ -246,7 +277,7 @@ public class MovimientoCajaADO {
                 result = ex1.getLocalizedMessage();
             }
         } finally {
-            try {                
+            try {
                 if (statementMovimiento != null) {
                     statementMovimiento.close();
                 }

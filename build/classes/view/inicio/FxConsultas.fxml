@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxConsultasController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxConsultasController">
    <children>
       <VBox HBox.hgrow="ALWAYS">
          <children>
@@ -42,7 +42,7 @@
             </HBox>
             <HBox alignment="CENTER" styleClass="paddinContainer">
                <children>
-                  <VBox alignment="CENTER">
+                  <VBox fx:id="vbVentas" alignment="CENTER">
                      <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentas" onKeyPressed="#onKeyPressedVentas" styleClass="buttonTransparent" text="Ventas">
                            <graphic>
@@ -60,7 +60,7 @@
                         </Text>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER">
+                  <VBox fx:id="vbCompras" alignment="CENTER">
                      <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCompras" onKeyPressed="#onKeyPressedCompras" styleClass="buttonTransparent" text="Compras">
                            <graphic>
@@ -78,7 +78,7 @@
                         </Text>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER">
+                  <VBox fx:id="vbDirectorio" alignment="CENTER">
                      <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionDirectory" onKeyPressed="#onKeyPressedDirectory" styleClass="buttonTransparent" text="Directorio">
                            <graphic>
@@ -96,7 +96,7 @@
                         </Text>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER">
+                  <VBox fx:id="vbArticulo" alignment="CENTER">
                      <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionHistorial" onKeyPressed="#onKeyPressedHistorial" styleClass="buttonTransparent" text="Artículo">
                            <graphic>
@@ -114,7 +114,7 @@
                         </Text>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER">
+                  <VBox fx:id="vbValorInventario" alignment="CENTER">
                      <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionInventario" onKeyPressed="#onKeyPressedInventario" styleClass="buttonTransparent" text="Valor de Inventario">
                            <graphic>
@@ -132,7 +132,7 @@
                         </Text>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER">
+                  <VBox fx:id="vbCortesCaja" alignment="CENTER">
                      <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCortesCaja" onKeyPressed="#onKeyPressedCortesCaja" styleClass="buttonTransparent" text="Cortes de caja">
                            <graphic>
@@ -154,7 +154,7 @@
             </HBox>
             <HBox alignment="CENTER" styleClass="paddinContainer">
                <children>
-                  <VBox alignment="CENTER">
+                  <VBox fx:id="vbUtilidades" alignment="CENTER">
                      <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionUtilidad" onKeyPressed="#onKeyPressedUtilidad" styleClass="buttonTransparent" text="Utilidades">
                            <graphic>

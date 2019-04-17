@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -107,6 +108,41 @@ public class CajaADO {
         return cajaTB;
     }
 
+    public static String CerarAperturaCaja(int idCaja,LocalDateTime localDateTime,boolean state) {
+        String cajaTB = "";
+        PreparedStatement statementCaja = null;
+        try {
+            DBUtil.dbConnect();
+            DBUtil.getConnection().setAutoCommit(false);
+            statementCaja = DBUtil.getConnection().prepareStatement("UPDATE CajaTB SET FechaCierre = ?,Estado=? WHERE IdCaja = ?");
+            statementCaja.setTimestamp(1, Timestamp.valueOf(localDateTime));
+            statementCaja.setBoolean(2, state);
+            statementCaja.setInt(3, idCaja);
+            statementCaja.addBatch();
+            
+            statementCaja.executeBatch();
+            DBUtil.getConnection().commit();
+            cajaTB = "completed";
+        } catch (SQLException ex) {
+            try {
+                DBUtil.getConnection().rollback();
+            } catch (SQLException e) {
+
+            }
+            cajaTB = ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (statementCaja != null) {
+                    statementCaja.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return cajaTB;
+    }
+
     public static ObservableList<CajaTB> ListarCajasAperturadas(String fechaInicial, String fechaFinal) {
         PreparedStatement statementLista = null;
         ObservableList<CajaTB> empList = FXCollections.observableArrayList();
@@ -120,7 +156,7 @@ public class CajaADO {
                     CajaTB cajaTB = new CajaTB();
                     cajaTB.setIdCaja(result.getInt("IdCaja"));
                     cajaTB.setFechaApertura(result.getTimestamp("FechaApertura").toLocalDateTime());
-//                    cajaTB.setFechaCierre(result.getTimestamp("FechaCierre").toLocalDateTime());
+                    cajaTB.setFechaCierre(result.getTimestamp("FechaCierre").toLocalDateTime());
                     cajaTB.setEstado(result.getBoolean("Estado"));
                     cajaTB.setContado(result.getDouble("Contado"));
                     cajaTB.setCalculado(result.getDouble("Calculado"));

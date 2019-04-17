@@ -22,6 +22,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -89,7 +90,26 @@ public class FxVentaRealizadasController implements Initializable {
         tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getComprobanteName() + "\n" + cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
         tcObservacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getObservaciones()));
+        
+        tcEstado.setCellFactory((TableColumn<VentaTB, String> column) -> {
+            return new TableCell<VentaTB, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        setText(item);
+                        if (item.equalsIgnoreCase("ANULADO")) {
+                            setStyle("-fx-text-fill: #d00c0c;-fx-alignment:  CENTER;");
+                        }
+                    }
+                }
+            };
 
+        });
+        
         cbEstado.getItems().add(new DetalleTB(new SimpleIntegerProperty(0), new SimpleStringProperty("TODOS")));
         DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> {
             cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
@@ -106,16 +126,18 @@ public class FxVentaRealizadasController implements Initializable {
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
 
     }
+    
 
     public void loadInit() {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(),
+                    Session.USER_ID);
         }
     }
 
-    private void fillVentasTable(short opcion, String value, String fechaInicial, String fechaFinal, int comprobante, int estado) {
+    private void fillVentasTable(short opcion, String value, String fechaInicial, String fechaFinal, int comprobante, int estado,String usuario) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -124,7 +146,7 @@ public class FxVentaRealizadasController implements Initializable {
         Task<ObservableList<VentaTB>> task = new Task<ObservableList<VentaTB>>() {
             @Override
             public ObservableList<VentaTB> call() {
-                return VentaADO.ListVentas(opcion, value, fechaInicial, fechaFinal, comprobante, estado);
+                return VentaADO.ListVentas(opcion, value, fechaInicial, fechaFinal, comprobante, estado,usuario);
             }
         };
 
@@ -177,7 +199,7 @@ public class FxVentaRealizadasController implements Initializable {
 
     @FXML
     private void onKeyRelasedSearch(KeyEvent event) {
-        fillVentasTable((short) 1, txtSearch.getText().trim(), "", "", 0, 0);
+        fillVentasTable((short) 1, txtSearch.getText().trim(), "", "", 0, 0,Session.USER_ID);
     }
 
     @FXML
@@ -185,7 +207,7 @@ public class FxVentaRealizadasController implements Initializable {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(),Session.USER_ID);
         }
     }
 
@@ -194,7 +216,7 @@ public class FxVentaRealizadasController implements Initializable {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(),Session.USER_ID);
         }
     }
 
@@ -233,7 +255,7 @@ public class FxVentaRealizadasController implements Initializable {
             if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
                 fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                         cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(),Session.USER_ID);
             }
         }
     }
@@ -246,7 +268,7 @@ public class FxVentaRealizadasController implements Initializable {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(),Session.USER_ID);
         }
     }
 
@@ -255,7 +277,7 @@ public class FxVentaRealizadasController implements Initializable {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(),Session.USER_ID);
         }
     }
 
@@ -264,7 +286,7 @@ public class FxVentaRealizadasController implements Initializable {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                     cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                    cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(),Session.USER_ID);
         }
     }
 
