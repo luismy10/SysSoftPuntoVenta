@@ -541,7 +541,7 @@ public class FxVentaController implements Initializable {
                         articuloTB.setNombreMarca(tvList.getItems().get(i).getNombreMarca());
                         articuloTB.setCantidad(tvList.getItems().get(i).getCantidad() + 1);
                         articuloTB.setCostoCompra(tvList.getItems().get(i).getCostoCompra());
-                        
+
                         double precio = tvList.getItems().get(i).getPrecioVentaGeneralReal();
                         double discount = tvList.getItems().get(i).getDescuento();
                         double porcentajeDecimal = discount / 100.00;
@@ -552,6 +552,7 @@ public class FxVentaController implements Initializable {
 
                         articuloTB.setPrecioVentaGeneralReal(precio);
                         articuloTB.setPrecioVentaGeneral(precio - porcentajeRestante);
+                        articuloTB.setPrecioVentaAuxiliar(precio);
 
                         articuloTB.setSubImporte(articuloTB.getCantidad() * tvList.getItems().get(i).getPrecioVentaGeneralReal());
                         articuloTB.setTotalImporte(articuloTB.getCantidad() * tvList.getItems().get(i).getPrecioVentaGeneral());
@@ -1028,7 +1029,7 @@ public class FxVentaController implements Initializable {
                     articuloTB.setNombreMarca(e.getNombreMarca());
                     articuloTB.setCantidad(e.getCantidad() + 1);
                     articuloTB.setCostoCompra(e.getCostoCompra());
-                    
+
                     double precio = e.getPrecioVentaGeneralReal();
                     double discount = e.getDescuento();
                     double porcentajeDecimal = discount / 100.00;
@@ -1039,6 +1040,7 @@ public class FxVentaController implements Initializable {
 
                     articuloTB.setPrecioVentaGeneralReal(precio);
                     articuloTB.setPrecioVentaGeneral(precio - porcentajeRestante);
+                    articuloTB.setPrecioVentaAuxiliar(precio);
 
                     articuloTB.setSubImporte(articuloTB.getCantidad() * e.getPrecioVentaGeneral());
                     articuloTB.setTotalImporte(articuloTB.getCantidad() * e.getPrecioVentaGeneral());
@@ -1088,7 +1090,8 @@ public class FxVentaController implements Initializable {
 
                     articuloTB.setPrecioVentaGeneralReal(precio);
                     articuloTB.setPrecioVentaGeneral(precio - porcentajeRestante);
-
+                    articuloTB.setPrecioVentaAuxiliar(precio);
+                    
                     articuloTB.setSubImporte(articuloTB.getCantidad() * e.getPrecioVentaGeneralReal());
                     articuloTB.setTotalImporte(articuloTB.getCantidad() * e.getPrecioVentaGeneral());
 
@@ -1184,9 +1187,10 @@ public class FxVentaController implements Initializable {
 
                 articuloTB.setCantidad(1);
                 articuloTB.setCostoCompra(a.getCostoCompra());
-                
+
                 articuloTB.setPrecioVentaGeneral(a.getPrecioVentaGeneral());
                 articuloTB.setPrecioVentaGeneralReal(a.getPrecioVentaGeneral());
+                articuloTB.setPrecioVentaAuxiliar(a.getPrecioVentaGeneral());
 
                 articuloTB.setSubImporte(1 * a.getPrecioVentaGeneral());
                 articuloTB.setTotalImporte(1 * a.getPrecioVentaGeneral());

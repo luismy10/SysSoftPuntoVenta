@@ -166,7 +166,8 @@ public class FxArticuloListaController implements Initializable {
 
             articuloTB.setPrecioVentaGeneralReal(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
             articuloTB.setPrecioVentaGeneral(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
-
+            articuloTB.setPrecioVentaAuxiliar(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral()); 
+            
             articuloTB.setSubImporte(1 * tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
             articuloTB.setTotalImporte(1 * tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
 

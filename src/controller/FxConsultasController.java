@@ -18,6 +18,20 @@ public class FxConsultasController implements Initializable {
 
     @FXML
     private TextField txtSearch;
+    @FXML
+    private VBox vbVentas;
+    @FXML
+    private VBox vbCompras;
+    @FXML
+    private VBox vbDirectorio;
+    @FXML
+    private VBox vbArticulo;
+    @FXML
+    private VBox vbValorInventario;
+    @FXML
+    private VBox vbCortesCaja;
+    @FXML
+    private VBox vbUtilidades;
 
     private AnchorPane vbContent;
 
@@ -32,6 +46,14 @@ public class FxConsultasController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if(Session.ROL == 2){
+            vbCompras.setDisable(true);
+            vbDirectorio.setDisable(true);
+            vbArticulo.setDisable(true);
+            vbValorInventario.setDisable(true);
+            vbCortesCaja.setDisable(true);
+            vbUtilidades.setDisable(true);
+        }
         try {
             fXMLVentaRealizadas = new FXMLLoader(getClass().getResource(Tools.FX_FILE_VENTAREALIZADAS));
             nodeVentaRealizadas = fXMLVentaRealizadas.load();
@@ -118,11 +140,11 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
-        vbContent.getChildren().add(node);       
+        vbContent.getChildren().add(node);
     }
-    
+
     private void openWindowUtilidad() throws IOException {
-        
+
         FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(Tools.FX_FILE_VENTAUTILIDAD));
         VBox node = fXMLPrincipal.load();
         FxVentasUtilidadesController controller = fXMLPrincipal.getController();
@@ -132,7 +154,7 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
-        vbContent.getChildren().add(node);  
+        vbContent.getChildren().add(node);
 
     }
 
@@ -208,7 +230,7 @@ public class FxConsultasController implements Initializable {
     private void onActionCortesCaja(ActionEvent event) throws IOException {
         openWindowCortesCaja();
     }
-    
+
     @FXML
     private void onKeyPressedUtilidad(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
@@ -225,7 +247,5 @@ public class FxConsultasController implements Initializable {
         this.windowinit = windowinit;
         this.vbContent = vbContent;
     }
-
-    
 
 }

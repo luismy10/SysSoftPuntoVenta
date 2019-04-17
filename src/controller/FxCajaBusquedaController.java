@@ -61,13 +61,19 @@ public class FxCajaBusquedaController implements Initializable {
                 cellData.getValue().getFechaApertura().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) + "\n"
                 + cellData.getValue().getFechaApertura().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM))
         ));
-        tcFechaCierre.setCellValueFactory(cellData -> Bindings.concat());
+        tcFechaCierre.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getFechaCierre().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) + "\n"
+                + cellData.getValue().getFechaCierre().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM))
+        ));
         tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().isEstado() ? "Aperturado" : "Cerrado"));
         tcContado.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getContado(), 2)));
         tcCalculado.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCalculado(), 2)));
         tcDiferencia.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getDiferencia(), 2)));
         tcUsuario.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEmpleadoTB().getApellidos() + "\n" + cellData.getValue().getEmpleadoTB().getNombres()));
         stateRequest = false;
+        if (dtFechaInicial.getValue() != null && dcFechaFinal.getValue() != null) {
+            fillTableCajas(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dcFechaFinal));
+        }
     }
 
     private void acceptBusqueda() {

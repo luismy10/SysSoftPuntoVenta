@@ -32,6 +32,7 @@ public class ArticuloTB {
     private double stockMinimo;
     private double stockMaximo;
     private double cantidad;
+    private double cantidadGranel;
     private double costoCompra;
     private double costoCompraReal;    
       
@@ -39,6 +40,8 @@ public class ArticuloTB {
     private double precioVentaGeneralReal;  
     private short precioMargenGeneral;
     private double precioUtilidadGeneral;
+    
+    private double precioVentaAuxiliar;
     
     private PreciosTB preciosTB;
 
@@ -302,6 +305,14 @@ public class ArticuloTB {
         this.precioUtilidadGeneral = precioUtilidadGeneral;
     }
 
+    public double getPrecioVentaAuxiliar() {
+        return precioVentaAuxiliar;
+    }
+
+    public void setPrecioVentaAuxiliar(double precioVentaAuxiliar) {
+        this.precioVentaAuxiliar = precioVentaAuxiliar;
+    }
+
     public double getPrecioVentaGeneralReal() {
         return precioVentaGeneralReal;
     }
@@ -316,6 +327,14 @@ public class ArticuloTB {
 
     public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public double getCantidadGranel() {
+        return cantidadGranel;
+    }
+
+    public void setCantidadGranel(double cantidadGranel) {
+        this.cantidadGranel = cantidadGranel;
     }
 
     public double getDescuento() {
