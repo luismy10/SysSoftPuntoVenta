@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Optional;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,8 +18,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -29,7 +26,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.ArticuloTB;
@@ -75,6 +71,8 @@ public class FxVentaDetalleController implements Initializable {
     private Text lblSubTotal;
     @FXML
     private VBox hbAgregarImpuesto;
+@FXML
+    private Text lblTotalVenta;
 
     private AnchorPane windowinit;
 
@@ -111,8 +109,11 @@ public class FxVentaDetalleController implements Initializable {
     private double pointWidth;
 
     private String nombreTicketImpresion;
-
+    
+    private double totalVenta;
+    
     private double efectivo, vuelto;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -167,9 +168,11 @@ public class FxVentaDetalleController implements Initializable {
             lblObservaciones.setText(ventaTB.getObservaciones());
             lblTipo.setText(ventaTB.getTipoName());
             lblEstado.setText(ventaTB.getEstadoName());
+            lblTotalVenta.setText(ventaTB.getMonedaName() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
             simboloMoneda = ventaTB.getMonedaName();
             efectivo = ventaTB.getEfectivo();
             vuelto = ventaTB.getVuelto();
+            totalVenta = ventaTB.getTotal();
         }
         EmpleadoTB empleadoTB = VentaADO.GetEmpleadoVenta(idVenta);
         if (empleadoTB != null) {
@@ -179,55 +182,34 @@ public class FxVentaDetalleController implements Initializable {
 
     }
 
-    private void calcelVenta() {
-        final URL url = getClass().getResource("/view/alert.css");
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.getEditor().addEventHandler(KeyEvent.KEY_TYPED, (KeyEvent event) -> {
-            char c = event.getCharacter().charAt(0);
-            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-                event.consume();
-            }
-            if (c == '.' && dialog.getEditor().getText().contains(".")) {
-                event.consume();
-            }
+    private void calcelVenta() throws IOException {
+        InitializationTransparentBackground();
+        URL url = getClass().getResource(Tools.FX_FILE_VENTADEVOLUCION);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxVentaDevolucionController controller = fXMLLoader.getController();
+        controller.setInitVentaDetalle(this);
+        controller.setLoadVentaDevolucion(idVenta,arrList,lblComprobante.getText(),lblTotalVenta.getText(),totalVenta);
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Cancelar la venta", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.setOnHiding((WindowEvent WindowEvent) -> {
+            windowinit.getChildren().remove(Session.PANE);
         });
-        dialog.getEditor().setText("");
-        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("/view/icon.png"));
-        dialog.setTitle("Cancelar la venta");
-        dialog.setHeaderText("Ingrese el monto de dinero a devolver");
-        dialog.setContentText("Enter para continuar");
-        dialog.initModality(Modality.WINDOW_MODAL);
-        dialog.initOwner(window.getScene().getWindow());
-        dialog.getDialogPane().getStylesheets().add(url.toExternalForm());
-        Optional<String> resultOption = dialog.showAndWait();
-        if (resultOption.isPresent()) {
-            if (Tools.isNumeric(resultOption.get())) {
-                short validate = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Detalle de ventas", "¿Está seguro de cancelar la venta?", true);
-                if (validate == 1) {
-                    String result = VentaADO.CancelTheSale(idVenta, arrList, Double.parseDouble(resultOption.get()));
-                    if (result.equalsIgnoreCase("update")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle de venta", "Se ha cancelado con éxito", false);
-                    } else if (result.equalsIgnoreCase("scrambled")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de venta", "Ya está cancelada la venta!", false);
-                    } else {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle de venta", result, false);
-                    }
-                }
-            }
-        }
-
+        stage.show();
     }
 
     @FXML
-    private void onKeyPressedCancelar(KeyEvent event) {
+    private void onKeyPressedCancelar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             calcelVenta();
         }
     }
 
     @FXML
-    private void onActionCancelar(ActionEvent event) {
+    private void onActionCancelar(ActionEvent event) throws IOException {
         calcelVenta();
     }
 

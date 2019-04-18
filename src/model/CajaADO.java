@@ -1,5 +1,6 @@
 package model;
 
+import controller.Session;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -108,19 +109,35 @@ public class CajaADO {
         return cajaTB;
     }
 
-    public static String CerarAperturaCaja(int idCaja,LocalDateTime localDateTime,boolean state) {
+    public static String CerarAperturaCaja(int idCaja, LocalDateTime localDateTime, boolean state, double contado,double calculado) {
         String cajaTB = "";
         PreparedStatement statementCaja = null;
+        PreparedStatement movimiento_caja = null;
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
-            statementCaja = DBUtil.getConnection().prepareStatement("UPDATE CajaTB SET FechaCierre = ?,Estado=? WHERE IdCaja = ?");
+            statementCaja = DBUtil.getConnection().prepareStatement("UPDATE CajaTB SET FechaCierre = ?,Contado = ?,Calculado = ?,Diferencia = ?,Estado=? WHERE IdCaja = ?");
             statementCaja.setTimestamp(1, Timestamp.valueOf(localDateTime));
-            statementCaja.setBoolean(2, state);
-            statementCaja.setInt(3, idCaja);
+            statementCaja.setDouble(2, contado);
+            statementCaja.setDouble(3, calculado);
+            statementCaja.setDouble(4, contado - calculado);
+            statementCaja.setBoolean(5, state);
+            statementCaja.setInt(6, idCaja);
             statementCaja.addBatch();
-            
+
+            movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,IdUsuario,FechaMovimiento,Comentario,Movimiento,Entrada,Salidas,Saldo)VALUES(?,?,?,?,?,?,?,?)");
+            movimiento_caja.setInt(1, idCaja);
+            movimiento_caja.setString(2, Session.USER_ID);
+            movimiento_caja.setTimestamp(3, Timestamp.valueOf(localDateTime));
+            movimiento_caja.setString(4, "Finalización del turno");
+            movimiento_caja.setString(5, "CERRAR");
+            movimiento_caja.setDouble(6, contado);
+            movimiento_caja.setDouble(7, 0);
+            movimiento_caja.setDouble(8, contado - 0);
+            movimiento_caja.addBatch();
+
             statementCaja.executeBatch();
+            movimiento_caja.executeBatch();
             DBUtil.getConnection().commit();
             cajaTB = "completed";
         } catch (SQLException ex) {
