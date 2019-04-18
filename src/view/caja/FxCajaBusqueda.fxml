@@ -46,7 +46,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Fecha Inicial:">
+                                          <Label styleClass="labelOpenSansRegular14" text="Fecha Inicial:" textFill="#1a2226">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -60,7 +60,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Fecha Final:">
+                                          <Label styleClass="labelOpenSansRegular14" text="Fecha Final:" textFill="#1a2226">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -97,7 +97,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <TableView fx:id="tvLista" prefHeight="320.0" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tvLista" onMouseClicked="#onMouseClickedLista" prefHeight="320.0" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcFechaApertura" prefWidth="170.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Apertura" />
                               <TableColumn fx:id="tcFechaCierre" prefWidth="170.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Cierre" />
@@ -108,7 +108,7 @@
                               <TableColumn fx:id="tcUsuario" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Usuario" />
                            </columns>
                         </TableView>
-                        <Label styleClass="labelOpenSansRegular14" text="Seleccionar un elemento con doble click o enter" />
+                        <Label styleClass="labelOpenSansRegular14" text="Seleccionar un elemento con doble click o enter" textFill="#1a2226" />
                      </children>
                   </VBox>
                </children>

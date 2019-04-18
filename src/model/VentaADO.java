@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
@@ -357,7 +356,7 @@ public class VentaADO {
         return empList;
     }
 
-    public static String CancelTheSale(String idVenta, ObservableList<ArticuloTB> tvList,double total) {
+    public static String CancelTheSale(String idVenta, ObservableList<ArticuloTB> tvList,double total,MovimientoCajaTB cajaTB) {
 
         PreparedStatement statementVenta = null;
         PreparedStatement statementArticulo = null;
@@ -394,14 +393,14 @@ public class VentaADO {
                 }
 
                 movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,IdUsuario,FechaMovimiento,Comentario,Movimiento,Entrada,Salidas,Saldo)VALUES(?,?,?,?,?,?,?,?)");
-                movimiento_caja.setInt(1, Session.CAJA_ID);
-                movimiento_caja.setString(2, Session.USER_ID);
-                movimiento_caja.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-                movimiento_caja.setString(4, "Venta cancelada");
-                movimiento_caja.setString(5, "VENCAN");
+                movimiento_caja.setInt(1, cajaTB.getIdCaja());
+                movimiento_caja.setString(2, cajaTB.getIdUsuario());
+                movimiento_caja.setTimestamp(3, Timestamp.valueOf(cajaTB.getFechaMovimiento()));
+                movimiento_caja.setString(4, cajaTB.getComentario());
+                movimiento_caja.setString(5, cajaTB.getMovimiento());
                 movimiento_caja.setDouble(6, 0);
-                movimiento_caja.setDouble(7, total);
-                movimiento_caja.setDouble(8, total - 0);
+                movimiento_caja.setDouble(7, cajaTB.getSaldo());
+                movimiento_caja.setDouble(8, cajaTB.getSaldo() - 0);
                 movimiento_caja.addBatch();
 
                 statementVenta.executeBatch();
@@ -461,7 +460,7 @@ public class VentaADO {
                     ventaTB.setMonedaName(resultSet.getString("Simbolo"));
                     ventaTB.setEfectivo(resultSet.getDouble("Efectivo"));
                     ventaTB.setVuelto(resultSet.getDouble("Vuelto"));
-
+                    ventaTB.setTotal(resultSet.getDouble("Total")); 
                 }
                 statementVendedor.close();
             }

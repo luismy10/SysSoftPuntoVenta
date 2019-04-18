@@ -19,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import model.CajaADO;
 import model.CajaTB;
@@ -52,6 +53,8 @@ public class FxCajaBusquedaController implements Initializable {
 
     private boolean stateRequest;
 
+    private FxCajaConsultasController cajaConsultasController;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
@@ -77,7 +80,12 @@ public class FxCajaBusquedaController implements Initializable {
     }
 
     private void acceptBusqueda() {
-
+        if (tvLista.getSelectionModel().getSelectedIndex() >= 0) {
+            cajaConsultasController.loadDataCorteCaja(tvLista.getSelectionModel().getSelectedItem().getFechaCierre().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")),
+                    tvLista.getSelectionModel().getSelectedItem().getEmpleadoTB().getApellidos() + " " + tvLista.getSelectionModel().getSelectedItem().getEmpleadoTB().getNombres(),
+                    tvLista.getSelectionModel().getSelectedItem().getIdCaja());
+            Tools.Dispose(window);
+        }
     }
 
     public void fillTableCajas(String fechaInicial, String fechaFinal) {
@@ -124,13 +132,13 @@ public class FxCajaBusquedaController implements Initializable {
     @FXML
     private void onKeyPressedAceptar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            acceptBusqueda();
         }
     }
 
     @FXML
     private void onActionAceptar(ActionEvent event) {
-
+        acceptBusqueda();
     }
 
     @FXML
@@ -173,6 +181,17 @@ public class FxCajaBusquedaController implements Initializable {
                 fillTableCajas(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dcFechaFinal));
             }
         }
+    }
+
+    @FXML
+    private void onMouseClickedLista(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            acceptBusqueda();
+        }
+    }
+
+    public void setInitCajaConsultasController(FxCajaConsultasController cajaConsultasController) {
+        this.cajaConsultasController = cajaConsultasController;
     }
 
 }

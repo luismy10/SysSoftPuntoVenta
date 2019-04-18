@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -13,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane fx:id="window" fitToWidth="true" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.FxCajaConsultasController">
+<ScrollPane fx:id="window" fitToWidth="true" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxCajaConsultasController">
    <content>
       <VBox style="-fx-background-color: white;" stylesheets="@../styles.css">
          <children>
@@ -73,18 +75,9 @@
                                     <Insets />
                                  </HBox.margin>
                               </Label>
-                              <Label alignment="CENTER" contentDisplay="CENTER" styleClass="labelRoboto16" text=" Trabajador" textFill="#0d4e9e" />
+                              <Label fx:id="lblTrabajador" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRoboto16" text=" Trabajador" textFill="#0d4e9e" />
                               <Label alignment="CENTER" contentDisplay="CENTER" styleClass="labelRoboto16" text=" hoy" textFill="#1a2226" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" styleClass="labelRoboto16" text=" fecha" textFill="RED" />
-                              <Button fx:id="btnTerminarTurno" disable="true" mnemonicParsing="false" onAction="#onActionDetalleMovimiento" onKeyPressed="#onKeyPressedDetalleMovimiento" styleClass="buttonLightWarning" text="Detalle de movimientos">
-                                 <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../options.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
+                              <Label fx:id="lblFechaCorte" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRoboto16" text=" fecha" textFill="RED" />
                            </children>
                            <VBox.margin>
                               <Insets />
@@ -101,7 +94,6 @@
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -127,38 +119,32 @@
                                                 <Insets left="25.0" />
                                              </padding>
                                           </Label>
-                                          <Label alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label fx:id="lblFondoCaja" alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Ventas en Efectivo" textFill="#1a2226" GridPane.rowIndex="2">
                                              <padding>
                                                 <Insets left="25.0" />
                                              </padding>
                                           </Label>
-                                          <Label alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="#11901d" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Abonos en Efectivo" textFill="#1a2226" GridPane.rowIndex="3">
+                                          <Label fx:id="lblVentasEfectivo" alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="#11901d" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Entradas" textFill="#1a2226" GridPane.rowIndex="3">
                                              <padding>
                                                 <Insets left="25.0" />
                                              </padding>
                                           </Label>
-                                          <Label alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="#11901d" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Entradas" textFill="#1a2226" GridPane.rowIndex="4">
+                                          <Label fx:id="lblEntradas" alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="#11901d" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Salidas" textFill="#1a2226" GridPane.rowIndex="4">
                                              <padding>
                                                 <Insets left="25.0" />
                                              </padding>
                                           </Label>
-                                          <Label alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="#11901d" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Salidas" textFill="#1a2226" GridPane.rowIndex="5">
+                                          <Label fx:id="lblSalidas" alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Devoluciones en Efectivo" textFill="#1a2226" GridPane.rowIndex="5">
                                              <padding>
                                                 <Insets left="25.0" />
                                              </padding>
                                           </Label>
-                                          <Label alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Devoluciones en Efectivo" textFill="#1a2226" GridPane.rowIndex="6">
-                                             <padding>
-                                                <Insets left="25.0" />
-                                             </padding>
-                                          </Label>
-                                          <Label alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                          <Label alignment="CENTER_RIGHT" style="-fx-border-color: red; -fx-border-width: 1px 0 0 0; -fx-padding: 0.4166666666666667em 0  0.4166666666666667em 0;" styleClass="labelRoboto14" text="00.00" textFill="#0d4e9e" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                          <Label fx:id="lblDevoluciones" alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                          <Label fx:id="lblTotalDineroCaja" alignment="CENTER_RIGHT" style="-fx-border-color: red; -fx-border-width: 1px 0 0 0; -fx-padding: 0.4166666666666667em 0  0.4166666666666667em 0;" styleClass="labelRoboto14" text="00.00" textFill="#0d4e9e" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -172,7 +158,6 @@
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -193,7 +178,7 @@
                                                 <Insets left="25.0" />
                                              </padding>
                                           </Label>
-                                          <Label alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="#11901d" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label fx:id="lblEfectivo" alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="#11901d" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <Label styleClass="labelRoboto14" text="Con Tarjeta de Credito" textFill="#1a2226" GridPane.rowIndex="2">
                                              <padding>
                                                 <Insets left="25.0" />
@@ -205,19 +190,13 @@
                                                 <Insets left="25.0" />
                                              </padding>
                                           </Label>
-                                          <Label alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="#11901d" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <Label fx:id="lblVentasCredito" alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="#11901d" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                           <Label styleClass="labelRoboto14" text="Con Vales de Despensa" textFill="#1a2226" GridPane.rowIndex="4">
                                              <padding>
                                                 <Insets left="25.0" />
                                              </padding>
                                           </Label>
                                           <Label alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="#11901d" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                          <Label styleClass="labelRoboto14" text="Devoluciones de Venta" textFill="#1a2226" GridPane.rowIndex="5">
-                                             <padding>
-                                                <Insets left="25.0" />
-                                             </padding>
-                                          </Label>
-                                          <Label alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="00.00" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -227,112 +206,25 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER" style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em; -fx-spacing: 1.6666666666666667em;">
-                           <children>
-                              <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <GridPane style="-fx-hgap: 0.8333333333333334em;">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <Label styleClass="labelRoboto18" text="Entradas de efectivo" textFill="#1a2226">
-                                             <graphic>
-                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../ingresos.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Label>
-                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="-No hubo Entradas en Efectivo" textFill="#1a2226" GridPane.rowIndex="1">
-                                             <padding>
-                                                <Insets left="25.0" />
-                                             </padding>
-                                          </Label>
-                                          <Label alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="-" textFill="#11901d" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                       </children>
-                                    </GridPane>
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <GridPane style="-fx-hgap: 0.8333333333333334em;">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <Label styleClass="labelRoboto18" text="Ingrese de contado" textFill="#1a2226">
-                                             <graphic>
-                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../billetes.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Label>
-                                          <Label styleClass="labelRoboto14" text="No hubo ingresos de contado" textFill="#1a2226" GridPane.rowIndex="1">
-                                             <padding>
-                                                <Insets left="25.0" />
-                                             </padding>
-                                          </Label>
-                                          <Label alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="-" textFill="#11901d" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                       </children>
-                                    </GridPane>
-                                 </children>
-                              </VBox>
-                           </children>
+                        <HBox alignment="CENTER_LEFT" style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em; -fx-spacing: 1.6666666666666667em;">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
                            </padding>
-                        </HBox>
-                        <HBox alignment="CENTER" style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em; -fx-spacing: 1.6666666666666667em;">
                            <children>
-                              <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                              <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <GridPane style="-fx-hgap: 0.8333333333333334em;">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <Label styleClass="labelRoboto18" text="Salidas de efectivo" textFill="#1a2226">
-                                             <graphic>
-                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../egresos.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Label>
-                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="-No hubo Salidas en Efectivo" textFill="#1a2226" GridPane.rowIndex="1">
-                                             <padding>
-                                                <Insets left="25.0" />
-                                             </padding>
-                                          </Label>
-                                          <Label alignment="CENTER_RIGHT" styleClass="labelRoboto14" text="-" textFill="#11901d" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                       </children>
-                                    </GridPane>
+                                    <TableView fx:id="tvLista" onMouseClicked="#onMouseClickedLista" prefHeight="340.0" prefWidth="972.0" VBox.vgrow="ALWAYS">
+                                       <columns>
+                                          <TableColumn fx:id="tcFechaRegistro" prefWidth="170.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Registro" />
+                                          <TableColumn fx:id="tcComentario" prefWidth="170.0" style="-fx-alignment: CENTER-LEFT;" text="Comentario" />
+                                          <TableColumn fx:id="tcMov" prefWidth="95.0" style="-fx-alignment: CENTER;" text="Mov" />
+                                          <TableColumn fx:id="tcEntrada" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Entrada" />
+                                          <TableColumn fx:id="tcSalida" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Salida" />
+                                       </columns>
+                                    </TableView>
                                  </children>
                               </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
-                           </padding>
                         </HBox>
                      </children>
                   </VBox>

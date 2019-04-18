@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class MovimientoCajaADO {
 
@@ -108,6 +110,37 @@ public class MovimientoCajaADO {
             statementVentas = DBUtil.getConnection().prepareStatement("SELECT * FROM MovimientoCajaTB WHERE IdCaja = ? AND Movimiento = ?");
             statementVentas.setInt(1, idCaja);
             statementVentas.setString(2, "COM");
+            if (statementVentas.executeQuery().next()) {
+                movimientoCajaTB = new MovimientoCajaTB();
+                try (ResultSet result = statementVentas.executeQuery()) {
+                    while (result.next()) {
+                        movimientoCajaTB.setSaldo(movimientoCajaTB.getSaldo() + result.getDouble("Saldo"));
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+
+        } finally {
+            try {
+                if (statementVentas != null) {
+                    statementVentas.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return movimientoCajaTB;
+    }
+
+    public static MovimientoCajaTB IngresosEfectivo(int idCaja) {
+        MovimientoCajaTB movimientoCajaTB = null;
+        PreparedStatement statementVentas = null;
+        try {
+            DBUtil.dbConnect();
+            statementVentas = DBUtil.getConnection().prepareStatement("SELECT * FROM MovimientoCajaTB WHERE IdCaja = ? AND Movimiento = ?");
+            statementVentas.setInt(1, idCaja);
+            statementVentas.setString(2, "ENTR");
             if (statementVentas.executeQuery().next()) {
                 movimientoCajaTB = new MovimientoCajaTB();
                 try (ResultSet result = statementVentas.executeQuery()) {
@@ -287,6 +320,39 @@ public class MovimientoCajaADO {
             }
         }
         return result;
+    }
+
+    public static ObservableList<MovimientoCajaTB> ListarCajasAperturadas(int idCaja) {
+        PreparedStatement statementLista = null;
+        ObservableList<MovimientoCajaTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            statementLista = DBUtil.getConnection().prepareStatement("{call Sp_Lista_Movimiento_Caja_ById(?)}");
+            statementLista.setInt(1, idCaja);
+            try (ResultSet result = statementLista.executeQuery()) {
+                while (result.next()) {
+                    MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
+                    movimientoCajaTB.setFechaMovimiento(result.getTimestamp("FechaMovimiento").toLocalDateTime());
+                    movimientoCajaTB.setComentario(result.getString("Comentario"));
+                    movimientoCajaTB.setMovimiento(result.getString("Movimiento"));
+                    movimientoCajaTB.setEntrada(result.getDouble("Entrada"));
+                    movimientoCajaTB.setSalidas(result.getDouble("Salidas"));
+                    empList.add(movimientoCajaTB);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        } finally {
+            try {
+                if (statementLista != null) {
+                    statementLista.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
     }
 
 }
