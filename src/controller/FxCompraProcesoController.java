@@ -187,13 +187,13 @@ public class FxCompraProcesoController implements Initializable {
 
     }
 
-    private void openWindowAddPlazo() throws IOException {
+    public void openWindowAddPlazo() throws IOException {
         URL url = getClass().getResource(Tools.FX_FILE_PLAZOS);
         FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
         //Controlller here
         FxPlazosController controller = fXMLLoader.getController();
-        controller.setInitCompraProcesoController(this);
+        controller.setInitCompraVentaProcesoController(this, null, "compra");
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Agegar nuevo plazo", window.getScene().getWindow());
         stage.setResizable(false);
