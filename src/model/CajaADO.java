@@ -169,7 +169,7 @@ public class CajaADO {
             statementLista.setString(1, fechaInicial);
             statementLista.setString(2, fechaFinal);
             try (ResultSet result = statementLista.executeQuery()) {
-                while (result.next()) {
+                while (result.next()) {                   
                     CajaTB cajaTB = new CajaTB();
                     cajaTB.setIdCaja(result.getInt("IdCaja"));
                     cajaTB.setFechaApertura(result.getTimestamp("FechaApertura").toLocalDateTime());
@@ -181,7 +181,9 @@ public class CajaADO {
                     cajaTB.setEmpleadoTB(new EmpleadoTB(result.getString("Apellidos"), result.getString("Nombres")));
                     empList.add(cajaTB);
                 }
+                
             }
+            
         } catch (SQLException ex) {
             System.out.println(ex.getLocalizedMessage());
         } finally {
