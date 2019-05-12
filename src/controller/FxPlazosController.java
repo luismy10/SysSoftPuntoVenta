@@ -32,6 +32,8 @@ public class FxPlazosController implements Initializable {
     private Button btnCancelar;
 
     private FxCompraProcesoController compraProcesoController;
+    private FxVentaProcesoController ventaProcesoController;
+    private String tipo;
 
    
     @Override
@@ -60,7 +62,14 @@ public class FxPlazosController implements Initializable {
                 if (result.equalsIgnoreCase("register")) {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Plazos", "Registrado correctamente el plazo.", false);
                     Tools.Dispose(window);
-                    compraProcesoController.setInitializePlazos();
+                    
+                    if(compraProcesoController != null){
+                        compraProcesoController.setInitializePlazos();
+                    }
+                    if(ventaProcesoController != null){
+                        ventaProcesoController.setInitializePlazosVentas();
+                    }
+                    
                 } else {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Plazos", result, false);
 
@@ -91,8 +100,11 @@ public class FxPlazosController implements Initializable {
         }
     }
 
-    public void setInitCompraProcesoController(FxCompraProcesoController compraProcesoController) {
+    public void setInitCompraVentaProcesoController(FxCompraProcesoController compraProcesoController, FxVentaProcesoController ventaProcesoController, String tipo) {
         this.compraProcesoController = compraProcesoController;
+        this.ventaProcesoController = ventaProcesoController;
+        this.tipo = tipo; // Por si se necesita
     }
+    
 
 }

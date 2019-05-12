@@ -75,6 +75,7 @@ public class FxCajaBusquedaController implements Initializable {
         tcUsuario.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEmpleadoTB().getApellidos() + "\n" + cellData.getValue().getEmpleadoTB().getNombres()));
         stateRequest = false;
         if (dtFechaInicial.getValue() != null && dcFechaFinal.getValue() != null) {
+            
             fillTableCajas(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dcFechaFinal));
         }
     }
@@ -100,7 +101,7 @@ public class FxCajaBusquedaController implements Initializable {
                 return CajaADO.ListarCajasAperturadas(fechaInicial, fechaFinal);
             }
         };
-        task.setOnSucceeded((WorkerStateEvent e) -> {
+        task.setOnSucceeded((WorkerStateEvent e) -> {            
             tvLista.setItems(task.getValue());
             lblLoad.setVisible(false);
             stateRequest = false;

@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -7,7 +8,9 @@ import java.time.LocalTime;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -19,6 +22,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import model.ArticuloTB;
 import model.CuentasClienteTB;
 import model.PlazosADO;
@@ -81,6 +85,11 @@ public class FxVentaProcesoController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
         state_view_pago = false;
         tota_venta = 0;
+        setInitializePlazosVentas();
+        
+    }
+    
+    public void setInitializePlazosVentas(){
         cbPlazos.getItems().clear();
         PlazosADO.GetTipoPlazoCombBox().forEach(e -> {
             this.cbPlazos.getItems().add(new PlazosTB(e.getIdPlazos(), e.getNombre(), e.getDias(), e.getEstado(), e.getPredeterminado()));
@@ -105,6 +114,20 @@ public class FxVentaProcesoController implements Initializable {
         this.descuento = moneda_simbolo + " " + Tools.roundingValue(Double.parseDouble(descuento), 2);
         this.importeTotal = moneda_simbolo + " " + Tools.roundingValue(Double.parseDouble(importeTotal), 2);
         txtEfectivo.requestFocus();
+    }
+    
+    private void openWindowAddPlazoVenta() throws IOException {
+        URL url = getClass().getResource(Tools.FX_FILE_PLAZOS);
+        FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxPlazosController controller = fXMLLoader.getController();
+        controller.setInitCompraVentaProcesoController(null, this, "venta");
+        //
+        Stage stage = FxWindow.StageLoaderModal(parent, "Agegar nuevo plazo", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.show();
     }
 
     @FXML
@@ -237,6 +260,11 @@ public class FxVentaProcesoController implements Initializable {
         }
     }
 
+    @FXML
+    private void OnMouseClickedPlazos(MouseEvent event) throws IOException{
+        openWindowAddPlazoVenta();
+    }
+    
     public void setInitVentasController(FxVentaController ventaController) {
         this.ventaController = ventaController;
     }

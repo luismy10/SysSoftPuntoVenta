@@ -17,8 +17,10 @@ import javafx.collections.ObservableList;
  */
 public class PagoProveedoresADO {
 
-    public static String crudPagoProveedores(PagoProveedoresTB pagoProveedoresTB) {
-
+    public static String crudPagoProveedores(PagoProveedoresTB pagoProveedoresTB, double pagado, double pendiente) {
+        
+        String result = "";
+        
         PreparedStatement pago_Proveedores = null;
         PreparedStatement update_Compra = null;
 
@@ -26,45 +28,51 @@ public class PagoProveedoresADO {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
 
-            pago_Proveedores = DBUtil.getConnection().prepareStatement("insert into PagoProveedoresTB(MontoTotal,MontoActual,CuotaTotal,CuotaActual,ValorCuota,Plazos,FechaInicial,FechaActual,FechaFinal,Observacion,Estado,IdProveedor,IdCompra) "
-                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            pago_Proveedores = DBUtil.getConnection().prepareStatement("insert into PagoProveedoresTB(MontoTotal,MontoActual,CuotaActual,Plazos,Dias,FechaActual,Observacion,Estado,IdProveedor,IdCompra,IdEmpleado) "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?)");
 
             update_Compra = DBUtil.getConnection().prepareStatement("update CompraTB set EstadoCompra = ? where IdCompra = ?");
 
-            if (pagoProveedoresTB.getMontoTotal() > pagoProveedoresTB.getMontoActual()) {
+            if (pagoProveedoresTB.getMontoTotal() > pagado) {
                 pago_Proveedores.setDouble(1, pagoProveedoresTB.getMontoTotal());
                 pago_Proveedores.setDouble(2, pagoProveedoresTB.getMontoActual());
-                pago_Proveedores.setInt(3, pagoProveedoresTB.getCuotaTotal());
-                pago_Proveedores.setInt(4, pagoProveedoresTB.getCuotaActual());
-                pago_Proveedores.setDouble(5, pagoProveedoresTB.getValorCuota());
-                pago_Proveedores.setString(6, pagoProveedoresTB.getPlazos());
-                pago_Proveedores.setTimestamp(7, pagoProveedoresTB.getFechaInicial());
-                pago_Proveedores.setTimestamp(8, pagoProveedoresTB.getFechaActual());
-                pago_Proveedores.setTimestamp(9, pagoProveedoresTB.getFechaFinal());
-                pago_Proveedores.setString(10, pagoProveedoresTB.getObservacion());
-                pago_Proveedores.setString(11, pagoProveedoresTB.getEstado());
-                pago_Proveedores.setString(12, pagoProveedoresTB.getIdProveedor());
-                pago_Proveedores.setString(13, pagoProveedoresTB.getIdCompra());
+                pago_Proveedores.setInt(3, pagoProveedoresTB.getCuotaActual());
+                pago_Proveedores.setString(4, pagoProveedoresTB.getPlazos());
+                pago_Proveedores.setInt(5, pagoProveedoresTB.getDias());
+                pago_Proveedores.setTimestamp(6, pagoProveedoresTB.getFechaActual());
+                pago_Proveedores.setString(7, pagoProveedoresTB.getObservacion());
+                pago_Proveedores.setString(8, pagoProveedoresTB.getEstado());
+                pago_Proveedores.setString(9, pagoProveedoresTB.getIdProveedor());
+                pago_Proveedores.setString(10, pagoProveedoresTB.getIdCompra());
+                pago_Proveedores.setString(11, pagoProveedoresTB.getIdEmpleado());
                 pago_Proveedores.addBatch();
-                System.out.println("==========");
-                System.out.println(pagoProveedoresTB.getMontoTotal() + "");
-                System.out.println(pagoProveedoresTB.getMontoActual() + "");
-
-                if (pagoProveedoresTB.getMontoTotal() == (pagoProveedoresTB.getMontoActual() + pagoProveedoresTB.getValorCuota())) {
-                    update_Compra.setString(1, "pagado".toUpperCase());
+                
+//                System.out.println("==========");
+//                System.out.println(pagoProveedoresTB.getMontoTotal() + "");
+//                System.out.println(pagoProveedoresTB.getMontoActual() + "");
+//                
+                result = "register";
+                
+                if (pagoProveedoresTB.getMontoTotal() == (pagado + pagoProveedoresTB.getMontoActual())) {
+                    update_Compra.setInt(1, 1);
                     update_Compra.setString(2, pagoProveedoresTB.getIdCompra());
                     update_Compra.addBatch();
-                    System.out.println("**********");
-                    System.out.println(pagoProveedoresTB.getMontoTotal() + "");
-                    System.out.println(pagoProveedoresTB.getMontoActual() + "");
-                }
 
+//                    System.out.println("**********");
+//                    System.out.println(pagoProveedoresTB.getMontoTotal() + "");
+//                    System.out.println(pagoProveedoresTB.getMontoActual() + "");
+                    
+                    result = "update";
+                }
+                
+            } else {
+                result = "La compra se hiso al contado o ya se termino de pagar la misma.";
             }
 
             pago_Proveedores.executeBatch();
             update_Compra.executeBatch();
             DBUtil.getConnection().commit();
-            return (pagoProveedoresTB.getMontoTotal() == (pagoProveedoresTB.getMontoActual() + pagoProveedoresTB.getValorCuota())) ? "update" : "register";
+            return result;
 
         } catch (SQLException ex) {
             try {
@@ -105,17 +113,15 @@ public class PagoProveedoresADO {
                 pagoProveedoresTB.setIdPagoProveedores(rsEmps.getInt("IdPagoProveedores"));
                 pagoProveedoresTB.setMontoTotal(rsEmps.getDouble("MontoTotal"));
                 pagoProveedoresTB.setMontoActual(rsEmps.getDouble("MontoActual"));
-                pagoProveedoresTB.setCuotaTotal(rsEmps.getInt("CuotaTotal"));
                 pagoProveedoresTB.setCuotaActual(rsEmps.getInt("CuotaActual"));
-                pagoProveedoresTB.setValorCuota(rsEmps.getDouble("ValorCuota"));
                 pagoProveedoresTB.setPlazos(rsEmps.getString("Plazos"));
-                pagoProveedoresTB.setFechaInicial(rsEmps.getTimestamp("FechaInicial"));
+                pagoProveedoresTB.setDias(rsEmps.getInt("Dias"));
                 pagoProveedoresTB.setFechaActual(rsEmps.getTimestamp("FechaActual"));
-                pagoProveedoresTB.setFechaFinal(rsEmps.getTimestamp("FechaFinal"));
                 pagoProveedoresTB.setObservacion(rsEmps.getString("Observacion"));
                 pagoProveedoresTB.setEstado(rsEmps.getString("Estado"));
                 pagoProveedoresTB.setIdProveedor(rsEmps.getString("IdProveedor"));
                 pagoProveedoresTB.setIdCompra(rsEmps.getString("IdCompra"));
+                pagoProveedoresTB.setIdEmpleado(rsEmps.getString("IdEmpleado"));
                 empList.add(pagoProveedoresTB);
             }
         } catch (SQLException e) {
@@ -135,6 +141,57 @@ public class PagoProveedoresADO {
             }
         }
         return empList;
+    }
+    
+    public static String EliminarPagoCuota(String idPagoProveedores) {
+        
+        String result = "";           
+        PreparedStatement statementPagoCuota = null;
+        PreparedStatement statementHistorial = null;
+
+            try {
+                
+                DBUtil.dbConnect();
+                DBUtil.getConnection().setAutoCommit(false);
+                
+                statementPagoCuota = DBUtil.getConnection().prepareStatement("delete from PagoProveedoresTB where IdPagoProveedores = ?;");
+                statementPagoCuota.setString(1,idPagoProveedores);
+                statementPagoCuota.addBatch();                
+                
+//                statementHistorial = DBUtil.getConnection().prepareStatement("DELETE FROM HistorialArticuloTB WHERE IdArticulo = ?");
+//                statementHistorial.setString(1, idArticulo);
+//                statementHistorial.addBatch();
+
+                statementPagoCuota.executeBatch();
+//                statementHistorial.executeBatch();
+                DBUtil.getConnection().commit();
+                result = "removed";
+
+            } catch (SQLException ex) {
+                try {
+                    result = ex.getLocalizedMessage();
+                    DBUtil.getConnection().rollback();
+                } catch (SQLException e) {
+                    result = e.getLocalizedMessage();
+                }
+            } finally {
+                try {
+
+                    if (statementPagoCuota != null) {
+                        statementPagoCuota.close();
+                    }
+//                    if (statementHistorial != null) {
+//                        statementHistorial.close();
+//                    }
+
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    result = ex.getLocalizedMessage();
+                }
+                
+              }  
+        return result;
+
     }
 
 }

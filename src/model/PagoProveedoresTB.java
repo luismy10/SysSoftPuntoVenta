@@ -16,37 +16,33 @@ public class PagoProveedoresTB {
     private int idPagoProveedores;
     private double montoTotal;
     private double montoActual;
-    private int cuotaTotal;
     private int cuotaActual;
-    private double valorCuota;
     private String plazos;
-    private Timestamp fechaInicial;
+    private int Dias;
     private Timestamp fechaActual;
-    private Timestamp fechaFinal;
     private String observacion;
     private String estado;
     private String idProveedor;
     private String idCompra;
+    private String IdEmpleado;
 
     public PagoProveedoresTB(){}
 
-    public PagoProveedoresTB(int idPagoProveedores, double montoTotal, double montoActual, int cuotaTotal, int cuotaActual, double valorCuota, String plazos, Timestamp fechaInicial, Timestamp fechaActual, Timestamp fechaFinal, String observacion, String estado, String idProveedor, String idCompra) {
+    public PagoProveedoresTB(int idPagoProveedores, double montoTotal, double montoActual, int cuotaActual, String plazos, int Dias, Timestamp fechaActual, String observacion, String estado, String idProveedor, String idCompra, String IdEmpleado) {
         this.idPagoProveedores = idPagoProveedores;
         this.montoTotal = montoTotal;
         this.montoActual = montoActual;
-        this.cuotaTotal = cuotaTotal;
         this.cuotaActual = cuotaActual;
-        this.valorCuota = valorCuota;
         this.plazos = plazos;
-        this.fechaInicial = fechaInicial;
+        this.Dias = Dias;
         this.fechaActual = fechaActual;
-        this.fechaFinal = fechaFinal;
         this.observacion = observacion;
         this.estado = estado;
         this.idProveedor = idProveedor;
         this.idCompra = idCompra;
+        this.IdEmpleado = IdEmpleado;
     }
-    
+
     public int getIdPagoProveedores() {
         return idPagoProveedores;
     }
@@ -71,28 +67,12 @@ public class PagoProveedoresTB {
         this.montoActual = montoActual;
     }
 
-    public int getCuotaTotal() {
-        return cuotaTotal;
-    }
-
-    public void setCuotaTotal(int cuotaTotal) {
-        this.cuotaTotal = cuotaTotal;
-    }
-
     public int getCuotaActual() {
         return cuotaActual;
     }
 
     public void setCuotaActual(int cuotaActual) {
         this.cuotaActual = cuotaActual;
-    }
-
-    public double getValorCuota() {
-        return valorCuota;
-    }
-
-    public void setValorCuota(double valorCuota) {
-        this.valorCuota = valorCuota;
     }
 
     public String getPlazos() {
@@ -103,12 +83,12 @@ public class PagoProveedoresTB {
         this.plazos = plazos;
     }
 
-    public Timestamp getFechaInicial() {
-        return fechaInicial;
+    public int getDias() {
+        return Dias;
     }
 
-    public void setFechaInicial(Timestamp fechaInicial) {
-        this.fechaInicial = fechaInicial;
+    public void setDias(int Dias) {
+        this.Dias = Dias;
     }
 
     public Timestamp getFechaActual() {
@@ -117,14 +97,6 @@ public class PagoProveedoresTB {
 
     public void setFechaActual(Timestamp fechaActual) {
         this.fechaActual = fechaActual;
-    }
-
-    public Timestamp getFechaFinal() {
-        return fechaFinal;
-    }
-
-    public void setFechaFinal(Timestamp fechaFinal) {
-        this.fechaFinal = fechaFinal;
     }
 
     public String getObservacion() {
@@ -158,8 +130,14 @@ public class PagoProveedoresTB {
     public void setIdCompra(String idCompra) {
         this.idCompra = idCompra;
     }
-    
-    
+
+    public String getIdEmpleado() {
+        return IdEmpleado;
+    }
+
+    public void setIdEmpleado(String IdEmpleado) {
+        this.IdEmpleado = IdEmpleado;
+    }     
     
 }
 

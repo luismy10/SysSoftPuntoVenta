@@ -37,47 +37,87 @@ public class FxAmortizarPagosController implements Initializable {
     private TextField txtValorCuota;
     @FXML
     private TextField txtObservacion;
+    @FXML
+    private Label lblPagado;
+    @FXML
+    private Label lblPendiente;
+    @FXML
+    private Label lblTotal;
 
     private FxHistorialPagosController historialPagosController;
     
     private PagoProveedoresTB pagoProveedoresTB;
+    
+    private double pagado;
+    
+    private double pendiente;
+    
+    private String simboloMoneda;
+    
+    private FxCompraDetalleController compraDetalleController;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
 
     }
 
-//    public void setInitTexField() {
-//        txtValorCuota.setText(Tools.roundingValue(pagoProveedoresTB.getValorCuota(), 2));
-//    }
+    public void setInitValues() {
+        this.lblPagado.setText(simboloMoneda + " " + Tools.roundingValue(pagado, 2));
+        pendiente = pagoProveedoresTB.getMontoTotal() - pagado;
+        this.lblPendiente.setText(simboloMoneda + " " + Tools.roundingValue(pendiente, 2));
+        this.lblTotal.setText(simboloMoneda + " " + Tools.roundingValue(pagoProveedoresTB.getMontoTotal(), 2));
+    }
 
     private void registerPagosProveedores() {
 
         if (!Tools.isNumeric(txtValorCuota.getText())) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Amortizar Pagos", "Ingrese el monto de la cuota, por favor.", false);
             txtValorCuota.requestFocus();
+        }else if(Double.parseDouble(txtValorCuota.getText())<=0){
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Amortizar Pagos", "El monto no puede ser 0.", false);
+            txtValorCuota.requestFocus();
         } else {
             
-            pagoProveedoresTB.setMontoActual( pagoProveedoresTB.getMontoActual() + Double.parseDouble(txtValorCuota.getText()));
-            pagoProveedoresTB.setCuotaActual( (pagoProveedoresTB.getCuotaActual() < pagoProveedoresTB.getCuotaTotal()) ? pagoProveedoresTB.getCuotaActual()+1 : pagoProveedoresTB.getCuotaTotal() );
-            pagoProveedoresTB.setValorCuota(Double.parseDouble(txtValorCuota.getText()));
-            pagoProveedoresTB.setFechaActual(Timestamp.valueOf(LocalDateTime.now()));
-            pagoProveedoresTB.setObservacion(txtObservacion.getText().isEmpty() ? "ninguno".toUpperCase() : txtObservacion.getText());
-            pagoProveedoresTB.setEstado("activo".toUpperCase());
+            if( (pagado + Double.parseDouble(txtValorCuota.getText())) <= pagoProveedoresTB.getMontoTotal() ){
+                pagoProveedoresTB.setMontoActual(Double.parseDouble(txtValorCuota.getText()));
+                pagoProveedoresTB.setFechaActual(Timestamp.valueOf(LocalDateTime.now()));
+                pagoProveedoresTB.setCuotaActual(pagoProveedoresTB.getCuotaActual() + 1);
+                pagoProveedoresTB.setObservacion(txtObservacion.getText().isEmpty() ? "ninguno".toUpperCase() : txtObservacion.getText().toUpperCase());
 
-            String result = PagoProveedoresADO.crudPagoProveedores(pagoProveedoresTB);
-            if (result.equalsIgnoreCase("register")) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Pago Proveedores", "Se registró correctamente el pago.", false);
-                Tools.Dispose(window);
-            } else if(result.equalsIgnoreCase("update")){
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Pago Proveedores", "Se registró correctamente el pago y se actualizo el estado de la compra.", false);
-                Tools.Dispose(window);
-            }else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Pago Proveedores", result, false);
+                String result = PagoProveedoresADO.crudPagoProveedores(pagoProveedoresTB, pagado, pendiente);
+                if (result.equalsIgnoreCase("register")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Pago Proveedores", "Se registró correctamente el pago.", false);
+                    compraDetalleController.setLoadDetalle( pagoProveedoresTB.getIdCompra(), pagoProveedoresTB.getMontoTotal());
+                    Tools.Dispose(window);
+                    
+                } else if (result.equalsIgnoreCase("update")) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Pago Proveedores", "Se registró correctamente el pago y se actualizo el estado de la compra.", false);
+                    compraDetalleController.setLoadDetalle( pagoProveedoresTB.getIdCompra(), pagoProveedoresTB.getMontoTotal());
+                    Tools.Dispose(window);
+                } else {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Pago Proveedores", result, false);
+                }
+                
+            }else{
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Amortizar Pagos", "El monto a pagar mas el acumulado no debe exceder al total.", false);
+                txtValorCuota.requestFocus();
             }
+            
+            
             
         }
 
+    }
+    
+    private void validarValorCuota(){
+        if(Tools.isNumeric(txtValorCuota.getText())){
+            if((Double.parseDouble(txtValorCuota.getText())+pagado) <= pagoProveedoresTB.getMontoTotal()){
+                this.lblPagado.setText(simboloMoneda + " " + Tools.roundingValue((pagado+Double.parseDouble(txtValorCuota.getText())), 2));
+                this.lblPendiente.setText(simboloMoneda + " " + Tools.roundingValue((pagoProveedoresTB.getMontoTotal()-(pagado+Double.parseDouble(txtValorCuota.getText()))), 2));
+            }
+        }
     }
 
     @FXML
@@ -95,10 +135,10 @@ public class FxAmortizarPagosController implements Initializable {
     @FXML
     private void onKeyTypedValorCuotas(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
             event.consume();
         }
-        if (c == '.' && txtValorCuota.getText().contains(".") || c == '-' && txtValorCuota.getText().contains("-")) {
+        if (c == '.' && txtValorCuota.getText().contains(".")) {
             event.consume();
         }
     }
@@ -114,11 +154,19 @@ public class FxAmortizarPagosController implements Initializable {
     private void onActionCancelar(ActionEvent event) {
         Tools.Dispose(window);
     }
+    
+    @FXML
+    private void onKeyReleasedValorCuota(KeyEvent event) {
+        validarValorCuota();
+    }
 
-    public void setInitAmortizarPagosController(FxHistorialPagosController historialPagosController, PagoProveedoresTB pagoProveedoresTB) {
+    public void setInitAmortizarPagosController(FxHistorialPagosController historialPagosController, PagoProveedoresTB pagoProveedoresTB, double pagado, String simboloMoneda, FxCompraDetalleController compraDetalleController) {
         this.historialPagosController = historialPagosController;
         this.pagoProveedoresTB = pagoProveedoresTB;
+        this.pagado = pagado;
+        this.simboloMoneda = simboloMoneda;
+        this.compraDetalleController = compraDetalleController;
         
-    }
+    }  
 
 }
