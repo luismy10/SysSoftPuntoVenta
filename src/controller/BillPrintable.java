@@ -50,7 +50,7 @@ public class BillPrintable implements Printable {
     private TableView<ArticuloTB> tvList;
 
     public BillPrintable() {
-
+        
     }
 
     public BillPrintable(double subTotal, double descuento, double gravada, double igv, double total, double efectivo, double vuelto, String tickt, TableView<ArticuloTB> tvList) {
