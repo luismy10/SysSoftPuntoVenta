@@ -57,4 +57,12 @@ public class Session {
        
     public static String RUTA_TICKET_VENTA;
     
+    
+    public static String DIRECTION;
+    public static String PORT;
+    public static String DBNAME;
+    public static String USER;
+    public static String PASSWORD;
+
+    
 }
