@@ -7,7 +7,10 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxAmortizarPagosController">
@@ -42,7 +45,7 @@
                               </Label>
                            </children>
                         </VBox>
-                        <TextField fx:id="txtValorCuota" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedValorCuotas" prefHeight="30.0" prefWidth="400.0" />
+                        <TextField fx:id="txtValorCuota" onAction="#onActionAceptar" onKeyReleased="#onKeyReleasedValorCuota" onKeyTyped="#onKeyTypedValorCuotas" prefHeight="30.0" prefWidth="330.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
@@ -60,9 +63,48 @@
                               </Label>
                            </children>
                         </VBox>
-                        <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="400.0" />
+                        <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="330.0" />
                      </children>
                   </HBox>
+                  <GridPane prefHeight="80.0" prefWidth="470.0" style="-fx-padding: 0.8333333333333334em;">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Pagado" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Pendiente" GridPane.columnIndex="2" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="labelRoboto14" text="Total" GridPane.columnIndex="4" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../mas.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../igual.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                        <Label fx:id="lblPagado" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="M 0000.00" textFill="#0771d3" GridPane.rowIndex="1" />
+                        <Label fx:id="lblPendiente" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="M 0000.00" textFill="#0771d3" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label fx:id="lblTotal" alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="labelRoboto14" text="M 0000.00" textFill="#0771d3" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
                   <Separator prefWidth="200.0" />
                   <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>

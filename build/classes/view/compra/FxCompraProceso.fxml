@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxCompraProcesoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxCompraProcesoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -27,7 +27,16 @@
                   <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em;">
                      <children>
                         <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold24" text="Total de la Compra" />
-                        <Text fx:id="lblTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold22" text="M 00.00" />
+                        <HBox alignment="CENTER" style="-fx-spacing: 5px;">
+                           <children>
+                              <Text fx:id="lblTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold22" text="M 00.00" />
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../billetes.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>
@@ -80,7 +89,6 @@
                                     <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.5em;" VBox.vgrow="ALWAYS">
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                                           <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                                           <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                                       </columnConstraints>
@@ -92,11 +100,9 @@
                                        <children>
                                           <Label styleClass="labelOpenSansRegular14" text="Monto Inicial" />
                                           <TextField fx:id="txtMonto" onKeyReleased="#onKeyReleasedMonto" onKeyTyped="#onKeyTypedMonto" prefWidth="180.0" GridPane.rowIndex="1" />
-                                          <TextField fx:id="txtCuotas" onKeyReleased="#onKeyReleasedCuotas" onKeyTyped="#onKeyTypedCuotas" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Label styleClass="labelOpenSansRegular14" text="Número de Cuotas" GridPane.columnIndex="1" />
-                                          <Label styleClass="labelOpenSansRegular14" text="Fecha de Registro" GridPane.columnIndex="3" />
-                                          <DatePicker fx:id="dpFecha" disable="true" prefWidth="180.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                          <Label contentDisplay="RIGHT" onMouseClicked="#OnMouseClickedPlazos" styleClass="labelOpenSansRegular14" text="Plazos" GridPane.columnIndex="2">
+                                          <Label styleClass="labelOpenSansRegular14" text="Fecha de Registro" GridPane.columnIndex="2" />
+                                          <DatePicker fx:id="dpFecha" prefWidth="180.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                          <Label contentDisplay="RIGHT" onMouseClicked="#OnMouseClickedPlazos" styleClass="labelOpenSansRegular14" text="Plazos" GridPane.columnIndex="1">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -107,9 +113,9 @@
                                              <cursor>
                                                 <Cursor fx:constant="HAND" />
                                              </cursor></Label>
-                                          <ComboBox fx:id="cbPlazos" maxWidth="1.7976931348623157E308" onAction="#OnActionPlazos" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Cuota Referencial:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                          <Label fx:id="lblCuotaReferencial" styleClass="labelOpenSansRegular14" text="M 00.00" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                          <ComboBox fx:id="cbPlazos" maxWidth="1.7976931348623157E308" onAction="#OnActionPlazos" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Deuda Pendiente: " GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Label fx:id="lblDeudaPendiente" styleClass="labelOpenSansRegular14" text="M. 0000.00" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                        </children>
                                     </GridPane>
                                  </children>

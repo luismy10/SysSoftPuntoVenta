@@ -80,12 +80,12 @@ public class CompraADO {
                     + "Impuesto = ? "
                     + "WHERE IdArticulo = ?");
 
-            pago_Proveedores = DBUtil.getConnection().prepareStatement("INSERT INTO PagoProveedoresTB(MontoTotal,MontoActual,CuotaTotal,CuotaActual,ValorCuota,Plazos,FechaInicial,FechaActual,FechaFinal,Observacion,Estado,IdProveedor,IdCompra) "
-                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            pago_Proveedores = DBUtil.getConnection().prepareStatement("INSERT INTO PagoProveedoresTB(MontoTotal,MontoActual,CuotaActual,Plazos,Dias,FechaActual,Observacion,Estado,IdProveedor,IdCompra,IdEmpleado) "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?)");
 
 //           preparedHistorialArticulo = DBUtil.getConnection().prepareStatement("INSERT INTO HistorialArticuloTB(IdArticulo,FechaRegistro,TipoOperacion,Entrada,Salida,Saldo,UsuarioRegistro)\n"
 //                    + "VALUES(?,GETDATE(),?,?,?,?,?)");
-//
+
             lote_compra = DBUtil.getConnection().prepareStatement("INSERT INTO LoteTB(NumeroLote,FechaCaducidad,ExistenciaInicial,ExistenciaActual,IdArticulo,IdCompra) "
                     + "VALUES(?,?,?,?,?,?)");
 
@@ -158,17 +158,15 @@ public class CompraADO {
             if (compraTB.getTipo() == 2) {
                 pago_Proveedores.setDouble(1, pagoProveedoresTB.getMontoTotal());
                 pago_Proveedores.setDouble(2, pagoProveedoresTB.getMontoActual());
-                pago_Proveedores.setInt(3, pagoProveedoresTB.getCuotaTotal());
-                pago_Proveedores.setInt(4, pagoProveedoresTB.getCuotaActual());
-                pago_Proveedores.setDouble(5, pagoProveedoresTB.getValorCuota());
-                pago_Proveedores.setString(6, pagoProveedoresTB.getPlazos());
-                pago_Proveedores.setTimestamp(7, pagoProveedoresTB.getFechaInicial());
-                pago_Proveedores.setTimestamp(8, pagoProveedoresTB.getFechaActual());
-                pago_Proveedores.setTimestamp(9, pagoProveedoresTB.getFechaFinal());
-                pago_Proveedores.setString(10, pagoProveedoresTB.getObservacion());
-                pago_Proveedores.setString(11, pagoProveedoresTB.getEstado());
-                pago_Proveedores.setString(12, pagoProveedoresTB.getIdProveedor());
-                pago_Proveedores.setString(13, id_compra);
+                pago_Proveedores.setInt(3, pagoProveedoresTB.getCuotaActual());
+                pago_Proveedores.setString(4, pagoProveedoresTB.getPlazos());
+                pago_Proveedores.setInt(5, pagoProveedoresTB.getDias());
+                pago_Proveedores.setTimestamp(6, pagoProveedoresTB.getFechaActual());
+                pago_Proveedores.setString(7, pagoProveedoresTB.getObservacion());
+                pago_Proveedores.setString(8, pagoProveedoresTB.getEstado());
+                pago_Proveedores.setString(9, pagoProveedoresTB.getIdProveedor());
+                pago_Proveedores.setString(10, id_compra);
+                pago_Proveedores.setString(11, pagoProveedoresTB.getIdEmpleado());
                 pago_Proveedores.addBatch();
             }
 

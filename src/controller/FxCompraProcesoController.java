@@ -42,8 +42,6 @@ public class FxCompraProcesoController implements Initializable {
     @FXML
     private Text lblTotal;
     @FXML
-    private Label lblCuotaReferencial;
-    @FXML
     private TextField txtEfectivo;
     @FXML
     private HBox hbPagoContado;
@@ -62,9 +60,9 @@ public class FxCompraProcesoController implements Initializable {
     @FXML
     private TextField txtMonto;
     @FXML
-    private TextField txtCuotas;
-    @FXML
     private TextField txtObservacion;
+    @FXML
+    private Label lblDeudaPendiente;
 
     private FxCompraController compraController;
 
@@ -74,15 +72,14 @@ public class FxCompraProcesoController implements Initializable {
 
     private ObservableList<LoteTB> loteTBs;
 
-    private int diasPlazo;
-
     private PagoProveedoresTB pagoProveedoresTB;
 
-    private double deuda_pendiente;
-
-    private double cuota_promedio;
-
     private String simboloMoneda;
+    
+    private double deudaPendiente;
+    
+    private int dias;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -92,8 +89,6 @@ public class FxCompraProcesoController implements Initializable {
         Tools.actualDate(Tools.getDate(), dpFecha);
         setInitializePlazos();
         pagoProveedoresTB = new PagoProveedoresTB();
-        deuda_pendiente = 0;
-        cuota_promedio = 0;
     }
 
     public void setInitializePlazos() {
@@ -102,10 +97,11 @@ public class FxCompraProcesoController implements Initializable {
             this.cbPlazos.getItems().add(new PlazosTB(e.getIdPlazos(), e.getNombre(), e.getDias(), e.getEstado(), e.getPredeterminado()));
         });
         cbPlazos.getSelectionModel().select(0);
-        diasPlazo = cbPlazos.getSelectionModel().getSelectedItem().getDias();
+        dias = cbPlazos.getSelectionModel().getSelectedItem().getDias();
+        System.out.println("valor "+dias);
     }
 
-    void setLoadProcess(CompraTB compraTB, TableView<ArticuloTB> tvList, ObservableList<LoteTB> loteTBs, String total, String proveedor, String simboloMoneda) {
+    public void setLoadProcess(CompraTB compraTB, TableView<ArticuloTB> tvList, ObservableList<LoteTB> loteTBs, String total, String proveedor, String simboloMoneda) {
         this.compraTB = compraTB;
         this.tvList = tvList;
         this.loteTBs = loteTBs;
@@ -113,8 +109,7 @@ public class FxCompraProcesoController implements Initializable {
         txtProveedor.setText(proveedor);
         this.simboloMoneda = simboloMoneda;
         txtEfectivo.setText(total);
-        this.lblCuotaReferencial.setText(this.simboloMoneda + " " + "0000.00");
-
+        this.lblDeudaPendiente.setText(simboloMoneda + " 0000.00");
     }
 
     private void executeCrud(int tipoCompra,int estadoCompra) {
@@ -122,18 +117,15 @@ public class FxCompraProcesoController implements Initializable {
         compraTB.setEstado(estadoCompra);
 
         if (rbCredito.isSelected()) {
-            if (Integer.parseInt(this.txtCuotas.getText()) > 0) {
+            if (!this.txtMonto.getText().equalsIgnoreCase("")) {
 
                 pagoProveedoresTB.setPlazos(cbPlazos.getSelectionModel().getSelectedItem().getNombre());
-                pagoProveedoresTB.setFechaInicial(Timestamp.valueOf(Tools.getDatePicker(dpFecha) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
+                pagoProveedoresTB.setDias(dias);
                 pagoProveedoresTB.setFechaActual(Timestamp.valueOf(Tools.getDatePicker(dpFecha) + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
-
-                LocalDate fecha_final = LocalDate.parse(Tools.getDatePicker(dpFecha)).plusDays(diasPlazo * Integer.parseInt(txtCuotas.getText()));
-
-                pagoProveedoresTB.setFechaFinal(Timestamp.valueOf(fecha_final + " " + Tools.getDateHour().toLocalDateTime().toLocalTime()));
-                pagoProveedoresTB.setObservacion(this.txtObservacion.getText().equals("") ? "NINGUNA" : this.txtObservacion.getText());
+                pagoProveedoresTB.setObservacion(this.txtObservacion.getText().equals("") ? "ninguna".toUpperCase() : this.txtObservacion.getText().toUpperCase());
                 pagoProveedoresTB.setEstado("activo".toUpperCase());
                 pagoProveedoresTB.setIdProveedor(compraTB.getProveedor());
+                pagoProveedoresTB.setIdEmpleado(Session.USER_ID);
 
                 String result = CompraADO.CrudCompra(compraTB, tvList, loteTBs, pagoProveedoresTB);
                 if (result.equalsIgnoreCase("register")) {
@@ -145,8 +137,8 @@ public class FxCompraProcesoController implements Initializable {
                 }
 
             } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "El número de cuotas debe ser mayor a cero.", false);
-                txtCuotas.requestFocus();
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico no negativo.", false);
+                this.txtMonto.requestFocus();
             }
 
         } else {
@@ -174,9 +166,6 @@ public class FxCompraProcesoController implements Initializable {
             if (!Tools.isNumeric(txtMonto.getText())) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo monto inicial.", false);
                 txtMonto.requestFocus();
-            } else if (!Tools.isNumeric(txtCuotas.getText())) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo número de cuotas.", false);
-                txtCuotas.requestFocus();
             } else if (dpFecha.getValue() == null) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Complete el campo fecha de vencimiento.", false);
                 dpFecha.requestFocus();
@@ -248,9 +237,20 @@ public class FxCompraProcesoController implements Initializable {
         vbPagoCredito.setDisable(false);
         this.txtMonto.requestFocus();
     }
+    
+    @FXML
+    private void OnMouseClickedPlazos(MouseEvent event) throws IOException {
+        openWindowAddPlazo();
+    }
 
     @FXML
     private void OnActionPlazos(ActionEvent event) {
+        onEventPagoProveedores();
+    }
+    
+    
+    @FXML
+    private void onKeyReleasedMonto(KeyEvent event) {
         onEventPagoProveedores();
     }
 
@@ -265,48 +265,21 @@ public class FxCompraProcesoController implements Initializable {
         }
     }
 
-    @FXML
-    private void onKeyTypedCuotas(KeyEvent event) {
-        char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b')) {
-            event.consume();
-        }
-    }
-
-    @FXML
-    private void OnMouseClickedPlazos(MouseEvent event) throws IOException {
-        openWindowAddPlazo();
-    }
-
-    @FXML
-    private void onKeyReleasedMonto(KeyEvent event) {
-        onEventPagoProveedores();
-    }
-
-    @FXML
-    private void onKeyReleasedCuotas(KeyEvent event) {
-        onEventPagoProveedores();
-    }
-
     private void onEventPagoProveedores() {
-        if (Tools.isNumeric(txtMonto.getText()) && Tools.isNumeric(txtCuotas.getText())) {
-            if (Double.parseDouble(txtMonto.getText()) >= 0 && Integer.parseInt(txtCuotas.getText()) >= 1) {
-                diasPlazo = cbPlazos.getSelectionModel().getSelectedItem().getDias();
+        if (Tools.isNumeric(txtMonto.getText())) {
+            if (Double.parseDouble(txtMonto.getText()) >= 0) {
 
                 pagoProveedoresTB.setMontoTotal(compraTB.getTotal().get());
                 pagoProveedoresTB.setMontoActual(Double.parseDouble(txtMonto.getText()));
-
-                pagoProveedoresTB.setCuotaTotal(Integer.parseInt(txtCuotas.getText()));
-                pagoProveedoresTB.setCuotaActual(Integer.parseInt(txtMonto.getText()) > 0 ? 1 : 0);
-
-                deuda_pendiente = compraTB.getTotal().get() - Double.parseDouble(txtMonto.getText());
-                cuota_promedio = deuda_pendiente / Integer.parseInt(txtCuotas.getText());
-
-                pagoProveedoresTB.setValorCuota(Double.parseDouble(txtCuotas.getText()));
-
-                this.lblCuotaReferencial.setText(simboloMoneda + " " + Tools.roundingValue(cuota_promedio, 2));
+                pagoProveedoresTB.setCuotaActual(1);
+                
+                deudaPendiente = compraTB.getTotal().get() - Double.parseDouble(txtMonto.getText());
+                this.lblDeudaPendiente.setText(simboloMoneda+" "+Tools.roundingValue(deudaPendiente, 2));
+                
             }
         }
+        dias = cbPlazos.getSelectionModel().getSelectedItem().getDias();              
+        
     }
 
     public void setInitCompraController(FxCompraController compraController) {

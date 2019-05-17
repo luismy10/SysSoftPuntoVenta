@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../comprobante.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxEtiquetasController">
+   <children>
+      <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
+         <children>
+            <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../etiquetas.png" />
+               </image>
+            </ImageView>
+            <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Etiquetas" />
+         </children>
+      </HBox>
+      <VBox minHeight="-Infinity" minWidth="-Infinity">
+         <children>
+            <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onActionSearch" onKeyPressed="#onKeyPressedSearch" styleClass="buttonLight" text="Buscar">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../search.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionNuevo" onKeyPressed="#onKeyPressNuevo" styleClass="buttonLight" text="Nuevo">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../rows.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionEditar" onKeyPressed="#onKeyPressEditar" styleClass="buttonLight" text="Editar">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../edit.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionSave" onKeyPressed="#onKeyPressedSave" styleClass="buttonLight" text="Guardar">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../save.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionPrint" onKeyPressed="#onKeyPressedPrint" styleClass="buttonLight" text="Imprimir">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../print.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionEliminar" onKeyPressed="#onKeyPressedEliminar" styleClass="buttonLight" text="Eliminar">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../remove.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox style="-fx-border-width: 1 0 0 0; -fx-border-color: #999999; -fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox>
+               <children>
+                  <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0  0.8333333333333334em 0 0;">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#onActionTexto" onKeyPressed="#onKeyPressedTexto" styleClass="buttonLight">
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../text.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#onActionCodBar" onKeyPressed="#onKeyPressedCodBar" styleClass="buttonLight">
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../barcode.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#onActionQuitar" onKeyPressed="#onKeyPressedQuitar" styleClass="buttonLight">
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../remove-dark.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox HBox.hgrow="ALWAYS">
+               <children>
+                  <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="292.0" styleClass="scroll-pane-ticket" HBox.hgrow="ALWAYS">
+                     <content>
+                        <HBox>
+                           <children>
+                              <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <Pane fx:id="panel" prefHeight="94.0" prefWidth="189.0" style="-fx-background-color: white;" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0  0.8333333333333334em 0  0.8333333333333334em;">
+                     <children>
+                        <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em  0 0.4166666666666667em 0; -fx-border-color: #999999; -fx-border-width: 1 0 1 0;">
+                           <children>
+                              <Label styleClass="labelRoboto14" text="Barra de opciones" />
+                           </children>
+                        </HBox>
+                        <VBox style="-fx-spacing: 0.4166666666666667em;">
+                           <children>
+                              <Label styleClass="labelOpenSansRegular14" text="Texto" />
+                              <TextField fx:id="txtTexto" onAction="#onActionEditTexto" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-contenido" />
+                           </children>
+                        </VBox>
+                        <VBox style="-fx-spacing: 0.4166666666666667em;">
+                           <children>
+                              <Label styleClass="labelOpenSansRegular14" text="Fuente" />
+                              <ComboBox fx:id="cbFuente" maxWidth="1.7976931348623157E308" onAction="#onActionFuente" prefHeight="30.0" />
+                              <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Tamaño" />
+                                    <Spinner fx:id="spFontSize" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <VBox style="-fx-spacing: 0.4166666666666667em;">
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Estilos" />
+                                          <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                             <children>
+                                                <CheckBox fx:id="cbBold" mnemonicParsing="false" onAction="#onActionBold" styleClass="check-box-contenido" text="Bold" />
+                                                <CheckBox fx:id="cbItalic" mnemonicParsing="false" onAction="#onActionItalic" styleClass="check-box-contenido" text="Italic" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

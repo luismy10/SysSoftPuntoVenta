@@ -109,6 +109,8 @@ public class FxCompraDetalleController implements Initializable {
     private double total;
     
     private String estadoCompra;
+    
+    private String tipoCompra;
 
     private String simboloMoneda;
 
@@ -184,7 +186,8 @@ public class FxCompraDetalleController implements Initializable {
             lblEstado.setText(compraTB.getTipoName() + " - " + compraTB.getEstadoName());
             lblTotalCompra.setText(compraTB.getTipoMonedaName() + " " + Tools.roundingValue(compraTB.getTotal().get(), 2));
             simboloMoneda = compraTB.getTipoMonedaName();
-            estadoCompra=compraTB.getEstadoName();
+            estadoCompra = compraTB.getEstadoName();
+            tipoCompra = compraTB.getTipoName();
         }
 
         if (proveedorTB != null) {
@@ -330,7 +333,7 @@ public class FxCompraDetalleController implements Initializable {
         Parent parent = fXMLLoader.load(url.openStream());
 
         FxHistorialPagosController controller = fXMLLoader.getController();
-        controller.setInitHistorialPagosController(this, idProveedor, idCompra, total, simboloMoneda);
+        controller.setInitHistorialPagosController(this, idCompra, total, simboloMoneda);
 
         Stage stage = FxWindow.StageLoaderModal(parent, "Historial de Pagos", window.getScene().getWindow());
         stage.setResizable(false);
@@ -340,16 +343,19 @@ public class FxCompraDetalleController implements Initializable {
         });
         stage.show();
         controller.initListHistorialPagos();
+        controller.initBotonAbonar();
 
     }
 
     @FXML
     private void onActionHistorialPagos(ActionEvent event) throws IOException {
-        if (estadoCompra.equals("PENDIENTE".toUpperCase())) {
+        
+        if (tipoCompra.equals("credito".toUpperCase())) {
             openWindowHistorialPagos();
         } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Compra", "La compra no tiene abonos que realizar.", false);
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Compra", "La compra se realizó al contado.", false);
         }
+
     }
 
     public void setInitComptrasController(FxComprasRealizadasController comprascontroller, AnchorPane windowinit, AnchorPane vbContent) {

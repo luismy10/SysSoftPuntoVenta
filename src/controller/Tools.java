@@ -123,14 +123,21 @@ public class Tools {
     static final String FX_FILE_VENTAABONOPROCESO = "/view/venta/FxVentaAbonoProceso.fxml";
     static final String FX_FILE_VENTAFONDOINICIAL = "/view/venta/FxVentaFondoInicial.fxml";
     static final String FX_FILE_VENTAMOVIMIENTO = "/view/venta/FxVentaMovimiento.fxml";
-    
+
     static final String FX_FILE_REPORTEOPCION = "/view/articulo/FxReporteOpcion.fxml";
-     
+
     static final String FX_FILE_VENTAUTILIDAD = "/view/venta/FxVentasUtilidades.fxml";
-    
+
     static final String FX_FILE_VENTADEVOLUCION = "/view/venta/FxVentaDevolucion.fxml";
-    
-     static final String FX_FILE_CAJACERRARCAJA = "/view/caja/FxCajaCerrarCaja.fxml";
+
+    static final String FX_FILE_CAJACERRARCAJA = "/view/caja/FxCajaCerrarCaja.fxml";
+
+    static final String FX_FILE_ETIQUETAS = "/view/etiquetas/FxEtiquetas.fxml";
+    static final String FX_FILE_ETIQUETASBUSQUEDA = "/view/etiquetas/FxEtiquetas.fxml";
+    static final String FX_FILE_ETIQUETASEDITAR = "/view/etiquetas/FxEtiquetas.fxml";
+    static final String FX_FILE_ETIQUETASNUEVO = "/view/etiquetas/FxEtiquetas.fxml";
+    static final String FX_FILE_ETIQUETASPROCESO = "/view/etiquetas/FxEtiquetas.fxml";
+    static final String FX_FILE_ETIQUETASPROCESOBUSQUEDA = "/view/etiquetas/FxEtiquetas.fxml";
 
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
@@ -289,14 +296,14 @@ public class Tools {
         return decimal.toPlainString();
     }
 
-    public static double calculateTax(double porcentaje, double valor) {        
+    public static double calculateTax(double porcentaje, double valor) {
         double igv = (double) (porcentaje / 100.00);
         return (double) (valor * igv);
     }
 
     public static double calculateAumento(double porcentaje, double costo) {
         double totalimporte = costo + (costo * (porcentaje / 100.00));
-        return Double.parseDouble(Tools.roundingValue(totalimporte, 1));        
+        return Double.parseDouble(Tools.roundingValue(totalimporte, 1));
     }
 
     public static double calculateValueNeto(double porcentaje, double valuecalculate) {
@@ -327,7 +334,7 @@ public class Tools {
         }
         return resultado;
     }
-    
+
     public static boolean isNumericInteger(String cadena) {
         if (cadena == null || cadena.isEmpty()) {
             return false;

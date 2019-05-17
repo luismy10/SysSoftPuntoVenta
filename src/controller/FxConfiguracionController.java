@@ -30,6 +30,12 @@ public class FxConfiguracionController implements Initializable {
     private VBox nodeTicketa;
 
     private FxTicketController controllerTicket;
+    
+    private FXMLLoader fXMLEtiquetas;
+    
+    private VBox nodeEtiqueta;
+    
+    private FxEtiquetasController controllerEtiqueta;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -37,6 +43,10 @@ public class FxConfiguracionController implements Initializable {
             fXMLTicket = new FXMLLoader(getClass().getResource(Tools.FX_FILE_TICKET));
             nodeTicketa = fXMLTicket.load();
             controllerTicket = fXMLTicket.getController();
+            
+            fXMLEtiquetas = new FXMLLoader(getClass().getResource(Tools.FX_FILE_ETIQUETAS));
+            nodeEtiqueta = fXMLEtiquetas.load();
+            controllerEtiqueta = fXMLEtiquetas.getController();
         } catch (IOException ex) {
             Logger.getLogger(FxOperacionesController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -149,6 +159,16 @@ public class FxConfiguracionController implements Initializable {
         AnchorPane.setBottomAnchor(nodeTicketa, 0d);
         content.getChildren().add(nodeTicketa);
     }
+    
+    private void openWindowEtiquetas(){
+        controllerEtiqueta.setContent(windowinit);
+        content.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeEtiqueta, 0d);
+        AnchorPane.setTopAnchor(nodeEtiqueta, 0d);
+        AnchorPane.setRightAnchor(nodeEtiqueta, 0d);
+        AnchorPane.setBottomAnchor(nodeEtiqueta, 0d);
+        content.getChildren().add(nodeEtiqueta);
+    }
 
     @FXML
     private void onKeyPressedTablasBasicas(KeyEvent event) throws IOException {
@@ -246,10 +266,24 @@ public class FxConfiguracionController implements Initializable {
     private void onActionTickets(ActionEvent event) throws IOException {
         openWindowTickets();
     }
+    
+    @FXML
+    private void onKeyPressedEtiquetas(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            openWindowEtiquetas();
+        }
+    }
+
+    @FXML
+    private void onActionEtiquetas(ActionEvent event) {
+        openWindowEtiquetas();
+    }
 
     public void setContent(AnchorPane windowinit, AnchorPane content) {
         this.windowinit = windowinit;
         this.content = content;
     }
+
+    
 
 }

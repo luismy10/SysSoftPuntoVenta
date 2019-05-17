@@ -3,6 +3,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -30,53 +33,61 @@ public class FxHistorialPagosController implements Initializable {
     @FXML
     private AnchorPane window;
     @FXML
-    private Label lblTotal;
+    private Label lblFechaInicial;
+    @FXML
+    private Label lblFechaFinal;
+    @FXML
+    private Label lblCuotaActual;
+    @FXML
+    private Label lblPlazo;
     @FXML
     private Label lblPagado;
     @FXML
     private Label lblPendiente;
     @FXML
-    private Label lblCuotaTotal;
-    @FXML
-    private Label lblCuotaActual;
-    @FXML
-    private Label lblFechaInicial;
-    @FXML
-    private Label lblFechaFinal;
+    private Label lblTotal;
     @FXML
     private TableView<PagoProveedoresTB> tvList;
     @FXML
+    private TableColumn<PagoProveedoresTB, String> tcNumeroRegistro;
+    @FXML
     private TableColumn<PagoProveedoresTB, String> tcFecha;
     @FXML
-    private TableColumn<PagoProveedoresTB, String> tcCuotas;
+    private TableColumn<PagoProveedoresTB, String> tcCuota;
     @FXML
-    private TableColumn<PagoProveedoresTB, String> tcValor;
+    private TableColumn<PagoProveedoresTB, String> tcObservacion;
     @FXML
     private TableColumn<PagoProveedoresTB, String> tcMonto;
-
+    @FXML
+    private Button btnAmortizar;
+    
     private FxCompraDetalleController compraDetalleController;
-
-    private String idProveedor;
-
+    
     private String idCompra;
-
+    
+    private LocalDate fecha_Inicial;
+    
+    private int dias;
+    
+    private double pagado;
+    
     private double total;
     
     private String simboloMoneda;
-    
-    private Double deuda_pendiente;
-    
-    private double cuota_promedio;
 
     private List<PagoProveedoresTB> listPagoProveederes;
     
-    private PagoProveedoresTB pagoProveedoresTB;
+    private PagoProveedoresTB pagoProveedoresTB;   
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
+        
+        tcNumeroRegistro.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getIdPagoProveedores()));
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaActual().toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE)));
-        tcCuotas.setCellValueFactory(cellData -> Bindings.concat(String.valueOf(cellData.getValue().getCuotaActual())));
-        tcValor.setCellValueFactory(cellData -> Bindings.concat(simboloMoneda+" "+Tools.roundingValue(cellData.getValue().getValorCuota(), 2)));
+        tcCuota.setCellValueFactory(cellData -> Bindings.concat(String.valueOf(cellData.getValue().getCuotaActual())));
+        tcObservacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getObservacion()));
         tcMonto.setCellValueFactory(cellData -> Bindings.concat(simboloMoneda+" "+Tools.roundingValue(cellData.getValue().getMontoActual(), 2)));
         
         pagoProveedoresTB = new PagoProveedoresTB();
@@ -84,7 +95,7 @@ public class FxHistorialPagosController implements Initializable {
 
     public void initListHistorialPagos() {
         
-        double pagado = 0;
+        pagado = 0;
 
         tvList.setItems(PagoProveedoresADO.ListHistorialPagoCompras(idCompra));
 
@@ -95,45 +106,46 @@ public class FxHistorialPagosController implements Initializable {
             listPagoProveederes.add(tvList.getItems().get(i));
 
             if (i == 0) {
-                
-                this.lblCuotaTotal.setText(tvList.getItems().get(i).getCuotaTotal() + "");
-                this.lblFechaInicial.setText(tvList.getItems().get(i).getFechaInicial().toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE));
-                this.lblFechaFinal.setText(tvList.getItems().get(i).getFechaFinal().toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE));
-                
-                pagoProveedoresTB.setCuotaTotal(tvList.getItems().get(i).getCuotaTotal());
-                pagoProveedoresTB.setValorCuota(tvList.getItems().get(i).getValorCuota());
-                pagoProveedoresTB.setFechaInicial(tvList.getItems().get(i).getFechaInicial());
-                pagoProveedoresTB.setFechaFinal(tvList.getItems().get(i).getFechaFinal());
+                               
+                pagoProveedoresTB.setMontoTotal(total);
+                pagoProveedoresTB.setPlazos(tvList.getItems().get(i).getPlazos());
+                pagoProveedoresTB.setDias(tvList.getItems().get(i).getDias());
+                pagoProveedoresTB.setFechaActual(tvList.getItems().get(i).getFechaActual());
+                // Falta Observacion
+                pagoProveedoresTB.setEstado(tvList.getItems().get(i).getEstado());
+                pagoProveedoresTB.setIdProveedor(tvList.getItems().get(i).getIdProveedor());
+                pagoProveedoresTB.setIdCompra(idCompra);
+                pagoProveedoresTB.setIdEmpleado(tvList.getItems().get(i).getIdEmpleado());
 
-            }
-
+                fecha_Inicial = LocalDate.parse( pagoProveedoresTB.getFechaActual().toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE));
+                dias = pagoProveedoresTB.getDias();
+                this.lblFechaInicial.setText(""+fecha_Inicial);
+                this.lblFechaFinal.setText(""+fecha_Inicial.plusDays(dias));
+                this.lblPlazo.setText(pagoProveedoresTB.getPlazos());
+                
+                System.out.println("Entro a: #"+i);
+            }         
+        
             if (tvList.getItems().size() == i + 1) {
                 
-                this.lblPagado.setText(simboloMoneda+" "+Tools.roundingValue(tvList.getItems().get(i).getMontoActual(), 2));
-                this.lblCuotaActual.setText(tvList.getItems().get(i).getCuotaActual() + "");
+                pagoProveedoresTB.setCuotaActual(tvList.getItems().get(i).getCuotaActual());            
+                this.lblCuotaActual.setText(pagoProveedoresTB.getCuotaActual() + "");
                 
-                pagoProveedoresTB.setMontoActual(tvList.getItems().get(i).getMontoActual());
-                pagoProveedoresTB.setCuotaActual(tvList.getItems().get(i).getCuotaActual());
-                pagoProveedoresTB.setPlazos(tvList.getItems().get(i).getPlazos());
-                
-                pagado = tvList.getItems().get(i).getMontoActual();
+                System.out.println("Entro a: #"+i);
             }
+            
+            pagado =  pagado + tvList.getItems().get(i).getMontoActual();
 
         }
 
-        lblPendiente.setText(simboloMoneda+" "+Tools.roundingValue(total - pagado, 2));
-        lblTotal.setText(simboloMoneda+" "+Tools.roundingValue(total, 2));
-        
-        pagoProveedoresTB.setMontoTotal(total);
-
+        this.lblPendiente.setText(simboloMoneda+" "+Tools.roundingValue(total - pagado, 2));
+        this.lblPagado.setText(simboloMoneda+" "+Tools.roundingValue(pagado, 2));
+        this.lblTotal.setText(simboloMoneda+" "+Tools.roundingValue(total, 2));       
 
     }
-
-    private void initObjetPagoProveedores() {
-
-        pagoProveedoresTB.setIdProveedor(idProveedor);
-        pagoProveedoresTB.setIdCompra(idCompra);
-        
+    
+    public void initBotonAbonar(){ 
+        this.btnAmortizar.requestFocus();
     }
 
     private void openWindowAmortizarPagos() throws IOException {
@@ -142,7 +154,7 @@ public class FxHistorialPagosController implements Initializable {
         Parent parent = fXMLLoader.load(url.openStream());
 
         FxAmortizarPagosController controller = fXMLLoader.getController();
-        controller.setInitAmortizarPagosController(this, pagoProveedoresTB);
+        controller.setInitAmortizarPagosController(this, pagoProveedoresTB, pagado, simboloMoneda, compraDetalleController);
 
         Stage stage = FxWindow.StageLoaderModal(parent, "Amortizar deuda", window.getScene().getWindow());
         stage.setResizable(false);
@@ -152,20 +164,18 @@ public class FxHistorialPagosController implements Initializable {
         });
         stage.show();
 
-//        controller.setInitTexField();
+        controller.setInitValues();
 
     }
 
     @FXML
     private void onActionAmortizar(ActionEvent event) throws IOException {
-        initObjetPagoProveedores();
         openWindowAmortizarPagos();
     }
 
     @FXML
     private void onKeyPressedAmortizar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            initObjetPagoProveedores();
             openWindowAmortizarPagos();
         }
     }
@@ -182,12 +192,45 @@ public class FxHistorialPagosController implements Initializable {
         }
     }
 
-    public void setInitHistorialPagosController(FxCompraDetalleController compraDetalleController, String idProveedor, String idCompra, double total, String simboloMoneda) {
+    public void setInitHistorialPagosController(FxCompraDetalleController compraDetalleController, String idCompra, double total, String simboloMoneda) {
         this.compraDetalleController = compraDetalleController;
-        this.idProveedor = idProveedor;
         this.idCompra = idCompra;
         this.total = total;
         this.simboloMoneda = simboloMoneda;
+    }
+
+    @FXML
+    private void onKeyPressedEliminar(KeyEvent event) {
+        
+        if (event.getCode() == KeyCode.ENTER) {
+            eliminarPagoCuota();
+        }
+    }
+
+    @FXML
+    private void onActionEliminar(ActionEvent event) {
+        eliminarPagoCuota();
+    }
+    
+    private void eliminarPagoCuota(){
+        if(tvList.getSelectionModel().getSelectedIndex() >= 0){
+            short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Historial de pagos", "Está seguro de eliminar el registro de pago", true);
+            if(value==1){
+                
+                String result = PagoProveedoresADO.EliminarPagoCuota(String.valueOf(tvList.getSelectionModel().getSelectedItem().getIdPagoProveedores()));
+                if(result.equalsIgnoreCase("removed")){
+                    initListHistorialPagos();
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Historial de pagos", "Se eliminó el registro de pago correctamente", true);
+                }
+                else{
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Historial de pagos", result, true);
+                }
+                
+            }
+        }
+        else{
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Historial de pagos", "Seleccione un item para eliminarlo", false);
+        }
     }
 
 }

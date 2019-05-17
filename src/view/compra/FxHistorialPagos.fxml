@@ -43,8 +43,8 @@
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                     </columnConstraints>
@@ -56,20 +56,18 @@
                      <children>
                         <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="labelOpenSansRegular14" text="Total:" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                         <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Pendiente:" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Cuota Actual:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label fx:id="lblTotal" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="labelOpenSansRegular14" text="M 00000.00" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-                        <Label fx:id="lblPagado" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="M 0000.00" GridPane.columnIndex="5" />
-                        <Label fx:id="lblPendiente" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="M 0000.00" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                        <Label fx:id="lblCuotaTotal" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="00.00" GridPane.columnIndex="3" />
-                        <Label fx:id="lblCuotaActual" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="00.00" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label fx:id="lblTotal" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="labelOpenSansRegular14" text="M 00000.00" textFill="#0771d3" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                        <Label fx:id="lblPagado" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="M 0000.00" textFill="#0771d3" GridPane.columnIndex="5" />
+                        <Label fx:id="lblPendiente" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="M 0000.00" textFill="#0771d3" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                        <Label fx:id="lblCuotaActual" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="00.00" textFill="#0771d3" GridPane.columnIndex="3" />
                         <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Pagado:" GridPane.columnIndex="4" />
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Cuota Total:" GridPane.columnIndex="2" />
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Fecha Inicial:" />
-                        <Label fx:id="lblFechaInicial" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0000-00-00" GridPane.columnIndex="1" />
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Fecha Final:" GridPane.rowIndex="1" />
-                        <Label fx:id="lblFechaFinal" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0000-00-00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Cuota Referencial:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="M 00.00" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Fecha compra:" />
+                        <Label fx:id="lblFechaInicial" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0000-00-00" textFill="#0771d3" GridPane.columnIndex="1" />
+                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Fecha de vencimiento:" GridPane.rowIndex="1" />
+                        <Label fx:id="lblFechaFinal" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0000-00-00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Cuota actual:" GridPane.columnIndex="2" />
+                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Plazo(s):" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label fx:id="lblPlazo" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="#" textFill="#0771d3" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
@@ -88,21 +86,32 @@
                   </VBox>
                </children>
             </HBox>
+            <HBox alignment="CENTER_RIGHT" style="-fx-padding: 0em 0.8333333333333334em 0em  0.8333333333333334em;" />
             <VBox style="-fx-padding: 0.8333333333333334em;">
                <children>
-                  <TableView fx:id="tvList" prefHeight="260.0" prefWidth="721.0" style="-fx-padding: 0.8333333333333334em;">
+                  <TableView fx:id="tvList" prefHeight="235.0" prefWidth="594.0">
                     <columns>
-                      <TableColumn fx:id="tcFecha" prefWidth="206.0" style="-fx-alignment: CENTER;" text="Fecha" />
-                      <TableColumn fx:id="tcCuotas" prefWidth="114.0" style="-fx-alignment: CENTER;" text="N° Cuota" />
-                        <TableColumn fx:id="tcValor" minWidth="0.0" prefWidth="172.0" style="-fx-alignment: CENTER_RIGHT;" text="Cuota" />
-                        <TableColumn fx:id="tcMonto" prefWidth="180.0" style="-fx-alignment: CENTER_RIGHT;" text="Monto" />
+                        <TableColumn fx:id="tcNumeroRegistro" prefWidth="83.0" style="-fx-alignment: CENTER;" text="N° Registro" />
+                      <TableColumn fx:id="tcFecha" prefWidth="117.0" style="-fx-alignment: CENTER;" text="Fecha" />
+                        <TableColumn fx:id="tcCuota" minWidth="0.0" prefWidth="48.0" style="-fx-alignment: CENTER;" text="Cuota" />
+                        <TableColumn fx:id="tcObservacion" minWidth="0.0" prefWidth="237.0" style="-fx-alignment: CENTER_LEFT;" text="Observacion" />
+                        <TableColumn fx:id="tcMonto" prefWidth="107.0" style="-fx-alignment: CENTER_RIGHT;" text="Monto" />
                     </columns>
                   </TableView>
                </children>
             </VBox>
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onActionAmortizar" onKeyPressed="#onKeyPressedAmortizar" styleClass="buttonLight" text="Amortiguar">
+                  <Button mnemonicParsing="false" onAction="#onActionEliminar" onKeyPressed="#onKeyPressedEliminar" styleClass="buttonLight" text="Eliminar">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../remove-gray.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnAmortizar" mnemonicParsing="false" onAction="#onActionAmortizar" onKeyPressed="#onKeyPressedAmortizar" styleClass="buttonLight" text="Amortiguar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
