@@ -87,11 +87,44 @@ public class FxPreloader extends Preloader {
                 break;
             case BEFORE_INIT:
                 System.out.println("BEFORE_INIT");
+                File archivoc;
+
+                FileReader frc = null;
+                BufferedReader brc = null;
+                try {
+                    archivoc = new File("./archivos/connection.txt");
+                    if (archivoc.exists()) {
+                        frc = new FileReader(archivoc);
+                        brc = new BufferedReader(frc);
+                        Session.DIRECTION = brc.readLine();
+                        Session.PORT = brc.readLine();
+                        Session.DBNAME = brc.readLine();
+                        Session.USER = brc.readLine();
+                        Session.PASSWORD = brc.readLine();
+                    } else {
+                        System.out.println("El archivo no existe.");
+                    }
+
+                } catch (IOException e) {
+                    Session.ESTADO_IMPRESORA = false;
+                } finally {
+                    try {
+                        if (null != frc) {
+                            frc.close();
+                        }
+                        if (null != brc) {
+                            brc.close();
+                        }
+                    } catch (IOException e2) {
+                    }
+                }
+
                 DBUtil.dbConnect();
                 if (DBUtil.getConnection() != null) {
                     File archivo;
                     FileReader fr = null;
                     BufferedReader br = null;
+
                     try {
                         archivo = new File("./archivos/impresoraticket.txt");
                         if (archivo.exists()) {
@@ -103,8 +136,6 @@ public class FxPreloader extends Preloader {
                             // Lectura del fichero                           
                             Session.NOMBRE_IMPRESORA = br.readLine();
                             Session.CORTAPAPEL_IMPRESORA = br.readLine();
-                            System.out.println(Session.NOMBRE_IMPRESORA);
-                            System.out.println(Session.CORTAPAPEL_IMPRESORA);
                         } else {
                             Session.ESTADO_IMPRESORA = false;
                         }

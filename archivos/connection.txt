@@ -1,0 +1,5 @@
+localhost
+1433
+PuntoVentaSysSoftDBDesarrollo
+sa
+123456
