@@ -1,15 +1,19 @@
 
 package controller;
 
+import java.awt.Font;
 import javafx.scene.image.ImageView;
 
 public class CodBar extends ImageView {
     private String texto;
     
-    public CodBar(String value,double x,double y){
+    private Font font;
+    
+    public CodBar(String value,double x,double y,Font f){
         texto=value;
         setLayoutX(x);
         setLayoutY(y);
+        font=f;
     }
 
     public String getTexto() {
@@ -19,8 +23,14 @@ public class CodBar extends ImageView {
     public void setTexto(String texto) {
         this.texto = texto;
     }
-    
-    
+
+    public Font getFont() {
+        return font;
+    }
+
+    public void setFont(Font font) {
+        this.font = font;
+    }
     
     
 }

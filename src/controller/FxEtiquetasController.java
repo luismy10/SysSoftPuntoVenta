@@ -1,6 +1,5 @@
 package controller;
 
-import com.itextpdf.text.pdf.Barcode128;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
@@ -21,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
@@ -38,11 +38,16 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import net.sourceforge.barbecue.Barcode;
+import net.sourceforge.barbecue.BarcodeException;
+import net.sourceforge.barbecue.BarcodeFactory;
+import net.sourceforge.barbecue.output.OutputException;
 
 public class FxEtiquetasController implements Initializable {
 
@@ -62,6 +67,10 @@ public class FxEtiquetasController implements Initializable {
     private CheckBox cbItalic;
     @FXML
     private ScrollPane scrollPane;
+    @FXML
+    private HBox hbContent;
+    @FXML
+    private VBox group;
 
     private Text textReferent;
 
@@ -69,14 +78,25 @@ public class FxEtiquetasController implements Initializable {
 
     private SelectionModel selectionModel;
 
-    private double x;
-
-    private double y;
-
     private AnchorPane content;
+
+    private double mouseAnchorX;
+
+    private double mouseAnchorY;
+
+    private double translateAnchorX;
+
+    private double translateAnchorY;
+    
+    private double widthEtiquetaMM;
+    
+    private double heightEtiquetaMM;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        widthEtiquetaMM = 50;
+        heightEtiquetaMM = 25;
+        
         String[] fontNames = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
         cbFuente.getItems().addAll(Arrays.asList(fontNames));
 
@@ -108,96 +128,162 @@ public class FxEtiquetasController implements Initializable {
 
         selectionModel = new SelectionModel(selectionLayer);
 
-        window.setOnMousePressed(mouseEvent -> selectionModel.clear());
+        window.setOnMousePressed(mouseEvent -> {
+            selectionModel.clear();
+            textReferent = null;
+            imageViewReferent = null;
+        });
         window.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
+        group.layoutBoundsProperty().addListener((observable, oldBounds, newBounds) -> {
+//             keep it at least as large as the content
+            hbContent.setMinWidth(newBounds.getWidth());
+            hbContent.setMinHeight(newBounds.getHeight());
+        });
+
+        scrollPane.viewportBoundsProperty().addListener((observable, oldBounds, newBounds) -> {
+            hbContent.setPrefSize(newBounds.getWidth(), newBounds.getHeight());
+        });
+
+        hbContent.setOnScroll(evt -> {
+            if (evt.isControlDown()) {
+                evt.consume();
+
+                final double zoomFactor = evt.getDeltaY() > 0 ? 1.2 : 1 / 1.2;
+
+                Bounds groupBounds = group.getLayoutBounds();
+                final Bounds viewportBounds = scrollPane.getViewportBounds();
+
+                // calculate pixel offsets from [0, 1] range
+                double valX = scrollPane.getHvalue() * (groupBounds.getWidth() - viewportBounds.getWidth());
+                double valY = scrollPane.getVvalue() * (groupBounds.getHeight() - viewportBounds.getHeight());
+
+                // convert content coordinates to zoomTarget coordinates
+                Point2D posInZoomTarget = panel.parentToLocal(group.parentToLocal(new Point2D(evt.getX(), evt.getY())));
+
+                // calculate adjustment of scroll position (pixels)
+                Point2D adjustment = panel.getLocalToParentTransform().deltaTransform(posInZoomTarget.multiply(zoomFactor - 1));
+
+                // do the resizing
+                panel.setScaleX(zoomFactor * panel.getScaleX());
+                panel.setScaleY(zoomFactor * panel.getScaleY());
+
+                // refresh ScrollPane scroll positions & content bounds
+                scrollPane.layout();
+
+                // convert back to [0, 1] range
+                // (too large/small values are automatically corrected by ScrollPane)
+                groupBounds = group.getLayoutBounds();
+                scrollPane.setHvalue((valX + adjustment.getX()) / (groupBounds.getWidth() - viewportBounds.getWidth()));
+                scrollPane.setVvalue((valY + adjustment.getY()) / (groupBounds.getHeight() - viewportBounds.getHeight()));
+            }
+        });
     }
 
-    private WritableImage generateBarCode(String value) {
-        int widthBuffer = (int) (141);
-        int heightBuffer = (int) (50);
-        Barcode128 barcode128 = new Barcode128();
-        barcode128.setCode(value);
-        java.awt.Image image = barcode128.createAwtImage(java.awt.Color.BLACK, java.awt.Color.WHITE);
-        BufferedImage bufferedImage = new BufferedImage(widthBuffer, heightBuffer, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics = bufferedImage.createGraphics();
-        graphics.setColor(java.awt.Color.WHITE);
-        graphics.fillRect(0, 0, widthBuffer, heightBuffer);
-        graphics.drawImage(image, 0, 0, widthBuffer, 30, null);
-        java.awt.Font font = new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16);
-        graphics.setFont(font);
-        graphics.setColor(java.awt.Color.BLACK);
-        graphics.drawString(value, (widthBuffer - graphics.getFontMetrics(font).stringWidth(value)) / 2, 48);
-        graphics.dispose();
-
-        WritableImage wr = new WritableImage(bufferedImage.getWidth(), bufferedImage.getHeight());
-        PixelWriter pw = wr.getPixelWriter();
-        for (int px = 0; px < bufferedImage.getWidth(); px++) {
-            for (int py = 0; py < bufferedImage.getHeight(); py++) {
-                pw.setArgb(px, py, bufferedImage.getRGB(px, py));
+    private WritableImage generateBarCode(String value, java.awt.Font font) {
+        int heightBuffer = (int) (60);
+        WritableImage wr = null;
+        try {
+            Barcode barCode = BarcodeFactory.createCode128(value);
+            barCode.setBarHeight(30);
+            barCode.setBarWidth(1);
+            barCode.setDrawingText(true);
+            barCode.setFont(font);
+            BufferedImage bufferedImage = new BufferedImage(barCode.getWidth(), heightBuffer, BufferedImage.TYPE_INT_ARGB);
+            Graphics graphics = bufferedImage.createGraphics();
+            barCode.draw((Graphics2D) graphics, 0, 0);
+            wr = new WritableImage(bufferedImage.getWidth(), bufferedImage.getHeight());
+            PixelWriter pw = wr.getPixelWriter();
+            for (int px = 0; px < bufferedImage.getWidth(); px++) {
+                for (int py = 0; py < bufferedImage.getHeight(); py++) {
+                    pw.setArgb(px, py, bufferedImage.getRGB(px, py));
+                }
             }
+
+        } catch (BarcodeException | OutputException ex) {
+
         }
 
+//        Barcode128 barcode128 = new Barcode128();
+//        barcode128.setCode(value);
+//        java.awt.Image image = barcode128.createAwtImage(java.awt.Color.BLACK, java.awt.Color.WHITE);
+//        BufferedImage bufferedImage = new BufferedImage(widthBuffer, heightBuffer, BufferedImage.TYPE_INT_ARGB);
+//        Graphics2D graphics = bufferedImage.createGraphics();
+//        graphics.setColor(java.awt.Color.WHITE);
+//        graphics.fillRect(0, 0, widthBuffer, heightBuffer);
+//        graphics.drawImage(image, 0, 0, widthBuffer, 30, null);
+//        java.awt.Font font = new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16);
+//        graphics.setFont(font);
+//        graphics.setColor(java.awt.Color.BLACK);
+//        graphics.drawString(value, (widthBuffer - graphics.getFontMetrics(font).stringWidth(value)) / 2, 48);
+//        graphics.dispose();
         return wr;
     }
 
     private ImageView addBarCode() {
-        CodBar ivCodigo = new CodBar("12345678", 0, 0);
-        ivCodigo.setImage(generateBarCode(ivCodigo.getTexto()));
-        ivCodigo.setOnMousePressed(mouseEvent -> {
+        CodBar ivCodigo = new CodBar("12345678", 0, 0, new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16));
+        ivCodigo.setImage(generateBarCode(ivCodigo.getTexto(), ivCodigo.getFont()));
+        ivCodigo.setOnMousePressed(event -> {
+            textReferent = null;
             imageViewReferent = ivCodigo;
+            cbFuente.getSelectionModel().select(imageViewReferent.getFont().getFamily());
+            //spFontSize.getValueFactory().setValue((double) imageViewReferent.getFont().getSize());
             txtTexto.setText(imageViewReferent.getTexto());
+
             selectionModel.clear();
             selectionModel.add(ivCodigo);
 
-            x = ivCodigo.getTranslateX() - mouseEvent.getSceneX();
-            y = ivCodigo.getTranslateY() - mouseEvent.getSceneY();
+            mouseAnchorX = event.getSceneX();
+            mouseAnchorY = event.getSceneY();
+
+            translateAnchorX = ivCodigo.getTranslateX();
+            translateAnchorY = ivCodigo.getTranslateY();
 
             // consume event, so that scene won't get it (which clears selection)
-            mouseEvent.consume();
+            event.consume();
         });
-        ivCodigo.setOnMouseDragged(mouseEvent -> {
-            ivCodigo.setTranslateX(mouseEvent.getSceneX() + x);
-            ivCodigo.setTranslateY(mouseEvent.getSceneY() + y);
+        ivCodigo.setOnMouseDragged(event -> {
+            if (!event.isPrimaryButtonDown()) {
+                return;
+            }
+            ivCodigo.setTranslateX(translateAnchorX + ((event.getSceneX() - mouseAnchorX) / panel.getScaleX()));
+            ivCodigo.setTranslateY(translateAnchorY + ((event.getSceneY() - mouseAnchorY) / panel.getScaleY()));
+            event.consume();
         });
-        ivCodigo.setOnMouseReleased(mouseEvent -> {
-            double px = ivCodigo.getTranslateX();
-            double py = ivCodigo.getTranslateY();
-            ivCodigo.relocate(ivCodigo.getLayoutX() + px, ivCodigo.getLayoutY() + py);
-            ivCodigo.setTranslateX(0);
-            ivCodigo.setTranslateY(0);
-        });
+
         return ivCodigo;
     }
 
     private Label addText(String value) {
         Text text = new Text(value, 0, 0);
-        text.setOnMousePressed(mouseEvent -> {
+        text.setOnMousePressed(event -> {
+            imageViewReferent = null;
             textReferent = text;
             cbFuente.getSelectionModel().select(textReferent.getFont().getFamily());
             spFontSize.getValueFactory().setValue(textReferent.getFont().getSize());
             txtTexto.setText(textReferent.getText());
+
             cbBold.setSelected(textReferent.isBold());
             cbItalic.setSelected(textReferent.isItalic());
 
             selectionModel.clear();
             selectionModel.add(text);
 
-            x = text.getTranslateX() - mouseEvent.getSceneX();
-            y = text.getTranslateY() - mouseEvent.getSceneY();
+            mouseAnchorX = event.getSceneX();
+            mouseAnchorY = event.getSceneY();
 
-            mouseEvent.consume();
+            translateAnchorX = text.getTranslateX();
+            translateAnchorY = text.getTranslateY();
         });
-        text.setOnMouseDragged(mouseEvent -> {
-            text.setTranslateX(mouseEvent.getSceneX() + x);
-            text.setTranslateY(mouseEvent.getSceneY() + y);
+        text.setOnMouseDragged(event -> {
+            if (!event.isPrimaryButtonDown()) {
+                return;
+            }
+            text.setTranslateX(translateAnchorX + ((event.getSceneX() - mouseAnchorX) / panel.getScaleX()));
+            text.setTranslateY(translateAnchorY + ((event.getSceneY() - mouseAnchorY) / panel.getScaleY()));
+            event.consume();
         });
-        text.setOnMouseReleased(mouseEvent -> {
-            double px = text.getTranslateX();
-            double py = text.getTranslateY();
-            text.relocate(text.getLayoutX() + px, text.getLayoutY() + py);
-            text.setTranslateX(0);
-            text.setTranslateY(0);
-        });
+
         return text;
     }
 
@@ -280,15 +366,25 @@ public class FxEtiquetasController implements Initializable {
     @FXML
     private void onKeyPressedQuitar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            panel.getChildren().remove(selectionModel.getNodeSelection());
-            selectionModel.clear();
+            if (textReferent != null && selectionModel.getNodeSelection() == textReferent) {
+                panel.getChildren().remove(selectionModel.getNodeSelection());
+                selectionModel.clear();
+            } else if (imageViewReferent != null && selectionModel.getNodeSelection() == imageViewReferent) {
+                panel.getChildren().remove(selectionModel.getNodeSelection());
+                selectionModel.clear();
+            }
         }
     }
 
     @FXML
     private void onActionQuitar(ActionEvent event) {
-        panel.getChildren().remove(selectionModel.getNodeSelection());
-        selectionModel.clear();
+        if (textReferent != null && selectionModel.getNodeSelection() == textReferent) {
+            panel.getChildren().remove(selectionModel.getNodeSelection());
+            selectionModel.clear();
+        } else if (imageViewReferent != null && selectionModel.getNodeSelection() == imageViewReferent) {
+            panel.getChildren().remove(selectionModel.getNodeSelection());
+            selectionModel.clear();
+        }
     }
 
     @FXML
@@ -303,10 +399,10 @@ public class FxEtiquetasController implements Initializable {
         } else if (imageViewReferent != null && selectionModel.getNodeSelection() == imageViewReferent) {
             if (!txtTexto.getText().trim().isEmpty()) {
                 imageViewReferent.setTexto(txtTexto.getText().trim());
-                imageViewReferent.setImage(generateBarCode(imageViewReferent.getTexto()));
+                imageViewReferent.setImage(generateBarCode(imageViewReferent.getTexto(), imageViewReferent.getFont()));
             } else {
                 imageViewReferent.setTexto(txtTexto.getText().trim());
-                imageViewReferent.setImage(generateBarCode(imageViewReferent.getTexto()));
+                imageViewReferent.setImage(generateBarCode(imageViewReferent.getTexto(), imageViewReferent.getFont()));
             }
         }
 
@@ -315,15 +411,23 @@ public class FxEtiquetasController implements Initializable {
     @FXML
     private void onActionFuente(ActionEvent event) {
         if (cbFuente.getSelectionModel().getSelectedIndex() >= 0) {
-            if (textReferent != null && selectionModel.getNodeSelection() == imageViewReferent) {
+            if (textReferent != null && selectionModel.getNodeSelection() == textReferent) {
                 textReferent.setFont(Font.font(cbFuente.getSelectionModel().getSelectedItem(), textReferent.getFontWight(), textReferent.getFontPosture(), textReferent.getFont().getSize()));
+            } else if (imageViewReferent != null && selectionModel.getNodeSelection() == imageViewReferent) {
+                java.awt.Font font = imageViewReferent.getFont();
+                imageViewReferent.setImage(generateBarCode(imageViewReferent.getTexto(),
+                        new java.awt.Font(
+                                cbFuente.getSelectionModel().getSelectedItem(),
+                                font.getStyle(),
+                                font.getSize())
+                ));
             }
         }
     }
 
     @FXML
     private void onActionBold(ActionEvent event) {
-        if (textReferent != null && selectionModel.getNodeSelection() == imageViewReferent) {
+        if (textReferent != null && selectionModel.getNodeSelection() == textReferent) {
             if (textReferent.isBold()) {
                 textReferent.setFont(
                         Font.font(textReferent.getFont().getFamily(),
@@ -346,7 +450,7 @@ public class FxEtiquetasController implements Initializable {
 
     @FXML
     private void onActionItalic(ActionEvent event) {
-        if (textReferent != null && selectionModel.getNodeSelection() == imageViewReferent) {
+        if (textReferent != null && selectionModel.getNodeSelection() == textReferent) {
             if (textReferent.isItalic()) {
                 textReferent.setFont(
                         Font.font(textReferent.getFont().getFamily(),
@@ -392,16 +496,18 @@ public class FxEtiquetasController implements Initializable {
     public PageFormat getPageFormat(PrinterJob pj) {
         PageFormat pf = pj.defaultPage();
         Paper paper = pf.getPaper();
-        paper.setSize(getPointToMM(50), getPointToMM(25));
+        paper.setSize(getPointToMM(widthEtiquetaMM), getPointToMM(heightEtiquetaMM));
         paper.setImageableArea(0, 0, pf.getWidth(), pf.getHeight());   //define boarder size    after that print area width is about 180 points
         pf.setOrientation(PageFormat.PORTRAIT);           //select orientation portrait or landscape but for this time portrait
         pf.setPaper(paper);
+        System.out.println(getPointToMM(widthEtiquetaMM));
         return pf;
     }
 
     public double getPointToMM(double mm) {
         return (mm * 2.83465) / 1;
     }
+
 
     private static WritableImage createScaledView(Node node, int scale) {
         final Bounds bounds = node.getLayoutBounds();
@@ -414,10 +520,6 @@ public class FxEtiquetasController implements Initializable {
         spa.setTransform(javafx.scene.transform.Transform.scale(scale, scale));
 
         return node.snapshot(spa, image);
-    }
-
-    public void setContent(AnchorPane content) {
-        this.content = content;
     }
 
     class BillPrintableEtiquetas implements Printable {
@@ -444,4 +546,7 @@ public class FxEtiquetasController implements Initializable {
 
     }
 
+    public void setContent(AnchorPane content) {
+        this.content = content;
+    }
 }

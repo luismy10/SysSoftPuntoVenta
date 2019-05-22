@@ -125,13 +125,13 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox HBox.hgrow="ALWAYS">
+            <HBox style="-fx-border-color: #0e75bf; -fx-border-width: 1;" HBox.hgrow="ALWAYS">
                <children>
                   <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="292.0" styleClass="scroll-pane-ticket" HBox.hgrow="ALWAYS">
                      <content>
-                        <HBox>
+                        <HBox fx:id="hbContent">
                            <children>
-                              <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                              <VBox fx:id="group" alignment="CENTER" HBox.hgrow="ALWAYS">
                                  <children>
                                     <HBox alignment="CENTER">
                                        <children>
@@ -196,6 +196,28 @@
                   </VBox>
                </children>
             </HBox>
+         </children>
+      </HBox>
+      <HBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
+         <children>
+            <VBox style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
+               <children>
+                  <Label styleClass="labelRoboto14" text="Formato de ticket" />
+                  <Label styleClass="labelRobotoBold16" text="Venta" textFill="#0f67a1" />
+               </children>
+            </VBox>
+            <VBox style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
+               <children>
+                  <Label styleClass="labelRoboto14" text="Medida de etiqueta" />
+                  <Label styleClass="labelRobotoBold16" text="40" textFill="#0f67a1" />
+               </children>
+            </VBox>
+            <VBox style="-fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
+               <children>
+                  <Label styleClass="labelRoboto14" text="Predeterminado" />
+                  <CheckBox mnemonicParsing="false" selected="true" styleClass="check-box-ticket" text="Si" />
+               </children>
+            </VBox>
          </children>
       </HBox>
    </children>
