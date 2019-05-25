@@ -12,17 +12,27 @@ import static java.awt.print.Printable.NO_SUCH_PAGE;
 import static java.awt.print.Printable.PAGE_EXISTS;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -44,10 +54,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeException;
 import net.sourceforge.barbecue.BarcodeFactory;
 import net.sourceforge.barbecue.output.OutputException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class FxEtiquetasController implements Initializable {
 
@@ -71,6 +87,12 @@ public class FxEtiquetasController implements Initializable {
     private HBox hbContent;
     @FXML
     private VBox group;
+    @FXML
+    private Label lblMedida;
+    @FXML
+    private Label lblFormato;
+    @FXML
+    private Label lblNombre;
 
     private Text textReferent;
 
@@ -80,6 +102,10 @@ public class FxEtiquetasController implements Initializable {
 
     private AnchorPane content;
 
+    private int idEtiqueta;
+
+    private int tipoEtiqueta;
+
     private double mouseAnchorX;
 
     private double mouseAnchorY;
@@ -87,30 +113,53 @@ public class FxEtiquetasController implements Initializable {
     private double translateAnchorX;
 
     private double translateAnchorY;
-    
+
+    private boolean etiquetaProceso;
+
+    private String nombreEtiqueta;
+
     private double widthEtiquetaMM;
-    
+
     private double heightEtiquetaMM;
+
+    private int orientacionEtiqueta;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        widthEtiquetaMM = 50;
-        heightEtiquetaMM = 25;
-        
+        etiquetaProceso = false;
+        lblMedida.setText(widthEtiquetaMM + "mm x " + heightEtiquetaMM + "mm");
         String[] fontNames = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
         cbFuente.getItems().addAll(Arrays.asList(fontNames));
 
         spFontSize.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 100, 12));
         spFontSize.setOnMousePressed((event) -> {
             if (event.getButton() == MouseButton.PRIMARY) {
-                if (textReferent != null) {
+                if (textReferent != null && selectionModel.getNodeSelection() == textReferent) {
                     textReferent.setFont(Font.font(textReferent.getFont().getFamily(), textReferent.getFontWight(), textReferent.getFontPosture(), spFontSize.getValue()));
+                } else if (imageViewReferent != null && selectionModel.getNodeSelection() == imageViewReferent) {
+                    java.awt.Font font = imageViewReferent.getFont();
+                    imageViewReferent.setImage(generateBarCode(imageViewReferent.getTexto(),
+                            new java.awt.Font(
+                                    font.getFamily(),
+                                    font.getStyle(),
+                                    (int) ((double) spFontSize.getValue())
+                            )
+                    ));
                 }
             }
         });
         spFontSize.getEditor().setOnAction((event) -> {
-            if (textReferent != null) {
+            if (textReferent != null && selectionModel.getNodeSelection() == textReferent) {
                 textReferent.setFont(Font.font(textReferent.getFont().getFamily(), textReferent.getFontWight(), textReferent.getFontPosture(), Double.parseDouble(spFontSize.getEditor().getText())));
+            } else if (imageViewReferent != null && selectionModel.getNodeSelection() == imageViewReferent) {
+                java.awt.Font font = imageViewReferent.getFont();
+                imageViewReferent.setImage(generateBarCode(imageViewReferent.getTexto(),
+                        new java.awt.Font(
+                                font.getFamily(),
+                                font.getStyle(),
+                                (int) ((double) spFontSize.getValue())
+                        )
+                ));
             }
         });
         spFontSize.getEditor().setOnKeyTyped((event) -> {
@@ -135,49 +184,227 @@ public class FxEtiquetasController implements Initializable {
         });
         window.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
-        group.layoutBoundsProperty().addListener((observable, oldBounds, newBounds) -> {
-//             keep it at least as large as the content
-            hbContent.setMinWidth(newBounds.getWidth());
-            hbContent.setMinHeight(newBounds.getHeight());
-        });
-
-        scrollPane.viewportBoundsProperty().addListener((observable, oldBounds, newBounds) -> {
-            hbContent.setPrefSize(newBounds.getWidth(), newBounds.getHeight());
-        });
-
+//        group.layoutBoundsProperty().addListener((observable, oldBounds, newBounds) -> {
+//            hbContent.setMinWidth(newBounds.getWidth());
+//            hbContent.setMinHeight(newBounds.getHeight());
+//        });
+//
+//        scrollPane.viewportBoundsProperty().addListener((observable, oldBounds, newBounds) -> {
+//            hbContent.setPrefSize(newBounds.getWidth(), newBounds.getHeight());
+//        });
         hbContent.setOnScroll(evt -> {
-            if (evt.isControlDown()) {
-                evt.consume();
+            if (etiquetaProceso) {
+                if (evt.isControlDown()) {
+                    evt.consume();
+                    final double zoomFactor = evt.getDeltaY() > 0 ? 1.2 : 1 / 1.2;
 
-                final double zoomFactor = evt.getDeltaY() > 0 ? 1.2 : 1 / 1.2;
+//                    Bounds groupBounds = group.getLayoutBounds();
+//                    final Bounds viewportBounds = scrollPane.getViewportBounds();
+                    // calculate pixel offsets from [0, 1] range
+//                double valX = scrollPane.getHvalue() * (groupBounds.getWidth() - viewportBounds.getWidth());
+//                double valY = scrollPane.getVvalue() * (groupBounds.getHeight() - viewportBounds.getHeight());
+                    // convert content coordinates to zoomTarget coordinates
+//                Point2D posInZoomTarget = panel.parentToLocal(group.parentToLocal(new Point2D(evt.getX(), evt.getY())));
+                    // calculate adjustment of scroll position (pixels)
+//                Point2D adjustment = panel.getLocalToParentTransform().deltaTransform(posInZoomTarget.multiply(zoomFactor - 1));
+                    // do the resizing
+                    panel.setScaleX(zoomFactor * panel.getScaleX());
+                    panel.setScaleY(zoomFactor * panel.getScaleY());
 
-                Bounds groupBounds = group.getLayoutBounds();
-                final Bounds viewportBounds = scrollPane.getViewportBounds();
+                    // refresh ScrollPane scroll positions & content bounds
+                    scrollPane.layout();
 
-                // calculate pixel offsets from [0, 1] range
-                double valX = scrollPane.getHvalue() * (groupBounds.getWidth() - viewportBounds.getWidth());
-                double valY = scrollPane.getVvalue() * (groupBounds.getHeight() - viewportBounds.getHeight());
-
-                // convert content coordinates to zoomTarget coordinates
-                Point2D posInZoomTarget = panel.parentToLocal(group.parentToLocal(new Point2D(evt.getX(), evt.getY())));
-
-                // calculate adjustment of scroll position (pixels)
-                Point2D adjustment = panel.getLocalToParentTransform().deltaTransform(posInZoomTarget.multiply(zoomFactor - 1));
-
-                // do the resizing
-                panel.setScaleX(zoomFactor * panel.getScaleX());
-                panel.setScaleY(zoomFactor * panel.getScaleY());
-
-                // refresh ScrollPane scroll positions & content bounds
-                scrollPane.layout();
-
-                // convert back to [0, 1] range
-                // (too large/small values are automatically corrected by ScrollPane)
-                groupBounds = group.getLayoutBounds();
-                scrollPane.setHvalue((valX + adjustment.getX()) / (groupBounds.getWidth() - viewportBounds.getWidth()));
-                scrollPane.setVvalue((valY + adjustment.getY()) / (groupBounds.getHeight() - viewportBounds.getHeight()));
+                    // convert back to [0, 1] range
+                    // (too large/small values are automatically corrected by ScrollPane)
+//                groupBounds = group.getLayoutBounds();
+//                scrollPane.setHvalue((valX + adjustment.getX()) / (groupBounds.getWidth() - viewportBounds.getWidth()));
+//                scrollPane.setVvalue((valY + adjustment.getY()) / (groupBounds.getHeight() - viewportBounds.getHeight()));
+                }
             }
+
         });
+
+    }
+
+    public void loadEtiqueta(int idEtiqueta, String ruta) {
+        if (ruta != null) {
+            String file = leerArchivoTexto(ruta);
+            this.idEtiqueta = idEtiqueta;
+            JSONObject jSONObject = obtenerObjetoJSON(file);
+            if (jSONObject.get("cuerpo") != null) {
+                JSONObject object = obtenerObjetoJSON(jSONObject.get("cuerpo").toString());
+                etiquetaProceso = true;
+                nombreEtiqueta = String.valueOf(object.get("name"));
+                widthEtiquetaMM = Double.parseDouble(object.get("width").toString());
+                heightEtiquetaMM = Double.parseDouble(object.get("height").toString());
+                orientacionEtiqueta = Integer.parseInt(object.get("orientation").toString());
+                tipoEtiqueta = Integer.parseInt(object.get("type").toString());
+                if (orientacionEtiqueta == PageFormat.PORTRAIT) {
+                    panel.setPrefSize(converMmToPixel(widthEtiquetaMM), converMmToPixel(heightEtiquetaMM));
+                } else {
+                    panel.setPrefSize(converMmToPixel(heightEtiquetaMM), converMmToPixel(widthEtiquetaMM));
+                }
+                lblMedida.setText(widthEtiquetaMM + "mm x " + heightEtiquetaMM + "mm");
+                lblNombre.setText(nombreEtiqueta);
+                lblFormato.setText(String.valueOf(object.get("typeName")));
+                if (object.get("childs") != null) {
+                    JSONArray array = obtenerArrayJSON(object.get("childs").toString());
+                    Iterator it = array.iterator();
+                    while (it.hasNext()) {
+                        JSONObject objectchild = obtenerObjetoJSON(it.next().toString());
+                        if (objectchild.get("type") != null) {
+                            if (String.valueOf(objectchild.get("type")).equalsIgnoreCase("text")) {
+                                panel.getChildren().add(addText(
+                                        String.valueOf(objectchild.get("text")),
+                                        Double.parseDouble(objectchild.get("x").toString()),
+                                        Double.parseDouble(objectchild.get("y").toString())
+                                ));
+                            } else if (String.valueOf(objectchild.get("type")).equalsIgnoreCase("codebar")) {
+                                panel.getChildren().add(addBarCode(
+                                        String.valueOf(objectchild.get("text")),
+                                        Double.parseDouble(objectchild.get("x").toString()),
+                                        Double.parseDouble(objectchild.get("y").toString()),
+                                        Double.parseDouble(objectchild.get("with").toString()),
+                                        Double.parseDouble(objectchild.get("height").toString())
+                                ));
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    public void newEtiqueta(String nombre, double ancho, double alto, int orientacion, int tipo, String nombreTipo) {
+        etiquetaProceso = true;
+        nombreEtiqueta = nombre;
+        widthEtiquetaMM = ancho;
+        heightEtiquetaMM = alto;
+        orientacionEtiqueta = orientacion;
+        tipoEtiqueta = tipo;
+        if (orientacion == PageFormat.PORTRAIT) {
+            panel.setPrefSize(converMmToPixel(widthEtiquetaMM), converMmToPixel(heightEtiquetaMM));
+        } else {
+            panel.setPrefSize(converMmToPixel(heightEtiquetaMM), converMmToPixel(widthEtiquetaMM));
+        }
+        lblMedida.setText(widthEtiquetaMM + "mm x " + heightEtiquetaMM + "mm");
+        lblNombre.setText(nombreEtiqueta);
+        lblFormato.setText(nombreTipo);
+    }
+
+    private void saveEtiqueta() {
+        if (!etiquetaProceso) {
+            return;
+        }
+        try {
+            JSONObject sampleObject = new JSONObject();
+            JSONObject cuerpo = new JSONObject();
+            cuerpo.put("name", nombreEtiqueta);
+            cuerpo.put("type", tipoEtiqueta);
+            cuerpo.put("typeName", lblFormato.getText());
+            cuerpo.put("width", widthEtiquetaMM);
+            cuerpo.put("height", heightEtiquetaMM);
+            cuerpo.put("orientation", orientacionEtiqueta);
+
+            JSONArray kids = new JSONArray();
+            panel.getChildren().forEach((node) -> {
+                if (node instanceof Text) {
+                    Text text = (Text) node;
+                    JSONObject child = new JSONObject();
+                    child.put("type", "text");
+                    child.put("text", text.getText());
+                    child.put("x", text.getTranslateX());
+                    child.put("y", text.getTranslateY());
+                    child.put("with", text.getWidth());
+                    child.put("height", text.getHeight());
+                    kids.add(child);
+                } else if (node instanceof CodBar) {
+                    CodBar codBar = (CodBar) node;
+                    JSONObject child = new JSONObject();
+                    child.put("type", "codebar");
+                    child.put("text", codBar.getTexto());
+                    child.put("x", codBar.getTranslateX());
+                    child.put("y", codBar.getTranslateY());
+                    child.put("with", codBar.getFitWidth());
+                    child.put("height", codBar.getFitHeight());
+                    kids.add(child);
+                }
+            });
+            cuerpo.put("childs", kids);
+            sampleObject.put("cuerpo", cuerpo);
+
+            Files.write(Paths.get("./archivos/etiqueta.json"), sampleObject.toJSONString().getBytes());
+        } catch (IOException ex) {
+
+        }
+
+    }
+
+    private JSONObject obtenerObjetoJSON(final String codigoJSON) {
+        JSONParser lector = new JSONParser();
+        JSONObject objectJSON = null;
+        try {
+            Object recuperado = lector.parse(codigoJSON);
+            objectJSON = (JSONObject) recuperado;
+        } catch (ParseException ex) {
+            System.out.println("Posicion:" + ex.getPosition());
+            System.out.println(ex);
+        }
+        return objectJSON;
+    }
+
+    private JSONArray obtenerArrayJSON(final String codigoJSON) {
+        JSONParser lector = new JSONParser();
+        JSONArray arrayJSON = null;
+
+        try {
+            Object recuperado = lector.parse(codigoJSON);
+            arrayJSON = (JSONArray) recuperado;
+        } catch (ParseException e) {
+            System.out.println("Posicion: " + e.getPosition());
+            System.out.println(e);
+        }
+
+        return arrayJSON;
+    }
+
+    private String leerArchivoTexto(String ruta) {
+        String contenido = "";
+        InputStream inStream = null;
+        BufferedInputStream bis = null;
+        try {
+            inStream = new FileInputStream(ruta);
+            bis = new BufferedInputStream(inStream);
+            while (bis.available() > 0) {
+                char c = (char) bis.read();
+                contenido += c;
+            }
+        } catch (IOException e) {
+            System.out.println(e.getLocalizedMessage());
+        } finally {
+            try {
+                if (inStream != null) {
+                    inStream.close();
+                }
+                if (bis != null) {
+                    bis.close();
+                }
+            } catch (IOException ex) {
+                System.out.println(ex.getLocalizedMessage());
+            }
+        }
+        return contenido;
+    }
+
+    private void InitializationTransparentBackground() {
+        Session.PANE.setStyle("-fx-background-color: black");
+        Session.PANE.setTranslateX(0);
+        Session.PANE.setTranslateY(0);
+        Session.PANE.setPrefWidth(Session.WIDTH_WINDOW);
+        Session.PANE.setPrefHeight(Session.HEIGHT_WINDOW);
+        Session.PANE.setOpacity(0.7f);
+        content.getChildren().add(Session.PANE);
     }
 
     private WritableImage generateBarCode(String value, java.awt.Font font) {
@@ -199,11 +426,9 @@ public class FxEtiquetasController implements Initializable {
                     pw.setArgb(px, py, bufferedImage.getRGB(px, py));
                 }
             }
-
         } catch (BarcodeException | OutputException ex) {
 
         }
-
 //        Barcode128 barcode128 = new Barcode128();
 //        barcode128.setCode(value);
 //        java.awt.Image image = barcode128.createAwtImage(java.awt.Color.BLACK, java.awt.Color.WHITE);
@@ -220,9 +445,11 @@ public class FxEtiquetasController implements Initializable {
         return wr;
     }
 
-    private ImageView addBarCode() {
-        CodBar ivCodigo = new CodBar("12345678", 0, 0, new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16));
+    private ImageView addBarCode(String value, double x, double y, double width, double height) {
+        CodBar ivCodigo = new CodBar(value, x, y, new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16));
         ivCodigo.setImage(generateBarCode(ivCodigo.getTexto(), ivCodigo.getFont()));
+        ivCodigo.setFitWidth(width == -1 ? ivCodigo.getImage().getWidth() : width);
+        ivCodigo.setFitHeight(height == -1 ? ivCodigo.getImage().getHeight() : height);
         ivCodigo.setOnMousePressed(event -> {
             textReferent = null;
             imageViewReferent = ivCodigo;
@@ -254,8 +481,8 @@ public class FxEtiquetasController implements Initializable {
         return ivCodigo;
     }
 
-    private Label addText(String value) {
-        Text text = new Text(value, 0, 0);
+    private Text addText(String value, double x, double y) {
+        Text text = new Text(value, x, y);
         text.setOnMousePressed(event -> {
             imageViewReferent = null;
             textReferent = text;
@@ -274,6 +501,9 @@ public class FxEtiquetasController implements Initializable {
 
             translateAnchorX = text.getTranslateX();
             translateAnchorY = text.getTranslateY();
+
+            // consume event, so that scene won't get it (which clears selection)
+            event.consume();
         });
         text.setOnMouseDragged(event -> {
             if (!event.isPrimaryButtonDown()) {
@@ -287,36 +517,74 @@ public class FxEtiquetasController implements Initializable {
         return text;
     }
 
+    private void eventNuevo() {
+        try {
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_ETIQUETASNUEVO);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxEtiquetasNuevoController controller = fXMLLoader.getController();
+            controller.setInitEtiquetasController(this);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Nueva Etiqueta", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.PANE);
+            });
+            stage.show();
+        } catch (IOException exception) {
+
+        }
+    }
+
     @FXML
     private void onKeyPressedSearch(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
     }
 
     @FXML
     private void onActionSearch(ActionEvent event) {
+
     }
 
     @FXML
     private void onKeyPressNuevo(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            eventNuevo();
+        }
     }
 
     @FXML
     private void onActionNuevo(ActionEvent event) {
+        eventNuevo();
     }
 
     @FXML
     private void onKeyPressEditar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
     }
 
     @FXML
     private void onActionEditar(ActionEvent event) {
+
     }
 
     @FXML
     private void onKeyPressedSave(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            saveEtiqueta();
+        }
     }
 
     @FXML
     private void onActionSave(ActionEvent event) {
+        saveEtiqueta();
     }
 
     @FXML
@@ -333,34 +601,50 @@ public class FxEtiquetasController implements Initializable {
 
     @FXML
     private void onKeyPressedEliminar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
     }
 
     @FXML
     private void onActionEliminar(ActionEvent event) {
+
     }
 
     @FXML
     private void onKeyPressedTexto(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            panel.getChildren().add(addText("Texto de muestra"));
+            if (!etiquetaProceso) {
+                return;
+            }
+            panel.getChildren().add(addText("Texto de muestra", 0, 0));
         }
     }
 
     @FXML
     private void onActionTexto(ActionEvent event) {
-        panel.getChildren().add(addText("Texto de muestra"));
+        if (!etiquetaProceso) {
+            return;
+        }
+        panel.getChildren().add(addText("Texto de muestra", 0, 0));
     }
 
     @FXML
     private void onKeyPressedCodBar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            panel.getChildren().add(addBarCode());
+            if (!etiquetaProceso) {
+                return;
+            }
+            panel.getChildren().add(addBarCode("12345678", 0, 0, -1, -1));
         }
     }
 
     @FXML
     private void onActionCodBar(ActionEvent event) {
-        panel.getChildren().add(addBarCode());
+        if (!etiquetaProceso) {
+            return;
+        }
+        panel.getChildren().add(addBarCode("12345678", 0, 0, -1, -1));
     }
 
     @FXML
@@ -472,6 +756,9 @@ public class FxEtiquetasController implements Initializable {
     }
 
     private void eventImprimir() {
+        if (!etiquetaProceso) {
+            return;
+        }
         WritableImage image = createScaledView(panel, 4);
         BillPrintableEtiquetas billPrintable = new BillPrintableEtiquetas(SwingFXUtils.fromFXImage(image, null));
 
@@ -496,18 +783,20 @@ public class FxEtiquetasController implements Initializable {
     public PageFormat getPageFormat(PrinterJob pj) {
         PageFormat pf = pj.defaultPage();
         Paper paper = pf.getPaper();
-        paper.setSize(getPointToMM(widthEtiquetaMM), getPointToMM(heightEtiquetaMM));
+        paper.setSize(converMmToPoint(widthEtiquetaMM), converMmToPoint(heightEtiquetaMM));
         paper.setImageableArea(0, 0, pf.getWidth(), pf.getHeight());   //define boarder size    after that print area width is about 180 points
-        pf.setOrientation(PageFormat.PORTRAIT);           //select orientation portrait or landscape but for this time portrait
+        pf.setOrientation(orientacionEtiqueta);           //select orientation portrait or landscape but for this time portrait
         pf.setPaper(paper);
-        System.out.println(getPointToMM(widthEtiquetaMM));
         return pf;
     }
 
-    public double getPointToMM(double mm) {
+    public double converMmToPoint(double mm) {
         return (mm * 2.83465) / 1;
     }
 
+    public double converMmToPixel(double mm) {
+        return BigDecimal.valueOf((mm * 3.7795275591) / 1).setScale(0, RoundingMode.HALF_UP).doubleValue();
+    }
 
     private static WritableImage createScaledView(Node node, int scale) {
         final Bounds bounds = node.getLayoutBounds();
@@ -520,6 +809,56 @@ public class FxEtiquetasController implements Initializable {
         spa.setTransform(javafx.scene.transform.Transform.scale(scale, scale));
 
         return node.snapshot(spa, image);
+    }
+
+    private void eventAcercar() {
+        if (!etiquetaProceso) {
+            return;
+        }
+        final double zoomFactor = 1.2;
+        // do the resizing
+        panel.setScaleX(zoomFactor * panel.getScaleX());
+        panel.setScaleY(zoomFactor * panel.getScaleY());
+        // refresh ScrollPane scroll positions & content bounds
+        scrollPane.layout();
+
+    }
+
+    private void eventAlejar() {
+        if (!etiquetaProceso) {
+            return;
+        }
+        final double zoomFactor = 1 / 1.2;
+        // do the resizing
+        panel.setScaleX(zoomFactor * panel.getScaleX());
+        panel.setScaleY(zoomFactor * panel.getScaleY());
+        // refresh ScrollPane scroll positions & content bounds
+        scrollPane.layout();
+
+    }
+
+    @FXML
+    private void onKeyPressedAcercar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            eventAcercar();
+        }
+    }
+
+    @FXML
+    private void onActionAcercar(ActionEvent event) {
+        eventAcercar();
+    }
+
+    @FXML
+    private void onKeyPressedAlejar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            eventAlejar();
+        }
+    }
+
+    @FXML
+    private void onActionAlejar(ActionEvent event) {
+        eventAlejar();
     }
 
     class BillPrintableEtiquetas implements Printable {
@@ -535,7 +874,7 @@ public class FxEtiquetasController implements Initializable {
             if (pageIndex == 0) {
                 Graphics2D g2d = (Graphics2D) graphics;
                 g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
-                g2d.drawImage(bufferedImage, 5, 0, 141, 70, null);
+                g2d.drawImage(bufferedImage, 5, 0, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
                 g2d.dispose();
                 return (PAGE_EXISTS);
             } else {

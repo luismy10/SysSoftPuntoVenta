@@ -20,8 +20,8 @@ public class Text extends Label {
     public Text(String text, double x, double y) {
         setText(text);
         setCursor(Cursor.MOVE);
-        setLayoutX(x);
-        setLayoutY(y);
+        setTranslateX(x);
+        setTranslateY(y);
         setTextFill(Color.BLACK);
         setFont(Font.font("Lucida Sans Typewriter", FontWeight.BOLD, FontPosture.REGULAR,16));
         bold = true;

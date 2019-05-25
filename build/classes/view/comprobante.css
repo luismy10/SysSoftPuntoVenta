@@ -1064,3 +1064,42 @@
     -fx-background-color: #cdcdcd;
     -fx-border-color: #aaa;
 }
+
+
+/*******************************************************************************
+ *                                                                             *
+ * Spinner                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+/*
+.list-spinner{
+     -fx-background-color: #f0f0f0;
+     -fx-background-insets: 0 0 0 0;
+     -fx-background-radius: 0;
+     -fx-padding: 0em 0em 0em 0em;
+     -fx-text-fill: #212121;
+}
+.list-spinner:hover{
+    -fx-color:#f0f0f0;
+}
+.list-spinner .value-pane{
+    
+}
+.list-spinner .decrement-button, .list-spinner .increment-button{
+    -fx-background-color: #f0f0f0;
+    -fx-padding: 1.2500em 0.5000em 1.2500em 0.5000em;    
+}
+.list-spinner .left-arrow{
+    -fx-shape: "M301,415.51-4.5,514.5,4.5h-31-4.5-4.514.5-4.5H301z";
+    -fx-scale-shape: false;
+}
+.list-spinner .decrement-button:hover{
+    -fx-background-color: #dadada;
+}
+.list-spinner .decrement-button:pressed{
+    -fx-background-color: #606060;
+}
+.list-spinner .decrement-button:pressed .left-arrow{
+    -fx-background-color: white; 
+}
+*/

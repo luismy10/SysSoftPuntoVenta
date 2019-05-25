@@ -63,7 +63,9 @@ public class FxArticulosController implements Initializable {
     private VBox vbOpciones;
     @FXML
     private ComboBox<DetalleTB> cbCategoria;
-
+    @FXML
+    private TextField txtSearchCode;
+    
     private AnchorPane content;
 
     private boolean status;
@@ -71,8 +73,7 @@ public class FxArticulosController implements Initializable {
     private FxArticuloSeleccionadoController seleccionadoController;
 
     private FxArticuloDetalleController detalleController;
-    @FXML
-    private TextField txtSearchCode;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -589,6 +590,18 @@ public class FxArticulosController implements Initializable {
             }
         }
     }
+    
+    @FXML
+    private void onKeyPressedEtiquetas(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            
+        }
+    }
+
+    @FXML
+    private void onActionEtiquetas(ActionEvent event) {
+        
+    }
 
     public TableView<ArticuloTB> getTvList() {
         return tvList;
@@ -601,5 +614,7 @@ public class FxArticulosController implements Initializable {
     public void setContent(AnchorPane content) {
         this.content = content;
     }
+
+    
 
 }

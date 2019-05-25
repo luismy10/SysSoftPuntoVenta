@@ -429,7 +429,6 @@ public class FxArticuloProcesoController implements Initializable {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Actualizado correctamente el artículo.", false);
                     Tools.Dispose(window);
                     articulosController.getTxtSearch().requestFocus();
-                    articulosController.fillArticlesTable((short) 1, articulosController.getTxtSearch().getText(), 0);
                     break;
                 case "duplicate":
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puede haber 2 artículos con la misma clave.", false);

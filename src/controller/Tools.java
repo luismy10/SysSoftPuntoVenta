@@ -135,7 +135,7 @@ public class Tools {
     static final String FX_FILE_ETIQUETAS = "/view/etiquetas/FxEtiquetas.fxml";
     static final String FX_FILE_ETIQUETASBUSQUEDA = "/view/etiquetas/FxEtiquetas.fxml";
     static final String FX_FILE_ETIQUETASEDITAR = "/view/etiquetas/FxEtiquetas.fxml";
-    static final String FX_FILE_ETIQUETASNUEVO = "/view/etiquetas/FxEtiquetas.fxml";
+    static final String FX_FILE_ETIQUETASNUEVO = "/view/etiquetas/FxEtiquetasNuevo.fxml";
     static final String FX_FILE_ETIQUETASPROCESO = "/view/etiquetas/FxEtiquetas.fxml";
     static final String FX_FILE_ETIQUETASPROCESOBUSQUEDA = "/view/etiquetas/FxEtiquetas.fxml";
 

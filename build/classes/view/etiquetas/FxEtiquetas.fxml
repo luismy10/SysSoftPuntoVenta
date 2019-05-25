@@ -121,6 +121,24 @@
                               </ImageView>
                            </graphic>
                         </Button>
+                        <Button mnemonicParsing="false" onAction="#onActionAcercar" onKeyPressed="#onKeyPressedAcercar" styleClass="buttonLight">
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../acercar.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#onActionAlejar" onKeyPressed="#onKeyPressedAlejar" styleClass="buttonLight">
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../alejar.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                   </VBox>
                </children>
@@ -129,13 +147,13 @@
                <children>
                   <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="292.0" styleClass="scroll-pane-ticket" HBox.hgrow="ALWAYS">
                      <content>
-                        <HBox fx:id="hbContent">
+                        <HBox fx:id="hbContent" style="-fx-border-color: orange;">
                            <children>
-                              <VBox fx:id="group" alignment="CENTER" HBox.hgrow="ALWAYS">
+                              <VBox fx:id="group" alignment="CENTER" style="-fx-border-color: green;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <HBox alignment="CENTER">
+                                    <HBox alignment="CENTER" style="-fx-border-color: red;">
                                        <children>
-                                          <Pane fx:id="panel" prefHeight="94.0" prefWidth="189.0" style="-fx-background-color: white;" />
+                                          <Pane fx:id="panel" style="-fx-background-color: white;" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -168,7 +186,7 @@
                               <VBox style="-fx-spacing: 0.4166666666666667em;">
                                  <children>
                                     <Label styleClass="labelOpenSansRegular14" text="Tamaño" />
-                                    <Spinner fx:id="spFontSize" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
+                                    <Spinner fx:id="spFontSize" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0" />
                                  </children>
                               </VBox>
                            </children>
@@ -202,20 +220,20 @@
          <children>
             <VBox style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                <children>
-                  <Label styleClass="labelRoboto14" text="Formato de ticket" />
-                  <Label styleClass="labelRobotoBold16" text="Venta" textFill="#0f67a1" />
+                  <Label styleClass="labelRoboto14" text="Formato de etiqueta" />
+                  <Label fx:id="lblFormato" styleClass="labelRobotoBold16" text="-" textFill="#0f67a1" />
                </children>
             </VBox>
             <VBox style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                <children>
-                  <Label styleClass="labelRoboto14" text="Columnas por Renglón" />
-                  <Label styleClass="labelRobotoBold16" text="40" textFill="#0f67a1" />
+                  <Label styleClass="labelRoboto14" text="Nombre de la etiqueta" />
+                  <Label fx:id="lblNombre" styleClass="labelRobotoBold16" text="-" textFill="#0f67a1" />
                </children>
             </VBox>
-            <VBox style="-fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
+            <VBox style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                <children>
-                  <Label styleClass="labelRoboto14" text="Predeterminado" />
-                  <CheckBox mnemonicParsing="false" selected="true" styleClass="check-box-ticket" text="Si" />
+                  <Label styleClass="labelRoboto14" text="Medida de etiqueta" />
+                  <Label fx:id="lblMedida" styleClass="labelRobotoBold16" text="0" textFill="#0f67a1" />
                </children>
             </VBox>
          </children>

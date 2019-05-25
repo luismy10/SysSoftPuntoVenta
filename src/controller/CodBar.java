@@ -11,8 +11,8 @@ public class CodBar extends ImageView {
     
     public CodBar(String value,double x,double y,Font f){
         texto=value;
-        setLayoutX(x);
-        setLayoutY(y);
+        setTranslateX(x);
+        setTranslateY(y);
         font=f;
     }
 
