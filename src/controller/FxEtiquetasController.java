@@ -34,6 +34,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -56,6 +57,8 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.EtiquetaADO;
+import model.EtiquetaTB;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeException;
 import net.sourceforge.barbecue.BarcodeFactory;
@@ -172,11 +175,6 @@ public class FxEtiquetasController implements Initializable {
             }
         });
 
-        Group selectionLayer = new Group();
-        panel.getChildren().add(selectionLayer);
-
-        selectionModel = new SelectionModel(selectionLayer);
-
         window.setOnMousePressed(mouseEvent -> {
             selectionModel.clear();
             textReferent = null;
@@ -228,9 +226,12 @@ public class FxEtiquetasController implements Initializable {
 
     public void loadEtiqueta(int idEtiqueta, String ruta) {
         if (ruta != null) {
-            String file = leerArchivoTexto(ruta);
             this.idEtiqueta = idEtiqueta;
-            JSONObject jSONObject = obtenerObjetoJSON(file);
+            panel.getChildren().clear();
+            Group selectionLayer = new Group();
+            panel.getChildren().add(selectionLayer);
+            selectionModel = new SelectionModel(selectionLayer);
+            JSONObject jSONObject = obtenerObjetoJSON(ruta);
             if (jSONObject.get("cuerpo") != null) {
                 JSONObject object = obtenerObjetoJSON(jSONObject.get("cuerpo").toString());
                 etiquetaProceso = true;
@@ -278,6 +279,9 @@ public class FxEtiquetasController implements Initializable {
 
     public void newEtiqueta(String nombre, double ancho, double alto, int orientacion, int tipo, String nombreTipo) {
         etiquetaProceso = true;
+        Group selectionLayer = new Group();
+        panel.getChildren().add(selectionLayer);
+        selectionModel = new SelectionModel(selectionLayer);
         nombreEtiqueta = nombre;
         widthEtiquetaMM = ancho;
         heightEtiquetaMM = alto;
@@ -335,6 +339,36 @@ public class FxEtiquetasController implements Initializable {
             sampleObject.put("cuerpo", cuerpo);
 
             Files.write(Paths.get("./archivos/etiqueta.json"), sampleObject.toJSONString().getBytes());
+            EtiquetaTB etiquetaTB = new EtiquetaTB();
+            etiquetaTB.setIdEtiqueta(idEtiqueta);
+            etiquetaTB.setNombre(lblNombre.getText().trim());
+            etiquetaTB.setTipo(tipoEtiqueta);
+            etiquetaTB.setPredeterminado(true);
+            etiquetaTB.setRuta(sampleObject.toJSONString());
+            String result = EtiquetaADO.CrudEtiquetas(etiquetaTB);
+            if (result.equalsIgnoreCase("duplicate")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Etiqueta", "El nombre del formato ya existe, intente con otro.", false);
+            } else if (result.equalsIgnoreCase("updated")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Etiqueta", "Se actualizo correctamente el formato.", false);
+                //Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
+            } else if (result.equalsIgnoreCase("registered")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Etiqueta", "Se guardo correctamente el formato.", false);
+                //Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
+                etiquetaProceso = false;
+                idEtiqueta = 0;
+                nombreEtiqueta = "";
+                widthEtiquetaMM = 0;
+                heightEtiquetaMM = 0;
+                orientacionEtiqueta = 0;
+                tipoEtiqueta = 0;
+                panel.getChildren().clear();
+                panel.setPrefSize(0, 0);
+                lblMedida.setText("0");
+                lblNombre.setText("-");
+                lblFormato.setText("-");
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Etiqueta", result, false);
+            }
         } catch (IOException ex) {
 
         }
@@ -454,7 +488,7 @@ public class FxEtiquetasController implements Initializable {
             textReferent = null;
             imageViewReferent = ivCodigo;
             cbFuente.getSelectionModel().select(imageViewReferent.getFont().getFamily());
-            //spFontSize.getValueFactory().setValue((double) imageViewReferent.getFont().getSize());
+            spFontSize.getValueFactory().setValue((double) imageViewReferent.getFont().getSize());
             txtTexto.setText(imageViewReferent.getTexto());
 
             selectionModel.clear();
@@ -539,16 +573,38 @@ public class FxEtiquetasController implements Initializable {
         }
     }
 
-    @FXML
-    private void onKeyPressedSearch(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
+    private void eventSearch() {
+        try {
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_ETIQUETASBUSQUEDA);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxEtiquetasBusquedaController controller = fXMLLoader.getController();
+            controller.setInitEtiquetasController(this);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Buscar etiquetas", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.PANE);
+            });
+            stage.show();
+        } catch (IOException exception) {
 
         }
     }
 
     @FXML
-    private void onActionSearch(ActionEvent event) {
+    private void onKeyPressedSearch(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            eventSearch();
+        }
+    }
 
+    @FXML
+    private void onActionSearch(ActionEvent event) {
+        eventSearch();
     }
 
     @FXML
@@ -563,16 +619,10 @@ public class FxEtiquetasController implements Initializable {
         eventNuevo();
     }
 
-    @FXML
     private void onKeyPressEditar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
 
         }
-    }
-
-    @FXML
-    private void onActionEditar(ActionEvent event) {
-
     }
 
     @FXML

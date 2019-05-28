@@ -1,4 +1,3 @@
-
 package model;
 
 import java.sql.PreparedStatement;
@@ -6,10 +5,83 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
 public class EtiquetaADO {
-    
-  public static ArrayList<EtiquetaTB> ListTipoEtiquetas() {
+
+    public static String CrudEtiquetas(EtiquetaTB etiquetaTB) {
+        String result = "";
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statementTicket = null;
+            PreparedStatement statementValidar = null;
+            try {
+                DBUtil.getConnection().setAutoCommit(false);
+                statementValidar = DBUtil.getConnection().prepareStatement("SELECT idEtiqueta FROM EtiquetaTB WHERE idEtiqueta = ?");
+                statementValidar.setInt(1, etiquetaTB.getIdEtiqueta());
+                if (statementValidar.executeQuery().next()) {
+                    statementValidar = DBUtil.getConnection().prepareStatement("SELECT nombre FROM EtiquetaTB WHERE idEtiqueta <> ? and nombre = ?");
+                    statementValidar.setInt(1, etiquetaTB.getIdEtiqueta());
+                    statementValidar.setString(2, etiquetaTB.getNombre());
+                    if (statementValidar.executeQuery().next()) {
+                        DBUtil.getConnection().rollback();
+                        result = "duplicate";
+                    } else {
+                        statementTicket = DBUtil.getConnection().prepareStatement("UPDATE EtiquetaTB SET ruta = ? WHERE idEtiqueta = ?");
+                        statementTicket.setString(1, etiquetaTB.getRuta());
+                        statementTicket.setInt(2, etiquetaTB.getIdEtiqueta());
+                        statementTicket.addBatch();
+
+                        statementTicket.executeBatch();
+                        DBUtil.getConnection().commit();
+                        result = "updated";
+                    }
+
+                } else {
+                    statementValidar = DBUtil.getConnection().prepareStatement("SELECT nombre FROM EtiquetaTB WHERE nombre = ?");
+                    statementValidar.setString(1, etiquetaTB.getNombre());
+                    if (statementValidar.executeQuery().next()) {
+                        DBUtil.getConnection().rollback();
+                        result = "duplicate";
+                    } else {
+                        statementTicket = DBUtil.getConnection().prepareStatement("INSERT INTO EtiquetaTB(nombre,tipo,predeterminado,ruta)VALUES(?,?,?,?)");
+                        statementTicket.setString(1, etiquetaTB.getNombre());
+                        statementTicket.setInt(2, etiquetaTB.getTipo());
+                        statementTicket.setBoolean(3, etiquetaTB.isPredeterminado());
+                        statementTicket.setString(4, etiquetaTB.getRuta());
+                        statementTicket.addBatch();
+
+                        statementTicket.executeBatch();
+                        DBUtil.getConnection().commit();
+                        result = "registered";
+                    }
+                }
+
+            } catch (SQLException ex) {
+                try {
+                    DBUtil.getConnection().rollback();
+                } catch (SQLException exr) {
+                }
+                result = ex.getLocalizedMessage();
+            } finally {
+                try {
+                    if (statementTicket != null) {
+                        statementTicket.close();
+                    }
+                    if (statementValidar != null) {
+                        statementValidar.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    result = ex.getLocalizedMessage();
+                }
+            }
+
+        } else {
+            result = "No se puedo conectac al servidor, intente nuevamente.";
+        }
+        return result;
+    }
+
+    public static ArrayList<EtiquetaTB> ListTipoEtiquetas() {
         ArrayList<EtiquetaTB> list = new ArrayList<>();
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
@@ -43,6 +115,43 @@ public class EtiquetaADO {
         }
         return list;
     }
-    
-    
+
+    public static ArrayList<EtiquetaTB> ListEtiquetas() {
+        ArrayList<EtiquetaTB> list = new ArrayList<>();
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statementLista = null;
+            ResultSet resultSet = null;
+            try {
+                statementLista = DBUtil.getConnection().prepareStatement("select et.idEtiqueta,et.nombre,td.nombre as nombretipo,et.predeterminado,et.ruta from EtiquetaTB as et inner join TipoEtiquetaTB as td on et.tipo = td.idTipoEtiqueta");
+                resultSet = statementLista.executeQuery();
+                while (resultSet.next()) {
+                    EtiquetaTB etiquetaTB = new EtiquetaTB();
+                    etiquetaTB.setIdEtiqueta(resultSet.getInt("idEtiqueta"));
+                    etiquetaTB.setNombre(resultSet.getString("nombre"));
+                    etiquetaTB.setNombreTipo(resultSet.getString("nombretipo"));
+                    etiquetaTB.setPredeterminado(resultSet.getBoolean("predeterminado"));
+                    etiquetaTB.setRuta(resultSet.getString("ruta"));
+                    list.add(etiquetaTB);
+                }
+            } catch (SQLException ex) {
+
+            } finally {
+                try {
+                    if (statementLista != null) {
+                        statementLista.close();
+                    }
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+
+                }
+
+            }
+        }
+        return list;
+    }
+
 }

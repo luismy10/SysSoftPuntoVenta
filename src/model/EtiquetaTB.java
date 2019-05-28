@@ -7,6 +7,7 @@ public class EtiquetaTB {
     private int tipo;
     private boolean predeterminado;
     private String ruta;
+    private String nombreTipo;
 
     public EtiquetaTB() {
     }
@@ -54,6 +55,14 @@ public class EtiquetaTB {
     @Override
     public String toString() {
         return nombre;
+    }
+
+    public String getNombreTipo() {
+        return nombreTipo;
+    }
+
+    public void setNombreTipo(String nombreTipo) {
+        this.nombreTipo = nombreTipo;
     }
     
     

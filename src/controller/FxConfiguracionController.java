@@ -169,7 +169,7 @@ public class FxConfiguracionController implements Initializable {
         AnchorPane.setRightAnchor(nodeEtiqueta, 0d);
         AnchorPane.setBottomAnchor(nodeEtiqueta, 0d);
         content.getChildren().add(nodeEtiqueta);
-        controllerEtiqueta.loadEtiqueta(0, new File("./archivos/etiqueta.json").getAbsolutePath());
+        //controllerEtiqueta.loadEtiqueta(0, new File("./archivos/etiqueta.json").getAbsolutePath());
     }
 
     @FXML

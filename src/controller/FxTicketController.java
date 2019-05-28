@@ -879,14 +879,12 @@ public class FxTicketController implements Initializable {
         procesoTicket();
     }
 
-    @FXML
     private void onKeyPressEditar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             editTicket();
         }
     }
 
-    @FXML
     private void onActionEditar(ActionEvent event) {
         editTicket();
     }

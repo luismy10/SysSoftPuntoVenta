@@ -5,6 +5,7 @@ import java.awt.Font;
 import javafx.scene.image.ImageView;
 
 public class CodBar extends ImageView {
+    
     private String texto;
     
     private Font font;

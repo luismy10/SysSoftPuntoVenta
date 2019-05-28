@@ -1,11 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxEtiquetasBusquedaController">
-    
+
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../comprobante.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="controller.FxEtiquetasBusquedaController">
+   <children>
+      <VBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+               <children>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../search.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoMedium18" text="Abrir Formatos de Etiquetas" textFill="#1a2226" />
+               </children>
+            </HBox>
+            <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox alignment="TOP_CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <ScrollPane fx:id="spScrolLista" fitToWidth="true" prefHeight="400.0" prefWidth="620.0" VBox.vgrow="ALWAYS">
+                           <content>
+                              <VBox>
+                                 <children>
+                                    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <VBox fx:id="vbEtiquetas" alignment="CENTER" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em;">
+                           <children>
+                              <Label styleClass="labelOpenSansRegular16" text="Detalles de Formato" />
+                           </children>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Nombre" />
+                                    <TextField fx:id="txtNombre" styleClass="text-field-contenido" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox style="-fx-spacing: 0.8333333333333334em;">
+                           <children>
+                              <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Ancho" />
+                                    <TextField fx:id="txtAncho" styleClass="text-field-contenido" />
+                                 </children>
+                              </VBox>
+                              <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Alto" />
+                                    <TextField fx:id="txtAlto" styleClass="text-field-contenido" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Orientación:" />
+                                    <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <RadioButton fx:id="rbVertical" mnemonicParsing="false" selected="true" styleClass="labelOpenSansRegular14" text="Vertical" />
+                                          <RadioButton fx:id="rbHorizontal" mnemonicParsing="false" styleClass="labelOpenSansRegular14" text="Horizontal" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" style="-fx-border-width: 1 0 0 0; -fx-border-color: #999999; -fx-background-color: white; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onActionSelect" onKeyPressed="#onKeyPressedSelect" styleClass="buttonLightDefault" text="Abrir">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../accept.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../close.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
 </AnchorPane>
