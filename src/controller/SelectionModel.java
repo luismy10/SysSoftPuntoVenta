@@ -23,8 +23,12 @@ public class SelectionModel {
     
     Node nodeSelection;
 
-    public SelectionModel( Group layoutBoundsOverlay) {
-        this.selectionLayer = layoutBoundsOverlay;
+    public SelectionModel() {
+        
+    }
+    
+    public void setGroup(Group layoutBoundsOverlay){
+        selectionLayer = layoutBoundsOverlay;
     }
 
     public void add( Node cell) {

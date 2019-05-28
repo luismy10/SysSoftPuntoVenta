@@ -82,8 +82,11 @@ public class FxEtiquetasBusquedaController implements Initializable {
 
             Label tipo = new Label(etbs.get(i).getNombreTipo());
             tipo.getStyleClass().add("labelRobotoBold14");
+            
+            Label medida = new Label(etbs.get(i).getNombreTipo());
+            tipo.getStyleClass().add("labelOpenSansRegular16");
 
-            vBox.getChildren().addAll(imageView, nombre, tipo);
+            vBox.getChildren().addAll(imageView, nombre, tipo, medida);
 
             hBox.getChildren().add(vBox);
         }

@@ -175,6 +175,8 @@ public class FxEtiquetasController implements Initializable {
             }
         });
 
+        selectionModel = new SelectionModel();
+
         window.setOnMousePressed(mouseEvent -> {
             selectionModel.clear();
             textReferent = null;
@@ -230,7 +232,7 @@ public class FxEtiquetasController implements Initializable {
             panel.getChildren().clear();
             Group selectionLayer = new Group();
             panel.getChildren().add(selectionLayer);
-            selectionModel = new SelectionModel(selectionLayer);
+            selectionModel.setGroup(selectionLayer);
             JSONObject jSONObject = obtenerObjetoJSON(ruta);
             if (jSONObject.get("cuerpo") != null) {
                 JSONObject object = obtenerObjetoJSON(jSONObject.get("cuerpo").toString());
@@ -281,7 +283,7 @@ public class FxEtiquetasController implements Initializable {
         etiquetaProceso = true;
         Group selectionLayer = new Group();
         panel.getChildren().add(selectionLayer);
-        selectionModel = new SelectionModel(selectionLayer);
+        selectionModel.setGroup(selectionLayer);
         nombreEtiqueta = nombre;
         widthEtiquetaMM = ancho;
         heightEtiquetaMM = alto;
@@ -345,6 +347,7 @@ public class FxEtiquetasController implements Initializable {
             etiquetaTB.setTipo(tipoEtiqueta);
             etiquetaTB.setPredeterminado(true);
             etiquetaTB.setRuta(sampleObject.toJSONString());
+            etiquetaTB.setMedida(lblMedida.getText());
             String result = EtiquetaADO.CrudEtiquetas(etiquetaTB);
             if (result.equalsIgnoreCase("duplicate")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Etiqueta", "El nombre del formato ya existe, intente con otro.", false);
@@ -595,6 +598,30 @@ public class FxEtiquetasController implements Initializable {
         }
     }
 
+    private void eventEliminar() {
+        short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Etiqueta", "¿Está seguro de eliminar la etiqueta?", true);
+        if (value == 1) {
+            String result = EtiquetaADO.dropEtiqueta(idEtiqueta);
+            if (result.equalsIgnoreCase("removed")) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Etiqueta", "Se elimino correctamente la etiqueta.", false);
+                etiquetaProceso = false;
+                idEtiqueta = 0;
+                nombreEtiqueta = "";
+                widthEtiquetaMM = 0;
+                heightEtiquetaMM = 0;
+                orientacionEtiqueta = 0;
+                tipoEtiqueta = 0;
+                panel.getChildren().clear();
+                panel.setPrefSize(0, 0);
+                lblMedida.setText("0");
+                lblNombre.setText("-");
+                lblFormato.setText("-");
+            } else {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Etiqueta", result, false);
+            }
+        }
+    }
+
     @FXML
     private void onKeyPressedSearch(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -652,13 +679,13 @@ public class FxEtiquetasController implements Initializable {
     @FXML
     private void onKeyPressedEliminar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            eventEliminar();
         }
     }
 
     @FXML
     private void onActionEliminar(ActionEvent event) {
-
+        eventEliminar();
     }
 
     @FXML

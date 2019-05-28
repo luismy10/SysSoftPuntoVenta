@@ -8,6 +8,7 @@ public class EtiquetaTB {
     private boolean predeterminado;
     private String ruta;
     private String nombreTipo;
+    private String medida;
 
     public EtiquetaTB() {
     }
@@ -64,7 +65,13 @@ public class EtiquetaTB {
     public void setNombreTipo(String nombreTipo) {
         this.nombreTipo = nombreTipo;
     }
-    
-    
+
+    public String getMedida() {
+        return medida;
+    }
+
+    public void setMedida(String medida) {
+        this.medida = medida;
+    }
     
 }

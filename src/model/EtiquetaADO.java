@@ -25,9 +25,10 @@ public class EtiquetaADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        statementTicket = DBUtil.getConnection().prepareStatement("UPDATE EtiquetaTB SET ruta = ? WHERE idEtiqueta = ?");
-                        statementTicket.setString(1, etiquetaTB.getRuta());
-                        statementTicket.setInt(2, etiquetaTB.getIdEtiqueta());
+                        statementTicket = DBUtil.getConnection().prepareStatement("UPDATE EtiquetaTB SET medida = ?,ruta = ? WHERE idEtiqueta = ?");
+                        statementTicket.setString(1, etiquetaTB.getMedida());
+                        statementTicket.setString(2, etiquetaTB.getRuta());
+                        statementTicket.setInt(3, etiquetaTB.getIdEtiqueta());
                         statementTicket.addBatch();
 
                         statementTicket.executeBatch();
@@ -42,19 +43,18 @@ public class EtiquetaADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        statementTicket = DBUtil.getConnection().prepareStatement("INSERT INTO EtiquetaTB(nombre,tipo,predeterminado,ruta)VALUES(?,?,?,?)");
+                        statementTicket = DBUtil.getConnection().prepareStatement("INSERT INTO EtiquetaTB(nombre,tipo,medida,predeterminado,ruta)VALUES(?,?,?,?)");
                         statementTicket.setString(1, etiquetaTB.getNombre());
                         statementTicket.setInt(2, etiquetaTB.getTipo());
-                        statementTicket.setBoolean(3, etiquetaTB.isPredeterminado());
-                        statementTicket.setString(4, etiquetaTB.getRuta());
+                        statementTicket.setString(3, etiquetaTB.getMedida());
+                        statementTicket.setBoolean(4, etiquetaTB.isPredeterminado());
+                        statementTicket.setString(5, etiquetaTB.getRuta());
                         statementTicket.addBatch();
-
                         statementTicket.executeBatch();
                         DBUtil.getConnection().commit();
                         result = "registered";
                     }
                 }
-
             } catch (SQLException ex) {
                 try {
                     DBUtil.getConnection().rollback();
@@ -152,6 +152,41 @@ public class EtiquetaADO {
             }
         }
         return list;
+    }
+
+    public static String dropEtiqueta(int idEtiqueta) {
+        String result = "";
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement preparedStatement = null;
+            try {
+                DBUtil.getConnection().setAutoCommit(false);
+                preparedStatement = DBUtil.getConnection().prepareCall("DELETE FROM EtiquetaTB WHERE idEtiqueta = ?");
+                preparedStatement.setInt(1, idEtiqueta);
+                preparedStatement.addBatch();
+                preparedStatement.executeBatch();
+                DBUtil.getConnection().commit();
+                result = "removed";
+            } catch (SQLException ex) {
+                try {
+                    DBUtil.getConnection().rollback();
+                } catch (SQLException e) {
+                }
+                result = ex.getLocalizedMessage();
+            } finally {
+                try {
+                    if (preparedStatement != null) {
+                        preparedStatement.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    result = ex.getLocalizedMessage();
+                }
+            }
+        } else {
+            result = "No se puedo conectac al servidor, intente nuevamente.";
+        }
+        return result;
     }
 
 }
