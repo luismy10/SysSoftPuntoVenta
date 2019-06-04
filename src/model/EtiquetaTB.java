@@ -9,6 +9,7 @@ public class EtiquetaTB {
     private String ruta;
     private String nombreTipo;
     private String medida;
+    private byte[] imagen;
 
     public EtiquetaTB() {
     }
@@ -72,6 +73,14 @@ public class EtiquetaTB {
 
     public void setMedida(String medida) {
         this.medida = medida;
+    }
+
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
     }
     
 }

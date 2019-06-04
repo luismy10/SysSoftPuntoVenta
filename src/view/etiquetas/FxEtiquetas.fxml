@@ -5,10 +5,12 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -155,7 +157,7 @@
                   </ScrollPane>
                </children>
             </HBox>
-            <HBox>
+            <HBox HBox.hgrow="SOMETIMES">
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0  0.8333333333333334em 0  0.8333333333333334em;">
                      <children>
@@ -166,10 +168,41 @@
                         </HBox>
                         <VBox style="-fx-spacing: 0.4166666666666667em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Texto" />
-                              <TextField fx:id="txtTexto" onAction="#onActionEditTexto" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-contenido" />
+                              <Label styleClass="labelOpenSansRegular14" text="Tipo" />
+                              <ComboBox fx:id="cbTipo" maxWidth="1.7976931348623157E308" onAction="#onActionTipo" prefWidth="280.0" />
                            </children>
                         </VBox>
+                        <VBox style="-fx-spacing: 0.4166666666666667em;">
+                           <children>
+                              <AnchorPane>
+                                 <children>
+                                    <VBox fx:id="vbCotenido" style="-fx-spacing: 0.4166666666666667em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Contenido" />
+                                          <TextField fx:id="txtTexto" onAction="#onActionEditTexto" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-contenido" />
+                                       </children>
+                                    </VBox>
+                                    <HBox fx:id="hbTipo" style="-fx-spacing: 0.4166666666666667em;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label styleClass="labelOpenSansRegular14" text="Variable" />
+                                                <ComboBox fx:id="cbVarible" maxWidth="1.7976931348623157E308" onAction="#onActionVariable" prefWidth="140.0" />
+                                             </children>
+                                          </VBox>
+                                          <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label styleClass="labelOpenSansRegular14" text="Campo" />
+                                                <ComboBox fx:id="cbCampo" maxWidth="1.7976931348623157E308" onAction="#onActionCampo" prefWidth="140.0" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                        <Separator prefWidth="200.0" />
                         <VBox style="-fx-spacing: 0.4166666666666667em;">
                            <children>
                               <Label styleClass="labelOpenSansRegular14" text="Fuente" />
@@ -177,7 +210,7 @@
                               <VBox style="-fx-spacing: 0.4166666666666667em;">
                                  <children>
                                     <Label styleClass="labelOpenSansRegular14" text="Tamaño" />
-                                    <Spinner fx:id="spFontSize" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0" />
+                                    <Spinner fx:id="spFontSize" editable="true" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0" />
                                  </children>
                               </VBox>
                            </children>

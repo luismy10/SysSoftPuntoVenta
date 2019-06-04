@@ -10,6 +10,8 @@ public class CodBar extends ImageView {
     
     private Font font;
     
+    private String variable;
+    
     public CodBar(String value,double x,double y,Font f){
         texto=value;
         setTranslateX(x);
@@ -31,6 +33,14 @@ public class CodBar extends ImageView {
 
     public void setFont(Font font) {
         this.font = font;
+    }
+
+    public String getVariable() {
+        return variable;
+    }
+
+    public void setVariable(String variable) {
+        this.variable = variable;
     }
     
     

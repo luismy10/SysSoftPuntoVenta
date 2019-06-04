@@ -1065,41 +1065,66 @@
     -fx-border-color: #aaa;
 }
 
-
 /*******************************************************************************
  *                                                                             *
- * Spinner                                                                   *
+ * Spinner                                                                     *
  *                                                                             *
  ******************************************************************************/
-/*
-.list-spinner{
-     -fx-background-color: #f0f0f0;
-     -fx-background-insets: 0 0 0 0;
-     -fx-background-radius: 0;
-     -fx-padding: 0em 0em 0em 0em;
-     -fx-text-fill: #212121;
+
+.spinner {    
+    -fx-background-radius: 0, 0;
+
+    -fx-background-color: transparent, transparent;
+    -fx-border-width:1;
+    -fx-border-color: #999999;
+
 }
-.list-spinner:hover{
-    -fx-color:#f0f0f0;
+.spinner:focused,
+.spinner:contains-focus {
+   -fx-border-width:1;
+    -fx-border-color: #00aff0;
+ 
+   
 }
-.list-spinner .value-pane{
-    
+.spinner:disabled {
+    -fx-opacity: -fx-disabled-opacity;
 }
-.list-spinner .decrement-button, .list-spinner .increment-button{
-    -fx-background-color: #f0f0f0;
-    -fx-padding: 1.2500em 0.5000em 1.2500em 0.5000em;    
+.spinner > .text-field {
+    -fx-background-radius: 0, 0;
+    -fx-background-color: transparent, white;
+    -fx-border-width:1;
+    -fx-border-color: transparent;
+    -fx-font-size:1.1666666666666667em; 
+    -fx-font-family:"Roboto"; 
 }
-.list-spinner .left-arrow{
-    -fx-shape: "M301,415.51-4.5,514.5,4.5h-31-4.5-4.514.5-4.5H301z";
-    -fx-scale-shape: false;
+
+.spinner .increment-arrow-button {
+    -fx-background-color: #3c8dbc;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0,0;
+    -fx-border-width:1;
+    -fx-border-color:  #3c8dbc;
+    -fx-padding: 0.333em 0.666em 0.333em 0.666em; /* 4 8 4 8 */
 }
-.list-spinner .decrement-button:hover{
-    -fx-background-color: #dadada;
+.spinner .decrement-arrow-button {
+    -fx-background-color: #3c8dbc;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0,0;
+    -fx-border-width:1;
+    -fx-border-color:  #3c8dbc;
+    -fx-padding: 0.333em 0.666em 0.333em 0.666em; /* 4 8 4 8 */
 }
-.list-spinner .decrement-button:pressed{
-    -fx-background-color: #606060;
+
+.spinner .increment-arrow-button .increment-arrow {
+    -fx-background-color: white;
+    -fx-background-insets: -0.6 0 1 0, 0;
+    -fx-padding: 0.167em 0.333em 0.167em 0.333em; /* 2 4 2 4 */
+    -fx-shape: "M 0 0 h 7 l -3.5 4 z";
+    -fx-rotate: 180;
 }
-.list-spinner .decrement-button:pressed .left-arrow{
-    -fx-background-color: white; 
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: white;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.167em 0.333em 0.167em 0.333em; /* 2 4 2 4 */
+    -fx-shape: "M 0 0 h 7 l -3.5 4 z";
 }
-*/
