@@ -155,6 +155,8 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         vbContent.getChildren().add(node);
+        
+        controller.fillUtilidadTable();
 
     }
 

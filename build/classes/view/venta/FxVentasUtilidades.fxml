@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentasUtilidadesController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentasUtilidadesController">
    <children>
       <HBox>
          <children>
@@ -156,12 +156,14 @@
                         </HBox>
                         <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="298.0" styleClass="tableView" VBox.vgrow="ALWAYS">
                            <columns>
-                              <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                              <TableColumn fx:id="tcDescripcion" prefWidth="269.0" style="-fx-alignment: CENTER-LEFT;" text="Descripcion" />
-                              <TableColumn fx:id="tcCantidad" prefWidth="101.0" style="-fx-alignment: CENTER-LEFT;" text="Cantidad" />
-                              <TableColumn fx:id="tcCosto" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Costo" />
-                              <TableColumn fx:id="tcPrecio" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Precio" />
-                              <TableColumn fx:id="tcImporte" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Importe" />
+                              <TableColumn fx:id="tcId" prefWidth="53.0" style="-fx-alignment: CENTER;" text="N°" />
+                              <TableColumn fx:id="tcDescripcion" prefWidth="248.0" style="-fx-alignment: CENTER-LEFT;" text="Descripcion" />
+                              <TableColumn fx:id="tcCantidad" prefWidth="104.0" style="-fx-alignment: CENTER-LEFT;" text="Cantidad" />
+                              <TableColumn fx:id="tcCostoUnitario" prefWidth="115.0" style="-fx-alignment: CENTER-LEFT;" text="Costo" />
+                              <TableColumn fx:id="tcCostoTotal" prefWidth="108.0" style="-fx-alignment: CENTER-LEFT;" text=" Costo Total" />
+                              <TableColumn fx:id="tcPrecioUnitario" prefWidth="116.0" style="-fx-alignment: CENTER-LEFT;" text="Precio" />
+                              <TableColumn fx:id="tcPrecioTotal" prefWidth="112.0" style="-fx-alignment: CENTER-LEFT;" text="Precio Total" />
+                              <TableColumn fx:id="tcUtilidad" prefWidth="124.0" style="-fx-alignment: CENTER;" text="Utilidad" />
                            </columns>
                         </TableView>
                      </children>

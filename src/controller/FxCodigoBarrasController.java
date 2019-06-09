@@ -73,6 +73,8 @@ public class FxCodigoBarrasController implements Initializable {
 
 //                File file = new File("C:/Users/Aleza/Desktop/temp.png");
 
+
+                 
                 barCode.setBarHeight(50);
                 barCode.setDrawingText(true);
                 BufferedImage bufferedImage = new BufferedImage((int) ivCodigo.getFitWidth(), (int) ivCodigo.getFitHeight(), BufferedImage.TYPE_INT_ARGB);

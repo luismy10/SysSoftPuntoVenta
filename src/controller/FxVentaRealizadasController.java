@@ -102,7 +102,7 @@ public class FxVentaRealizadasController implements Initializable {
                     } else {
                         setText(item);
                         if (item.equalsIgnoreCase("ANULADO")) {
-                            setStyle("-fx-text-fill: #d00c0c;-fx-alignment:  CENTER;");
+                            setStyle("-fx-text-fill: #d00c0c;-fx-alignment:  CENTER-LEFT;");
                         }
                     }
                 }

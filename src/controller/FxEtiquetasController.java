@@ -113,8 +113,9 @@ public class FxEtiquetasController implements Initializable {
     }
 
     private WritableImage generateBarCode(String value) {
-        int widthBuffer = (int) (141);
+        int widthBuffer = (int) (161);
         int heightBuffer = (int) (50);
+        
         Barcode128 barcode128 = new Barcode128();
         barcode128.setCode(value);
         java.awt.Image image = barcode128.createAwtImage(java.awt.Color.BLACK, java.awt.Color.WHITE);
