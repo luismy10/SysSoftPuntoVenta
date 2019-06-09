@@ -454,7 +454,6 @@ public class FxEtiquetasController implements Initializable {
         lblFormato.setText("-");
     }
 
-
     private JSONObject obtenerObjetoJSON(final String codigoJSON) {
         JSONParser lector = new JSONParser();
         JSONObject objectJSON = null;
@@ -559,7 +558,7 @@ public class FxEtiquetasController implements Initializable {
         return wr;
     }
 
-    private ImageView addBarCode(String value, double x, double y, double width, double height, String fontFamily, double size,int tipo, int modulo, int campo, String variable) {
+    private ImageView addBarCode(String value, double x, double y, double width, double height, String fontFamily, double size, int tipo, int modulo, int campo, String variable) {
         CodBar ivCodigo = new CodBar(value, x, y, new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16));
         ivCodigo.setImage(generateBarCode(ivCodigo.getTexto(), ivCodigo.getFont()));
         ivCodigo.setFitWidth(width == -1 ? ivCodigo.getImage().getWidth() : width);
@@ -709,7 +708,7 @@ public class FxEtiquetasController implements Initializable {
 
         }
     }
-    
+
     private void eventWindowPrint(Printable billPrintableEtiquetas) {
         try {
             InitializationTransparentBackground();
@@ -718,7 +717,7 @@ public class FxEtiquetasController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxImpresoraEtiquetaController controller = fXMLLoader.getController();
-            controller.loadImpresoraEtiqueta((BillPrintableEtiquetas) billPrintableEtiquetas,widthEtiquetaMM,heightEtiquetaMM,orientacionEtiqueta);
+            controller.loadImpresoraEtiqueta((BillPrintableEtiquetas) billPrintableEtiquetas, widthEtiquetaMM, heightEtiquetaMM, orientacionEtiqueta);
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Ventana de impresión", window.getScene().getWindow());
             stage.setResizable(false);
@@ -731,7 +730,7 @@ public class FxEtiquetasController implements Initializable {
 
         }
     }
-    
+
     private void eventEliminar() {
         short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Etiqueta", "¿Está seguro de eliminar la etiqueta?", true);
         if (value == 1) {
@@ -835,7 +834,7 @@ public class FxEtiquetasController implements Initializable {
             if (!etiquetaProceso) {
                 return;
             }
-            panel.getChildren().add(addBarCode("12345678", 0, 0, -1, -1,"Lucida Sans Typewriter", 16, 0, 0, 0, ""));
+            panel.getChildren().add(addBarCode("12345678", 0, 0, -1, -1, "Lucida Sans Typewriter", 16, 0, 0, 0, ""));
         }
     }
 
@@ -844,7 +843,7 @@ public class FxEtiquetasController implements Initializable {
         if (!etiquetaProceso) {
             return;
         }
-        panel.getChildren().add(addBarCode("12345678", 0, 0, -1, -1,"Lucida Sans Typewriter", 16, 0, 0, 0, ""));
+        panel.getChildren().add(addBarCode("12345678", 0, 0, -1, -1, "Lucida Sans Typewriter", 16, 0, 0, 0, ""));
     }
 
     @FXML
@@ -954,7 +953,10 @@ public class FxEtiquetasController implements Initializable {
         if (!etiquetaProceso) {
             return;
         }
-        WritableImage image = createScaledView(panel, 4);
+        Pane newPane = panel;
+        newPane.setScaleX(1.0);
+        newPane.setScaleY(1.0);
+        WritableImage image = createScaledView(newPane, 4);
         BillPrintableEtiquetas billPrintable = new BillPrintableEtiquetas(SwingFXUtils.fromFXImage(image, null));
         eventWindowPrint(billPrintable);
 
@@ -963,7 +965,6 @@ public class FxEtiquetasController implements Initializable {
 //        RenderedImage renderedImage = SwingFXUtils.fromFXImage(image, null);
 //        ImageIO.write(renderedImage, "png", file);
     }
-
 
     public double converMmToPoint(double mm) {
         return (mm * 2.83465) / 1;
@@ -1231,7 +1232,7 @@ public class FxEtiquetasController implements Initializable {
                 return (NO_SUCH_PAGE);
             }
         }
-        
+
     }
 
     class ModelEtiqueta {
