@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane fx:id="window" fitToWidth="true" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxMiEmpresaController">
+<ScrollPane fx:id="window" fitToWidth="true" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxMiEmpresaController">
    <content>
       <VBox style="-fx-background-color: #e7e6e6;">
          <children>
@@ -84,7 +84,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" styleClass="paddinContainer">
                      <children>
-                        <Label text="Página web:" textFill="#23283a">
+                        <Label styleClass="labelRoboto14" text="Página web:" textFill="#23283a">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>

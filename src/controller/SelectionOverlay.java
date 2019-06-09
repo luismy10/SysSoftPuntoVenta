@@ -294,7 +294,7 @@ public class SelectionOverlay extends Region {
             Region region = (Region) node;
             region.setPrefWidth(value);
 
-        } else if (node instanceof Node) {
+        } else if (node instanceof ImageView) {
             ImageView imageView = (ImageView) node;
             imageView.setFitWidth(value);
         }
@@ -314,11 +314,10 @@ public class SelectionOverlay extends Region {
             control.setPrefHeight(value);
 
         } else if (node instanceof Region) {
-
             Region region = (Region) node;
             region.setPrefHeight(value);
 
-        } else if (node instanceof Node) {
+        } else if (node instanceof ImageView) {
             ImageView imageView = (ImageView) node;
             imageView.setFitHeight(value);
         }

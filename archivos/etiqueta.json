@@ -1,0 +1,43 @@
+{
+  "cuerpo": {
+    "orientation": 1,
+    "name": "Articulo lote",
+    "typeName": "Lotes",
+    "width": 50.0,
+    "type": 2,
+    "childs": [
+      {
+        "tipo": "1",
+        "fontsize": 16,
+        "type": "codebar",
+        "fontname": "Lucida Sans Typewriter",
+        "campo": "0",
+        "with": 110.0,
+        "fontstyle": 1,
+        "x": 41.08796296296297,
+        "variable": "clave_articulo",
+        "y": 45.13888888888889,
+        "text": "V->Clave",
+        "modulo": "0",
+        "height": 60.0
+      },
+      {
+        "tipo": "1",
+        "fontpostura": "REGULAR",
+        "fontsize": 14.0,
+        "type": "text",
+        "fontname": "Lucida Sans Typewriter",
+        "campo": "5",
+        "with": 183.02220775462962,
+        "fontwight": "BOLD",
+        "x": 2.8935185185185186,
+        "variable": "fecha_vencimiento",
+        "y": 21.990740740740744,
+        "text": "V->Fecha de Vencimiento",
+        "modulo": "0",
+        "height": -1.0
+      }
+    ],
+    "height": 25.0
+  }
+}

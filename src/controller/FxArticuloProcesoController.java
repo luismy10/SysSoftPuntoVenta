@@ -175,8 +175,8 @@ public class FxArticuloProcesoController implements Initializable {
             } else {
                 rbGranel.setSelected(true);
             }
-            
-             if (articuloTB.isValorInventario()) {
+
+            if (articuloTB.isValorInventario()) {
                 rbValorUnidad.setSelected(true);
             } else {
                 rbValorCosto.setSelected(true);
@@ -234,13 +234,13 @@ public class FxArticuloProcesoController implements Initializable {
                 idPresentacion = articuloTB.getPresentacion();
                 txtPresentacion.setText(articuloTB.getPresentacionName());
             }
-            
+
             if (articuloTB.getUnidadVenta() == 1) {
                 rbUnidad.setSelected(true);
             } else {
                 rbGranel.setSelected(true);
             }
-            
+
             if (articuloTB.isValorInventario()) {
                 rbValorUnidad.setSelected(true);
             } else {
@@ -429,7 +429,6 @@ public class FxArticuloProcesoController implements Initializable {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Articulo", "Actualizado correctamente el artículo.", false);
                     Tools.Dispose(window);
                     articulosController.getTxtSearch().requestFocus();
-                    articulosController.fillArticlesTable((short) 1, articulosController.getTxtSearch().getText(), 0);
                     break;
                 case "duplicate":
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "No se puede haber 2 artículos con la misma clave.", false);
@@ -479,29 +478,38 @@ public class FxArticuloProcesoController implements Initializable {
         selectFile = fileChooser.showOpenDialog(window.getScene().getWindow());
         if (selectFile != null) {
             selectFile = new File(selectFile.getAbsolutePath());
-            if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith(".gif")) {
-                lnPrincipal.setImage(new Image(selectFile.toURI().toString()));
-                FileInputStream inputStream = null;
-                byte[] buffer = new byte[1024];
-                try (FileOutputStream outputStream = new FileOutputStream("." + File.separator + "img" + File.separator + selectFile.getName())) {
-                    inputStream = new FileInputStream(selectFile.getAbsolutePath());
-                    int byteRead;
-                    while ((byteRead = inputStream.read(buffer)) != 1) {
-                        outputStream.write(buffer, 0, byteRead);
-                    }
-                } catch (Exception e) {
-                    if (e.getMessage() != null) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Artículo", e.getLocalizedMessage() + ": Consulte con el proveedor del sistema del problema :D", false);
-                    }
-                } finally {
-                    if (inputStream != null) {
-                        try {
-                            inputStream.close();
+            File fcom = new File("./img/" + selectFile.getName());
+            if (fcom.exists()) {
+                fcom.delete();
+                selectFileImage(); 
+            } else {
+                selectFileImage();
+            }
+        }
+    }
 
-                        } catch (IOException ex) {
-                            Logger.getLogger(FxArticuloProcesoController.class
-                                    .getName()).log(Level.SEVERE, null, ex);
-                        }
+    private void selectFileImage() {
+        if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith(".gif")) {
+            lnPrincipal.setImage(new Image(selectFile.toURI().toString()));
+            FileInputStream inputStream = null;
+            byte[] buffer = new byte[1024];
+            try (FileOutputStream outputStream = new FileOutputStream("." + File.separator + "img" + File.separator + selectFile.getName())) {
+                inputStream = new FileInputStream(selectFile.getAbsolutePath());
+                int byteRead;
+                while ((byteRead = inputStream.read(buffer)) != 1) {
+                    outputStream.write(buffer, 0, byteRead);
+                }
+            } catch (Exception e) {
+                if (e.getMessage() != null) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Artículo", e.getLocalizedMessage() + ": Consulte con el proveedor del sistema del problema :D", false);
+                }
+            } finally {
+                if (inputStream != null) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(FxArticuloProcesoController.class
+                                .getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -512,7 +520,6 @@ public class FxArticuloProcesoController implements Initializable {
     private void onActionRemovePhoto(ActionEvent event) throws IOException {
         lnPrincipal.setImage(new Image("/view/no-image.png"));
         selectFile = null;
-
     }
 
     @FXML
@@ -773,7 +780,7 @@ public class FxArticuloProcesoController implements Initializable {
     @FXML
     private void onKeyRealesdPrecio(KeyEvent event) {
         if (Tools.isNumeric(txtPrecio.getText()) && Tools.isNumeric(txtCosto.getText())) {
-            if(Double.parseDouble(txtCosto.getText())<=0){
+            if (Double.parseDouble(txtCosto.getText()) <= 0) {
                 return;
             }
             double costo = Double.parseDouble(txtCosto.getText());

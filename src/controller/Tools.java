@@ -133,12 +133,14 @@ public class Tools {
     static final String FX_FILE_CAJACERRARCAJA = "/view/caja/FxCajaCerrarCaja.fxml";
 
     static final String FX_FILE_ETIQUETAS = "/view/etiquetas/FxEtiquetas.fxml";
-    static final String FX_FILE_ETIQUETASBUSQUEDA = "/view/etiquetas/FxEtiquetas.fxml";
-    static final String FX_FILE_ETIQUETASEDITAR = "/view/etiquetas/FxEtiquetas.fxml";
-    static final String FX_FILE_ETIQUETASNUEVO = "/view/etiquetas/FxEtiquetas.fxml";
-    static final String FX_FILE_ETIQUETASPROCESO = "/view/etiquetas/FxEtiquetas.fxml";
-    static final String FX_FILE_ETIQUETASPROCESOBUSQUEDA = "/view/etiquetas/FxEtiquetas.fxml";
-
+    static final String FX_FILE_ETIQUETASBUSQUEDA = "/view/etiquetas/FxEtiquetasBusqueda.fxml";
+    static final String FX_FILE_ETIQUETASEDITAR = "/view/etiquetas/FxEtiquetasEditar.fxml";
+    static final String FX_FILE_ETIQUETASNUEVO = "/view/etiquetas/FxEtiquetasNuevo.fxml";
+    static final String FX_FILE_ETIQUETASPREVISUALIZADOR = "/view/etiquetas/FxEtiquetasPrevisualizador.fxml";
+    static final String FX_FILE_ETIQUETASPROCESO = "/view/etiquetas/FxEtiquetasProceso.fxml";
+    static final String FX_FILE_ETIQUETASPROCESOBUSQUEDA = "/view/etiquetas/FxEtiquetasProcesoBusquedaFxEtiquetasEditar.fxml";
+    static final String FX_FILE_IMPRESORAETIQUETA = "/view/etiquetas/FxImpresoraEtiqueta.fxml";
+    
     public static short AlertMessage(Window window, AlertType type, String title, String value, boolean validation) {
         final URL url = Tools.class.getClass().getResource("/view/alert.css");
         Alert alert = new Alert(type);
