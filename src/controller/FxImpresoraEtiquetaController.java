@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -72,21 +73,25 @@ public class FxImpresoraEtiquetaController implements Initializable {
     }
 
     private void eventImprimir() {
-        PrinterJob pj = PrinterJob.getPrinterJob();
-        pj.setCopies((int)spCopias.getValue());
-        Book book = new Book();
-        book.append(printable, getPageFormat(pj));
-        pj.setPageable(book);
-        for (PrintService printService : PrinterJob.lookupPrintServices()) {
-            if (cbImpresoras.getSelectionModel().getSelectedItem().equals(printService.getName())) {
-                try {
-                    pj.setPrintService(printService);
-                    pj.print();
-                } catch (PrinterException ex) {
+        if (cbImpresoras.getSelectionModel().getSelectedIndex() >= 0) {
+            PrinterJob pj = PrinterJob.getPrinterJob();
+            pj.setCopies((int) spCopias.getValue());
+            Book book = new Book();
+            book.append(printable, getPageFormat(pj));
+            pj.setPageable(book);
+            for (PrintService printService : PrinterJob.lookupPrintServices()) {
+                if (cbImpresoras.getSelectionModel().getSelectedItem().equals(printService.getName())) {
+                    try {
+                        pj.setPrintService(printService);
+                        pj.print();
+                    } catch (PrinterException ex) {
+                    }
                 }
             }
+        }else{
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventana de impresión", "Seleccione una impresa.", false);
+            cbImpresoras.requestFocus();
         }
-
     }
 
     public PageFormat getPageFormat(PrinterJob pj) {
