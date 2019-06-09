@@ -1224,7 +1224,7 @@ public class FxEtiquetasController implements Initializable {
             if (pageIndex == 0) {
                 Graphics2D g2d = (Graphics2D) graphics;
                 g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
-                g2d.drawImage(bufferedImage, 5, 0, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+                g2d.drawImage(bufferedImage, 5, -1, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
                 g2d.dispose();
                 return (PAGE_EXISTS);
             } else {
