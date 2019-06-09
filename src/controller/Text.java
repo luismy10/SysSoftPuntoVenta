@@ -17,6 +17,12 @@ public class Text extends Label {
     
     private FontPosture fontPosture;
     
+    private int tipo;
+    
+    private int modulo;
+    
+    private int campo;
+    
     private String variable;
 
     public Text(String text, double x, double y) {
@@ -66,6 +72,30 @@ public class Text extends Label {
 
     public void setFontPosture(FontPosture fontPosture) {
         this.fontPosture = fontPosture;
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+
+    public int getModulo() {
+        return modulo;
+    }
+
+    public void setModulo(int modulo) {
+        this.modulo = modulo;
+    }
+
+    public int getCampo() {
+        return campo;
+    }
+
+    public void setCampo(int campo) {
+        this.campo = campo;
     }
 
     public String getVariable() {

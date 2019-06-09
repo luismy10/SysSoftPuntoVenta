@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../comprobante.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="controller.FxEtiquetasBusquedaController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../comprobante.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxEtiquetasBusquedaController">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -26,21 +25,25 @@
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                  <VBox style="-fx-spacing: 0.4166666666666667em;">
                      <children>
-                        <ScrollPane fitToWidth="true" pannable="true" prefHeight="400.0" prefWidth="620.0" VBox.vgrow="ALWAYS">
-                           <content>
-                              <VBox>
-                                 <children>
-                                    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                        <VBox alignment="CENTER" style="-fx-border-color: #999999;">
+                           <children>
+                              <ScrollPane fitToWidth="true" pannable="true" prefHeight="400.0" prefWidth="620.0" styleClass="scroll-pane-ticket" VBox.vgrow="ALWAYS">
+                                 <content>
+                                    <VBox>
                                        <children>
-                                          <VBox fx:id="vbEtiquetas" alignment="CENTER" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;" />
+                                          <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <VBox fx:id="vbEtiquetas" alignment="CENTER" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;" />
+                                             </children>
+                                          </HBox>
                                        </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </content>
-                        </ScrollPane>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </VBox>
                         <Label styleClass="labelOpenSansRegular14" text="Seleccione una etiqueta con el mouse." />
                      </children>
                   </VBox>

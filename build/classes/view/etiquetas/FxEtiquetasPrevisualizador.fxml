@@ -9,27 +9,27 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../comprobante.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxEtiquetasBusquedaController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../comprobante.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxEtiquetasPrevisualizadorController">
    <children>
-      <VBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="30.0" layoutY="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../search.png" />
+                        <Image url="@../etiquetassearch.png" />
                      </image>
                   </ImageView>
-                  <Label styleClass="labelRobotoMedium18" text="Abrir Formatos de Etiquetas" textFill="#1a2226" />
+                  <Label styleClass="labelRobotoMedium18" text="Vista previa de la etiqueta" textFill="#1a2226" />
                </children>
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;">
                      <children>
-                        <VBox alignment="CENTER" style="-fx-border-color: #999999;">
+                        <VBox style="-fx-border-color: #999999;">
                            <children>
-                              <ScrollPane fitToWidth="true" pannable="true" prefHeight="400.0" prefWidth="620.0" styleClass="scroll-pane-ticket" VBox.vgrow="ALWAYS">
+                              <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="400.0" prefWidth="620.0" styleClass="scroll-pane-ticket" VBox.vgrow="ALWAYS">
                                  <content>
                                     <VBox>
                                        <children>
@@ -44,18 +44,39 @@
                               </ScrollPane>
                            </children>
                         </VBox>
-                        <Label styleClass="labelOpenSansRegular14" text="Seleccione una etiqueta con el mouse." />
+                        <HBox style="-fx-spacing: 0.4166666666666667em;">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onActionAcercar" onKeyPressed="#onKeyPressedAcercar" styleClass="buttonLight">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../acercar.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionAlejar" onKeyPressed="#onKeyPressedAlejar" styleClass="buttonLight">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../alejar.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>
             </HBox>
             <HBox alignment="CENTER" style="-fx-border-width: 1 0 0 0; -fx-border-color: #999999; -fx-background-color: white; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onActionSelect" onKeyPressed="#onKeyPressedSelect" styleClass="buttonLightDefault" text="Abrir">
+                  <Button mnemonicParsing="false" onAction="#onActionPrint" onKeyPressed="#onKeyPressedPrint" styleClass="buttonLightDefault" text="Imprimir">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../accept.png" />
+                              <Image url="@../print.png" />
                            </image>
                         </ImageView>
                      </graphic>

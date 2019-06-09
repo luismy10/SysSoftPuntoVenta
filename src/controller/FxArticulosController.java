@@ -65,7 +65,7 @@ public class FxArticulosController implements Initializable {
     private ComboBox<DetalleTB> cbCategoria;
     @FXML
     private TextField txtSearchCode;
-    
+
     private AnchorPane content;
 
     private boolean status;
@@ -73,7 +73,6 @@ public class FxArticulosController implements Initializable {
     private FxArticuloSeleccionadoController seleccionadoController;
 
     private FxArticuloDetalleController detalleController;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -355,6 +354,34 @@ public class FxArticulosController implements Initializable {
         }
     }
 
+    private void eventSearch() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            try {
+                InitializationTransparentBackground();
+                URL url = getClass().getResource(Tools.FX_FILE_ETIQUETASBUSQUEDA);
+                FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxEtiquetasBusquedaController controller = fXMLLoader.getController();
+                controller.setInitArticuloController(this);
+                controller.onLoadEtiquetas(1);
+                //
+                Stage stage = FxWindow.StageLoaderModal(parent, "Buscar etiquetas", window.getScene().getWindow());
+                stage.setResizable(false);
+                stage.sizeToScene();
+                stage.setOnHiding((WindowEvent WindowEvent) -> {
+                    content.getChildren().remove(Session.PANE);
+                });
+                stage.show();
+            } catch (IOException exception) {
+
+            }
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Artículo", "Seleccione un item para imprimir su etiqueta", false);
+        }
+    }
+
+
     @FXML
     private void onActionAdd(ActionEvent event) throws IOException {
         onViewArticuloAdd();
@@ -515,7 +542,7 @@ public class FxArticulosController implements Initializable {
                     : new File(articuloTB.getImagenTB()).toURI().toString()));
             seleccionadoController.getLblName().setText(articuloTB.getNombreMarca());
             seleccionadoController.getLblPrice().setText(Session.MONEDA + " " + Tools.roundingValue(articuloTB.getPrecioVentaGeneral(), 2));
-            seleccionadoController.getLblQuantity().setText(Tools.roundingValue(articuloTB.getCantidad(), 2)+" "+articuloTB.getUnidadCompraName());
+            seleccionadoController.getLblQuantity().setText(Tools.roundingValue(articuloTB.getCantidad(), 2) + " " + articuloTB.getUnidadCompraName());
 
 //            if (detalleController != null) {
 //                detalleController.getTvList().setItems(LoteADO.ListByIdLote(tvList.getSelectionModel().getSelectedItem().getIdArticulo()));
@@ -590,17 +617,17 @@ public class FxArticulosController implements Initializable {
             }
         }
     }
-    
+
     @FXML
     private void onKeyPressedEtiquetas(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
-            
+        if (event.getCode() == KeyCode.ENTER) {
+            eventSearch();
         }
     }
 
     @FXML
     private void onActionEtiquetas(ActionEvent event) {
-        
+        eventSearch();
     }
 
     public TableView<ArticuloTB> getTvList() {
@@ -614,7 +641,5 @@ public class FxArticulosController implements Initializable {
     public void setContent(AnchorPane content) {
         this.content = content;
     }
-
-    
 
 }

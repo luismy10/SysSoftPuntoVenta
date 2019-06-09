@@ -163,7 +163,7 @@
                      <children>
                         <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em  0 0.4166666666666667em 0; -fx-border-color: #999999; -fx-border-width: 1 0 1 0;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Barra de opciones" />
+                              <Label styleClass="labelRoboto14" text="Barra de opciones" wrapText="true" />
                            </children>
                         </HBox>
                         <VBox style="-fx-spacing: 0.4166666666666667em;">
@@ -186,8 +186,8 @@
                                        <children>
                                           <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label styleClass="labelOpenSansRegular14" text="Variable" />
-                                                <ComboBox fx:id="cbVarible" maxWidth="1.7976931348623157E308" onAction="#onActionVariable" prefWidth="140.0" />
+                                                <Label styleClass="labelOpenSansRegular14" text="Modulo" />
+                                                <ComboBox fx:id="cbModulo" maxWidth="1.7976931348623157E308" onAction="#onActionModulo" prefWidth="140.0" />
                                              </children>
                                           </VBox>
                                           <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">

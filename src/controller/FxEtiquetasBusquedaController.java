@@ -1,17 +1,19 @@
 package controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -23,6 +25,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import model.ArticuloTB;
 import model.EtiquetaADO;
 import model.EtiquetaTB;
 
@@ -39,19 +43,20 @@ public class FxEtiquetasBusquedaController implements Initializable {
 
     private FxEtiquetasController etiquetasController;
 
+    private FxArticulosController articulosController;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         selectecElement = new SelectecElement();
-        addElement();
     }
 
-    public void onLoadEtiquetas() {
-
+    public void onLoadEtiquetas(int type) {
+        addElement(type);
     }
 
-    private void addElement() {
-        ArrayList<EtiquetaTB> etbs = EtiquetaADO.ListEtiquetas();
+    private void addElement(int type) {
+        ArrayList<EtiquetaTB> etbs = EtiquetaADO.ListEtiquetas(type);
         HBox hBox = new HBox();
         hBox.setStyle("-fx-spacing:0.8333333333333334em;-fx-padding:0.8333333333333334em;");
         //
@@ -63,7 +68,7 @@ public class FxEtiquetasBusquedaController implements Initializable {
             vBox.setIdContent(etbs.get(i).getIdEtiqueta());
             vBox.setRuta(etbs.get(i).getRuta());
             vBox.setAlignment(Pos.CENTER);
-            vBox.setStyle("-fx-spacing:0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color: #cccccc;");
+            vBox.setStyle("-fx-background-color:white;-fx-spacing:0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color: #cccccc;");
             group.setOnMousePressed((MouseEvent event) -> {
                 selectecElement.clear();
                 selectecElement.add(group, vBox.getWidth(), vBox.getHeight());
@@ -93,11 +98,36 @@ public class FxEtiquetasBusquedaController implements Initializable {
         vbEtiquetas.getChildren().add(hBox);
     }
 
+    private void eventPreview(String ruta, ArticuloTB articuloTB) {
+        try {
+
+            URL url = getClass().getResource(Tools.FX_FILE_ETIQUETASPREVISUALIZADOR);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxEtiquetasPrevisualizadorController controller = fXMLLoader.getController();
+            controller.loadEtiqueta(ruta, articuloTB);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Vista previa", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.show();
+
+        } catch (IOException exception) {
+            System.out.println(exception);
+        }
+    }
+
     private void eventSelect() {
         if (etiquetaReferent != null) {
-            etiquetasController.loadEtiqueta(etiquetaReferent.getIdContent(), etiquetaReferent.getRuta());
-            Tools.Dispose(window);
-        }else{
+            if (etiquetasController != null) {
+                etiquetasController.loadEtiqueta(etiquetaReferent.getIdContent(), etiquetaReferent.getRuta());
+                Tools.Dispose(window);
+            } else if (articulosController != null) {
+                eventPreview(etiquetaReferent.getRuta(), articulosController.getTvList().getSelectionModel().getSelectedItem());
+            }
+
+        } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Etiqueta", "Seleccione una etiqueta para editarlo.", false);
         }
 
@@ -129,6 +159,10 @@ public class FxEtiquetasBusquedaController implements Initializable {
 
     public void setInitEtiquetasController(FxEtiquetasController etiquetasController) {
         this.etiquetasController = etiquetasController;
+    }
+
+    public void setInitArticuloController(FxArticulosController articulosController) {
+        this.articulosController = articulosController;
     }
 
     class VBoxContent extends VBox {

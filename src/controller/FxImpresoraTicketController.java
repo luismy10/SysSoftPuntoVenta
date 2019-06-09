@@ -18,7 +18,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import model.ArticuloTB;
 
 public class FxImpresoraTicketController implements Initializable {
 

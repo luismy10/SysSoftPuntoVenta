@@ -118,14 +118,15 @@ public class EtiquetaADO {
         return list;
     }
 
-    public static ArrayList<EtiquetaTB> ListEtiquetas() {
+    public static ArrayList<EtiquetaTB> ListEtiquetas(int type) {
         ArrayList<EtiquetaTB> list = new ArrayList<>();
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             PreparedStatement statementLista = null;
             ResultSet resultSet = null;
             try {
-                statementLista = DBUtil.getConnection().prepareStatement("select et.idEtiqueta,et.nombre,td.nombre as nombretipo,et.predeterminado,et.medida,et.ruta,et.imagen from EtiquetaTB as et inner join TipoEtiquetaTB as td on et.tipo = td.idTipoEtiqueta");
+                statementLista = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Etiquetas_By_Type(?)}");
+                statementLista.setInt(1, type);
                 resultSet = statementLista.executeQuery();
                 while (resultSet.next()) {
                     EtiquetaTB etiquetaTB = new EtiquetaTB();
