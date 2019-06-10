@@ -260,6 +260,76 @@ public class FxEtiquetasController implements Initializable {
                     default:
                         break;
                 }
+                //        if (codBarReferent.getTipo() == 0) {
+//            cbTipo.getSelectionModel().select(codBarReferent.getTipo());
+//            hbTipo.setVisible(false);
+//            vbCotenido.setVisible(true);
+//        } else {
+//            cbTipo.getSelectionModel().select(codBarReferent.getTipo());
+//            cbModulo.getSelectionModel().select(codBarReferent.getModulo());
+//            cbCampo.getSelectionModel().select(codBarReferent.getCampo());
+//            vbCotenido.setVisible(false);
+//            hbTipo.setVisible(true);
+//        }
+
+//                switch (tipoEtiqueta) {
+//                    case 1:
+//                        cbCampo.getItems().clear();
+//                        if (cbModulo.getSelectionModel().getSelectedItem().equalsIgnoreCase("Artículo")) {
+//                            textReferent.setModulo(cbModulo.getSelectionModel().getSelectedIndex());
+//                            cbCampo.getItems().addAll(new ModelEtiqueta("Clave", "clave_articulo"),
+//                                    new ModelEtiqueta("Clave Alterna", "clave_alterna"),
+//                                    new ModelEtiqueta("Descripción", "descripcion"),
+//                                    new ModelEtiqueta("Precio", "precio")
+//                            );
+//                            cbCampo.getSelectionModel().select(0);
+//                            textReferent.setCampo(0);
+//                        } else if (cbModulo.getSelectionModel().getSelectedItem().equalsIgnoreCase("Empresa")) {
+//                            textReferent.setModulo(cbModulo.getSelectionModel().getSelectedIndex());
+//                            cbCampo.getItems().addAll(new ModelEtiqueta("Giro Comercial", "girocomercial_empresa"),
+//                                    new ModelEtiqueta("Representante", "representante_empresa"),
+//                                    new ModelEtiqueta("Teléfono", "telefono_empresa"),
+//                                    new ModelEtiqueta("Celular", "celular_empresa")
+//                            );
+//                            cbCampo.getSelectionModel().select(0);
+//                            textReferent.setCampo(0);
+//                        }
+//                        break;
+//                    case 2:
+//                        cbCampo.getItems().clear();
+//                        if (cbModulo.getSelectionModel().getSelectedItem().equalsIgnoreCase("Artículo")) {
+//                            textReferent.setModulo(cbModulo.getSelectionModel().getSelectedIndex());
+//                            cbCampo.getItems().addAll(new ModelEtiqueta("Clave", "clave_articulo"),
+//                                    new ModelEtiqueta("Clave Alterna", "clave_alterna"),
+//                                    new ModelEtiqueta("Descripción", "descripcion"),
+//                                    new ModelEtiqueta("Precio", "precio"),
+//                                    new ModelEtiqueta("Fecha de Registro", "fecha_registro"),
+//                                    new ModelEtiqueta("Fecha de Vencimiento", "fecha_vencimiento")
+//                            );
+//                            cbCampo.getSelectionModel().select(0);
+//                            textReferent.setCampo(0);
+//                        } else if (cbModulo.getSelectionModel().getSelectedItem().equalsIgnoreCase("Empresa")) {
+//                            textReferent.setModulo(cbModulo.getSelectionModel().getSelectedIndex());
+//                            cbCampo.getItems().addAll(new ModelEtiqueta("Giro Comercial", "girocomercial_empresa"),
+//                                    new ModelEtiqueta("Representante", "representante_empresa"),
+//                                    new ModelEtiqueta("Teléfono", "telefono_empresa"),
+//                                    new ModelEtiqueta("Celular", "celular_empresa")
+//                            );
+//                            cbCampo.getSelectionModel().select(0);
+//                            textReferent.setCampo(0);
+//                        }
+//                        break;
+//                    case 3:
+//                        cbCampo.getItems().clear();
+//                        if (cbModulo.getSelectionModel().getSelectedItem().equalsIgnoreCase("Compra")) {
+//
+//                        } else if (cbModulo.getSelectionModel().getSelectedItem().equalsIgnoreCase("Empresa")) {
+//
+//                        }
+//                        break;
+//                    default:
+//                        break;
+//                }
                 if (orientacionEtiqueta == PageFormat.PORTRAIT) {
                     panel.setPrefSize(converMmToPixel(widthEtiquetaMM), converMmToPixel(heightEtiquetaMM));
                 } else {
@@ -323,6 +393,7 @@ public class FxEtiquetasController implements Initializable {
         orientacionEtiqueta = orientacion;
         tipoEtiqueta = tipo;
         cbModulo.getItems().clear();
+        cbCampo.getItems().clear();
         switch (tipoEtiqueta) {
             case 1:
                 cbModulo.getItems().addAll("Artículo", "Empresa");
@@ -336,6 +407,7 @@ public class FxEtiquetasController implements Initializable {
             default:
                 break;
         }
+
         if (orientacion == PageFormat.PORTRAIT) {
             panel.setPrefSize(converMmToPixel(widthEtiquetaMM), converMmToPixel(heightEtiquetaMM));
         } else {
@@ -411,9 +483,10 @@ public class FxEtiquetasController implements Initializable {
             etiquetaTB.setRuta(sampleObject.toJSONString());
             etiquetaTB.setMedida(lblMedida.getText());
 
-            panel.setScaleX(1.0);
-            panel.setScaleY(1.0);
-            WritableImage image = panel.snapshot(new SnapshotParameters(), new WritableImage((int) panel.getWidth(), (int) panel.getHeight()));
+            Pane newPane = panel;
+            newPane.setScaleX(1.0);
+            newPane.setScaleY(1.0);
+            WritableImage image = newPane.snapshot(new SnapshotParameters(), new WritableImage((int) newPane.getWidth(), (int) newPane.getHeight()));
             RenderedImage buffered = SwingFXUtils.fromFXImage(image, null);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(buffered, "png", baos);
@@ -424,11 +497,9 @@ public class FxEtiquetasController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Etiqueta", "El nombre del formato ya existe, intente con otro.", false);
             } else if (result.equalsIgnoreCase("updated")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Etiqueta", "Se actualizo correctamente el formato.", false);
-                //Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
                 clearEtiqueta();
             } else if (result.equalsIgnoreCase("registered")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Etiqueta", "Se guardo correctamente el formato.", false);
-                //Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
                 clearEtiqueta();
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Etiqueta", result, false);
@@ -732,6 +803,9 @@ public class FxEtiquetasController implements Initializable {
     }
 
     private void eventEliminar() {
+        if (!etiquetaProceso) {
+            return;
+        }
         short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Etiqueta", "¿Está seguro de eliminar la etiqueta?", true);
         if (value == 1) {
             String result = EtiquetaADO.dropEtiqueta(idEtiqueta);
@@ -741,6 +815,32 @@ public class FxEtiquetasController implements Initializable {
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Etiqueta", result, false);
             }
+        }
+    }
+
+    private void evetEdit() {
+        try {
+            if (!etiquetaProceso) {
+                return;
+            }
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_ETIQUETASEDITAR);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxEtiquetasEditarController controller = fXMLLoader.getController();
+            controller.setInitEtiquetasController(this);
+            controller.loadEdit(nombreEtiqueta, widthEtiquetaMM, heightEtiquetaMM, orientacionEtiqueta, tipoEtiqueta);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Editar Etiqueta", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.PANE);
+            });
+            stage.show();
+        } catch (IOException exception) {
+
         }
     }
 
@@ -868,6 +968,18 @@ public class FxEtiquetasController implements Initializable {
             panel.getChildren().remove(selectionModel.getNodeSelection());
             selectionModel.clear();
         }
+    }
+
+    @FXML
+    private void onKeyPressEdit(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            evetEdit();
+        }
+    }
+
+    @FXML
+    private void onActionEdit(ActionEvent event) {
+        evetEdit();
     }
 
     @FXML
@@ -1144,7 +1256,8 @@ public class FxEtiquetasController implements Initializable {
                         codBarReferent.setModulo(cbModulo.getSelectionModel().getSelectedIndex());
                         cbCampo.getItems().addAll(new ModelEtiqueta("Clave", "clave_articulo"),
                                 new ModelEtiqueta("Clave Alterna", "clave_alterna"),
-                                new ModelEtiqueta("Descripción", "descripcion")
+                                new ModelEtiqueta("Descripción", "descripcion"),
+                                new ModelEtiqueta("Precio", "precio")
                         );
                         cbCampo.getSelectionModel().select(0);
                         codBarReferent.setCampo(0);
@@ -1166,6 +1279,7 @@ public class FxEtiquetasController implements Initializable {
                         cbCampo.getItems().addAll(new ModelEtiqueta("Clave", "clave_articulo"),
                                 new ModelEtiqueta("Clave Alterna", "clave_alterna"),
                                 new ModelEtiqueta("Descripción", "descripcion"),
+                                new ModelEtiqueta("Precio", "precio"),
                                 new ModelEtiqueta("Fecha de Registro", "fecha_registro"),
                                 new ModelEtiqueta("Fecha de Vencimiento", "fecha_vencimiento")
                         );
@@ -1225,7 +1339,7 @@ public class FxEtiquetasController implements Initializable {
             if (pageIndex == 0) {
                 Graphics2D g2d = (Graphics2D) graphics;
                 g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
-                g2d.drawImage(bufferedImage, 5, -1, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+                g2d.drawImage(bufferedImage, 5, 0, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
                 g2d.dispose();
                 return (PAGE_EXISTS);
             } else {

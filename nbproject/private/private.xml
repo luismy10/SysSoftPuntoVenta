@@ -3,20 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/model/Utilitarios.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxInventarioGeneralController.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaController.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxVentaDevolucionController.java</file>
-            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/model/VentaADO.java</file>
-=======
-            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxVentaController.java</file>
-            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxImpresoraTicketController.java</file>
-            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxImpresoraEtiquetaController.java</file>
-            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/PrinterService.java</file>
-            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxEtiquetasController.java</file>
-            <file>file:/D:/Projecto%20Sistema%20Ventas/src/controller/FxEtiquetasPrevisualizadorController.java</file>
->>>>>>> 4b0d0536c216e11c7f1fb22da9c335c471111d0d
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxEtiquetasNuevoController.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/model/EtiquetaADO.java</file>
+            <file>file:/D:/proyectos/sistemas%20desktop/SysSoftProcess/src/controller/FxEtiquetasController.java</file>
         </group>
     </open-files>
 </project-private>

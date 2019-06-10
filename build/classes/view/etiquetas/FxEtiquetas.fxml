@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../comprobante.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxEtiquetasController">
+<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../comprobante.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxEtiquetasController">
    <children>
       <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
          <children>
@@ -46,6 +46,15 @@
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../rows.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressEdit" styleClass="buttonLight" text="Editar">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../edit.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -169,7 +178,7 @@
                         <VBox style="-fx-spacing: 0.4166666666666667em;">
                            <children>
                               <Label styleClass="labelOpenSansRegular14" text="Tipo" />
-                              <ComboBox fx:id="cbTipo" maxWidth="1.7976931348623157E308" onAction="#onActionTipo" prefWidth="280.0" />
+                              <ComboBox fx:id="cbTipo" maxWidth="1.7976931348623157E308" onAction="#onActionTipo" prefHeight="30.0" prefWidth="260.0" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.4166666666666667em;">
@@ -179,7 +188,7 @@
                                     <VBox fx:id="vbCotenido" style="-fx-spacing: 0.4166666666666667em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
                                           <Label styleClass="labelOpenSansRegular14" text="Contenido" />
-                                          <TextField fx:id="txtTexto" onAction="#onActionEditTexto" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-contenido" />
+                                          <TextField fx:id="txtTexto" onAction="#onActionEditTexto" prefHeight="30.0" styleClass="text-field-contenido" />
                                        </children>
                                     </VBox>
                                     <HBox fx:id="hbTipo" style="-fx-spacing: 0.4166666666666667em;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -187,13 +196,13 @@
                                           <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <Label styleClass="labelOpenSansRegular14" text="Modulo" />
-                                                <ComboBox fx:id="cbModulo" maxWidth="1.7976931348623157E308" onAction="#onActionModulo" prefWidth="140.0" />
+                                                <ComboBox fx:id="cbModulo" maxWidth="1.7976931348623157E308" onAction="#onActionModulo" prefWidth="130.0" />
                                              </children>
                                           </VBox>
                                           <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <Label styleClass="labelOpenSansRegular14" text="Campo" />
-                                                <ComboBox fx:id="cbCampo" maxWidth="1.7976931348623157E308" onAction="#onActionCampo" prefWidth="140.0" />
+                                                <ComboBox fx:id="cbCampo" maxWidth="1.7976931348623157E308" onAction="#onActionCampo" prefWidth="130.0" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -202,7 +211,7 @@
                               </AnchorPane>
                            </children>
                         </VBox>
-                        <Separator prefWidth="200.0" />
+                        <Separator />
                         <VBox style="-fx-spacing: 0.4166666666666667em;">
                            <children>
                               <Label styleClass="labelOpenSansRegular14" text="Fuente" />
