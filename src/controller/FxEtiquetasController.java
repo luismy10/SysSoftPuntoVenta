@@ -633,7 +633,6 @@ public class FxEtiquetasController implements Initializable {
                 vbCotenido.setVisible(false);
                 hbTipo.setVisible(true);
             }
-
             cbFuente.getSelectionModel().select(textReferent.getFont().getFamily());
             spFontSize.getValueFactory().setValue(textReferent.getFont().getSize());
             txtTexto.setText(textReferent.getText());

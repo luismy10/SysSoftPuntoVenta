@@ -30,11 +30,6 @@ public class UtilidadADO {
         ResultSet rsEmps = null;
         ObservableList<Utilidad> empList = FXCollections.observableArrayList();
         
-        System.out.println("-- Fechas --");
-        System.out.println("");
-        System.out.println(fechaInicial);
-        System.out.println(fechaFinal);
-        
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
@@ -45,7 +40,7 @@ public class UtilidadADO {
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 Utilidad utilidad = new Utilidad();
-                //rsEmps.getRow()
+                
                 utilidad.setId(rsEmps.getRow());
                 utilidad.setIdArticulo(rsEmps.getString("IdArticulo"));
                 utilidad.setClave(rsEmps.getString("Clave"));

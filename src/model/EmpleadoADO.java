@@ -225,55 +225,48 @@ public class EmpleadoADO {
         return empleadoTB;
     }
 
-    public static Callable<EmpleadoTB> GetValidateUser(String user, String clave) {
-        return new Callable<EmpleadoTB>() {
-            @Override
-            public EmpleadoTB call() throws Exception {
-                String selectStmt = "SELECT IdEmpleado,Apellidos,Nombres,dbo.Fc_Obtener_Nombre_Detalle(Puesto,'0012') as Puesto,Estado,Rol FROM EmpleadoTB\n"
-                        + "WHERE Usuario = ? and Clave = ? and Estado = 1";
-                PreparedStatement preparedStatement = null;
-                ResultSet rsEmps = null;
-                EmpleadoTB empleadoTB = null;
-                DBUtil.dbConnect();
-                if (DBUtil.getConnection() != null) {
-                    try {
-                        
-                        preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-                        preparedStatement.setString(1, user);
-                        preparedStatement.setString(2, clave);
-                        rsEmps = preparedStatement.executeQuery();
-                        if (rsEmps.next()) {
-                            empleadoTB = new EmpleadoTB();
-                            empleadoTB.setIdEmpleado(rsEmps.getString("IdEmpleado"));
-                            empleadoTB.setApellidos(rsEmps.getString("Apellidos"));
-                            empleadoTB.setNombres(rsEmps.getString("Nombres"));
-                            empleadoTB.setPuestoName(rsEmps.getString("Puesto"));
-                            empleadoTB.setEstado(rsEmps.getInt("Estado"));
-                            empleadoTB.setRol(rsEmps.getInt("Rol"));
-                        }
-                    } catch (SQLException e) {
-                        System.out.println("La operación de selección de SQL ha fallado: " + e);
-                        
-                    } finally {
-                        try {
-                            if (preparedStatement != null) {
-                                preparedStatement.close();
-                            }
-                            if (rsEmps != null) {
-                                rsEmps.close();
-                            }
-                            DBUtil.dbDisconnect();
-                        } catch (SQLException ex) {
-                            
-                        }
+    public static EmpleadoTB GetValidateUser(String user, String clave) {
+
+        String selectStmt = "SELECT IdEmpleado,Apellidos,Nombres,dbo.Fc_Obtener_Nombre_Detalle(Puesto,'0012') as Puesto,Estado,Rol FROM EmpleadoTB\n"
+                + "WHERE Usuario = ? and Clave = ? and Estado = 1";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        EmpleadoTB empleadoTB = null;
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            try {
+                preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+                preparedStatement.setString(1, user);
+                preparedStatement.setString(2, clave);
+                rsEmps = preparedStatement.executeQuery();
+                empleadoTB = new EmpleadoTB();
+                if (rsEmps.next()) {                    
+                    empleadoTB.setIdEmpleado(rsEmps.getString("IdEmpleado"));
+                    empleadoTB.setApellidos(rsEmps.getString("Apellidos"));
+                    empleadoTB.setNombres(rsEmps.getString("Nombres"));
+                    empleadoTB.setPuestoName(rsEmps.getString("Puesto"));
+                    empleadoTB.setEstado(rsEmps.getInt("Estado"));
+                    empleadoTB.setRol(rsEmps.getInt("Rol"));
+                }
+            } catch (SQLException e) {
+                System.out.println("La operación de selección de SQL ha fallado: " + e);
+            } finally {
+                try {
+                    if (preparedStatement != null) {
+                        preparedStatement.close();
                     }
-                    return empleadoTB;
-                } else {
-                    return empleadoTB;
+                    if (rsEmps != null) {
+                        rsEmps.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+
                 }
             }
-        };
-
+            return empleadoTB;
+        } else {
+            return empleadoTB;
+        }
     }
 
 }
