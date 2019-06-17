@@ -84,6 +84,7 @@ public class VentaADO {
                     + ",CantidadGranel\n"
                     + ",CostoVenta\n"
                     + ",PrecioVenta\n"
+                    + ",PrecioVentaGranel\n"
                     + ",Descuento\n"
                     + ",IdImpuesto\n"
                     + ",NombreImpuesto\n"
@@ -91,7 +92,7 @@ public class VentaADO {
                     + ",ImpuestoSumado\n"
                     + ",Importe)\n"
                     + "VALUES\n"
-                    + "(?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "(?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             articulo_update_unidad = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad - ? WHERE IdArticulo = ?");
             articulo_update_granel = DBUtil.getConnection().prepareStatement("UPDATE ArticuloTB SET Cantidad = Cantidad - (? / PrecioVentaGeneral) WHERE IdArticulo = ?");
@@ -150,12 +151,13 @@ public class VentaADO {
                 );
                 detalle_venta.setDouble(5, tvList.getItems().get(i).getCostoCompra());
                 detalle_venta.setDouble(6, tvList.getItems().get(i).getPrecioVentaGeneralReal());
-                detalle_venta.setDouble(7, tvList.getItems().get(i).getDescuento());
-                detalle_venta.setDouble(8, tvList.getItems().get(i).getImpuestoArticulo());
-                detalle_venta.setString(9, tvList.getItems().get(i).getImpuestoArticuloName());
-                detalle_venta.setDouble(10, tvList.getItems().get(i).getImpuestoValor());
-                detalle_venta.setDouble(11, tvList.getItems().get(i).getImpuestoSumado());
-                detalle_venta.setDouble(12, tvList.getItems().get(i).getTotalImporte());
+                detalle_venta.setDouble(7, tvList.getItems().get(i).getPrecioVentaUnico());
+                detalle_venta.setDouble(8, tvList.getItems().get(i).getDescuento());
+                detalle_venta.setDouble(9, tvList.getItems().get(i).getImpuestoArticulo());
+                detalle_venta.setString(10, tvList.getItems().get(i).getImpuestoArticuloName());
+                detalle_venta.setDouble(11, tvList.getItems().get(i).getImpuestoValor());
+                detalle_venta.setDouble(12, tvList.getItems().get(i).getImpuestoSumado());
+                detalle_venta.setDouble(13, tvList.getItems().get(i).getTotalImporte());
                 detalle_venta.addBatch();
 
                 if (tvList.getItems().get(i).isValorInventario() && tvList.getItems().get(i).isInventario()) {

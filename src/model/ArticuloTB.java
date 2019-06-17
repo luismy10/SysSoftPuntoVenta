@@ -42,6 +42,7 @@ public class ArticuloTB {
     private double precioUtilidadGeneral;
     
     private double precioVentaAuxiliar;
+    private double precioVentaUnico;
     
     private PreciosTB preciosTB;
 
@@ -311,6 +312,14 @@ public class ArticuloTB {
 
     public void setPrecioVentaAuxiliar(double precioVentaAuxiliar) {
         this.precioVentaAuxiliar = precioVentaAuxiliar;
+    }
+
+    public double getPrecioVentaUnico() {
+        return precioVentaUnico;
+    }
+
+    public void setPrecioVentaUnico(double precioVentaUnico) {
+        this.precioVentaUnico = precioVentaUnico;
     }
 
     public double getPrecioVentaGeneralReal() {

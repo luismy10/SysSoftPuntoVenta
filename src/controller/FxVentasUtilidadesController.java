@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controller;
 
 import java.net.URL;
@@ -32,9 +28,6 @@ import javafx.scene.text.Text;
 import model.Utilidad;
 import model.UtilidadADO;
 
-/**
- * controller.FxVentasUtilidadesController
- */
 public class FxVentasUtilidadesController implements Initializable {
 
     @FXML
@@ -84,10 +77,6 @@ public class FxVentasUtilidadesController implements Initializable {
     
     private boolean validationSearch;
     
-
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -98,10 +87,10 @@ public class FxVentasUtilidadesController implements Initializable {
                     Tools.roundingValue(cellData.getValue().getCantidad(), 0) +" "+cellData.getValue().getUnidadCompra():
                     Tools.roundingValue(cellData.getValue().getCantidadGranel(), 2)+" "+cellData.getValue().getUnidadCompra()
         ));
-        tcCostoUnitario.setCellValueFactory( cellData -> Bindings.concat( Tools.roundingValue(cellData.getValue().getCostoUnitario(), 2)));
-        tcPrecioUnitario.setCellValueFactory( cellData -> Bindings.concat( Tools.roundingValue(cellData.getValue().getPrecioUnitario(), 2)));
-        tcCostoTotal.setCellValueFactory( cellData -> Bindings.concat( Tools.roundingValue(cellData.getValue().getCostoTotal(), 2)));
-        tcPrecioTotal.setCellValueFactory( cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioTotal(), 2)));
+        tcCostoUnitario.setCellValueFactory( cellData -> Bindings.concat( Tools.roundingValue(cellData.getValue().getCostoVenta(), 2)));
+        tcPrecioUnitario.setCellValueFactory( cellData -> Bindings.concat( Tools.roundingValue(cellData.getValue().getPrecioVenta(), 2)));
+//        tcCostoTotal.setCellValueFactory( cellData -> Bindings.concat( Tools.roundingValue(cellData.getValue().getCostoTotal(), 2)));
+//        tcPrecioTotal.setCellValueFactory( cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioTotal(), 2)));
         tcUtilidad.setCellValueFactory( cellData -> Bindings.concat(cellData.getValue().getSimboloMoneda()+" "+Tools.roundingValue(cellData.getValue().getUtilidad(), 2)));
         
         tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
