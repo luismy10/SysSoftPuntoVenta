@@ -553,6 +553,7 @@ public class FxVentaController implements Initializable {
                         articuloTB.setPrecioVentaGeneralReal(precio);
                         articuloTB.setPrecioVentaGeneral(precio - porcentajeRestante);
                         articuloTB.setPrecioVentaAuxiliar(precio);
+                        articuloTB.setPrecioVentaUnico(tvList.getItems().get(i).getPrecioVentaUnico()); 
 
                         articuloTB.setSubImporte(articuloTB.getCantidad() * tvList.getItems().get(i).getPrecioVentaGeneralReal());
                         articuloTB.setTotalImporte(articuloTB.getCantidad() * tvList.getItems().get(i).getPrecioVentaGeneral());
@@ -1041,6 +1042,7 @@ public class FxVentaController implements Initializable {
                     articuloTB.setPrecioVentaGeneralReal(precio);
                     articuloTB.setPrecioVentaGeneral(precio - porcentajeRestante);
                     articuloTB.setPrecioVentaAuxiliar(precio);
+                    articuloTB.setPrecioVentaUnico(e.getPrecioVentaUnico()); 
 
                     articuloTB.setSubImporte(articuloTB.getCantidad() * e.getPrecioVentaGeneral());
                     articuloTB.setTotalImporte(articuloTB.getCantidad() * e.getPrecioVentaGeneral());
@@ -1091,6 +1093,7 @@ public class FxVentaController implements Initializable {
                     articuloTB.setPrecioVentaGeneralReal(precio);
                     articuloTB.setPrecioVentaGeneral(precio - porcentajeRestante);
                     articuloTB.setPrecioVentaAuxiliar(precio);
+                    articuloTB.setPrecioVentaUnico(e.getPrecioVentaUnico()); 
                     
                     articuloTB.setSubImporte(articuloTB.getCantidad() * e.getPrecioVentaGeneralReal());
                     articuloTB.setTotalImporte(articuloTB.getCantidad() * e.getPrecioVentaGeneral());
@@ -1191,6 +1194,7 @@ public class FxVentaController implements Initializable {
                 articuloTB.setPrecioVentaGeneral(a.getPrecioVentaGeneral());
                 articuloTB.setPrecioVentaGeneralReal(a.getPrecioVentaGeneral());
                 articuloTB.setPrecioVentaAuxiliar(a.getPrecioVentaGeneral());
+                articuloTB.setPrecioVentaUnico(a.getPrecioVentaGeneral()); 
 
                 articuloTB.setSubImporte(1 * a.getPrecioVentaGeneral());
                 articuloTB.setTotalImporte(1 * a.getPrecioVentaGeneral());

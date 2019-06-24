@@ -29,6 +29,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -107,7 +108,9 @@ public class FxEtiquetasController implements Initializable {
     private ComboBox<String> cbModulo;
     @FXML
     private ComboBox<ModelEtiqueta> cbCampo;
-
+    @FXML
+    private ComboBox<Pos> cbAlineacion;
+    
     private Text textReferent;
 
     private CodBar codBarReferent;
@@ -137,12 +140,14 @@ public class FxEtiquetasController implements Initializable {
     private double heightEtiquetaMM;
 
     private int orientacionEtiqueta;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         etiquetaProceso = false;
         lblMedida.setText(widthEtiquetaMM + "mm x " + heightEtiquetaMM + "mm");
         cbTipo.getItems().addAll("Texto", "Variable");
+        cbAlineacion.getItems().addAll(Pos.CENTER_LEFT,Pos.CENTER,Pos.CENTER_RIGHT);
         String[] fontNames = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
         cbFuente.getItems().addAll(Arrays.asList(fontNames));
 
@@ -260,6 +265,76 @@ public class FxEtiquetasController implements Initializable {
                     default:
                         break;
                 }
+                //        if (codBarReferent.getTipo() == 0) {
+//            cbTipo.getSelectionModel().select(codBarReferent.getTipo());
+//            hbTipo.setVisible(false);
+//            vbCotenido.setVisible(true);
+//        } else {
+//            cbTipo.getSelectionModel().select(codBarReferent.getTipo());
+//            cbModulo.getSelectionModel().select(codBarReferent.getModulo());
+//            cbCampo.getSelectionModel().select(codBarReferent.getCampo());
+//            vbCotenido.setVisible(false);
+//            hbTipo.setVisible(true);
+//        }
+
+//                switch (tipoEtiqueta) {
+//                    case 1:
+//                        cbCampo.getItems().clear();
+//                        if (cbModulo.getSelectionModel().getSelectedItem().equalsIgnoreCase("Artículo")) {
+//                            textReferent.setModulo(cbModulo.getSelectionModel().getSelectedIndex());
+//                            cbCampo.getItems().addAll(new ModelEtiqueta("Clave", "clave_articulo"),
+//                                    new ModelEtiqueta("Clave Alterna", "clave_alterna"),
+//                                    new ModelEtiqueta("Descripción", "descripcion"),
+//                                    new ModelEtiqueta("Precio", "precio")
+//                            );
+//                            cbCampo.getSelectionModel().select(0);
+//                            textReferent.setCampo(0);
+//                        } else if (cbModulo.getSelectionModel().getSelectedItem().equalsIgnoreCase("Empresa")) {
+//                            textReferent.setModulo(cbModulo.getSelectionModel().getSelectedIndex());
+//                            cbCampo.getItems().addAll(new ModelEtiqueta("Giro Comercial", "girocomercial_empresa"),
+//                                    new ModelEtiqueta("Representante", "representante_empresa"),
+//                                    new ModelEtiqueta("Teléfono", "telefono_empresa"),
+//                                    new ModelEtiqueta("Celular", "celular_empresa")
+//                            );
+//                            cbCampo.getSelectionModel().select(0);
+//                            textReferent.setCampo(0);
+//                        }
+//                        break;
+//                    case 2:
+//                        cbCampo.getItems().clear();
+//                        if (cbModulo.getSelectionModel().getSelectedItem().equalsIgnoreCase("Artículo")) {
+//                            textReferent.setModulo(cbModulo.getSelectionModel().getSelectedIndex());
+//                            cbCampo.getItems().addAll(new ModelEtiqueta("Clave", "clave_articulo"),
+//                                    new ModelEtiqueta("Clave Alterna", "clave_alterna"),
+//                                    new ModelEtiqueta("Descripción", "descripcion"),
+//                                    new ModelEtiqueta("Precio", "precio"),
+//                                    new ModelEtiqueta("Fecha de Registro", "fecha_registro"),
+//                                    new ModelEtiqueta("Fecha de Vencimiento", "fecha_vencimiento")
+//                            );
+//                            cbCampo.getSelectionModel().select(0);
+//                            textReferent.setCampo(0);
+//                        } else if (cbModulo.getSelectionModel().getSelectedItem().equalsIgnoreCase("Empresa")) {
+//                            textReferent.setModulo(cbModulo.getSelectionModel().getSelectedIndex());
+//                            cbCampo.getItems().addAll(new ModelEtiqueta("Giro Comercial", "girocomercial_empresa"),
+//                                    new ModelEtiqueta("Representante", "representante_empresa"),
+//                                    new ModelEtiqueta("Teléfono", "telefono_empresa"),
+//                                    new ModelEtiqueta("Celular", "celular_empresa")
+//                            );
+//                            cbCampo.getSelectionModel().select(0);
+//                            textReferent.setCampo(0);
+//                        }
+//                        break;
+//                    case 3:
+//                        cbCampo.getItems().clear();
+//                        if (cbModulo.getSelectionModel().getSelectedItem().equalsIgnoreCase("Compra")) {
+//
+//                        } else if (cbModulo.getSelectionModel().getSelectedItem().equalsIgnoreCase("Empresa")) {
+//
+//                        }
+//                        break;
+//                    default:
+//                        break;
+//                }
                 if (orientacionEtiqueta == PageFormat.PORTRAIT) {
                     panel.setPrefSize(converMmToPixel(widthEtiquetaMM), converMmToPixel(heightEtiquetaMM));
                 } else {
@@ -286,7 +361,8 @@ public class FxEtiquetasController implements Initializable {
                                         Integer.parseInt(objectchild.get("tipo").toString()),
                                         Integer.parseInt(objectchild.get("modulo").toString()),
                                         Integer.parseInt(objectchild.get("campo").toString()),
-                                        String.valueOf(objectchild.get("variable").toString())
+                                        String.valueOf(objectchild.get("variable").toString()),
+                                        getAlignment(objectchild.get("aling").toString())
                                 ));
                             } else if (String.valueOf(objectchild.get("type")).equalsIgnoreCase("codebar")) {
                                 panel.getChildren().add(addBarCode(
@@ -323,6 +399,7 @@ public class FxEtiquetasController implements Initializable {
         orientacionEtiqueta = orientacion;
         tipoEtiqueta = tipo;
         cbModulo.getItems().clear();
+        cbCampo.getItems().clear();
         switch (tipoEtiqueta) {
             case 1:
                 cbModulo.getItems().addAll("Artículo", "Empresa");
@@ -336,6 +413,7 @@ public class FxEtiquetasController implements Initializable {
             default:
                 break;
         }
+
         if (orientacion == PageFormat.PORTRAIT) {
             panel.setPrefSize(converMmToPixel(widthEtiquetaMM), converMmToPixel(heightEtiquetaMM));
         } else {
@@ -379,6 +457,7 @@ public class FxEtiquetasController implements Initializable {
                     child.put("modulo", "" + text.getModulo());
                     child.put("campo", "" + text.getCampo());
                     child.put("variable", text.getVariable());
+                    child.put("aling", text.getAlignment().toString());
                     kids.add(child);
                 } else if (node instanceof CodBar) {
                     CodBar codBar = (CodBar) node;
@@ -411,9 +490,10 @@ public class FxEtiquetasController implements Initializable {
             etiquetaTB.setRuta(sampleObject.toJSONString());
             etiquetaTB.setMedida(lblMedida.getText());
 
-            panel.setScaleX(1.0);
-            panel.setScaleY(1.0);
-            WritableImage image = panel.snapshot(new SnapshotParameters(), new WritableImage((int) panel.getWidth(), (int) panel.getHeight()));
+            Pane newPane = panel;
+            newPane.setScaleX(1.0);
+            newPane.setScaleY(1.0);
+            WritableImage image = newPane.snapshot(new SnapshotParameters(), new WritableImage((int) newPane.getWidth(), (int) newPane.getHeight()));
             RenderedImage buffered = SwingFXUtils.fromFXImage(image, null);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(buffered, "png", baos);
@@ -424,11 +504,9 @@ public class FxEtiquetasController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Etiqueta", "El nombre del formato ya existe, intente con otro.", false);
             } else if (result.equalsIgnoreCase("updated")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Etiqueta", "Se actualizo correctamente el formato.", false);
-                //Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
                 clearEtiqueta();
             } else if (result.equalsIgnoreCase("registered")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Etiqueta", "Se guardo correctamente el formato.", false);
-                //Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
                 clearEtiqueta();
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Etiqueta", result, false);
@@ -453,7 +531,6 @@ public class FxEtiquetasController implements Initializable {
         lblNombre.setText("-");
         lblFormato.setText("-");
     }
-
 
     private JSONObject obtenerObjetoJSON(final String codigoJSON) {
         JSONParser lector = new JSONParser();
@@ -559,8 +636,8 @@ public class FxEtiquetasController implements Initializable {
         return wr;
     }
 
-    private ImageView addBarCode(String value, double x, double y, double width, double height, String fontFamily, double size,int tipo, int modulo, int campo, String variable) {
-        CodBar ivCodigo = new CodBar(value, x, y, new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16));
+    private ImageView addBarCode(String value, double x, double y, double width, double height, String fontFamily, double size, int tipo, int modulo, int campo, String variable) {
+        CodBar ivCodigo = new CodBar(value, x, y, new java.awt.Font(fontFamily, java.awt.Font.BOLD, (int)size));
         ivCodigo.setImage(generateBarCode(ivCodigo.getTexto(), ivCodigo.getFont()));
         ivCodigo.setFitWidth(width == -1 ? ivCodigo.getImage().getWidth() : width);
         ivCodigo.setFitHeight(height == -1 ? ivCodigo.getImage().getHeight() : height);
@@ -582,7 +659,7 @@ public class FxEtiquetasController implements Initializable {
                 vbCotenido.setVisible(false);
                 hbTipo.setVisible(true);
             }
-
+            cbAlineacion.setDisable(true);
             cbFuente.getSelectionModel().select(codBarReferent.getFont().getFamily());
             spFontSize.getValueFactory().setValue((double) codBarReferent.getFont().getSize());
             txtTexto.setText(codBarReferent.getTexto());
@@ -611,7 +688,7 @@ public class FxEtiquetasController implements Initializable {
         return ivCodigo;
     }
 
-    private Text addText(String value, double x, double y, double width, double height, String fontFamily, double size, int tipo, int modulo, int campo, String variable) {
+    private Text addText(String value, double x, double y, double width, double height, String fontFamily, double size, int tipo, int modulo, int campo, String variable,Pos pos) {
         Text text = new Text(value, x, y);
         text.setFontText(fontFamily, FontWeight.BOLD, FontPosture.REGULAR, size);
         text.setPrefSize(width == -1 ? USE_COMPUTED_SIZE : width, height == -1 ? USE_COMPUTED_SIZE : height);
@@ -619,6 +696,7 @@ public class FxEtiquetasController implements Initializable {
         text.setModulo(modulo);
         text.setCampo(campo);
         text.setVariable(variable);
+        text.setAlignment(pos);
         text.setOnMousePressed(event -> {
             codBarReferent = null;
             textReferent = text;
@@ -633,6 +711,8 @@ public class FxEtiquetasController implements Initializable {
                 vbCotenido.setVisible(false);
                 hbTipo.setVisible(true);
             }
+            cbAlineacion.setDisable(false);
+            cbAlineacion.getSelectionModel().select(textReferent.getAlignment());
             cbFuente.getSelectionModel().select(textReferent.getFont().getFamily());
             spFontSize.getValueFactory().setValue(textReferent.getFont().getSize());
             txtTexto.setText(textReferent.getText());
@@ -663,7 +743,20 @@ public class FxEtiquetasController implements Initializable {
 
         return text;
     }
-
+    
+    private Pos getAlignment(String align) {
+        switch (align) {
+            case "CENTER":
+                return Pos.CENTER;
+            case "CENTER_LEFT":
+                return Pos.CENTER_LEFT;
+            case "CENTER_RIGHT":
+                return Pos.CENTER_RIGHT;
+            default:
+                return Pos.CENTER_LEFT;
+        }
+    }
+    
     private void eventNuevo() {
         try {
             InitializationTransparentBackground();
@@ -708,7 +801,7 @@ public class FxEtiquetasController implements Initializable {
 
         }
     }
-    
+
     private void eventWindowPrint(Printable billPrintableEtiquetas) {
         try {
             InitializationTransparentBackground();
@@ -717,7 +810,7 @@ public class FxEtiquetasController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxImpresoraEtiquetaController controller = fXMLLoader.getController();
-            controller.loadImpresoraEtiqueta((BillPrintableEtiquetas) billPrintableEtiquetas,widthEtiquetaMM,heightEtiquetaMM,orientacionEtiqueta);
+            controller.loadImpresoraEtiqueta((BillPrintableEtiquetas) billPrintableEtiquetas, widthEtiquetaMM, heightEtiquetaMM, orientacionEtiqueta);
             //
             Stage stage = FxWindow.StageLoaderModal(parent, "Ventana de impresión", window.getScene().getWindow());
             stage.setResizable(false);
@@ -730,8 +823,11 @@ public class FxEtiquetasController implements Initializable {
 
         }
     }
-    
+
     private void eventEliminar() {
+        if (!etiquetaProceso) {
+            return;
+        }
         short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Etiqueta", "¿Está seguro de eliminar la etiqueta?", true);
         if (value == 1) {
             String result = EtiquetaADO.dropEtiqueta(idEtiqueta);
@@ -741,6 +837,32 @@ public class FxEtiquetasController implements Initializable {
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Etiqueta", result, false);
             }
+        }
+    }
+
+    private void eventEdit() {
+        try {
+            if (!etiquetaProceso) {
+                return;
+            }
+            InitializationTransparentBackground();
+            URL url = getClass().getResource(Tools.FX_FILE_ETIQUETASEDITAR);
+            FXMLLoader fXMLLoader = FxWindow.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxEtiquetasEditarController controller = fXMLLoader.getController();
+            controller.setInitEtiquetasController(this);
+            controller.loadEdit(nombreEtiqueta, widthEtiquetaMM, heightEtiquetaMM, orientacionEtiqueta, tipoEtiqueta);
+            //
+            Stage stage = FxWindow.StageLoaderModal(parent, "Editar Etiqueta", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((WindowEvent WindowEvent) -> {
+                content.getChildren().remove(Session.PANE);
+            });
+            stage.show();
+        } catch (IOException exception) {
+
         }
     }
 
@@ -816,7 +938,7 @@ public class FxEtiquetasController implements Initializable {
             if (!etiquetaProceso) {
                 return;
             }
-            panel.getChildren().add(addText("Texto de muestra", 0, 0, -1, -1, "Lucida Sans Typewriter", 16, 0, 0, 0, ""));
+            panel.getChildren().add(addText("Texto de muestra", 0, 0, -1, -1, "Lucida Sans Typewriter", 16, 0, 0, 0, "",Pos.CENTER_LEFT));
         }
     }
 
@@ -825,7 +947,7 @@ public class FxEtiquetasController implements Initializable {
         if (!etiquetaProceso) {
             return;
         }
-        panel.getChildren().add(addText("Texto de muestra", 0, 0, -1, -1, "Lucida Sans Typewriter", 16, 0, 0, 0, ""));
+        panel.getChildren().add(addText("Texto de muestra", 0, 0, -1, -1, "Lucida Sans Typewriter", 16, 0, 0, 0, "",Pos.CENTER_LEFT));
     }
 
     @FXML
@@ -834,7 +956,7 @@ public class FxEtiquetasController implements Initializable {
             if (!etiquetaProceso) {
                 return;
             }
-            panel.getChildren().add(addBarCode("12345678", 0, 0, -1, -1,"Lucida Sans Typewriter", 16, 0, 0, 0, ""));
+            panel.getChildren().add(addBarCode("12345678", 0, 0, -1, -1, "Lucida Sans Typewriter", 16, 0, 0, 0, ""));
         }
     }
 
@@ -843,7 +965,7 @@ public class FxEtiquetasController implements Initializable {
         if (!etiquetaProceso) {
             return;
         }
-        panel.getChildren().add(addBarCode("12345678", 0, 0, -1, -1,"Lucida Sans Typewriter", 16, 0, 0, 0, ""));
+        panel.getChildren().add(addBarCode("12345678", 0, 0, -1, -1, "Lucida Sans Typewriter", 16, 0, 0, 0, ""));
     }
 
     @FXML
@@ -868,6 +990,18 @@ public class FxEtiquetasController implements Initializable {
             panel.getChildren().remove(selectionModel.getNodeSelection());
             selectionModel.clear();
         }
+    }
+
+    @FXML
+    private void onKeyPressEdit(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            eventEdit();
+        }
+    }
+
+    @FXML
+    private void onActionEdit(ActionEvent event) {
+        eventEdit();
     }
 
     @FXML
@@ -953,7 +1087,10 @@ public class FxEtiquetasController implements Initializable {
         if (!etiquetaProceso) {
             return;
         }
-        WritableImage image = createScaledView(panel, 4);
+        Pane newPane = panel;
+        newPane.setScaleX(1.0);
+        newPane.setScaleY(1.0);
+        WritableImage image = createScaledView(newPane, 4);
         BillPrintableEtiquetas billPrintable = new BillPrintableEtiquetas(SwingFXUtils.fromFXImage(image, null));
         eventWindowPrint(billPrintable);
 
@@ -962,7 +1099,6 @@ public class FxEtiquetasController implements Initializable {
 //        RenderedImage renderedImage = SwingFXUtils.fromFXImage(image, null);
 //        ImageIO.write(renderedImage, "png", file);
     }
-
 
     public double converMmToPoint(double mm) {
         return (mm * 2.83465) / 1;
@@ -1142,7 +1278,8 @@ public class FxEtiquetasController implements Initializable {
                         codBarReferent.setModulo(cbModulo.getSelectionModel().getSelectedIndex());
                         cbCampo.getItems().addAll(new ModelEtiqueta("Clave", "clave_articulo"),
                                 new ModelEtiqueta("Clave Alterna", "clave_alterna"),
-                                new ModelEtiqueta("Descripción", "descripcion")
+                                new ModelEtiqueta("Descripción", "descripcion"),
+                                new ModelEtiqueta("Precio", "precio")
                         );
                         cbCampo.getSelectionModel().select(0);
                         codBarReferent.setCampo(0);
@@ -1164,6 +1301,7 @@ public class FxEtiquetasController implements Initializable {
                         cbCampo.getItems().addAll(new ModelEtiqueta("Clave", "clave_articulo"),
                                 new ModelEtiqueta("Clave Alterna", "clave_alterna"),
                                 new ModelEtiqueta("Descripción", "descripcion"),
+                                new ModelEtiqueta("Precio", "precio"),
                                 new ModelEtiqueta("Fecha de Registro", "fecha_registro"),
                                 new ModelEtiqueta("Fecha de Vencimiento", "fecha_vencimiento")
                         );
@@ -1210,6 +1348,15 @@ public class FxEtiquetasController implements Initializable {
         }
     }
 
+    @FXML
+    private void onActionAlineacion(ActionEvent event) {
+        if(cbAlineacion.getSelectionModel().getSelectedIndex()>=0){
+            if (textReferent != null && selectionModel.getNodeSelection() == textReferent) {
+                textReferent.setAlignment(cbAlineacion.getSelectionModel().getSelectedItem());
+            }
+        }
+    }
+
     class BillPrintableEtiquetas implements Printable {
 
         private final BufferedImage bufferedImage;
@@ -1222,15 +1369,20 @@ public class FxEtiquetasController implements Initializable {
         public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
             if (pageIndex == 0) {
                 Graphics2D g2d = (Graphics2D) graphics;
-                g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
-                g2d.drawImage(bufferedImage, 5, -1, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+                //CodBar ivCodigo = new CodBar(value, x, y, new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16));
+        //ivCodigo.setImage(generateBarCode(ivCodigo.getTexto(), ivCodigo.getFont()));
+                //g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
+                //g2d.drawString("hola mundo", 10, 10);
+                g2d.drawImage(bufferedImage, 5, 0, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+                //BufferedImage image = SwingFXUtils.fromFXImage(generateBarCode("12345678", new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16)), null);
+                //g2d.drawImage(image, 10, 10, 100,40,null);
                 g2d.dispose();
                 return (PAGE_EXISTS);
             } else {
                 return (NO_SUCH_PAGE);
             }
         }
-        
+
     }
 
     class ModelEtiqueta {

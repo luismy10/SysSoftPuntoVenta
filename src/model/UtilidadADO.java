@@ -1,61 +1,82 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-/**
- * 
- * @author Sammy Guergachi <sguergachi at gmail.com>
- */
 public class UtilidadADO {
-    
-    /*  @option tinyint,
-        @fechaInicial Date,
-        @fechaFinal Date,
-        @busqueda varchar(120)
-    */
-    
-    public static ObservableList<Utilidad> listUtilidadVenta(int opcion, String fechaInicial, String fechaFinal, String busqueda){
+
+    public static ObservableList<Utilidad> listUtilidadVenta(short opcion, String fechaInicial, String fechaFinal, String busqueda) {
         String selectStmt = "{call Sp_Listar_Utilidad(?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<Utilidad> empList = FXCollections.observableArrayList();
-        
+        ArrayList<Utilidad> list = new ArrayList<>();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setInt(1, opcion);
+            preparedStatement.setShort(1, opcion);
             preparedStatement.setString(2, fechaInicial);
             preparedStatement.setString(3, fechaFinal);
             preparedStatement.setString(4, busqueda);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 Utilidad utilidad = new Utilidad();
-                
-                utilidad.setId(rsEmps.getRow());
                 utilidad.setIdArticulo(rsEmps.getString("IdArticulo"));
                 utilidad.setClave(rsEmps.getString("Clave"));
                 utilidad.setNombreMarca(rsEmps.getString("NombreMarca"));
                 utilidad.setCantidad(rsEmps.getDouble("Cantidad"));
                 utilidad.setCantidadGranel(rsEmps.getDouble("CantidadGranel"));
-                utilidad.setCostoUnitario(rsEmps.getDouble("CostoVenta"));
-                utilidad.setPrecioUnitario(rsEmps.getDouble("PrecioVenta"));
-                utilidad.setCostoTotal(rsEmps.getDouble("CostoTotal"));
-                utilidad.setPrecioTotal(rsEmps.getDouble("PrecioTotal"));
-                utilidad.setUtilidad(rsEmps.getDouble("Utilidad"));
+                utilidad.setCostoVenta(rsEmps.getDouble("CostoVenta"));
+                //utilidad.setCostoVentaGranel(rsEmps.getDouble("CostoVentaGranel"));
+                utilidad.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
+                utilidad.setPrecioVentaGranel(rsEmps.getDouble("PrecioVentaGranel"));
+                utilidad.setPrecioVentaTotal(utilidad.getCantidad() * utilidad.getPrecioVenta());
                 utilidad.setValorInventario(rsEmps.getBoolean("ValorInventario"));
                 utilidad.setUnidadCompra(rsEmps.getString("UnidadCompra"));
                 utilidad.setSimboloMoneda(rsEmps.getString("Simbolo"));
-                empList.add(utilidad);
+
+                double cantidadKilogramos = utilidad.getPrecioVenta() / utilidad.getPrecioVentaGranel();
+
+                utilidad.setCostoVentaTotal(
+                        utilidad.isValorInventario()
+                        ? utilidad.getCantidad() * utilidad.getCostoVenta()
+                        : utilidad.getCantidadGranel() * utilidad.getCostoVenta()
+                );
+                utilidad.setUtilidad(
+                        utilidad.isValorInventario()
+                        ? (utilidad.getPrecioVenta() * utilidad.getCantidad()) - (utilidad.getCostoVenta() * utilidad.getCantidad())
+                        : (utilidad.getPrecioVentaGranel() * cantidadKilogramos) - (utilidad.getCostoVenta() * cantidadKilogramos)
+                );
+                list.add(utilidad);
+
+            }
+            
+            int count = 0;
+            
+            for (int i = 0; i < list.size(); i++) {
+                
+                if (validateDuplicateArticulo(empList, list.get(i))) {
+                    for (int j = 0; j < empList.size(); j++) {
+                        if (empList.get(j).getIdArticulo().equalsIgnoreCase(list.get(i).getIdArticulo())) {
+                            Utilidad newUtilidad = empList.get(j);
+                            newUtilidad.setCantidad(newUtilidad.getCantidad() + list.get(i).getCantidad());
+                            newUtilidad.setCostoVentaTotal(newUtilidad.getCostoVentaTotal() + list.get(i).getCostoVentaTotal());
+                            newUtilidad.setCantidadGranel(newUtilidad.getCantidadGranel() + list.get(i).getCantidadGranel());
+                            newUtilidad.setPrecioVentaTotal(newUtilidad.getPrecioVentaTotal() + list.get(i).getPrecioVentaTotal());
+                            newUtilidad.setUtilidad(newUtilidad.getUtilidad() + list.get(i).getUtilidad());
+                            empList.set(j, newUtilidad);
+                        }
+                    }
+                } else {
+                    count++;
+                    Utilidad donotexist = list.get(i);
+                    donotexist.setId(count);
+                    empList.add(donotexist);
+                }
             }
 
         } catch (SQLException ex) {
@@ -73,6 +94,17 @@ public class UtilidadADO {
             }
         }
         return empList;
+    }
+
+    private static boolean validateDuplicateArticulo(ObservableList<Utilidad> view, Utilidad utilidad) {
+        boolean ret = false;
+        for (int i = 0; i < view.size(); i++) {
+            if (view.get(i).getIdArticulo().equals(utilidad.getIdArticulo())) {
+                ret = true;
+                break;
+            }
+        }
+        return ret;
     }
 
 }

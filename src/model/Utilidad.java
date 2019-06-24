@@ -1,45 +1,48 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package model;
 
-/**
- * 
- * @author Sammy Guergachi <sguergachi at gmail.com>
- */
+
 public class Utilidad {
+    
+    //select dv.IdArticulo, a.Clave, a.NombreMarca, dv.Cantidad, dv.CantidadGranel, dv.CostoVenta, dv.PrecioVenta, dv.PrecioVentaGranel, a.ValorInventario, dbo.Fc_Obtener_Nombre_Detalle(a.UnidadCompra,'0013') as UnidadCompra, m.Simbolo
+    
     private int id;
     private String IdArticulo;
     private String Clave;
     private String NombreMarca;
     private double Cantidad;
     private double CantidadGranel;
-    private double CostoUnitario;
-    private double PrecioUnitario;
-    private double CostoTotal;
-    private double PrecioTotal;
-    private double Utilidad;
+    private double CostoVenta;
+    private double CostoVentaGranel;
+    private double CostoVentaTotal;
+    private double PrecioVenta;
+    private double PrecioVentaGranel;
+    private double PrecioVentaTotal;
     private boolean ValorInventario;
     private String UnidadCompra;
     private String SimboloMoneda;
     
+    private double Utilidad;
+    
     public Utilidad(){}
 
-    public Utilidad(String IdArticulo, String Clave, String NombreMarca, double Cantidad, double CantidadGranel, double CostoUnitario, double PrecioUnitario, double CostoTotal, double PrecioTotal, double Utilidad) {
+    public Utilidad(int id, String IdArticulo, String Clave, String NombreMarca, double Cantidad, double CantidadGranel, double CostoVenta, double PrecioVenta, double PrecioVentaGranel, boolean ValorInventario, String UnidadCompra, String SimboloMoneda, double Utilidad) {
+        this.id = id;
         this.IdArticulo = IdArticulo;
         this.Clave = Clave;
         this.NombreMarca = NombreMarca;
         this.Cantidad = Cantidad;
         this.CantidadGranel = CantidadGranel;
-        this.CostoUnitario = CostoUnitario;
-        this.PrecioUnitario = PrecioUnitario;
-        this.CostoTotal = CostoTotal;
-        this.PrecioTotal = PrecioTotal;
+        this.CostoVenta = CostoVenta;
+        this.PrecioVenta = PrecioVenta;
+        this.PrecioVentaGranel = PrecioVentaGranel;
+        this.ValorInventario = ValorInventario;
+        this.UnidadCompra = UnidadCompra;
+        this.SimboloMoneda = SimboloMoneda;
         this.Utilidad = Utilidad;
     }
+
+    
 
     public int getId() {
         return id;
@@ -89,44 +92,52 @@ public class Utilidad {
         this.CantidadGranel = CantidadGranel;
     }
 
-    public double getCostoUnitario() {
-        return CostoUnitario;
+    public double getCostoVenta() {
+        return CostoVenta;
     }
 
-    public void setCostoUnitario(double CostoUnitario) {
-        this.CostoUnitario = CostoUnitario;
+    public void setCostoVenta(double CostoVenta) {
+        this.CostoVenta = CostoVenta;
     }
 
-    public double getPrecioUnitario() {
-        return PrecioUnitario;
+    public double getCostoVentaGranel() {
+        return CostoVentaGranel;
     }
 
-    public void setPrecioUnitario(double PrecioUnitario) {
-        this.PrecioUnitario = PrecioUnitario;
+    public void setCostoVentaGranel(double CostoVentaGranel) {
+        this.CostoVentaGranel = CostoVentaGranel;
     }
 
-    public double getCostoTotal() {
-        return CostoTotal;
+    public double getCostoVentaTotal() {
+        return CostoVentaTotal;
     }
 
-    public void setCostoTotal(double CostoTotal) {
-        this.CostoTotal = CostoTotal;
+    public void setCostoVentaTotal(double CostoVentaTotal) {
+        this.CostoVentaTotal = CostoVentaTotal;
     }
 
-    public double getPrecioTotal() {
-        return PrecioTotal;
+    public double getPrecioVenta() {
+        return PrecioVenta;
     }
 
-    public void setPrecioTotal(double PrecioTotal) {
-        this.PrecioTotal = PrecioTotal;
+    public void setPrecioVenta(double PrecioVenta) {
+        this.PrecioVenta = PrecioVenta;
     }
 
-    public double getUtilidad() {
-        return Utilidad;
+    public double getPrecioVentaGranel() {
+        return PrecioVentaGranel;
     }
 
-    public void setUtilidad(double Utilidad) {
-        this.Utilidad = Utilidad;
+    public void setPrecioVentaGranel(double PrecioVentaGranel) {
+        this.PrecioVentaGranel = PrecioVentaGranel;
+    }
+
+    public double getPrecioVentaTotal() {
+        return PrecioVentaTotal;
+    }
+
+    public void setPrecioVentaTotal(double PrecioVentaTotal) {
+        this.PrecioVentaTotal = PrecioVentaTotal;
     }
 
     public boolean isValorInventario() {
@@ -135,7 +146,7 @@ public class Utilidad {
 
     public void setValorInventario(boolean ValorInventario) {
         this.ValorInventario = ValorInventario;
-    }    
+    }
 
     public String getUnidadCompra() {
         return UnidadCompra;
@@ -152,5 +163,14 @@ public class Utilidad {
     public void setSimboloMoneda(String SimboloMoneda) {
         this.SimboloMoneda = SimboloMoneda;
     }
-      
+
+    public double getUtilidad() {
+        return Utilidad;
+    }
+
+    public void setUtilidad(double Utilidad) {
+        this.Utilidad = Utilidad;
+    }
+
+         
 }
