@@ -354,7 +354,7 @@ public class FxArticulosController implements Initializable {
         }
     }
 
-    private void eventSearch() {
+    private void eventEtiqueta() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             try {
                 InitializationTransparentBackground();
@@ -621,13 +621,13 @@ public class FxArticulosController implements Initializable {
     @FXML
     private void onKeyPressedEtiquetas(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            eventSearch();
+            eventEtiqueta();
         }
     }
 
     @FXML
     private void onActionEtiquetas(ActionEvent event) {
-        eventSearch();
+        eventEtiqueta();
     }
 
     public TableView<ArticuloTB> getTvList() {
