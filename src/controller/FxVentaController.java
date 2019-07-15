@@ -433,6 +433,7 @@ public class FxVentaController implements Initializable {
                 stage.sizeToScene();
                 stage.setOnHiding((WindowEvent WindowEvent) -> {
                     content.getChildren().remove(Session.PANE);
+                    calculateTotales();
                 });
                 stage.show();
                 controller.initComponents(

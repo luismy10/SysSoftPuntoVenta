@@ -1,4 +1,4 @@
-MULTIMERCADOYA
+localhost
 1433
 PuntoVentaSysSoftDBDesarrollo
 sa
