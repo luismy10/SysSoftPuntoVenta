@@ -5,6 +5,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
@@ -61,13 +62,16 @@ public class FxLoginController implements Initializable {
             txtClave.requestFocus();
         } else {
             ExecutorService executor = Executors.newCachedThreadPool();
-            ExecutorCompletionService<EmpleadoTB> completionService = new ExecutorCompletionService<>(executor);
-            completionService.submit(EmpleadoADO.GetValidateUser(txtUsuario.getText().trim(), txtClave.getText().trim()));
             try {
-                Future<EmpleadoTB> batchCount = completionService.take();
-                if (batchCount != null) {
-                    EmpleadoTB empleadoTB = batchCount.get();
-                    if (empleadoTB != null) {
+                Future<EmpleadoTB> batchCount = executor.submit(new Callable() {
+                    @Override
+                    public EmpleadoTB call() throws Exception {
+                        return EmpleadoADO.GetValidateUser(txtUsuario.getText().trim(), txtClave.getText().trim());
+                    }
+                });
+                EmpleadoTB empleadoTB = batchCount.get();
+                if (empleadoTB != null) {
+                    if (empleadoTB.getIdEmpleado() != null) {
                         Session.ROL = empleadoTB.getRol();
                         Session.USER_ID = empleadoTB.getIdEmpleado();
                         Session.USER_NAME = (empleadoTB.getApellidos().substring(0, 1).toUpperCase() + empleadoTB.getApellidos().substring(1).toLowerCase())
@@ -117,10 +121,11 @@ public class FxLoginController implements Initializable {
                                 }
                             }
                         }
-
                     } else {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Iniciar Sesión", "Datos incorrectos", false);
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Iniciar Sesión", "Los datos ingresados no son correctos.", false);
                     }
+                } else {
+                    lblError.setText("Error: No se pudo conectar al servidor revise su conexión.");
                 }
             } catch (InterruptedException | ExecutionException e) {
                 lblError.setText("Error: No se pudo conectar al servidor revise su conexión.");

@@ -6,64 +6,76 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableView;
 
 public class UtilidadADO {
 
-    public static ObservableList<Utilidad> listUtilidadVenta(int opcion, String fechaInicial, String fechaFinal, String busqueda) {
+    public static ObservableList<Utilidad> listUtilidadVenta(short opcion, String fechaInicial, String fechaFinal, String busqueda) {
         String selectStmt = "{call Sp_Listar_Utilidad(?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<Utilidad> empList = FXCollections.observableArrayList();
-
+        ArrayList<Utilidad> list = new ArrayList<>();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setInt(1, opcion);
+            preparedStatement.setShort(1, opcion);
             preparedStatement.setString(2, fechaInicial);
             preparedStatement.setString(3, fechaFinal);
             preparedStatement.setString(4, busqueda);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 Utilidad utilidad = new Utilidad();
-                //rsEmps.getRow()
-
-                double cantidadKilogramos = 0;
-
-                utilidad.setId(rsEmps.getRow());
                 utilidad.setIdArticulo(rsEmps.getString("IdArticulo"));
                 utilidad.setClave(rsEmps.getString("Clave"));
                 utilidad.setNombreMarca(rsEmps.getString("NombreMarca"));
                 utilidad.setCantidad(rsEmps.getDouble("Cantidad"));
                 utilidad.setCantidadGranel(rsEmps.getDouble("CantidadGranel"));
                 utilidad.setCostoVenta(rsEmps.getDouble("CostoVenta"));
+                //utilidad.setCostoVentaGranel(rsEmps.getDouble("CostoVentaGranel"));
                 utilidad.setPrecioVenta(rsEmps.getDouble("PrecioVenta"));
                 utilidad.setPrecioVentaGranel(rsEmps.getDouble("PrecioVentaGranel"));
+                utilidad.setPrecioVentaTotal(utilidad.getCantidad() * utilidad.getPrecioVenta());
                 utilidad.setValorInventario(rsEmps.getBoolean("ValorInventario"));
                 utilidad.setUnidadCompra(rsEmps.getString("UnidadCompra"));
                 utilidad.setSimboloMoneda(rsEmps.getString("Simbolo"));
 
-                cantidadKilogramos = utilidad.getPrecioVenta() / utilidad.getPrecioVentaGranel();
+                double cantidadKilogramos = utilidad.getPrecioVenta() / utilidad.getPrecioVentaGranel();
 
+                utilidad.setCostoVentaTotal(
+                        utilidad.isValorInventario()
+                        ? utilidad.getCantidad() * utilidad.getCostoVenta()
+                        : utilidad.getCantidadGranel() * utilidad.getCostoVenta()
+                );
                 utilidad.setUtilidad(
                         utilidad.isValorInventario()
                         ? (utilidad.getPrecioVenta() * utilidad.getCantidad()) - (utilidad.getCostoVenta() * utilidad.getCantidad())
                         : (utilidad.getPrecioVentaGranel() * cantidadKilogramos) - (utilidad.getCostoVenta() * cantidadKilogramos)
                 );
+                list.add(utilidad);
 
-                if (validateDuplicateArticulo(empList, utilidad)) {
-                    for (int i = 0; i < empList.size(); i++) {
-                        if (empList.get(i).getIdArticulo().equalsIgnoreCase(utilidad.getIdArticulo())) {
-//                            double newU = utilidad.getUtilidad();
-//                            Utilidad newUtilidad = utilidad;
-//                            newUtilidad.setUtilidad(newUtilidad.getUtilidad()+newU);
-//                            empList.set(i, newUtilidad);
-                            System.out.println(utilidad.getNombreMarca());
-                            System.out.println(utilidad.getUtilidad());
+            }
+            
+            int count = 0;
+            
+            for (int i = 0; i < list.size(); i++) {
+                
+                if (validateDuplicateArticulo(empList, list.get(i))) {
+                    for (int j = 0; j < empList.size(); j++) {
+                        if (empList.get(j).getIdArticulo().equalsIgnoreCase(list.get(i).getIdArticulo())) {
+                            Utilidad newUtilidad = empList.get(j);
+                            newUtilidad.setCantidad(newUtilidad.getCantidad() + list.get(i).getCantidad());
+                            newUtilidad.setCostoVentaTotal(newUtilidad.getCostoVentaTotal() + list.get(i).getCostoVentaTotal());
+                            newUtilidad.setCantidadGranel(newUtilidad.getCantidadGranel() + list.get(i).getCantidadGranel());
+                            newUtilidad.setPrecioVentaTotal(newUtilidad.getPrecioVentaTotal() + list.get(i).getPrecioVentaTotal());
+                            newUtilidad.setUtilidad(newUtilidad.getUtilidad() + list.get(i).getUtilidad());
+                            empList.set(j, newUtilidad);
                         }
                     }
                 } else {
-                    empList.add(utilidad);
+                    count++;
+                    Utilidad donotexist = list.get(i);
+                    donotexist.setId(count);
+                    empList.add(donotexist);
                 }
             }
 
@@ -87,7 +99,7 @@ public class UtilidadADO {
     private static boolean validateDuplicateArticulo(ObservableList<Utilidad> view, Utilidad utilidad) {
         boolean ret = false;
         for (int i = 0; i < view.size(); i++) {
-            if (view.get(i).getClave().equals(utilidad.getClave())) {
+            if (view.get(i).getIdArticulo().equals(utilidad.getIdArticulo())) {
                 ret = true;
                 break;
             }

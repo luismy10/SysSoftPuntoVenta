@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../comprobante.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxEtiquetasController">
+<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../comprobante.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxEtiquetasController">
    <children>
       <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
          <children>
@@ -220,6 +220,12 @@
                                  <children>
                                     <Label styleClass="labelOpenSansRegular14" text="Tamaño" />
                                     <Spinner fx:id="spFontSize" editable="true" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0" />
+                                 </children>
+                              </VBox>
+                              <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Alinación" />
+                                    <ComboBox fx:id="cbAlineacion" disable="true" maxWidth="1.7976931348623157E308" onAction="#onActionAlineacion" prefHeight="30.0" prefWidth="150.0" />
                                  </children>
                               </VBox>
                            </children>

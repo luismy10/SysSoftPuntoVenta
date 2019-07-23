@@ -1,15 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package model;
 
-/**
- * 
- * @author Sammy Guergachi <sguergachi at gmail.com>
- */
+
 public class Utilidad {
     
     //select dv.IdArticulo, a.Clave, a.NombreMarca, dv.Cantidad, dv.CantidadGranel, dv.CostoVenta, dv.PrecioVenta, dv.PrecioVentaGranel, a.ValorInventario, dbo.Fc_Obtener_Nombre_Detalle(a.UnidadCompra,'0013') as UnidadCompra, m.Simbolo
@@ -21,8 +13,11 @@ public class Utilidad {
     private double Cantidad;
     private double CantidadGranel;
     private double CostoVenta;
+    private double CostoVentaGranel;
+    private double CostoVentaTotal;
     private double PrecioVenta;
     private double PrecioVentaGranel;
+    private double PrecioVentaTotal;
     private boolean ValorInventario;
     private String UnidadCompra;
     private String SimboloMoneda;
@@ -105,6 +100,22 @@ public class Utilidad {
         this.CostoVenta = CostoVenta;
     }
 
+    public double getCostoVentaGranel() {
+        return CostoVentaGranel;
+    }
+
+    public void setCostoVentaGranel(double CostoVentaGranel) {
+        this.CostoVentaGranel = CostoVentaGranel;
+    }
+
+    public double getCostoVentaTotal() {
+        return CostoVentaTotal;
+    }
+
+    public void setCostoVentaTotal(double CostoVentaTotal) {
+        this.CostoVentaTotal = CostoVentaTotal;
+    }
+
     public double getPrecioVenta() {
         return PrecioVenta;
     }
@@ -119,6 +130,14 @@ public class Utilidad {
 
     public void setPrecioVentaGranel(double PrecioVentaGranel) {
         this.PrecioVentaGranel = PrecioVentaGranel;
+    }
+
+    public double getPrecioVentaTotal() {
+        return PrecioVentaTotal;
+    }
+
+    public void setPrecioVentaTotal(double PrecioVentaTotal) {
+        this.PrecioVentaTotal = PrecioVentaTotal;
     }
 
     public boolean isValorInventario() {

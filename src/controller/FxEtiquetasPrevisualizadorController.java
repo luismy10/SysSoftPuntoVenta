@@ -21,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
@@ -54,7 +55,7 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
     private VBox vbEtiquetas;
     @FXML
     private ScrollPane scrollPane;
-    
+
     private Pane panel;
 
     private double widthEtiquetaMM;
@@ -62,7 +63,6 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
     private int orientacionEtiqueta;
 
     private double heightEtiquetaMM;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -96,7 +96,7 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
     public void loadEtiqueta(String ruta, ArticuloTB articuloTB) {
         if (ruta != null) {
             panel = new Pane();
-            panel.setStyle("-fx-background-color:white;"); 
+            panel.setStyle("-fx-background-color:white;");
             panel.getChildren().clear();
             Group selectionLayer = new Group();
             panel.getChildren().add(selectionLayer);
@@ -132,6 +132,8 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
                                             text = articuloTB.getNombreMarca();
                                         } else if (variable.equalsIgnoreCase("precio")) {
                                             text = Tools.roundingValue(articuloTB.getPrecioVentaGeneral(), 2);
+                                        } else if (variable.equalsIgnoreCase("descripcion_alterna")) {
+                                            text = articuloTB.getNombreGenerico();
                                         } else if (variable.equalsIgnoreCase("girocomercial_empresa")) {
                                             text = "Giro Comercial";
                                         } else if (variable.equalsIgnoreCase("representante_empresa")) {
@@ -153,6 +155,8 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
                                             text = articuloTB.getNombreMarca();
                                         } else if (variable.equalsIgnoreCase("precio")) {
                                             text = Tools.roundingValue(articuloTB.getPrecioVentaGeneral(), 2);
+                                        } else if (variable.equalsIgnoreCase("descripcion_alterna")) {
+                                            text = articuloTB.getNombreGenerico();
                                         } else if (variable.equalsIgnoreCase("fecha_registro")) {
 
                                         } else if (variable.equalsIgnoreCase("fecha_vencimiento")) {
@@ -182,7 +186,8 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
                                         Double.parseDouble(objectchild.get("with").toString()),
                                         Double.parseDouble(objectchild.get("height").toString()),
                                         String.valueOf(objectchild.get("fontname")),
-                                        Double.parseDouble(objectchild.get("fontsize").toString())
+                                        Double.parseDouble(objectchild.get("fontsize").toString()),
+                                        getAlignment(objectchild.get("aling").toString())
                                 ));
                             } else if (String.valueOf(objectchild.get("type")).equalsIgnoreCase("codebar")) {
                                 String variable = String.valueOf(objectchild.get("variable").toString());
@@ -197,6 +202,8 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
                                             text = articuloTB.getNombreMarca();
                                         } else if (variable.equalsIgnoreCase("precio")) {
                                             text = Tools.roundingValue(articuloTB.getPrecioVentaGeneral(), 2);
+                                        } else if (variable.equalsIgnoreCase("descripcion_alterna")) {
+                                            text = articuloTB.getNombreGenerico();
                                         } else if (variable.equalsIgnoreCase("girocomercial_empresa")) {
                                             text = "Giro Comercial";
                                         } else if (variable.equalsIgnoreCase("representante_empresa")) {
@@ -218,6 +225,8 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
                                             text = articuloTB.getNombreMarca();
                                         } else if (variable.equalsIgnoreCase("precio")) {
                                             text = Tools.roundingValue(articuloTB.getPrecioVentaGeneral(), 2);
+                                        } else if (variable.equalsIgnoreCase("descripcion_alterna")) {
+                                            text = articuloTB.getNombreGenerico();
                                         } else if (variable.equalsIgnoreCase("fecha_registro")) {
 
                                         } else if (variable.equalsIgnoreCase("fecha_vencimiento")) {
@@ -286,6 +295,19 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
         return arrayJSON;
     }
 
+    private Pos getAlignment(String align) {
+        switch (align) {
+            case "CENTER":
+                return Pos.CENTER;
+            case "CENTER_LEFT":
+                return Pos.CENTER_LEFT;
+            case "CENTER_RIGHT":
+                return Pos.CENTER_RIGHT;
+            default:
+                return Pos.CENTER_LEFT;
+        }
+    }
+
     private WritableImage generateBarCode(String value, java.awt.Font font) {
         int heightBuffer = (int) (60);
         WritableImage wr = null;
@@ -319,10 +341,11 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
         return ivCodigo;
     }
 
-    private Text addText(String value, double x, double y, double width, double height, String fontFamily, double size) {
+    private Text addText(String value, double x, double y, double width, double height, String fontFamily, double size, Pos pos) {
         Text text = new Text(value, x, y);
         text.setFontText(fontFamily, FontWeight.BOLD, FontPosture.REGULAR, size);
         text.setPrefSize(width == -1 ? USE_COMPUTED_SIZE : width, height == -1 ? USE_COMPUTED_SIZE : height);
+        text.setAlignment(pos);
         return text;
     }
 
@@ -369,8 +392,8 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
         pf.setPaper(paper);
         return pf;
     }
-    
-     private void eventAcercar() {
+
+    private void eventAcercar() {
         final double zoomFactor = 1.2;
         // do the resizing
         panel.setScaleX(zoomFactor * panel.getScaleX());
@@ -390,7 +413,7 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
 
     @FXML
     private void onKeyPressedAcercar(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             eventAcercar();
         }
     }
@@ -402,7 +425,7 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
 
     @FXML
     private void onKeyPressedAlejar(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             eventAlejar();
         }
     }
@@ -425,7 +448,7 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
             if (pageIndex == 0) {
                 Graphics2D g2d = (Graphics2D) graphics;
                 g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
-                g2d.drawImage(bufferedImage, 5, -10, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+                g2d.drawImage(bufferedImage, 5, 0, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
                 g2d.dispose();
                 return (PAGE_EXISTS);
             } else {

@@ -25,11 +25,12 @@ public class EtiquetaADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        statementTicket = DBUtil.getConnection().prepareStatement("UPDATE EtiquetaTB SET medida = ?,ruta = ?,imagen = ? WHERE idEtiqueta = ?");
-                        statementTicket.setString(1, etiquetaTB.getMedida());
-                        statementTicket.setString(2, etiquetaTB.getRuta());
-                        statementTicket.setBytes(3, etiquetaTB.getImagen());
-                        statementTicket.setInt(4, etiquetaTB.getIdEtiqueta());
+                        statementTicket = DBUtil.getConnection().prepareStatement("UPDATE EtiquetaTB SET nombre = ?,medida = ?,ruta = ?,imagen = ? WHERE idEtiqueta = ?");
+                        statementTicket.setString(1, etiquetaTB.getNombre());
+                        statementTicket.setString(2, etiquetaTB.getMedida());
+                        statementTicket.setString(3, etiquetaTB.getRuta());
+                        statementTicket.setBytes(4, etiquetaTB.getImagen());
+                        statementTicket.setInt(5, etiquetaTB.getIdEtiqueta());
                         statementTicket.addBatch();
 
                         statementTicket.executeBatch();

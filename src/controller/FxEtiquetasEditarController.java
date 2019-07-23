@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -15,7 +14,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import model.EtiquetaADO;
-import model.EtiquetaTB;
 
 public class FxEtiquetasEditarController implements Initializable {
 
@@ -31,8 +29,6 @@ public class FxEtiquetasEditarController implements Initializable {
     private RadioButton rbVertical;
     @FXML
     private RadioButton rbHorizontal;
-    @FXML
-    private ComboBox<EtiquetaTB> cbTipoEtiqueta;
 
     private FxEtiquetasController etiquetasController;
 
@@ -42,7 +38,6 @@ public class FxEtiquetasEditarController implements Initializable {
         ToggleGroup groupVende = new ToggleGroup();
         rbVertical.setToggleGroup(groupVende);
         rbHorizontal.setToggleGroup(groupVende);
-        cbTipoEtiqueta.getItems().addAll(EtiquetaADO.ListTipoEtiquetas());
     }
 
     public void loadEdit(String nombre, double ancho, double alto, int oriententacion, int tipoEtiqueta) {
@@ -53,12 +48,6 @@ public class FxEtiquetasEditarController implements Initializable {
             rbVertical.setSelected(true);
         } else {
             rbHorizontal.setSelected(true);
-        }
-        for (int i = 0; i < cbTipoEtiqueta.getItems().size(); i++) {
-            if (cbTipoEtiqueta.getItems().get(i).getIdEtiqueta() == tipoEtiqueta) {
-                cbTipoEtiqueta.getSelectionModel().select(i);
-                break;
-            }
         }
     }
 
@@ -78,17 +67,12 @@ public class FxEtiquetasEditarController implements Initializable {
         } else if (Double.parseDouble(txtAlto.getText()) <= 0) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Etiqueta", "El valor ingreso no es numérico o es negativo.", false);
             txtAlto.requestFocus();
-        } else if (cbTipoEtiqueta.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Etiqueta", "Seleccione un tipo de etiqueta.", false);
-            cbTipoEtiqueta.requestFocus();
         } else {
-            etiquetasController.newEtiqueta(
+            etiquetasController.editEtiqueta(
                     txtNombre.getText(),
                     Double.parseDouble(txtAncho.getText()),
                     Double.parseDouble(txtAlto.getText()),
-                    rbVertical.isSelected() ? PageFormat.PORTRAIT : PageFormat.LANDSCAPE,
-                    cbTipoEtiqueta.getSelectionModel().getSelectedItem().getIdEtiqueta(),
-                    cbTipoEtiqueta.getSelectionModel().getSelectedItem().getNombre());
+                    rbVertical.isSelected() ? PageFormat.PORTRAIT : PageFormat.LANDSCAPE);
             Tools.Dispose(window);
         }
     }
