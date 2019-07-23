@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 127.0.0.1
+=======
+localhost
+>>>>>>> 2771f238b232d4fb3fd9b4190f9e3d7bcab3810a
 1433
 PuntoVentaSysSoftDBDesarrollo
 sa
