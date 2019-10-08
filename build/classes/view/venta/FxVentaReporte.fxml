@@ -177,6 +177,29 @@
                                           </VBox>
                                        </children>
                                     </HBox>
+                                    <Separator />
+                                    <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em 0  0.8333333333333334em 0; -fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Compendio General de Ventas">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../menu.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionCompendio" onKeyPressed="#onKeyPressedoCompendio" styleClass="buttonLightSuccess" text="Reporte">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../plazos.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </children>

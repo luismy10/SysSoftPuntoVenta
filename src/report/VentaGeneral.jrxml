@@ -1,29 +1,181 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-
-<jasperReport name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-    <background>
-        <band/>
-    </background>
-    <title>
-        <band height="79"/>
-    </title>
-    <pageHeader>
-        <band height="35"/>
-    </pageHeader>
-    <columnHeader>
-        <band height="61"/>
-    </columnHeader>
-    <detail>
-        <band height="125"/>
-    </detail>
-    <columnFooter>
-        <band height="45"/>
-    </columnFooter>
-    <pageFooter>
-        <band height="54"/>
-    </pageFooter>
-    <summary>
-        <band height="42"/>
-    </summary>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5aa49b8b-1bb2-4be2-945b-96f1decae4ba">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="PERIODO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DOCUMENTO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ORDEN" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="documentoReporte" class="java.lang.String"/>
+	<field name="fechaVentaReporte" class="java.lang.String"/>
+	<field name="clienteReporte" class="java.lang.String"/>
+	<field name="totalReporte" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="266" height="46" uuid="905817fe-7131-40cb-b44b-3aa60f6a85f8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte General de Ventas]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="266" y="0" width="289" height="46" forecolor="#666666" uuid="625a9ef8-4eb6-4d0d-a962-a54b2e90ab25"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PERIODO}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="46" width="555" height="1" uuid="f0bce931-fe6f-47c7-8c52-2520b544e0df"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="27" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="104" height="27" forecolor="#666666" uuid="6823e8ba-d55a-4218-a9e5-9cecee56f203"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Documento:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="104" y="0" width="162" height="27" forecolor="#666666" uuid="2f7295dd-0b91-4d23-a9a1-1b39f588ab33"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DOCUMENTO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="266" y="0" width="161" height="27" forecolor="#666666" uuid="980309ca-ea0d-440f-8e89-1aa272001559"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Orden: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="427" y="0" width="128" height="27" forecolor="#666666" uuid="325d6b26-0bf6-45ff-9b1c-85f11ff0b0a1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ORDEN}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement x="4" y="2" width="100" height="31" uuid="be6ac37e-0045-45f3-95fa-163ae65b31bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="104" y="2" width="100" height="31" uuid="77bd6500-539e-4458-b09e-ce8f600ec149"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="204" y="2" width="251" height="31" uuid="500cad40-76fd-404f-a465-1fa37c9f98a7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="2" width="100" height="31" uuid="250f47ea-7352-4736-af6a-5dc2fa2a53e9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+					<paragraph rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="33" splitType="Stretch">
+			<textField>
+				<reportElement x="4" y="0" width="100" height="33" uuid="b26e21b2-8b5f-4379-9437-2e09f47bdd62"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documentoReporte}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="104" y="0" width="100" height="33" uuid="363ac1b7-a680-425e-9eaf-a85c2332876e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaVentaReporte}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="204" y="0" width="251" height="33" uuid="54b1f97b-94a8-4073-9042-8cbffd5336f5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clienteReporte}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="0" width="100" height="33" uuid="ea5f5374-b8fb-48fe-be20-f12f0889e84b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+					<paragraph rightIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalReporte}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="25" backcolor="#E6E8E9" uuid="e14807c5-e224-4aed-8c8f-22a38f4dd99e"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="290" y="0" width="275" height="25" uuid="48c14c9c-0ff7-4060-b75e-b57f40dd6bb1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Serif" size="10" isItalic="true"/>
+					<paragraph rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[GRACIAS POR HACER NEGOCIOS
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="280" height="25" uuid="85d4c185-1df1-4457-b5ef-1b952750faec"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Serif" size="10" isItalic="true"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("d 'de' MMMM 'del' yyyy").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
 </jasperReport>

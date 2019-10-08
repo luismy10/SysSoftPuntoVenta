@@ -4,6 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<subDataset name="Table Dataset 1" uuid="d37877d1-2f2b-4fcc-ab65-0ab38d7a6908"/>
 	<parameter name="TIPOFILTRO" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
@@ -175,4 +176,30 @@
 			</textField>
 		</band>
 	</lastPageFooter>
+	<summary>
+		<band height="100">
+			<componentElement>
+				<reportElement x="260" y="0" width="295" height="100" uuid="ad2c2a29-fcaf-4c18-85fd-6add08feb5b2"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Table Dataset 1" uuid="c576f18b-f5d1-4a30-ba1c-bb73808c1a25">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource(1)]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="90" uuid="7ca4b00b-f9c8-484b-8120-887bf13c0bb9">
+						<jr:tableHeader height="30"/>
+						<jr:tableFooter height="30"/>
+						<jr:columnHeader height="30"/>
+						<jr:columnFooter height="30"/>
+						<jr:detailCell height="20"/>
+					</jr:column>
+					<jr:column width="90" uuid="60b93406-4b5b-436d-a504-4bac11f09e47">
+						<jr:tableHeader height="30"/>
+						<jr:tableFooter height="30"/>
+						<jr:columnHeader height="30"/>
+						<jr:columnFooter height="30"/>
+						<jr:detailCell height="20"/>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</summary>
 </jasperReport>

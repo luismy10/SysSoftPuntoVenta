@@ -360,7 +360,7 @@ public class VentaADO {
         return empList;
     }
 
-    public static String CancelTheSale(String idVenta, ObservableList<ArticuloTB> tvList,double total,MovimientoCajaTB cajaTB) {
+    public static String CancelTheSale(String idVenta, ObservableList<ArticuloTB> tvList, double total, MovimientoCajaTB cajaTB) {
 
         PreparedStatement statementVenta = null;
         PreparedStatement statementArticulo = null;
@@ -464,7 +464,7 @@ public class VentaADO {
                     ventaTB.setMonedaName(resultSet.getString("Simbolo"));
                     ventaTB.setEfectivo(resultSet.getDouble("Efectivo"));
                     ventaTB.setVuelto(resultSet.getDouble("Vuelto"));
-                    ventaTB.setTotal(resultSet.getDouble("Total")); 
+                    ventaTB.setTotal(resultSet.getDouble("Total"));
                 }
                 statementVendedor.close();
             }
@@ -537,6 +537,83 @@ public class VentaADO {
             }
         } catch (SQLException ex) {
 
+        } finally {
+            try {
+                if (callableStatement != null) {
+                    callableStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+
+        }
+        return arrayList;
+    }
+
+    public static ArrayList<VentaTB> GetReporteGenetalVentasConsolidado(String fechaInicial, String fechaFinal) {
+        CallableStatement callableStatement = null;
+        ResultSet resultSet = null;
+        ArrayList<VentaTB> arrayList = new ArrayList<>();
+        try {
+            DBUtil.dbConnect();
+            callableStatement = DBUtil.getConnection().prepareCall("{call Sp_Reporte_General_Ventas_Sumadas(?,?)}");
+            callableStatement.setString(1, fechaInicial);
+            callableStatement.setString(2, fechaFinal);
+            resultSet = callableStatement.executeQuery();
+            while (resultSet.next()) {
+                VentaTB ventaTB = new VentaTB();
+                ventaTB.setId(resultSet.getRow());
+                ventaTB.setFechaVentaReporte(resultSet.getString("Fecha"));
+                ventaTB.setTotalReporte(Tools.roundingValue(resultSet.getDouble("Total"), 2));
+                arrayList.add(ventaTB);
+            }
+        } catch (SQLException ex) {
+
+        } finally {
+            try {
+                if (callableStatement != null) {
+                    callableStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+
+        }
+        return arrayList;
+    }
+
+    public static ArrayList<VentaTB> GetTotalesDelMes(String fechaInicial, String fechaFinal) {
+        PreparedStatement callableStatement = null;
+        ResultSet resultSet = null;
+        ArrayList<VentaTB> arrayList = new ArrayList<>();
+        try {
+            DBUtil.dbConnect();
+            callableStatement = DBUtil.getConnection().prepareCall("SELECT MONTH(CAST(FechaVenta AS DATE)) AS ToMnth, SUM(Total) AS Total\n"
+                    + "FROM VentaTB \n"
+                    + "WHERE\n"
+                    + "CAST(FechaVenta AS DATE) BETWEEN ? AND ?\n"
+                    + "GROUP BY MONTH(CAST(FechaVenta AS DATE))\n"
+                    + "ORDER BY MONTH(CAST(FechaVenta AS DATE))");
+            callableStatement.setString(1, fechaInicial);
+            callableStatement.setString(2, fechaFinal);
+            resultSet = callableStatement.executeQuery();            
+            while (resultSet.next()) {
+            
+                VentaTB ventaTB = new VentaTB();
+                ventaTB.setMes(resultSet.getString("ToMnth"));
+                ventaTB.setMesTotal(Tools.roundingValue(resultSet.getDouble("Total"), 2));
+                arrayList.add(ventaTB);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getLocalizedMessage());
         } finally {
             try {
                 if (callableStatement != null) {

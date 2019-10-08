@@ -38,7 +38,9 @@ public class VentaTB {
     private String fechaVentaReporte;
     private String clienteReporte;
     private String totalReporte;
-
+    private String mes;
+    private String mesTotal;
+    
     public VentaTB() {
         
     }
@@ -257,6 +259,22 @@ public class VentaTB {
 
     public void setTotalReporte(String totalReporte) {
         this.totalReporte = totalReporte;
+    }
+
+    public String getMes() {
+        return mes;
+    }
+
+    public void setMes(String mes) {
+        this.mes = mes;
+    }
+
+    public String getMesTotal() {
+        return mesTotal;
+    }
+
+    public void setMesTotal(String mesTotal) {
+        this.mesTotal = mesTotal;
     }
     
     

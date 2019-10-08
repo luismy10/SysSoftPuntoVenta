@@ -71,7 +71,7 @@ public class FxVentaDetalleController implements Initializable {
     private Text lblSubTotal;
     @FXML
     private VBox hbAgregarImpuesto;
-@FXML
+    @FXML
     private Text lblTotalVenta;
 
     private AnchorPane windowinit;
@@ -109,11 +109,10 @@ public class FxVentaDetalleController implements Initializable {
     private double pointWidth;
 
     private String nombreTicketImpresion;
-    
+
     private double totalVenta;
-    
+
     private double efectivo, vuelto;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -190,7 +189,7 @@ public class FxVentaDetalleController implements Initializable {
         //Controlller here
         FxVentaDevolucionController controller = fXMLLoader.getController();
         controller.setInitVentaDetalle(this);
-        controller.setLoadVentaDevolucion(idVenta,arrList,lblComprobante.getText(),lblTotalVenta.getText(),totalVenta);
+        controller.setLoadVentaDevolucion(idVenta, arrList, lblComprobante.getText(), lblTotalVenta.getText(), totalVenta);
         //
         Stage stage = FxWindow.StageLoaderModal(parent, "Cancelar la venta", window.getScene().getWindow());
         stage.setResizable(false);

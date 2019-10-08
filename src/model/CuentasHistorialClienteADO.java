@@ -1,5 +1,6 @@
 package model;
 
+import controller.Tools;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,15 +27,16 @@ public class CuentasHistorialClienteADO {
                 statementCuentas.setString(4, cuentasHistorialClienteTB.getReferencia());
                 statementCuentas.addBatch();
 
-                statementMovimiento = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,IdUsuario,FechaMovimiento,Comentario,Movimiento,Entrada,Salidas,Saldo)VALUES(?,?,?,?,?,?,?,?)");
+                statementMovimiento = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,IdUsuario,FechaMovimiento,HoraMovimiento,Comentario,Movimiento,Entrada,Salidas,Saldo)VALUES(?,?,?,?,?,?,?,?,?)");
                 statementMovimiento.setInt(1, movimientoCajaTB.getIdCaja());
                 statementMovimiento.setString(2, movimientoCajaTB.getIdUsuario());
-                statementMovimiento.setTimestamp(3, Timestamp.valueOf(movimientoCajaTB.getFechaMovimiento()));
-                statementMovimiento.setString(4, movimientoCajaTB.getComentario());
-                statementMovimiento.setString(5, movimientoCajaTB.getMovimiento());
-                statementMovimiento.setDouble(6, movimientoCajaTB.getEntrada());
-                statementMovimiento.setDouble(7, movimientoCajaTB.getSalidas());
-                statementMovimiento.setDouble(8, movimientoCajaTB.getSaldo());
+                statementMovimiento.setString(3, Tools.getDate());
+                statementMovimiento.setString(4, Tools.getHour("HH:mm:ss"));
+                statementMovimiento.setString(5, movimientoCajaTB.getComentario());
+                statementMovimiento.setString(6, movimientoCajaTB.getMovimiento());
+                statementMovimiento.setDouble(7, movimientoCajaTB.getEntrada());
+                statementMovimiento.setDouble(8, movimientoCajaTB.getSalidas());
+                statementMovimiento.setDouble(9, movimientoCajaTB.getSaldo());
                 statementMovimiento.addBatch();
 
                 statementVenta = DBUtil.getConnection().prepareStatement("UPDATE VentaTB SET Estado = ? WHERE IdVenta = ?");

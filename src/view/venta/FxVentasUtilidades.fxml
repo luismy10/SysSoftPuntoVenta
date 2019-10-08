@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
@@ -16,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentasUtilidadesController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FxVentasUtilidadesController">
    <children>
       <HBox VBox.vgrow="ALWAYS">
          <children>
@@ -44,20 +43,11 @@
                      <children>
                         <HBox styleClass="paddinContainer">
                            <children>
-                              <Button mnemonicParsing="false" styleClass="buttonLight" text="Recargar">
+                              <Button mnemonicParsing="false" onAction="#onActionReload" onKeyPressed="#onKeyPressedReload" styleClass="buttonLight" text="Recargar">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../reload.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button mnemonicParsing="false" styleClass="buttonLight" text="Reporte">
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../complete.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -108,24 +98,6 @@
                                                 <DatePicker fx:id="dtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="200.0" />
                                              </children>
                                           </VBox>
-                                          <VBox style="-fx-spacing: 0.4166666666666667em;">
-                                             <children>
-                                                <Label styleClass="labelRoboto14" text="Categoria" textFill="#1a2226">
-                                                   <font>
-                                                      <Font name="Calibri" size="15.0" />
-                                                   </font>
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../recibo.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Label>
-                                                <ComboBox prefHeight="30.0" prefWidth="200.0" />
-                                             </children>
-                                          </VBox>
-                                          <VBox style="-fx-spacing: 0.4166666666666667em;" />
                                        </children>
                                     </HBox>
                                     <Separator prefWidth="200.0" />
@@ -133,7 +105,7 @@
                                        <children>
                                           <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label styleClass="labelRoboto14" text="Buscar por Producto o Serie/Numeración" textFill="#1a2226">
+                                                <Label styleClass="labelRoboto14" text="Buscar por Producto por nombre o clave (Presione Enten para iniciar la busqueda)" textFill="#1a2226">
                                                    <font>
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
@@ -145,7 +117,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <TextField fx:id="txtSearch" />
+                                                <TextField fx:id="txtSearch" onAction="#onActionSearch" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -174,33 +146,32 @@
                            <children>
                               <VBox style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Importe Compra" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="Costo Total" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
-                                          <Text fx:id="lblImporteC" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
-                                          <Text fx:id="lblImporteCompra" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                          <Text fx:id="lblICostoTotalMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
+                                          <Text fx:id="lblCostoTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Importe Venta" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="Precio Total" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
-                                          <Text fx:id="lblMonedaImporteV" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
-                                          <Text fx:id="lblImporteVenta" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
+                                          <Text fx:id="lblPrecioTotalMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
+                                          <Text fx:id="lblPrecioTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
-                              <HBox fx:id="hbAgregarImpuesto" style="-fx-spacing: 1.1666666666666667em;" />
                               <VBox style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
                                     <Label styleClass="labelRoboto14" text="Utilidad" textFill="#1a2226" />
                                     <HBox spacing="5.0">
                                        <children>
-                                          <Text fx:id="lblMonedaUtilidad" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
+                                          <Text fx:id="lblUtlidadMoneda" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
                                           <Text fx:id="lblUtilidad" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                        </children>
                                     </HBox>

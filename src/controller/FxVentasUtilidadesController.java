@@ -17,8 +17,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import model.Utilidad;
 import model.UtilidadADO;
@@ -52,19 +53,17 @@ public class FxVentasUtilidadesController implements Initializable {
     @FXML
     private TableColumn<Utilidad, String> tcUtilidad;
     @FXML
-    private Text lblImporteC;
+    private Text lblCostoTotal;
     @FXML
-    private Text lblImporteCompra;
-    @FXML
-    private Text lblMonedaImporteV;
-    @FXML
-    private Text lblImporteVenta;
-    @FXML
-    private HBox hbAgregarImpuesto;
-    @FXML
-    private Text lblMonedaUtilidad;
+    private Text lblPrecioTotal;
     @FXML
     private Text lblUtilidad;
+    @FXML
+    private Text lblICostoTotalMoneda;
+    @FXML
+    private Text lblPrecioTotalMoneda;
+    @FXML
+    private Text lblUtlidadMoneda;
 
     private AnchorPane windowinit;
 
@@ -104,11 +103,11 @@ public class FxVentasUtilidadesController implements Initializable {
 
     public void loadInit() {
         if (dtFechaInicial != null && dtFechaFinal != null) {
-            fillUtilidadTable((short) 1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
+            fillUtilidadTable((short) 1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
         }
     }
 
-    public void fillUtilidadTable(short option, String fechaInicial, String fechaFinal) {
+    public void fillUtilidadTable(short option, String fechaInicial, String fechaFinal, String search) {
         ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -117,13 +116,31 @@ public class FxVentasUtilidadesController implements Initializable {
         Task<ObservableList<Utilidad>> task = new Task<ObservableList<Utilidad>>() {
             @Override
             public ObservableList<Utilidad> call() {
-                return UtilidadADO.listUtilidadVenta(option, fechaInicial, fechaFinal, "");
+                return UtilidadADO.listUtilidadVenta(option, fechaInicial, fechaFinal, search);
             }
         };
         task.setOnSucceeded((WorkerStateEvent e) -> {
             tvList.setItems((ObservableList<Utilidad>) task.getValue());
             lblLoad.setVisible(false);
             validationSearch = false;
+            if (!validationSearch) {
+                double costoTotal = 0;
+                double precioTotal = 0;
+                double utilidad = 0;
+                String moneda = "M.";
+                for (int i = 0; i < tvList.getItems().size(); i++) {
+                    moneda = tvList.getItems().get(i).getSimboloMoneda();
+                    costoTotal += tvList.getItems().get(i).getCostoVentaTotal();
+                    precioTotal += tvList.getItems().get(i).getPrecioVentaTotal();
+                    utilidad += tvList.getItems().get(i).getUtilidad();
+                }
+                lblICostoTotalMoneda.setText(moneda);
+                lblPrecioTotalMoneda.setText(moneda);
+                lblUtlidadMoneda.setText(moneda);
+                lblCostoTotal.setText(Tools.roundingValue(costoTotal, 2));
+                lblPrecioTotal.setText(Tools.roundingValue(precioTotal, 2));
+                lblUtilidad.setText(Tools.roundingValue(utilidad, 2));
+            }
         });
         task.setOnFailed((WorkerStateEvent event) -> {
             lblLoad.setVisible(false);
@@ -142,14 +159,43 @@ public class FxVentasUtilidadesController implements Initializable {
     @FXML
     private void onActionFechaInicial(ActionEvent event) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillUtilidadTable((short) 1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
+            if (!validationSearch) {
+                fillUtilidadTable((short) 1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            }
         }
     }
 
     @FXML
     private void onActionFechaFinal(ActionEvent event) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillUtilidadTable((short) 1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
+            if (!validationSearch) {
+                fillUtilidadTable((short) 1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            }
+        }
+    }
+
+    @FXML
+    private void onActionSearch(ActionEvent event) {
+        if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
+            if (!validationSearch) {
+                fillUtilidadTable((short) 2, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), txtSearch.getText().trim());
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyPressedReload(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!validationSearch) {
+                loadInit();
+            }
+        }
+    }
+
+    @FXML
+    private void onActionReload(ActionEvent event) {
+        if (!validationSearch) {
+            loadInit();
         }
     }
 

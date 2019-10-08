@@ -3,7 +3,6 @@ package controller;
 import java.awt.HeadlessException;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,11 +28,11 @@ import javafx.stage.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import model.LoteTB;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
 import model.VentaADO;
 import model.VentaTB;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -54,14 +53,16 @@ public class FxVentaReporteController implements Initializable {
     private CheckBox cbDocumentosSeleccionar;
     @FXML
     private TextField txtClientes;
-    
+
     private AnchorPane content;
-    
+
     private String idCliente;
     @FXML
     private Button btnClientes;
     @FXML
     private CheckBox cbClientesSeleccionar;
+
+    double total = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -103,6 +104,53 @@ public class FxVentaReporteController implements Initializable {
         controller.fillCustomersTable("");
     }
 
+    private void openViewReporteCompendio() {
+
+        try {
+            if (!cbDocumentosSeleccionar.isSelected() && cbDocumentos.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte General de Ventas", "Seleccione un documento para generar el reporte.", false);
+                cbDocumentos.requestFocus();
+            } else {
+                ArrayList<VentaTB> list = VentaADO.GetReporteGenetalVentasConsolidado(Tools.getDatePicker(dpFechaInicial), Tools.getDatePicker(dpFechaFinal));
+
+                ArrayList<VentaTB> listTotal = VentaADO.GetTotalesDelMes(Tools.getDatePicker(dpFechaInicial), Tools.getDatePicker(dpFechaFinal));
+                                
+                if (list.isEmpty()) {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Reporte General de Ventas", "No hay registros para mostrar en el reporte.", false);
+
+                    return;
+                }
+                total=0;
+                list.forEach(e -> {
+                    total += Double.parseDouble(e.getTotalReporte());
+                });
+                
+                JRBeanCollectionDataSource  beanCollectionDataSource = new JRBeanCollectionDataSource(listTotal);
+                
+                Map<String, Object> map = new HashMap<>();
+                map.put("PERIODO", "Periodo: " + dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
+                map.put("SUMATOTAL", Tools.roundingValue(total, 2));
+                map.put("ORDEN", "Fecha");
+                map.put("DATANAMES", beanCollectionDataSource);
+
+                JasperPrint jasperPrint = JasperFillManager.fillReport(FxArticuloReportesController.class.getResourceAsStream("/report/VentaGeneralTotales.jasper"), map, new JREmptyDataSource());
+
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+                JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+                jasperViewer.setIconImage(new ImageIcon(getClass().getResource(Tools.FX_LOGO)).getImage());
+                jasperViewer.setTitle("Reporte General de Ventas");
+                jasperViewer.setSize(840, 650);
+                jasperViewer.setLocationRelativeTo(null);
+                jasperViewer.setVisible(true);
+            }
+
+        } catch (HeadlessException | JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Reporte General de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage(), false);
+
+        }
+    }
+
     private void openViewReporteGeneral() {
         try {
             if (!cbDocumentosSeleccionar.isSelected() && cbDocumentos.getSelectionModel().getSelectedIndex() < 0) {
@@ -117,7 +165,7 @@ public class FxVentaReporteController implements Initializable {
                     return;
                 }
                 Map map = new HashMap();
-                map.put("PERIODO", "Periodo: " + dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY"))+ " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
+                map.put("PERIODO", "Periodo: " + dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
                 map.put("DOCUMENTO", "Todos");
                 map.put("ORDEN", "Fecha");
 
@@ -143,8 +191,8 @@ public class FxVentaReporteController implements Initializable {
     private void onActionCbDocumentosSeleccionar(ActionEvent event) {
         cbDocumentos.setDisable(cbDocumentosSeleccionar.isSelected());
     }
-    
-       @FXML
+
+    @FXML
     private void onActionCbClientesSeleccionar(ActionEvent event) {
         btnClientes.setDisable(cbClientesSeleccionar.isSelected());
     }
@@ -170,7 +218,19 @@ public class FxVentaReporteController implements Initializable {
 
     @FXML
     private void onActionClientes(ActionEvent event) throws IOException {
-            openWindowCliente();
+        openWindowCliente();
+    }
+
+    @FXML
+    private void onKeyPressedoCompendio(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openViewReporteCompendio();
+        }
+    }
+
+    @FXML
+    private void onActionCompendio(ActionEvent event) {
+        openViewReporteCompendio();
     }
 
     public void setContent(AnchorPane content) {
